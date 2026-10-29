@@ -1,17 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { HomeView } from './views/HomeView';
-import { SiteDetailView } from './views/SiteDetailView';
-import { CompareView } from './views/CompareView';
-import { RoutePlannerView } from './views/RoutePlannerView';
-import { ScanView } from './views/ScanView';
-import { EvidenceView } from './views/EvidenceView';
-import { TrustView } from './views/TrustView';
-import { ExplainView } from './views/ExplainView';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+
+// Lazy-load individual route views for code splitting and sub-300KB home bundle
+const HomeView = lazy(() => import('./views/HomeView').then((m) => ({ default: m.HomeView })));
+const SiteDetailView = lazy(() => import('./views/SiteDetailView').then((m) => ({ default: m.SiteDetailView })));
+const CompareView = lazy(() => import('./views/CompareView').then((m) => ({ default: m.CompareView })));
+const RoutePlannerView = lazy(() => import('./views/RoutePlannerView').then((m) => ({ default: m.RoutePlannerView })));
+const ScanView = lazy(() => import('./views/ScanView').then((m) => ({ default: m.ScanView })));
+const EvidenceView = lazy(() => import('./views/EvidenceView').then((m) => ({ default: m.EvidenceView })));
+const TrustView = lazy(() => import('./views/TrustView').then((m) => ({ default: m.TrustView })));
+const ExplainView = lazy(() => import('./views/ExplainView').then((m) => ({ default: m.ExplainView })));
 
 export interface RouteMatch {
   route: string;
   component: React.ReactNode;
 }
+
+const RouteLoadingFallback: React.FC = () => (
+  <div
+    style={{
+      padding: '3rem 1.5rem',
+      textAlign: 'center',
+      color: 'var(--text-secondary)',
+      fontSize: '0.95rem',
+    }}
+    role="status"
+    aria-live="polite"
+  >
+    <div className="skeleton-line" style={{ width: '40%', margin: '0 auto 1rem auto', height: '24px' }} />
+    <div className="skeleton-line" style={{ width: '60%', margin: '0 auto', height: '16px' }} />
+    <p style={{ marginTop: '1rem' }}>Loading scientific analysis view...</p>
+  </div>
+);
 
 export function useRouter(): { currentPath: string; view: React.ReactNode } {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -78,5 +97,8 @@ export function useRouter(): { currentPath: string; view: React.ReactNode } {
     view = <HomeView />;
   }
 
-  return { currentPath, view };
+  return {
+    currentPath,
+    view: <Suspense fallback={<RouteLoadingFallback />}>{view}</Suspense>,
+  };
 }

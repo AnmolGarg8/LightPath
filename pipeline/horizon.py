@@ -250,7 +250,12 @@ def horizon_profile(
         elif isinstance(terrain, DEMWindow):
             sampled_z = terrain.sample_lat_lon(ray_lats, ray_lons)
         elif callable(terrain):
-            sampled_z = np.vectorize(terrain, otypes=[np.float64])(ray_lats, ray_lons)
+            try:
+                sampled_z = np.vectorize(terrain, otypes=[np.float64])(ray_lats, ray_lons)
+            except TypeError:
+                sampled_z = np.vectorize(lambda d, la, lo: terrain(d, la, lo), otypes=[np.float64])(
+                    dist_flat, ray_lats, ray_lons
+                )
         elif hasattr(terrain, "sample_lat_lon"):
             sampled_z = terrain.sample_lat_lon(ray_lats, ray_lons)
         else:

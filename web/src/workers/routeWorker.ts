@@ -74,6 +74,15 @@ function solveTraverse(params: RouteWorkerRequest['payload']): RouteResult {
   const [sx, sy] = start;
   const [gx, gy] = end;
 
+  // Infer dynamic time step duration from visibility cube timestamps
+  let stepDtS = 3600;
+  if (numT > 1) {
+    const t0 = new Date(cube.time_utc[0]).getTime();
+    const t1 = new Date(cube.time_utc[1]).getTime();
+    const diffS = Math.abs(t1 - t0) / 1000;
+    if (diffS > 0) stepDtS = diffS;
+  }
+
   const baseParams = {
     start_coord: start,
     end_coord: end,
@@ -133,8 +142,8 @@ function solveTraverse(params: RouteWorkerRequest['payload']): RouteResult {
       const traversable = cube.traversable[nyCell]?.[nxCell] ?? false;
       if (!traversable || slope > max_slope_deg) continue;
 
-      const transit_s = m.d === 0 ? 3600 : m.d / speed_m_s;
-      const dtSteps = m.d === 0 ? 1 : Math.max(1, Math.round(transit_s / 3600));
+      const transit_s = m.d === 0 ? stepDtS : m.d / speed_m_s;
+      const dtSteps = m.d === 0 ? 1 : Math.max(1, Math.round(transit_s / stepDtS));
       const nextT = curr.t + dtSteps;
 
       if (nextT >= numT) continue;
@@ -194,6 +203,25 @@ function solveTraverse(params: RouteWorkerRequest['payload']): RouteResult {
 
   const durationH = (costSoFar.get(goalNodeKey) || 0) / 3600;
 
+  // Compute actual traverse metrics along reconstructed space-time path
+  const slopes: number[] = [];
+  const sunObs: number[] = [];
+  const earthObs: number[] = [];
+
+  for (const wp of path) {
+    const s = cube.slope_deg[wp.y]?.[wp.x] ?? 0;
+    slopes.push(s);
+    const sf = (cube.sun_frac[wp.t]?.[wp.y]?.[wp.x] ?? 0) / 100;
+    sunObs.push(sf);
+    const ef = (cube.earth_frac[wp.t]?.[wp.y]?.[wp.x] ?? 0) / 100;
+    earthObs.push(ef);
+  }
+
+  const avgSlope = slopes.length ? slopes.reduce((a, b) => a + b, 0) / slopes.length : 0;
+  const maxSlope = slopes.length ? Math.max(...slopes) : 0;
+  const minSun = sunObs.length ? Math.min(...sunObs) : 1.0;
+  const minEarth = earthObs.length ? Math.min(...earthObs) : 1.0;
+
   return {
     mode: 'rover',
     params: baseParams,
@@ -202,10 +230,10 @@ function solveTraverse(params: RouteWorkerRequest['payload']): RouteResult {
     metrics: {
       total_distance_m: Math.round(totalDist * 10) / 10,
       duration_h: Math.round(durationH * 100) / 100,
-      average_slope_deg: 5.0,
-      max_slope_deg: 9.5,
-      min_sun_frac_observed: 0.7,
-      min_earth_frac_observed: 0.9,
+      average_slope_deg: Math.round(avgSlope * 10) / 10,
+      max_slope_deg: Math.round(maxSlope * 10) / 10,
+      min_sun_frac_observed: Math.round(minSun * 100) / 100,
+      min_earth_frac_observed: Math.round(minEarth * 100) / 100,
     },
     alternatives: [],
     explanation: `Worker computed feasible traverse: ${path.length} waypoints, ${totalDist.toFixed(1)} m in ${durationH.toFixed(2)} h.`,

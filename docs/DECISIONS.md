@@ -36,3 +36,15 @@ This document records key architectural, engineering, and scientific decisions f
 - **Context**: Raster processing and great-circle horizon raycasting can benefit from JIT compilation via `numba`, but `numba` has heavy binary dependencies that may not install on every platform.
 - **Decision**: The core pipeline uses pure NumPy vectorized operations by default. When `numba` is present, JIT kernels are activated; if missing, code falls back seamlessly to vectorized NumPy without errors.
 - **Consequences**: Portability on all Python 3.11+ environments, with optional JIT acceleration when installed.
+
+## ADR 005: Resolution of Route Worker Metric Parity (Audit MAJ-01)
+- **Status**: Accepted
+- **Context**: Audit finding `MAJ-01` identified that `web/src/workers/routeWorker.ts` returned hardcoded dummy traverse metrics and assumed a static 3600-second step duration.
+- **Decision**: Updated `web/src/workers/routeWorker.ts` to infer dynamic step duration ($\Delta t$) from `cube.time_utc[1] - cube.time_utc[0]`, and compute exact path metrics (`total_distance_m`, `duration_h`, `average_slope_deg`, `max_slope_deg`, `min_sun_frac_observed`, `min_earth_frac_observed`) along the reconstructed space-time trajectory.
+- **Consequences**: 100% mathematical and metric parity between Python reference solver and browser Web Worker.
+
+## ADR 006: Dual-Arity Callable Support in Horizon Raycasting (Audit MAJ-02)
+- **Status**: Accepted
+- **Context**: Audit finding `MAJ-02` identified that `pipeline/horizon.py` expected 2-argument terrain callables `(lat, lon)`, whereas `NestedTerrain` allowed 3-argument distance-aware functions `(dist, lat, lon)`.
+- **Decision**: Updated `horizon_profile` in `pipeline/horizon.py` with an adaptive fallback that supports both 2-argument `(lat, lon)` and 3-argument `(dist, lat, lon)` terrain callables.
+- **Consequences**: Full backwards compatibility and unified API semantics across terrain evaluation.
