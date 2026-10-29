@@ -9,7 +9,10 @@ description = "LightPath - CLPS Lunar Mission Browser"
 authors = [{ name = "LightPath Team" }]
 dependencies = [
     "numpy>=1.24.0",
-    "jsonschema>=4.0.0"
+    "scipy>=1.10.0",
+    "jsonschema>=4.0.0",
+    "spiceypy>=6.0.0",
+    "pyyaml>=6.0"
 ]
 
 [tool.pytest.ini_options]
@@ -17,6 +20,9 @@ minversion = "7.0"
 addopts = "-ra -q"
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+    "requires_kernels: marks tests that require physical SPICE kernels downloaded"
+]
 
 [tool.ruff]
 line-length = 120

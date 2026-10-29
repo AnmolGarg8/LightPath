@@ -20,6 +20,8 @@ MOON_EARTH_MEAN_DIST_KM: Final[float] = 384400.0  # Mean lunar distance, km
 
 # Reference Frames
 FRAME_MOON_ME: Final[str] = "MOON_ME"
+FRAME_EARTH_ITRF93: Final[str] = "ITRF93"
+FRAME_EARTH_IAU: Final[str] = "IAU_EARTH"
 
 # Visibility status values
 STATUS_ROBUST_VISIBLE: Final[str] = "robust_visible"
@@ -33,3 +35,4 @@ DEFAULT_MIN_SUN_FRAC: Final[float] = 0.50
 DEFAULT_MIN_EARTH_FRAC: Final[float] = 0.50
 DEFAULT_MAX_TRAVERSABLE_SLOPE_DEG: Final[float] = 15.0
 DEFAULT_EARTH_GROUND_STATION_MASK_DEG: Final[float] = 10.0
+DEFAULT_DSN_MIN_ELEVATION_DEG: Final[float] = 6.0

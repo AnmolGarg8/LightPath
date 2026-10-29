@@ -1,0 +1,37 @@
+# NASA Deep Space Network (DSN) Ground Stations Configuration
+# Reference: JPL 810-005, Rev. E, Module 301 (Coverage and Antenna Orientation)
+#
+# RULE 2 COMPLIANCE:
+# Station coordinates and minimum elevation masks below are placeholders marked
+# unverified. A HUMAN OPERATOR must verify all coordinates and elevation cutoffs
+# against official DSN flight rules before operational use.
+
+default_min_elevation_deg: 6.0  # TODO_VERIFY: Documented example value 6.0 deg; human operator to confirm from mission rules
+
+stations:
+  - id: "goldstone_dss14"
+    name: "Goldstone 70m (DSS 14)"
+    complex: "Goldstone Deep Space Communications Complex, California, USA"
+    lat_deg: 35.247  # UNVERIFIED_PLACEHOLDER: Verify against JPL 810-005
+    lon_deg: -116.889 # UNVERIFIED_PLACEHOLDER: East longitude is positive
+    height_m: 1000.0  # UNVERIFIED_PLACEHOLDER
+    min_elevation_deg: 6.0
+    verified: false
+
+  - id: "madrid_dss63"
+    name: "Madrid 70m (DSS 63)"
+    complex: "Madrid Deep Space Communications Complex, Spain"
+    lat_deg: 40.427  # UNVERIFIED_PLACEHOLDER
+    lon_deg: -4.250  # UNVERIFIED_PLACEHOLDER
+    height_m: 800.0   # UNVERIFIED_PLACEHOLDER
+    min_elevation_deg: 6.0
+    verified: false
+
+  - id: "canberra_dss43"
+    name: "Canberra 70m (DSS 43)"
+    complex: "Canberra Deep Space Communication Complex, Tidbinbilla, Australia"
+    lat_deg: -35.401 # UNVERIFIED_PLACEHOLDER
+    lon_deg: 148.981 # UNVERIFIED_PLACEHOLDER
+    height_m: 650.0   # UNVERIFIED_PLACEHOLDER
+    min_elevation_deg: 6.0
+    verified: false
