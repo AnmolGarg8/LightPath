@@ -29,6 +29,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
   const navLinks = [
     { href: '#/', label: 'Mission Browser' },
     { href: '#/compare/synthetic-proving-ground/synthetic-crater-rim', label: 'Compare Sites' },
+    { href: '#/scan/synthetic-proving-ground', label: 'Area Scan' },
     { href: '#/route/synthetic-proving-ground', label: 'Route Planner' },
     { href: '#/trust', label: 'Trust & Benchmarks' },
     { href: '#/explain', label: 'Limitations' },

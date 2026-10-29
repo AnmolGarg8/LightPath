@@ -2,30 +2,13 @@
   "sites": [
     {
       "id": "synthetic-proving-ground",
-      "name": "Synthetic Proving Ground (Crater Complex)",
-      "mission_ids": [
-        "clps-demo-2026"
-      ],
+      "name": "Synthetic Proving Ground (SYNTHETIC)",
+      "mission_ids": [],
       "lat_deg": -89.9,
-      "lon_deg": 0,
-      "ground_elev_m": 250,
+      "lon_deg": 0.0,
+      "ground_elev_m": 0.0,
       "source_links": [
-        "synthetic://pipeline.synthetic/synthetic-proving-ground"
-      ],
-      "verified": false,
-      "is_synthetic": true
-    },
-    {
-      "id": "synthetic-crater-rim",
-      "name": "Synthetic Shackleton Ridge (Demo Peak)",
-      "mission_ids": [
-        "clps-demo-2026"
-      ],
-      "lat_deg": -89.75,
-      "lon_deg": 120,
-      "ground_elev_m": 1420,
-      "source_links": [
-        "synthetic://pipeline.synthetic/synthetic-crater-rim"
+        "synthetic://pipeline.synthetic/crater"
       ],
       "verified": false,
       "is_synthetic": true
@@ -48,99 +31,38 @@
   ],
   "missions": [
     {
-      "id": "clps-demo-2026",
-      "name": "CLPS South Pole Pathfinder (Example)",
-      "operator": "NASA / Commercial Payload Provider",
-      "site_id": "synthetic-crater-rim",
+      "id": "clps-placeholder-shackleton",
+      "name": "CLPS Polar Scout (UNVERIFIED PLACEHOLDER)",
+      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+      "site_id": "shackleton-connecting-ridge",
       "planned_window_start": "2026-11-01T00:00:00Z",
-      "planned_window_end": "2026-11-05T00:00:00Z",
-      "status": "planned",
-      "description": "Example commercial lunar payload services delivery testing optical line-of-sight communication and solar illumination at a south-polar ridge.",
-      "source_links": [
-        {
-          "label": "NASA CLPS Overview",
-          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
-        }
-      ],
-      "verified": false,
-      "is_synthetic": true,
-      "is_example": true
-    },
-    {
-      "id": "artemis-traverse-example",
-      "name": "Artemis Surface Scout (Example)",
-      "operator": "NASA Exploration Ground Systems",
-      "site_id": "synthetic-proving-ground",
-      "planned_window_start": "2026-11-01T00:00:00Z",
-      "planned_window_end": "2026-11-03T12:00:00Z",
-      "status": "planned",
-      "description": "Example crewed and uncrewed rover traverse corridor assessing continuous line-of-sight communication with DSN ground stations.",
-      "source_links": [
-        {
-          "label": "NASA Artemis Campaign",
-          "url": "https://www.nasa.gov/artemis"
-        }
-      ],
-      "verified": false,
-      "is_synthetic": true,
-      "is_example": true
-    },
-    {
-      "id": "clps-active-transit",
-      "name": "CLPS Transit Flight (Example Active)",
-      "operator": "Commercial Lunar Lander Team",
-      "site_id": "synthetic-proving-ground",
-      "planned_window_start": "2026-11-01T00:00:00Z",
-      "planned_window_end": "2026-11-02T12:00:00Z",
-      "status": "en_route",
-      "description": "Example active translunar injection mission en route to south polar touchdown, tracking DSN ground station visibility.",
-      "source_links": [
-        {
-          "label": "Flight Status Dashboard",
-          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
-        }
-      ],
-      "verified": false,
-      "is_synthetic": true,
-      "is_example": true
-    },
-    {
-      "id": "polar-explorer-past",
-      "name": "Polar Reconnaissance Precursor (Example Past)",
-      "operator": "International Lunar Science Consortium",
-      "site_id": "synthetic-flat-basin",
-      "planned_window_start": "2026-10-15T00:00:00Z",
-      "planned_window_end": "2026-10-28T00:00:00Z",
-      "status": "completed",
-      "description": "Completed precursor south polar illumination campaign measuring local horizon elevation angles across a lunar day.",
-      "source_links": [
-        {
-          "label": "Consortium Mission Archive",
-          "url": "https://pds-geosciences.wustl.edu/"
-        }
-      ],
-      "verified": false,
-      "is_synthetic": true,
-      "is_example": true
-    },
-    {
-      "id": "unverified-shackleton-scout",
-      "name": "Deep Crater Rim Prospector (UNVERIFIED)",
-      "operator": "Unverified Operator Placeholder",
-      "site_id": "synthetic-crater-rim",
-      "planned_window_start": "2026-12-01T00:00:00Z",
-      "planned_window_end": "2026-12-14T00:00:00Z",
+      "planned_window_end": "2026-11-15T00:00:00Z",
       "status": "unverified_placeholder",
-      "description": "Unverified placeholder proposal for low-elevation solar line of sight mapping. Requires human confirmation of payload and trajectory parameters.",
+      "description": "Example placeholder entry for CLPS mission browser scaffold. A human operator must verify exact payload, dates, and provider details from official NASA announcements.",
       "source_links": [
         {
-          "label": "PDS Archive Guidelines",
-          "url": "https://pds.nasa.gov/"
+          "label": "NASA CLPS Portal (Verification Required)",
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
         }
       ],
-      "verified": false,
-      "is_synthetic": true,
-      "is_example": true
+      "verified": false
+    },
+    {
+      "id": "clps-placeholder-malapert",
+      "name": "CLPS Malapert Lander (UNVERIFIED PLACEHOLDER)",
+      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+      "site_id": "malapert-mountain",
+      "planned_window_start": "2026-11-05T00:00:00Z",
+      "planned_window_end": "2026-11-20T00:00:00Z",
+      "status": "unverified_placeholder",
+      "description": "Example placeholder entry for south-pole lunar exploration. To be updated by human operator once mission delivery task order is finalized.",
+      "source_links": [
+        {
+          "label": "NASA CLPS Schedule (Verification Required)",
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        }
+      ],
+      "verified": false
     }
   ],
   "mode": "synthetic",

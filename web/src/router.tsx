@@ -3,6 +3,7 @@ import { HomeView } from './views/HomeView';
 import { SiteDetailView } from './views/SiteDetailView';
 import { CompareView } from './views/CompareView';
 import { RoutePlannerView } from './views/RoutePlannerView';
+import { ScanView } from './views/ScanView';
 import { EvidenceView } from './views/EvidenceView';
 import { TrustView } from './views/TrustView';
 import { ExplainView } from './views/ExplainView';
@@ -53,7 +54,13 @@ export function useRouter(): { currentPath: string; view: React.ReactNode } {
     const siteId = currentPath.replace('/route/', '').split('/')[0];
     view = <RoutePlannerView siteId={siteId} />;
   }
-  // 5. Evidence /evidence/:id
+  // 5. Area Scan /scan/:id
+  else if (currentPath.startsWith('/scan/')) {
+    const rawId = currentPath.replace('/scan/', '').split('?')[0];
+    const siteId = rawId.split('/')[0] || 'synthetic-proving-ground';
+    view = <ScanView siteId={siteId} />;
+  }
+  // 6. Evidence /evidence/:id
   else if (currentPath.startsWith('/evidence/')) {
     const siteId = currentPath.replace('/evidence/', '').split('/')[0];
     view = <EvidenceView siteId={siteId} />;

@@ -1,8 +1,8 @@
 {
   "status": "passed",
   "counts": {
-    "total": 92,
-    "passed": 89,
+    "total": 87,
+    "passed": 84,
     "skipped": 3,
     "failed": 0
   },

@@ -1,7 +1,15 @@
 {
-  "created_utc": "2026-10-29T12:00:00Z",
-  "git_commit": "synthetic-seed",
+  "created_utc": "2026-10-29T14:35:01.240977+00:00",
+  "start_utc": "2026-10-29T14:34:44.502492+00:00",
+  "end_utc": "2026-10-29T14:35:01.240987+00:00",
+  "duration_seconds": 16.738,
+  "git_commit": "00397adcf578d779e9917b50a5f2f8c040bede15",
   "software_versions": {
-    "runtime": "node-tsx-fake-generator"
+    "python": "3.14.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "rasterio": "1.5.2",
+    "pyproj": "3.8.0",
+    "spiceypy": "8.3.0"
   }
 }

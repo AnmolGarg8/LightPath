@@ -2,68 +2,58 @@
   "thresholds": {
     "min_sun_frac": 0.5,
     "min_earth_frac": 0.5,
-    "ground_station_mask_deg": 6
+    "ground_station_mask_deg": 6.0
   },
   "sun": {
-    "uptime_fraction": 0.75,
-    "total_uptime_h": 36,
+    "uptime_fraction": 1.0,
+    "total_uptime_h": 98.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-01T16:00:00Z",
-        "duration_h": 20
-      },
-      {
-        "start_utc": "2026-11-02T04:00:00Z",
-        "end_utc": "2026-11-02T20:00:00Z",
-        "duration_h": 20
+        "end_utc": "2026-11-05T00:00:00Z",
+        "duration_h": 98.0
       }
     ],
-    "longest_window_h": 20,
-    "longest_outage_h": 12
+    "longest_window_h": 98.0,
+    "longest_outage_h": 0.0
   },
   "earth": {
-    "uptime_fraction": 1,
-    "total_uptime_h": 48,
+    "uptime_fraction": 0.5714,
+    "total_uptime_h": 56.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-02T20:00:00Z",
-        "duration_h": 48
+        "end_utc": "2026-11-03T06:00:00Z",
+        "duration_h": 56.0
       }
     ],
-    "longest_window_h": 48,
-    "longest_outage_h": 0
+    "longest_window_h": 56.0,
+    "longest_outage_h": 42.0
   },
   "dte": {
-    "uptime_fraction": 1,
-    "total_uptime_h": 48,
+    "uptime_fraction": 0.5714,
+    "total_uptime_h": 56.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-02T20:00:00Z",
-        "duration_h": 48
+        "end_utc": "2026-11-03T06:00:00Z",
+        "duration_h": 56.0
       }
     ],
-    "longest_window_h": 48,
-    "longest_outage_h": 0
+    "longest_window_h": 56.0,
+    "longest_outage_h": 42.0
   },
   "joint": {
-    "uptime_fraction": 0.75,
-    "total_uptime_h": 36,
+    "uptime_fraction": 0.5714,
+    "total_uptime_h": 56.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-01T16:00:00Z",
-        "duration_h": 20
-      },
-      {
-        "start_utc": "2026-11-02T04:00:00Z",
-        "end_utc": "2026-11-02T20:00:00Z",
-        "duration_h": 20
+        "end_utc": "2026-11-03T06:00:00Z",
+        "duration_h": 56.0
       }
     ],
-    "longest_window_h": 20,
-    "longest_outage_h": 12
+    "longest_window_h": 56.0,
+    "longest_outage_h": 42.0
   }
 }

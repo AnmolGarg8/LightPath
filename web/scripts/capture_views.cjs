@@ -61,6 +61,8 @@ function runAsyncCapture(filename, windowSize, route) {
       '--no-sandbox',
       '--disable-gpu',
       '--hide-scrollbars',
+      '--virtual-time-budget=3000',
+      '--run-all-compositor-stages-before-draw',
       `--window-size=${windowSize}`,
       `--user-data-dir=${tempProfile}`,
       '--no-default-browser-check',
@@ -106,6 +108,15 @@ server.listen(PORT, async () => {
 
     // 5. Compare View Desktop (1920px)
     await runAsyncCapture('compare_1920px.png', '1920,1080', '#/compare/synthetic-proving-ground/synthetic-crater-rim');
+
+    // 6. Area Scan Metric: Earth Line of Sight (1920px)
+    await runAsyncCapture('scan_earth_visibility.png', '1920,1080', '#/scan/synthetic-proving-ground?metric=earth');
+
+    // 7. Area Scan Metric: Sun Illumination (1920px)
+    await runAsyncCapture('scan_sun_visibility.png', '1920,1080', '#/scan/synthetic-proving-ground?metric=sun');
+
+    // 8. Area Scan Metric: Sun + Direct-to-Earth Contact (1920px)
+    await runAsyncCapture('scan_joint_dte_visibility.png', '1920,1080', '#/scan/synthetic-proving-ground?metric=joint_dte');
 
     console.log('All screenshots captured successfully.');
   } catch (err) {

@@ -138,41 +138,72 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
             </div>
           </div>
 
-          {/* Observer Mast Height Selector */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              padding: '0.5rem 0.75rem',
-              background: 'var(--background-secondary, #0f172a)',
-              borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Mast Height:</span>
-            {horizonData.heights_m.map((h) => {
-              const active = Math.abs(h - mastHeightM) < 0.1;
-              return (
-                <button
-                  key={h}
-                  type="button"
-                  onClick={() => setMastHeightM(h)}
-                  style={{
-                    padding: '0.25rem 0.5rem',
-                    fontSize: '0.8rem',
-                    borderRadius: 'var(--radius-xs)',
-                    border: active ? '1px solid var(--color-blue)' : '1px solid var(--border-color)',
-                    background: active ? 'rgba(56, 189, 248, 0.2)' : 'transparent',
-                    color: active ? 'var(--color-blue)' : 'var(--text-main)',
-                    fontWeight: active ? 700 : 400,
-                    cursor: 'pointer',
-                  }}
-                >
-                  {h.toFixed(1)}m
-                </button>
-              );
-            })}
+          {/* Actions & Observer Mast Height Selector */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href={`#/scan/${siteId}`}
+              className="btn btn-secondary"
+              style={{
+                fontSize: '0.8rem',
+                padding: '0.4rem 0.75rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                textDecoration: 'none',
+              }}
+            >
+              <Layers size={14} /> Area Scan
+            </a>
+            <a
+              href={`#/route/${siteId}`}
+              className="btn btn-secondary"
+              style={{
+                fontSize: '0.8rem',
+                padding: '0.4rem 0.75rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                textDecoration: 'none',
+              }}
+            >
+              <Compass size={14} /> Plan Route
+            </a>
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.4rem 0.75rem',
+                background: 'var(--background-secondary, #0f172a)',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-color)',
+              }}
+            >
+              <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Mast Height:</span>
+              {horizonData.heights_m.map((h) => {
+                const active = Math.abs(h - mastHeightM) < 0.1;
+                return (
+                  <button
+                    key={h}
+                    type="button"
+                    onClick={() => setMastHeightM(h)}
+                    style={{
+                      padding: '0.25rem 0.5rem',
+                      fontSize: '0.8rem',
+                      borderRadius: 'var(--radius-xs)',
+                      border: active ? '1px solid var(--color-blue)' : '1px solid var(--border-color)',
+                      background: active ? 'rgba(56, 189, 248, 0.2)' : 'transparent',
+                      color: active ? 'var(--color-blue)' : 'var(--text-main)',
+                      fontWeight: active ? 700 : 400,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {h.toFixed(1)}m
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </Card>
