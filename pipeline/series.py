@@ -8,7 +8,7 @@ Rules:
 """
 
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 from pipeline.constants import (
     DEFAULT_EARTH_GROUND_STATION_MASK_DEG,
@@ -26,6 +26,7 @@ from pipeline.ephemeris import (
     compute_topocentric_sun_state,
 )
 from pipeline.horizon import HorizonProfile
+from pipeline.stats import compute_window_statistics
 
 
 def generate_time_steps(
@@ -234,67 +235,12 @@ def compute_window_stats(
     timestamps: List[str],
     step_h: float,
 ) -> Dict:
-    """Analyze uptime, downtime, contiguous windows, and longest outage from boolean states.
-
-    Args:
-        is_active_list: Boolean array indicating condition met at each timestep.
-        timestamps: ISO UTC strings corresponding to timesteps.
-        step_h: Duration of each step in hours.
-
-    Returns:
-        Dict matching category_stats in schemas/stats.schema.json.
-    """
-    total_steps = len(is_active_list)
-    active_count = sum(1 for a in is_active_list if a)
-    total_uptime_h = round(active_count * step_h, 2)
-    uptime_fraction = round(active_count / total_steps, 4) if total_steps > 0 else 0.0
-
-    windows: List[Dict] = []
-    longest_window_h = 0.0
-    longest_outage_h = 0.0
-
-    current_state: Optional[bool] = None
-    start_idx = 0
-
-    for i, active in enumerate(is_active_list):
-        if current_state is None:
-            current_state = active
-            start_idx = i
-        elif active != current_state:
-            # End of previous segment
-            seg_len = i - start_idx
-            dur_h = round(seg_len * step_h, 2)
-            if current_state:
-                windows.append({
-                    "start_utc": timestamps[start_idx],
-                    "end_utc": timestamps[i - 1],
-                    "duration_h": dur_h,
-                })
-                longest_window_h = max(longest_window_h, dur_h)
-            else:
-                longest_outage_h = max(longest_outage_h, dur_h)
-
-            current_state = active
-            start_idx = i
-
-    # Handle final segment
-    if current_state is not None:
-        seg_len = total_steps - start_idx
-        dur_h = round(seg_len * step_h, 2)
-        if current_state:
-            windows.append({
-                "start_utc": timestamps[start_idx],
-                "end_utc": timestamps[-1],
-                "duration_h": dur_h,
-            })
-            longest_window_h = max(longest_window_h, dur_h)
-        else:
-            longest_outage_h = max(longest_outage_h, dur_h)
-
+    """Analyze uptime, downtime, contiguous windows, and longest outage from boolean states."""
+    stats = compute_window_statistics(is_active_list, timestamps, step_h)
     return {
-        "uptime_fraction": uptime_fraction,
-        "total_uptime_h": total_uptime_h,
-        "windows": windows,
-        "longest_window_h": round(longest_window_h, 2),
-        "longest_outage_h": round(longest_outage_h, 2),
+        "uptime_fraction": stats["uptime_fraction"],
+        "total_uptime_h": stats["total_uptime_h"],
+        "windows": stats["windows"],
+        "longest_window_h": stats["longest_window_h"],
+        "longest_outage_h": stats["longest_outage_h"],
     }
