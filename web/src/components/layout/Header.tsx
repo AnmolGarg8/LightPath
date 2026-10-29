@@ -31,8 +31,9 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
     { href: '#/compare/synthetic-proving-ground/synthetic-crater-rim', label: 'Compare Sites' },
     { href: '#/scan/synthetic-proving-ground', label: 'Area Scan' },
     { href: '#/route/synthetic-proving-ground', label: 'Route Planner' },
+    { href: '#/explain', label: 'How It Works' },
+    { href: '#/?demo=1', label: '90s Demo' },
     { href: '#/trust', label: 'Trust & Benchmarks' },
-    { href: '#/explain', label: 'Limitations' },
   ];
 
   return (

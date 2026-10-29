@@ -124,6 +124,12 @@ server.listen(PORT, async () => {
     // 10. Trust & Independent Verification Benchmarks (1920px)
     await runAsyncCapture('trust_verification_benchmarks.png', '1920,1080', '#/trust');
 
+    // 11. Interactive /explain View Desktop (1920px)
+    await runAsyncCapture('explain_view_desktop.png', '1920,1080', '#/explain');
+
+    // 12. 90-Second Guided Demo Overlay (1920px)
+    await runAsyncCapture('guided_demo_overlay.png', '1920,1080', '#/?demo=1');
+
     console.log('All screenshots captured successfully.');
   } catch (err) {
     console.error('Error during screenshot capture:', err);

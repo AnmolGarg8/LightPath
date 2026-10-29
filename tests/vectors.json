@@ -1,0 +1,798 @@
+{
+  "metadata": {
+    "description": "Shared mathematical verification vectors between Python and TypeScript",
+    "r_moon_m": 1737400.0
+  },
+  "elevation_vectors": [
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.016488943104902492
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.13108028022370383
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.3029650332606857
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 2.8458750851528274
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 2.7315581000217772
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 2.560042089116675
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 5.693940785573771
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 5.5804614781022215
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 5.410160405348291
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 11.292809071727364
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 11.182582202409755
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 11.017084799469737
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 19.27175748287418
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 19.16960568998222
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 19.016140407710605
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 26.54526419227657
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 26.45351240892909
+    },
+    {
+      "dist_m": 1000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 26.315610183182255
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.08244471554288622
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.1053629971170316
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.13974035396885745
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.49048534321588233
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.4675692615222874
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.4331948607776503
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 1.0632843683363855
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 1.0403750666916962
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 1.006010492699747
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 2.2080320546944825
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 2.185150014101064
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 2.1508256478650427
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 3.9213235018820485
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 3.898516314545533
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 3.864303215579733
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 5.627328339216487
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 5.60463600823533
+    },
+    {
+      "dist_m": 5000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 5.570594206319411
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.16488943108350843
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.17634854860248023
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.1935371981423157
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.12158216626909804
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.1101233237550259
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.09293504375274282
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.40803119821793693
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.39657320352024267
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.37938615228501604
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.9808043194004968
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.9693497373836922
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.9521677193431286
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 1.8394373500483416
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 1.8279921699810755
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 1.8108241265380225
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 2.6970967704777165
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 2.685666107183047
+    },
+    {
+      "dist_m": 10000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 2.6685197113731225
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.32977886216827657
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.3355083735320273
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.34410262796044816
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.1865433546102697
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.19227283159778824
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.20086703983326012
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.04331375928514445
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.04904313028591628
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.0576371849122835
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.24312053674970424
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.2373915924920857
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.22879816724118018
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.6726829200303617
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.6669551524388033
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.6583634760910247
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 1.1020955630376403
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 1.0963696150882722
+    },
+    {
+      "dist_m": 20000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 1.0877806521329718
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.577113008794182
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.5803869407255923
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.5852978315095037
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.495265896707652
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.49853982222481213
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.5034507043895995
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.41342147402005774
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.41669537976085885
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.4216062332633352
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.24974203218202976
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.25301585829066375
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.25792659434917625
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.004251383684353177
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.007524990180485341
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.012435399825886467
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": 0.24119704426580274
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": 0.2379237775066518
+    },
+    {
+      "dist_m": 35000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": 0.2330138744626156
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.8244471554201156
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.826738827101786
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 0.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.8301763296619209
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.7671561738445178
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.7694478433260984
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 50.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.772885342929871
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.7098669555342058
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.7121586182324606
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 100.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.7155961080050135
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.5952942665477605
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.5975859019316205
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 200.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.6010233514200901
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.4234513184288433
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.42574287848055464
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 350.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.42918021600193257
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 0.0,
+      "expected_el_deg": -0.25163041735972747
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 2.0,
+      "expected_el_deg": -0.2539218608636706
+    },
+    {
+      "dist_m": 50000.0,
+      "feature_height_m": 500.0,
+      "observer_height_m": 5.0,
+      "expected_el_deg": -0.2573590245942697
+    }
+  ],
+  "disc_vectors": [
+    {
+      "e_deg": -0.534,
+      "r_deg": 0.267,
+      "expected_fraction": 0.0
+    },
+    {
+      "e_deg": -0.267,
+      "r_deg": 0.267,
+      "expected_fraction": 0.0
+    },
+    {
+      "e_deg": -0.20025,
+      "r_deg": 0.267,
+      "expected_fraction": 0.07214680640719374
+    },
+    {
+      "e_deg": -0.1335,
+      "r_deg": 0.267,
+      "expected_fraction": 0.19550110947788538
+    },
+    {
+      "e_deg": -0.06675,
+      "r_deg": 0.267,
+      "expected_fraction": 0.34251882123714633
+    },
+    {
+      "e_deg": 0.0,
+      "r_deg": 0.267,
+      "expected_fraction": 0.5
+    },
+    {
+      "e_deg": 0.06675,
+      "r_deg": 0.267,
+      "expected_fraction": 0.6574811787628538
+    },
+    {
+      "e_deg": 0.1335,
+      "r_deg": 0.267,
+      "expected_fraction": 0.8044988905221148
+    },
+    {
+      "e_deg": 0.20025,
+      "r_deg": 0.267,
+      "expected_fraction": 0.9278531935928063
+    },
+    {
+      "e_deg": 0.267,
+      "r_deg": 0.267,
+      "expected_fraction": 1.0
+    },
+    {
+      "e_deg": 0.534,
+      "r_deg": 0.267,
+      "expected_fraction": 1.0
+    },
+    {
+      "e_deg": -1.9,
+      "r_deg": 0.95,
+      "expected_fraction": 0.0
+    },
+    {
+      "e_deg": -0.95,
+      "r_deg": 0.95,
+      "expected_fraction": 0.0
+    },
+    {
+      "e_deg": -0.7124999999999999,
+      "r_deg": 0.95,
+      "expected_fraction": 0.0721468064071938
+    },
+    {
+      "e_deg": -0.475,
+      "r_deg": 0.95,
+      "expected_fraction": 0.19550110947788538
+    },
+    {
+      "e_deg": -0.2375,
+      "r_deg": 0.95,
+      "expected_fraction": 0.34251882123714633
+    },
+    {
+      "e_deg": 0.0,
+      "r_deg": 0.95,
+      "expected_fraction": 0.5
+    },
+    {
+      "e_deg": 0.2375,
+      "r_deg": 0.95,
+      "expected_fraction": 0.6574811787628538
+    },
+    {
+      "e_deg": 0.475,
+      "r_deg": 0.95,
+      "expected_fraction": 0.8044988905221148
+    },
+    {
+      "e_deg": 0.7124999999999999,
+      "r_deg": 0.95,
+      "expected_fraction": 0.9278531935928063
+    },
+    {
+      "e_deg": 0.95,
+      "r_deg": 0.95,
+      "expected_fraction": 1.0
+    },
+    {
+      "e_deg": 1.9,
+      "r_deg": 0.95,
+      "expected_fraction": 1.0
+    }
+  ],
+  "dip_vectors": [
+    {
+      "observer_height_m": 0.0,
+      "expected_dip_deg": 0.0
+    },
+    {
+      "observer_height_m": 0.5,
+      "expected_dip_deg": -0.043468301604234746
+    },
+    {
+      "observer_height_m": 1.0,
+      "expected_dip_deg": -0.06147345429050876
+    },
+    {
+      "observer_height_m": 2.0,
+      "expected_dip_deg": -0.08693657193373108
+    },
+    {
+      "observer_height_m": 5.0,
+      "expected_dip_deg": -0.1374586907419322
+    },
+    {
+      "observer_height_m": 10.0,
+      "expected_dip_deg": -0.19439571161359603
+    },
+    {
+      "observer_height_m": 50.0,
+      "expected_dip_deg": -0.4346778559340725
+    }
+  ]
+}
