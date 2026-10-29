@@ -118,6 +118,12 @@ server.listen(PORT, async () => {
     // 8. Area Scan Metric: Sun + Direct-to-Earth Contact (1920px)
     await runAsyncCapture('scan_joint_dte_visibility.png', '1920,1080', '#/scan/synthetic-proving-ground?metric=joint_dte');
 
+    // 9. Evidence Card Print Preview (1200, 1500)
+    await runAsyncCapture('evidence_card_print_preview.png', '1200,1500', '#/evidence/synthetic-proving-ground');
+
+    // 10. Trust & Independent Verification Benchmarks (1920px)
+    await runAsyncCapture('trust_verification_benchmarks.png', '1920,1080', '#/trust');
+
     console.log('All screenshots captured successfully.');
   } catch (err) {
     console.error('Error during screenshot capture:', err);

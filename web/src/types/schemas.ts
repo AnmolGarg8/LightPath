@@ -194,6 +194,18 @@ export const ManifestSchema = z.object({
 
 export type Manifest = z.infer<typeof ManifestSchema>;
 
+export const RunInfoSchema = z.object({
+  created_utc: z.string(),
+  start_utc: z.string().optional(),
+  end_utc: z.string().optional(),
+  duration_seconds: z.number().optional(),
+  git_commit: z.string(),
+  software_versions: z.record(z.string(), z.string()),
+  pipeline_mode: z.string().optional(),
+});
+
+export type RunInfo = z.infer<typeof RunInfoSchema>;
+
 export const ProvenanceSchema = z.object({
   datasets: z.array(
     z.object({
@@ -220,11 +232,13 @@ export const ProvenanceSchema = z.object({
 export type Provenance = z.infer<typeof ProvenanceSchema>;
 
 export const CheckResultSchema = z.object({
+  id: z.string().optional(),
   name: z.string(),
   status: z.enum(['passed', 'failed', 'skipped']),
   tolerance: z.string().nullable(),
   measured_value: z.string().nullable(),
   skipped_reason: z.string().nullable(),
+  citation: z.string().optional(),
 });
 
 export const TestResultsSchema = z.object({
@@ -238,6 +252,46 @@ export const TestResultsSchema = z.object({
   failures: z.array(z.unknown()),
   timestamp: z.string(),
   checks: z.array(CheckResultSchema),
+  charts: z
+    .object({
+      v3_ephemeris: z
+        .array(
+          z.object({
+            hour: z.number(),
+            az_diff_deg: z.number(),
+            el_diff_deg: z.number(),
+            tolerance_deg: z.number(),
+          })
+        )
+        .optional(),
+      v2_wall_horizon: z
+        .array(
+          z.object({
+            az_deg: z.number(),
+            expected_el_deg: z.number(),
+            computed_el_deg: z.number(),
+          })
+        )
+        .optional(),
+      convergence: z
+        .array(
+          z.object({
+            step_m: z.number(),
+            max_error_deg: z.number(),
+          })
+        )
+        .optional(),
+      v4_barker_comparison: z
+        .object({
+          site_name: z.string(),
+          published_pct: z.number(),
+          published_uncertainty_pct: z.number(),
+          computed_pct: z.number(),
+          citation: z.string(),
+        })
+        .optional(),
+    })
+    .optional(),
 });
 
 export type TestResults = z.infer<typeof TestResultsSchema>;
