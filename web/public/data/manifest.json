@@ -1,29 +1,39 @@
 {
   "files": [
     {
+      "path": "cubes/synthetic-crater-rim.bin",
+      "size_bytes": 558,
+      "sha256": "d492ec3c76ce1732795223a98b5fb03ef4dd8e031c08f369deb1971f3f364495"
+    },
+    {
+      "path": "cubes/synthetic-crater-rim.json",
+      "size_bytes": 205423,
+      "sha256": "57e710b717b3bdf5d58472a0922de1cddf0b62505bd0b5b1af5be73d2d6befce"
+    },
+    {
       "path": "cubes/synthetic-flat-basin.bin",
-      "size_bytes": 317,
-      "sha256": "20c31bbcf4e68afe91aa12c0714f45987d24b72fa50603043cf6e5db1a877c11"
+      "size_bytes": 555,
+      "sha256": "17207fc4f7f69f511be57aea7d0ea2f5ab6bb2b806945353c3acf9d5c6b7d174"
     },
     {
       "path": "cubes/synthetic-flat-basin.json",
-      "size_bytes": 605919,
-      "sha256": "75fa6559485272746dd6ca9892703a562138feed5d9050714bce95be0669aad5"
+      "size_bytes": 204797,
+      "sha256": "3f27ab56fbbb11fd6a9f4a7878b33d20cd73f38b2245427dc414d12f42cf5980"
     },
     {
       "path": "cubes/synthetic-proving-ground.bin",
-      "size_bytes": 357,
-      "sha256": "c107140b3b46086c890a67af8ba8924bbe3feb93eaab4106ebc90f49fe7855a3"
+      "size_bytes": 555,
+      "sha256": "9736e2e49bbd263ebdbb5887d7c4b1cf2f1cdade7710ec7d84202589e12ead3c"
     },
     {
       "path": "cubes/synthetic-proving-ground.json",
-      "size_bytes": 607141,
-      "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
+      "size_bytes": 204799,
+      "sha256": "50ab32dbd848e530b879c5e7d16e01c3e4c11a8aead5cafbe774838c3b43344b"
     },
     {
       "path": "index.json",
-      "size_bytes": 2035,
-      "sha256": "d8de8e4cc70215ab1a16a33c590bbfd3d58c58b0533261bded14f593e9f31da6"
+      "size_bytes": 2662,
+      "sha256": "029c85c4849da725de432ce88dbd2270bc41698452c78d88a094e4a579974d97"
     },
     {
       "path": "malapert-mountain/horizon.json",
@@ -132,58 +142,93 @@
     },
     {
       "path": "sites.json",
-      "size_bytes": 329,
-      "sha256": "1a4b721d626af06c05c83532b66b1b17331cd4e895d26dfc46f992a4e82564d6"
+      "size_bytes": 1071,
+      "sha256": "e7b6e8e5a91dcdf92232310654414ad7fc82b6b90d5d56187c66115754c1de29"
+    },
+    {
+      "path": "sites/synthetic-crater-rim.json",
+      "size_bytes": 3263,
+      "sha256": "fc24056d9efaf3de1ad85450de412d96f04614cede86268da4b291018cdc58f1"
     },
     {
       "path": "sites/synthetic-flat-basin.json",
-      "size_bytes": 2953,
-      "sha256": "8bd9a1109e9c5363b822653f136dc8f8336211af0f19738282ceeeaea1a8eabd"
+      "size_bytes": 3308,
+      "sha256": "0db440e904e1a46275d7906389dad13e14667c623ca9b5d7f4da9455606e0e6f"
     },
     {
       "path": "sites/synthetic-proving-ground.json",
-      "size_bytes": 3228,
-      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+      "size_bytes": 3306,
+      "sha256": "d931460b76177799ddc464c7d2826cec4aa28278e4404e80e1ef9492b019322f"
+    },
+    {
+      "path": "synthetic-crater-rim/horizon.json",
+      "size_bytes": 20068,
+      "sha256": "86330f482c3509553edd51b21bc9501005b055fff6058536a749772da8cc2386"
+    },
+    {
+      "path": "synthetic-crater-rim/provenance.json",
+      "size_bytes": 962,
+      "sha256": "683d8aa6381dcb3392f30bfa187bbc1f5320df4c3b060dc619200e79adf22568"
+    },
+    {
+      "path": "synthetic-crater-rim/series.json",
+      "size_bytes": 3529,
+      "sha256": "fbe6eae0a6ac8c2fad2e6b819faf6edac190ea6be62489f2829f25f92f102240"
+    },
+    {
+      "path": "synthetic-crater-rim/site.json",
+      "size_bytes": 3263,
+      "sha256": "fc24056d9efaf3de1ad85450de412d96f04614cede86268da4b291018cdc58f1"
+    },
+    {
+      "path": "synthetic-crater-rim/stats.json",
+      "size_bytes": 1476,
+      "sha256": "14c8c4f24aa628cc1e9dccb2d04af1abb508c34924b5725f37c5279b419adcf5"
+    },
+    {
+      "path": "synthetic-crater-rim/visibility_cube.json",
+      "size_bytes": 205423,
+      "sha256": "57e710b717b3bdf5d58472a0922de1cddf0b62505bd0b5b1af5be73d2d6befce"
     },
     {
       "path": "synthetic-flat-basin/horizon.json",
-      "size_bytes": 12670,
-      "sha256": "1008888538ddc348027ae5e997be39574eb27480261a0bbc2418438319cb1014"
+      "size_bytes": 20068,
+      "sha256": "86330f482c3509553edd51b21bc9501005b055fff6058536a749772da8cc2386"
     },
     {
       "path": "synthetic-flat-basin/provenance.json",
-      "size_bytes": 1020,
-      "sha256": "a26ac4f29a5cadc80407af3e76f5fe2aad7ac38d18025b508a61f1f08feb5332"
+      "size_bytes": 962,
+      "sha256": "e53ba530589be7c4dcb2ae8a8cf25dfba090fec1431e1fc8bdfa7a2e2d241f26"
     },
     {
       "path": "synthetic-flat-basin/series.json",
-      "size_bytes": 14679,
-      "sha256": "21a42bfc459fc749d707c3542c7321b40cf859bdd43901e94597fba9a93d380d"
+      "size_bytes": 3519,
+      "sha256": "cc37a6baadbcc0ca61e419c15cc23e4f8931d5b6e354d1a02d44a60f9302fd63"
     },
     {
       "path": "synthetic-flat-basin/site.json",
-      "size_bytes": 2953,
-      "sha256": "8bd9a1109e9c5363b822653f136dc8f8336211af0f19738282ceeeaea1a8eabd"
+      "size_bytes": 3308,
+      "sha256": "0db440e904e1a46275d7906389dad13e14667c623ca9b5d7f4da9455606e0e6f"
     },
     {
       "path": "synthetic-flat-basin/stats.json",
-      "size_bytes": 1323,
-      "sha256": "1f096708e1af0bcef6fa1620637a61ec605da4b40f682d0f81d257f2dfd2c85e"
+      "size_bytes": 1484,
+      "sha256": "89df668ea50afdfd08495de80c8a10b99d4f22d5421446d60bc864f4b8c5f3e1"
     },
     {
       "path": "synthetic-flat-basin/visibility_cube.json",
-      "size_bytes": 605919,
-      "sha256": "75fa6559485272746dd6ca9892703a562138feed5d9050714bce95be0669aad5"
+      "size_bytes": 204797,
+      "sha256": "3f27ab56fbbb11fd6a9f4a7878b33d20cd73f38b2245427dc414d12f42cf5980"
     },
     {
       "path": "synthetic-proving-ground/horizon.json",
-      "size_bytes": 12131,
-      "sha256": "46ef5265551015c37ea536fcb192d187e43e3999a501d43beecba655e37b87bc"
+      "size_bytes": 20068,
+      "sha256": "86330f482c3509553edd51b21bc9501005b055fff6058536a749772da8cc2386"
     },
     {
       "path": "synthetic-proving-ground/provenance.json",
-      "size_bytes": 1022,
-      "sha256": "c18a64c9c5b16290ea348c36bdd525fafe1a367359fd701aa723db759930f76e"
+      "size_bytes": 966,
+      "sha256": "af12fe2ec4204c1d0813fd99da434bc166e5d15271b7a3e80b9a3e9e182be158"
     },
     {
       "path": "synthetic-proving-ground/route_result.json",
@@ -192,70 +237,69 @@
     },
     {
       "path": "synthetic-proving-ground/series.json",
-      "size_bytes": 14678,
-      "sha256": "76cc02d22c6d6efef8fe10432618aed0e8ee215d1286c7184beb3db7a08633da"
+      "size_bytes": 3540,
+      "sha256": "6b2b6e2870ff9898e6b17e59ece9b950ab8a7e382fd0f7b714ddfeebef22105d"
     },
     {
       "path": "synthetic-proving-ground/site.json",
-      "size_bytes": 3228,
-      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+      "size_bytes": 3306,
+      "sha256": "d931460b76177799ddc464c7d2826cec4aa28278e4404e80e1ef9492b019322f"
     },
     {
       "path": "synthetic-proving-ground/stats.json",
-      "size_bytes": 1326,
-      "sha256": "891f476c7cfa824e89770ce67279678b61ad424875caaca10d1c4c2289d8beb1"
+      "size_bytes": 1482,
+      "sha256": "c6f87055e0fd8917945a77a178ecfae414f2e6b12a6486e439fa38b7cd19eb3e"
     },
     {
       "path": "synthetic-proving-ground/visibility_cube.json",
-      "size_bytes": 607141,
-      "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
+      "size_bytes": 204799,
+      "sha256": "50ab32dbd848e530b879c5e7d16e01c3e4c11a8aead5cafbe774838c3b43344b"
     },
     {
       "path": "test_results.json",
-      "size_bytes": 1986,
-      "sha256": "81fd0b25de3ddfd7ed8e65b03a1443081626595a6997e054835f356cd906868f"
+      "size_bytes": 1918,
+      "sha256": "9d5954849dcd068a54df490c1ee98a55d5d571da3ea83fb9f181dc4cf1517b26"
     }
   ],
   "run_configuration": {
     "mode": "synthetic",
     "date_range": {
       "start_utc": "2026-11-01T00:00:00Z",
-      "end_utc": "2026-11-05T00:00:00Z"
+      "end_utc": "2026-11-02T20:00:00Z"
     },
-    "step_minutes": 120,
+    "step_minutes": 240,
     "mast_heights_m": [
-      0.0,
-      2.0,
-      5.0,
-      10.0
+      0.5,
+      1,
+      2,
+      3,
+      5
     ],
     "thresholds": {
       "min_sun_frac": 0.5,
       "min_earth_frac": 0.5,
-      "ground_station_mask_deg": 6.0,
-      "max_slope_deg": 15.0
+      "ground_station_mask_deg": 6
     },
     "margins": {
       "horizon_margin_deg": 0.1
     },
     "horizon_params": {
-      "az_step_deg": 5.0,
-      "max_range_m": 25000.0,
-      "step_m": 50.0
+      "az_step_deg": 2,
+      "max_range_m": 25000,
+      "step_m": 50
     },
     "route_planning": {
-      "half_width_m": 600.0,
-      "spacing_m": 50.0,
-      "date_range": null,
-      "step_minutes": 180,
+      "half_width_m": 600,
+      "spacing_m": 50,
+      "step_minutes": 240,
       "max_cells": 4000
     }
   },
   "date_range": {
     "start_utc": "2026-11-01T00:00:00Z",
-    "end_utc": "2026-11-05T00:00:00Z"
+    "end_utc": "2026-11-02T20:00:00Z"
   },
   "timestamp": "2026-11-01T00:00:00Z",
-  "code_commit": "0fab6727ec199fda9c069b87188556806dbf8f0b",
+  "code_commit": "synthetic-seed",
   "is_synthetic": true
 }

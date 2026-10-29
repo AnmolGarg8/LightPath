@@ -2,13 +2,45 @@
   "sites": [
     {
       "id": "synthetic-proving-ground",
-      "name": "Synthetic Proving Ground (SYNTHETIC)",
-      "mission_ids": [],
+      "name": "Synthetic Proving Ground (Crater Complex)",
+      "mission_ids": [
+        "clps-demo-2026"
+      ],
       "lat_deg": -89.9,
-      "lon_deg": 0.0,
-      "ground_elev_m": 0.0,
+      "lon_deg": 0,
+      "ground_elev_m": 250,
       "source_links": [
-        "synthetic://pipeline.synthetic/crater"
+        "synthetic://pipeline.synthetic/synthetic-proving-ground"
+      ],
+      "verified": false,
+      "is_synthetic": true
+    },
+    {
+      "id": "synthetic-crater-rim",
+      "name": "Synthetic Shackleton Ridge (Demo Peak)",
+      "mission_ids": [
+        "clps-demo-2026"
+      ],
+      "lat_deg": -89.75,
+      "lon_deg": 120,
+      "ground_elev_m": 1420,
+      "source_links": [
+        "synthetic://pipeline.synthetic/synthetic-crater-rim"
+      ],
+      "verified": false,
+      "is_synthetic": true
+    },
+    {
+      "id": "synthetic-flat-basin",
+      "name": "Synthetic Flat Basin (Lowland Plain)",
+      "mission_ids": [
+        "clps-demo-2026"
+      ],
+      "lat_deg": -89.5,
+      "lon_deg": -45,
+      "ground_elev_m": -800,
+      "source_links": [
+        "synthetic://pipeline.synthetic/synthetic-flat-basin"
       ],
       "verified": false,
       "is_synthetic": true
@@ -16,38 +48,42 @@
   ],
   "missions": [
     {
-      "id": "clps-placeholder-shackleton",
-      "name": "CLPS Polar Scout (UNVERIFIED PLACEHOLDER)",
-      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
-      "site_id": "shackleton-connecting-ridge",
+      "id": "clps-demo-2026",
+      "name": "CLPS South Pole Pathfinder (Example)",
+      "operator": "NASA / Commercial Payload Provider",
+      "site_id": "synthetic-crater-rim",
       "planned_window_start": "2026-11-01T00:00:00Z",
-      "planned_window_end": "2026-11-15T00:00:00Z",
-      "status": "unverified_placeholder",
-      "description": "Example placeholder entry for CLPS mission browser scaffold. A human operator must verify exact payload, dates, and provider details from official NASA announcements.",
+      "planned_window_end": "2026-11-05T00:00:00Z",
+      "status": "planned",
+      "description": "Example commercial lunar payload services delivery testing optical communication and solar traverse planning at a south-polar ridge.",
       "source_links": [
         {
-          "label": "NASA CLPS Portal (Verification Required)",
-          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+          "label": "NASA CLPS Overview",
+          "url": "https://www.nasa.gov/clps"
         }
       ],
-      "verified": false
+      "verified": false,
+      "is_synthetic": true,
+      "is_example": true
     },
     {
-      "id": "clps-placeholder-malapert",
-      "name": "CLPS Malapert Lander (UNVERIFIED PLACEHOLDER)",
-      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
-      "site_id": "malapert-mountain",
-      "planned_window_start": "2026-11-05T00:00:00Z",
-      "planned_window_end": "2026-11-20T00:00:00Z",
-      "status": "unverified_placeholder",
-      "description": "Example placeholder entry for south-pole lunar exploration. To be updated by human operator once mission delivery task order is finalized.",
+      "id": "artemis-traverse-example",
+      "name": "Artemis Surface Rover Traverse (Example)",
+      "operator": "NASA Exploration Ground Systems",
+      "site_id": "synthetic-proving-ground",
+      "planned_window_start": "2026-11-01T00:00:00Z",
+      "planned_window_end": "2026-11-03T12:00:00Z",
+      "status": "concept",
+      "description": "Example crewed and uncrewed rover traverse corridor assessing continuous line-of-sight communication with DSN ground stations.",
       "source_links": [
         {
-          "label": "NASA CLPS Schedule (Verification Required)",
-          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+          "label": "NASA Artemis Campaign",
+          "url": "https://www.nasa.gov/artemis"
         }
       ],
-      "verified": false
+      "verified": false,
+      "is_synthetic": true,
+      "is_example": true
     }
   ],
   "mode": "synthetic",

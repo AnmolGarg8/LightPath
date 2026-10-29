@@ -34,5 +34,7 @@ Thumbs.db
 .idea/
 Microsoft/
 *.cache_key
+screenshots/
+web/screenshots/
 
 

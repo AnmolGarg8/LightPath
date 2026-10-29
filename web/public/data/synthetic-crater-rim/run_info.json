@@ -1,0 +1,7 @@
+{
+  "created_utc": "2026-10-29T12:00:00Z",
+  "git_commit": "synthetic-seed",
+  "software_versions": {
+    "runtime": "node-tsx-fake-generator"
+  }
+}

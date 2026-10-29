@@ -1,13 +1,45 @@
 [
   {
     "id": "synthetic-proving-ground",
-    "name": "Synthetic Proving Ground (SYNTHETIC)",
-    "mission_ids": [],
+    "name": "Synthetic Proving Ground (Crater Complex)",
+    "mission_ids": [
+      "clps-demo-2026"
+    ],
     "lat_deg": -89.9,
-    "lon_deg": 0.0,
-    "ground_elev_m": 0.0,
+    "lon_deg": 0,
+    "ground_elev_m": 250,
     "source_links": [
-      "synthetic://pipeline.synthetic/crater"
+      "synthetic://pipeline.synthetic/synthetic-proving-ground"
+    ],
+    "verified": false,
+    "is_synthetic": true
+  },
+  {
+    "id": "synthetic-crater-rim",
+    "name": "Synthetic Shackleton Ridge (Demo Peak)",
+    "mission_ids": [
+      "clps-demo-2026"
+    ],
+    "lat_deg": -89.75,
+    "lon_deg": 120,
+    "ground_elev_m": 1420,
+    "source_links": [
+      "synthetic://pipeline.synthetic/synthetic-crater-rim"
+    ],
+    "verified": false,
+    "is_synthetic": true
+  },
+  {
+    "id": "synthetic-flat-basin",
+    "name": "Synthetic Flat Basin (Lowland Plain)",
+    "mission_ids": [
+      "clps-demo-2026"
+    ],
+    "lat_deg": -89.5,
+    "lon_deg": -45,
+    "ground_elev_m": -800,
+    "source_links": [
+      "synthetic://pipeline.synthetic/synthetic-flat-basin"
     ],
     "verified": false,
     "is_synthetic": true
