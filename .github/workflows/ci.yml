@@ -29,7 +29,7 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib
+          pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj
 
       - name: Install Web Dependencies
         working-directory: web
