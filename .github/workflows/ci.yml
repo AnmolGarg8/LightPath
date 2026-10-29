@@ -1,0 +1,54 @@
+name: LightPath CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Lint, Test & Build (Python & Web)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib
+
+      - name: Install Web Dependencies
+        working-directory: web
+        run: npm install
+
+      - name: Python Lint (ruff)
+        run: ruff check .
+
+      - name: Python Test Suite (pytest)
+        run: pytest -v
+
+      - name: Web Lint (eslint)
+        working-directory: web
+        run: npm run lint
+
+      - name: Web Unit Tests (vitest)
+        working-directory: web
+        run: npm test
+
+      - name: Web Static Build (tsc + vite)
+        working-directory: web
+        run: npm run build

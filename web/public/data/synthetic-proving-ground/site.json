@@ -1,0 +1,15 @@
+{
+  "id": "synthetic-proving-ground",
+  "name": "Synthetic Calibration Crater (Proving Ground)",
+  "mission_ids": [
+    "SIM-BENCHMARK-2026"
+  ],
+  "lat_deg": -89.8,
+  "lon_deg": 45.0,
+  "ground_elev_m": -500.0,
+  "source_links": [
+    "https://lightpath.nasa.spaceapps/docs/synthetic-benchmark"
+  ],
+  "verified": false,
+  "is_synthetic": true
+}

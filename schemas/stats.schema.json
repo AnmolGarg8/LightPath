@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/stats.schema.json",
+  "title": "Stats",
+  "description": "Visibility windows, outage statistics, and joint coverage analysis",
+  "type": "object",
+  "required": [
+    "thresholds",
+    "sun",
+    "earth",
+    "dte",
+    "joint"
+  ],
+  "properties": {
+    "thresholds": {
+      "type": "object",
+      "required": ["min_sun_frac", "min_earth_frac", "ground_station_mask_deg"],
+      "properties": {
+        "min_sun_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "min_earth_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "ground_station_mask_deg": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "sun": { "$ref": "#/$defs/category_stats" },
+    "earth": { "$ref": "#/$defs/category_stats" },
+    "dte": { "$ref": "#/$defs/category_stats" },
+    "joint": { "$ref": "#/$defs/category_stats" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "category_stats": {
+      "type": "object",
+      "required": [
+        "uptime_fraction",
+        "total_uptime_h",
+        "windows",
+        "longest_window_h",
+        "longest_outage_h"
+      ],
+      "properties": {
+        "uptime_fraction": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "total_uptime_h": { "type": "number", "minimum": 0.0 },
+        "windows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["start_utc", "end_utc", "duration_h"],
+            "properties": {
+              "start_utc": { "type": "string" },
+              "end_utc": { "type": "string" },
+              "duration_h": { "type": "number", "minimum": 0.0 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "longest_window_h": { "type": "number", "minimum": 0.0 },
+        "longest_outage_h": { "type": "number", "minimum": 0.0 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

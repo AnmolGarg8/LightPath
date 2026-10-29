@@ -1,0 +1,9 @@
+{
+  "created_utc": "2026-10-29T10:20:24Z",
+  "git_commit": "uncommitted-working-copy",
+  "software_versions": {
+    "python": "3.14.2",
+    "numpy": "2.5.4",
+    "lightpath": "0.1.0"
+  }
+}

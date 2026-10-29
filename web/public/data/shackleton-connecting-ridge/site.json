@@ -1,0 +1,17 @@
+{
+  "id": "shackleton-connecting-ridge",
+  "name": "Shackleton Connecting Ridge",
+  "mission_ids": [
+    "CLPS-IM-2",
+    "PRIME-1"
+  ],
+  "lat_deg": -89.44,
+  "lon_deg": 137.5,
+  "ground_elev_m": 1250.0,
+  "source_links": [
+    "https://pgda.gsfc.nasa.gov/products/54",
+    "https://www.lpi.usra.edu/lunar/lunar-south-pole/"
+  ],
+  "verified": true,
+  "is_synthetic": false
+}

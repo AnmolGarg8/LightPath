@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/visibility_cube.schema.json",
+  "title": "VisibilityCube",
+  "description": "Spatio-temporal visibility cube and terrain map for route planning",
+  "type": "object",
+  "required": [
+    "grid",
+    "time_utc",
+    "sun_frac",
+    "earth_frac",
+    "slope_deg",
+    "traversable",
+    "flags"
+  ],
+  "properties": {
+    "grid": {
+      "type": "object",
+      "required": ["origin", "spacing_m", "nx", "ny"],
+      "properties": {
+        "origin": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2,
+          "description": "[center_lon_deg, center_lat_deg] or [origin_x_m, origin_y_m]"
+        },
+        "spacing_m": {
+          "type": "number",
+          "exclusiveMinimum": 0.0
+        },
+        "nx": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "ny": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "time_utc": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sun_frac": {
+      "type": "array",
+      "description": "3D array [t][y][x] of Sun disc visible fraction as integer percentage (0-100)",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "earth_frac": {
+      "type": "array",
+      "description": "3D array [t][y][x] of Earth disc visible fraction as integer percentage (0-100)",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0, "maximum": 100 }
+        }
+      }
+    },
+    "slope_deg": {
+      "type": "array",
+      "description": "2D array [y][x] of terrain slope in degrees computed via Horn method",
+      "items": {
+        "type": "array",
+        "items": { "type": "number", "minimum": 0.0, "maximum": 90.0 }
+      }
+    },
+    "traversable": {
+      "type": "array",
+      "description": "2D array [y][x] indicating whether cell is mechanically traversable",
+      "items": {
+        "type": "array",
+        "items": { "type": "boolean" }
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

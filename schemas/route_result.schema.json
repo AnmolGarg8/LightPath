@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/route_result.schema.json",
+  "title": "RouteResult",
+  "description": "Output of route planner across space and time on lunar terrain",
+  "type": "object",
+  "required": [
+    "mode",
+    "params",
+    "feasible",
+    "path",
+    "metrics",
+    "alternatives",
+    "explanation"
+  ],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": ["rover", "crew", "static_stay"]
+    },
+    "params": {
+      "type": "object",
+      "required": [
+        "start_coord",
+        "end_coord",
+        "start_time_idx",
+        "speed_m_s",
+        "max_slope_deg",
+        "min_sun_frac",
+        "min_earth_frac"
+      ],
+      "properties": {
+        "start_coord": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+        "end_coord": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 },
+        "start_time_idx": { "type": "integer", "minimum": 0 },
+        "speed_m_s": { "type": "number", "exclusiveMinimum": 0.0 },
+        "max_slope_deg": { "type": "number", "minimum": 0.0, "maximum": 90.0 },
+        "min_sun_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "min_earth_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      },
+      "additionalProperties": true
+    },
+    "feasible": {
+      "type": "boolean"
+    },
+    "path": {
+      "type": "array",
+      "description": "Waypoints in spatio-temporal coordinates [{x, y, t}]",
+      "items": {
+        "type": "object",
+        "required": ["x", "y", "t"],
+        "properties": {
+          "x": { "type": "integer", "minimum": 0 },
+          "y": { "type": "integer", "minimum": 0 },
+          "t": { "type": "integer", "minimum": 0 }
+        },
+        "additionalProperties": true
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "required": [
+        "total_distance_m",
+        "duration_h",
+        "average_slope_deg",
+        "max_slope_deg",
+        "min_sun_frac_observed",
+        "min_earth_frac_observed"
+      ],
+      "properties": {
+        "total_distance_m": { "type": "number", "minimum": 0.0 },
+        "duration_h": { "type": "number", "minimum": 0.0 },
+        "average_slope_deg": { "type": "number", "minimum": 0.0 },
+        "max_slope_deg": { "type": "number", "minimum": 0.0 },
+        "min_sun_frac_observed": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
+        "min_earth_frac_observed": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      },
+      "additionalProperties": true
+    },
+    "alternatives": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "explanation": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

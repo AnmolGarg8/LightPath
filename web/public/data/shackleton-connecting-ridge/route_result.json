@@ -1,0 +1,56 @@
+{
+  "mode": "rover",
+  "params": {
+    "start_coord": [
+      1,
+      1
+    ],
+    "end_coord": [
+      5,
+      5
+    ],
+    "start_time_idx": 0,
+    "speed_m_s": 0.08,
+    "max_slope_deg": 15.0,
+    "min_sun_frac": 0.5,
+    "min_earth_frac": 0.5
+  },
+  "feasible": true,
+  "path": [
+    {
+      "x": 1,
+      "y": 1,
+      "t": 0
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "t": 1
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "t": 2
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "t": 3
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "t": 4
+    }
+  ],
+  "metrics": {
+    "total_distance_m": 226.3,
+    "duration_h": 0.79,
+    "average_slope_deg": 4.2,
+    "max_slope_deg": 5.2,
+    "min_sun_frac_observed": 1.0,
+    "min_earth_frac_observed": 1.0
+  },
+  "alternatives": [],
+  "explanation": "Feasible traverse found for rover: 5 waypoints, distance 226.3 m in 0.79 h. Maximum slope encountered is 5.2 deg with minimum illumination 100%."
+}

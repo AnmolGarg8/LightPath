@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/run_info.schema.json",
+  "title": "RunInfo",
+  "description": "Execution metadata separate from deterministic simulation results",
+  "type": "object",
+  "required": [
+    "created_utc",
+    "git_commit",
+    "software_versions"
+  ],
+  "properties": {
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "git_commit": {
+      "type": "string"
+    },
+    "software_versions": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

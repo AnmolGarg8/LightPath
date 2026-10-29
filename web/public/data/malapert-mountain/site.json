@@ -1,0 +1,16 @@
+{
+  "id": "malapert-mountain",
+  "name": "Malapert Mountain (Peak of Eternal Light Candidate)",
+  "mission_ids": [
+    "CLPS-IM-1",
+    "Artemis-Candidate"
+  ],
+  "lat_deg": -86.04,
+  "lon_deg": 2.7,
+  "ground_elev_m": 5000.0,
+  "source_links": [
+    "https://ntrs.nasa.gov/citations/20210018596"
+  ],
+  "verified": true,
+  "is_synthetic": false
+}

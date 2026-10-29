@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/site.schema.json",
+  "title": "Site",
+  "description": "Lunar landing or exploration site specification for LightPath",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "mission_ids",
+    "lat_deg",
+    "lon_deg",
+    "ground_elev_m",
+    "source_links",
+    "verified",
+    "is_synthetic"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "mission_ids": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "lat_deg": {
+      "type": "number",
+      "minimum": -90.0,
+      "maximum": 90.0
+    },
+    "lon_deg": {
+      "type": "number",
+      "minimum": -180.0,
+      "maximum": 360.0
+    },
+    "ground_elev_m": {
+      "type": "number"
+    },
+    "source_links": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "verified": {
+      "type": "boolean"
+    },
+    "is_synthetic": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

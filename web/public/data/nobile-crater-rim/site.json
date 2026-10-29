@@ -1,0 +1,16 @@
+{
+  "id": "nobile-crater-rim",
+  "name": "Nobile Crater Rim (Mons Mouton / VIPER Area)",
+  "mission_ids": [
+    "CLPS-Griffin-1",
+    "VIPER-Target"
+  ],
+  "lat_deg": -85.25,
+  "lon_deg": 35.8,
+  "ground_elev_m": 2100.0,
+  "source_links": [
+    "https://www.nasa.gov/missions/viper/nasa-replans-viper-payload-for-griffin-lunar-lander/"
+  ],
+  "verified": true,
+  "is_synthetic": false
+}

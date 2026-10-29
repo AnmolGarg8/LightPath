@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/horizon.schema.json",
+  "title": "Horizon",
+  "description": "Horizon elevation profile as a function of azimuth and observer mast height",
+  "type": "object",
+  "required": [
+    "az_step_deg",
+    "heights_m",
+    "el_deg",
+    "nan_fraction",
+    "flags"
+  ],
+  "properties": {
+    "az_step_deg": {
+      "type": "number",
+      "exclusiveMinimum": 0.0,
+      "maximum": 360.0
+    },
+    "heights_m": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0.0 },
+      "minItems": 1
+    },
+    "el_deg": {
+      "type": "array",
+      "description": "2D array indexed by [height_index][azimuth_index] in degrees",
+      "items": {
+        "type": "array",
+        "items": { "type": "number" }
+      }
+    },
+    "nan_fraction": {
+      "type": "array",
+      "description": "Fraction of rays that intersected missing/NaN DEM data [height_index][azimuth_index]",
+      "items": {
+        "type": "array",
+        "items": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

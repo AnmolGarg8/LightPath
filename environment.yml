@@ -1,0 +1,25 @@
+name: lightpath
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.11
+  - numpy>=1.24
+  - scipy>=1.10
+  - rasterio>=1.3
+  - pyproj>=3.5
+  - pytest>=7.4
+  - pytest-cov>=4.1
+  - jsonschema>=4.18
+  - pydantic>=2.0
+  - pyyaml>=6.0
+  - matplotlib>=3.7
+  - ruff>=0.1.0
+  # Optional extra: numba provides JIT acceleration for large DEM raycasting.
+  # Fallback: All modules in pipeline/ are implemented with vectorized pure NumPy/math;
+  # if numba is absent, the pipeline runs normally without errors.
+  # To enable JIT compilation, uncomment the line below:
+  # - numba>=0.58.0
+  - pip
+  - pip:
+      - spiceypy>=6.0.0

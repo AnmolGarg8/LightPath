@@ -1,0 +1,40 @@
+[
+  {
+    "id": "lola_south_pole_ldem_80s_120m",
+    "name": "TODO_LOLA_SOUTH_POLE_120M_PLACEHOLDER",
+    "description": "LRO LOLA South Pole Elevation Model 80S to 90S (120m/pixel polar stereographic). Human operator: fill verified NASA PGDA/PDS URL.",
+    "source": "NASA GSFC Planetary Geodesy Data Archive / PDS Geosciences Node",
+    "licence": "Public Domain (NASA open data)",
+    "url": "TODO_FILL_OFFICIAL_PDS_OR_PGDA_URL_E_G_HTTPS_PGDA_GSFC_NASA_GOV",
+    "sha256": "TODO_FILL_OFFICIAL_SHA256_CHECKSUM",
+    "local_path": "data/raw/LDEM_80S_120M.IMG",
+    "format": "PDS_IMG",
+    "supports_http_range": false,
+    "size_mb": 1100.0,
+    "bounds": {
+      "min_lat_deg": -90.0,
+      "max_lat_deg": -80.0,
+      "min_lon_deg": -180.0,
+      "max_lon_deg": 180.0
+    }
+  },
+  {
+    "id": "lola_south_pole_cog_placeholder",
+    "name": "TODO_CLOUD_OPTIMIZED_GEOTIFF_SOUTH_POLE_PLACEHOLDER",
+    "description": "Cloud-Optimized GeoTIFF (COG) for windowed HTTP range reads. Human operator: fill verified URL.",
+    "source": "USGS Astrogeology / Planetary Computer / NASA PDS",
+    "licence": "Public Domain (NASA open data)",
+    "url": "TODO_FILL_OFFICIAL_COG_URL_IF_AVAILABLE",
+    "sha256": "TODO_FILL_OFFICIAL_SHA256_CHECKSUM",
+    "local_path": "data/raw/lola_south_pole_cog.tif",
+    "format": "COG",
+    "supports_http_range": true,
+    "size_mb": 2400.0,
+    "bounds": {
+      "min_lat_deg": -90.0,
+      "max_lat_deg": -85.0,
+      "min_lon_deg": -180.0,
+      "max_lon_deg": 180.0
+    }
+  }
+]

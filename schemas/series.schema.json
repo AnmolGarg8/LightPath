@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/series.schema.json",
+  "title": "Series",
+  "description": "Time-series of Sun, Earth, and Direct-To-Earth link visibility for a lunar site",
+  "type": "object",
+  "required": [
+    "time_utc",
+    "sun",
+    "earth",
+    "dte"
+  ],
+  "properties": {
+    "time_utc": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "sun": {
+      "type": "object",
+      "required": ["az_deg", "el_deg", "radius_deg", "frac", "status"],
+      "properties": {
+        "az_deg": { "type": "array", "items": { "type": "number" } },
+        "el_deg": { "type": "array", "items": { "type": "number" } },
+        "radius_deg": { "type": "array", "items": { "type": "number" } },
+        "frac": { "type": "array", "items": { "type": "number", "minimum": 0.0, "maximum": 1.0 } },
+        "status": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["robust_visible", "marginal", "robust_blocked"] }
+        }
+      },
+      "additionalProperties": false
+    },
+    "earth": {
+      "type": "object",
+      "required": ["az_deg", "el_deg", "radius_deg", "frac", "status", "dist_km"],
+      "properties": {
+        "az_deg": { "type": "array", "items": { "type": "number" } },
+        "el_deg": { "type": "array", "items": { "type": "number" } },
+        "radius_deg": { "type": "array", "items": { "type": "number" } },
+        "frac": { "type": "array", "items": { "type": "number", "minimum": 0.0, "maximum": 1.0 } },
+        "status": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["robust_visible", "marginal", "robust_blocked"] }
+        },
+        "dist_km": { "type": "array", "items": { "type": "number" } }
+      },
+      "additionalProperties": false
+    },
+    "dte": {
+      "type": "object",
+      "required": ["station_visible", "link_ok"],
+      "properties": {
+        "station_names": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "station_visible": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "boolean" }
+          }
+        },
+        "link_ok": {
+          "type": "array",
+          "items": { "type": "boolean" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

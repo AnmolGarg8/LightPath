@@ -1,0 +1,30 @@
+{
+  "mode": "rover",
+  "params": {
+    "start_coord": [
+      1,
+      1
+    ],
+    "end_coord": [
+      5,
+      5
+    ],
+    "start_time_idx": 0,
+    "speed_m_s": 0.08,
+    "max_slope_deg": 15.0,
+    "min_sun_frac": 0.5,
+    "min_earth_frac": 0.5
+  },
+  "feasible": false,
+  "path": [],
+  "metrics": {
+    "total_distance_m": 0.0,
+    "duration_h": 0.0,
+    "average_slope_deg": 0.0,
+    "max_slope_deg": 0.0,
+    "min_sun_frac_observed": 0.0,
+    "min_earth_frac_observed": 0.0
+  },
+  "alternatives": [],
+  "explanation": "Start location (1, 1) has insufficient solar fraction at initial time."
+}
