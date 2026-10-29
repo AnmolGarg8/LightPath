@@ -9,7 +9,10 @@ export type BadgeVariant =
   | 'joint'
   | 'synthetic'
   | 'unverified'
-  | 'neutral';
+  | 'neutral'
+  | 'success'
+  | 'warning'
+  | 'info';
 
 interface BadgeProps {
   variant?: BadgeVariant;
@@ -17,6 +20,7 @@ interface BadgeProps {
   children?: React.ReactNode;
   icon?: React.ReactNode;
   className?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -25,6 +29,7 @@ export const Badge: React.FC<BadgeProps> = ({
   children,
   icon,
   className = '',
+  size = 'md',
 }) => {
   const content = children || label;
 
@@ -35,17 +40,35 @@ export const Badge: React.FC<BadgeProps> = ({
       border: 'var(--color-visible-border)',
       symbol: '●',
     },
+    success: {
+      color: 'var(--color-visible)',
+      bg: 'var(--color-visible-bg)',
+      border: 'var(--color-visible-border)',
+      symbol: '✓',
+    },
     marginal: {
       color: 'var(--color-marginal)',
       bg: 'var(--color-marginal-bg)',
       border: 'var(--color-marginal-border)',
       symbol: '▲',
     },
+    warning: {
+      color: 'var(--color-marginal)',
+      bg: 'var(--color-marginal-bg)',
+      border: 'var(--color-marginal-border)',
+      symbol: '⚠',
+    },
     blocked: {
       color: 'var(--color-blocked)',
       bg: 'var(--color-blocked-bg)',
       border: 'var(--color-blocked-border)',
       symbol: '■',
+    },
+    info: {
+      color: 'var(--color-earth)',
+      bg: 'var(--color-earth-bg)',
+      border: 'var(--color-earth-border)',
+      symbol: 'ℹ',
     },
     sun: {
       color: 'var(--color-sun)',
@@ -85,7 +108,17 @@ export const Badge: React.FC<BadgeProps> = ({
     },
   };
 
-  const styleConfig = variantStyles[variant];
+  const styleConfig = variantStyles[variant] || variantStyles.neutral;
+  const paddingMap = {
+    sm: '0.15rem 0.45rem',
+    md: '0.2rem 0.55rem',
+    lg: '0.3rem 0.75rem',
+  };
+  const fontMap = {
+    sm: '0.7rem',
+    md: 'var(--text-xs)',
+    lg: '0.85rem',
+  };
 
   return (
     <span
@@ -95,9 +128,9 @@ export const Badge: React.FC<BadgeProps> = ({
         display: 'inline-flex',
         alignItems: 'center',
         gap: '0.35rem',
-        padding: '0.2rem 0.55rem',
+        padding: paddingMap[size] || paddingMap.md,
         borderRadius: '9999px',
-        fontSize: 'var(--text-xs)',
+        fontSize: fontMap[size] || fontMap.md,
         fontWeight: 600,
         letterSpacing: '0.03em',
         color: styleConfig.color,

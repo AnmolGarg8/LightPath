@@ -32,8 +32,8 @@
     },
     {
       "path": "index.json",
-      "size_bytes": 2662,
-      "sha256": "029c85c4849da725de432ce88dbd2270bc41698452c78d88a094e4a579974d97"
+      "size_bytes": 4879,
+      "sha256": "9299750767816cd06217a863d50f454ce28839ebb07384f608711722b5a13fa0"
     },
     {
       "path": "malapert-mountain/horizon.json",
@@ -69,6 +69,11 @@
       "path": "malapert-mountain/visibility_cube.json",
       "size_bytes": 22356,
       "sha256": "6817e6fce06dde23077a68773f56e6218ba33b9717d37d09e4c6d0fbbbf9db07"
+    },
+    {
+      "path": "missions.json",
+      "size_bytes": 3446,
+      "sha256": "b0629eed435ad354bbbfe3c3fafe0bec01bceab296bac2a013d20c2fa6b705fb"
     },
     {
       "path": "nobile-crater-rim/horizon.json",

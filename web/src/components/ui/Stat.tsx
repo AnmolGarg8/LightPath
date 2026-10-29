@@ -6,6 +6,7 @@ interface StatProps {
   unit?: string;
   description?: string;
   alertText?: string;
+  badge?: React.ReactNode;
   variant?: 'neutral' | 'sun' | 'earth' | 'joint' | 'alert' | 'success';
   onClick?: () => void;
   className?: string;
@@ -17,6 +18,7 @@ export const Stat: React.FC<StatProps> = ({
   unit,
   description,
   alertText,
+  badge,
   variant = 'neutral',
   onClick,
   className = '',
@@ -51,17 +53,20 @@ export const Stat: React.FC<StatProps> = ({
         transition: 'border-color 0.15s ease, background-color 0.15s ease',
       }}
     >
-      <span
-        style={{
-          fontSize: 'var(--text-xs)',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
-          color: 'var(--text-muted)',
-        }}
-      >
-        {label}
-      </span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span
+          style={{
+            fontSize: 'var(--text-xs)',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: 'var(--text-muted)',
+          }}
+        >
+          {label}
+        </span>
+        {badge && <div>{badge}</div>}
+      </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
         <span

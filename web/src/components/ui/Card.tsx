@@ -8,6 +8,7 @@ interface CardProps {
   footer?: React.ReactNode;
   className?: string;
   variant?: 'default' | 'elevated' | 'outline' | 'alert';
+  style?: React.CSSProperties;
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -18,6 +19,7 @@ export const Card: React.FC<CardProps> = ({
   footer,
   className = '',
   variant = 'default',
+  style = {},
 }) => {
   const variantStyles: Record<string, React.CSSProperties> = {
     default: {
@@ -53,6 +55,7 @@ export const Card: React.FC<CardProps> = ({
         flexDirection: 'column',
         gap: '1rem',
         ...variantStyles[variant],
+        ...style,
       }}
     >
       {(title || action || subtitle) && (

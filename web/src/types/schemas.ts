@@ -105,6 +105,8 @@ export const MissionSchema = z.object({
 });
 
 export type Mission = z.infer<typeof MissionSchema>;
+export const MissionsListSchema = z.array(MissionSchema);
+export type MissionsList = z.infer<typeof MissionsListSchema>;
 
 export const HorizonSchema = z.object({
   az_step_deg: z.number().positive().max(360.0),

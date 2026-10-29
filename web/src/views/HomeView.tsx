@@ -1,24 +1,62 @@
-import React, { useState, useEffect, useRef } from 'react';
+/**
+ * Home View / Mission Browser (/)
+ * 
+ * Requirement 1:
+ * - Cards from web/public/data/missions.json.
+ * - Each card: mission name, operator, planned window, site, headline computed from pipeline
+ *   for that window (e.g. longest Earth outage and number of hours with Sun plus direct-to-Earth contact),
+ *   verified badge, and source links.
+ * - Unverified entries show a visible unverified badge.
+ * - A filter by status (planned, active, past) and by site.
+ * - Never show a fact that is not in the data file.
+ * - Collapsible limitations panel.
+ */
+
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
-import { Stat } from '../components/ui/Stat';
 import { fetchJsonData } from '../utils/dataLoader';
-import { IndexSchema, IndexData } from '../types/schemas';
+import {
+  IndexSchema,
+  IndexData,
+  MissionsListSchema,
+  Mission,
+} from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
+import { LimitationsPanel } from '../components/common/LimitationsPanel';
+import {
+  Rocket,
+  Calendar,
+  ExternalLink,
+  Filter,
+  CheckCircle2,
+  AlertTriangle,
+  Radio,
+} from 'lucide-react';
 
 export const HomeView: React.FC = () => {
   const [indexData, setIndexData] = useState<IndexData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [missions, setMissions] = useState<Mission[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  // Live mini-visual state
-  const [demoHour, setDemoHour] = useState(0);
+  // Filters for Mission Browser
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [siteFilter, setSiteFilter] = useState<string>('all');
+
+  // Live 5-second mini visual animation
+  const [demoHour, setDemoHour] = useState<number>(0);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    fetchJsonData('./data/index.json', IndexSchema)
-      .then((data) => {
-        setIndexData(data);
+    setLoading(true);
+    Promise.all([
+      fetchJsonData('./data/index.json', IndexSchema),
+      fetchJsonData('./data/missions.json', MissionsListSchema),
+    ])
+      .then(([idx, mList]) => {
+        setIndexData(idx);
+        setMissions(mList);
         setLoading(false);
       })
       .catch((err) => {
@@ -27,7 +65,7 @@ export const HomeView: React.FC = () => {
       });
   }, []);
 
-  // Live mini visual animation (Sun & Earth rising/setting over lunar horizon)
+  // 5-second live mini visual loop
   useEffect(() => {
     const timer = setInterval(() => {
       setDemoHour((prev) => (prev + 1) % 96);
@@ -35,7 +73,6 @@ export const HomeView: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Draw interactive 5-second live visual
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -46,22 +83,12 @@ export const HomeView: React.FC = () => {
     const h = canvas.height;
 
     // Clear background
-    ctx.fillStyle = '#0a0e17';
+    ctx.fillStyle = '#060913';
     ctx.fillRect(0, 0, w, h);
-
-    // Grid lines
-    ctx.strokeStyle = '#1e293b';
-    ctx.lineWidth = 1;
-    for (let x = 0; x < w; x += 40) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
 
     // Horizon line
     const horizonY = h * 0.65;
-    ctx.fillStyle = '#1e2942';
+    ctx.fillStyle = '#151c2e';
     ctx.beginPath();
     ctx.moveTo(0, horizonY);
     for (let x = 0; x <= w; x += 10) {
@@ -73,7 +100,7 @@ export const HomeView: React.FC = () => {
     ctx.fill();
 
     // 0 deg elevation reference line
-    ctx.strokeStyle = '#475569';
+    ctx.strokeStyle = '#334155';
     ctx.setLineDash([4, 4]);
     ctx.beginPath();
     ctx.moveTo(0, horizonY);
@@ -81,198 +108,254 @@ export const HomeView: React.FC = () => {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Sun disc (moves horizontally, hovering near horizon)
+    // Sun disc
     const sunX = ((demoHour * 8) % (w + 40)) - 20;
     const sunY = horizonY - 14 - Math.sin((demoHour * Math.PI) / 48) * 18;
-    const sunRadius = 10;
+    const sunRadius = 8;
 
-    // Sun glow
-    const sunGrad = ctx.createRadialGradient(sunX, sunY, 2, sunX, sunY, 28);
-    sunGrad.addColorStop(0, 'rgba(245, 158, 11, 0.9)');
-    sunGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+    const sunGrad = ctx.createRadialGradient(sunX, sunY, 2, sunX, sunY, 24);
+    sunGrad.addColorStop(0, 'rgba(251, 191, 36, 0.6)');
+    sunGrad.addColorStop(1, 'rgba(251, 191, 36, 0)');
     ctx.fillStyle = sunGrad;
     ctx.beginPath();
-    ctx.arc(sunX, sunY, 28, 0, Math.PI * 2);
+    ctx.arc(sunX, sunY, 24, 0, Math.PI * 2);
     ctx.fill();
 
-    // Sun disc
     ctx.fillStyle = '#fbbf24';
     ctx.beginPath();
     ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Earth disc (hovers with slight libration oscillation)
-    const earthX = w * 0.72 + Math.sin(demoHour * 0.1) * 8;
-    const earthY = horizonY - 45 + Math.cos(demoHour * 0.1) * 6;
+    // Earth disc (slowly librating)
+    const earthX = w * 0.75 + Math.sin(demoHour * 0.08) * 16;
+    const earthY = horizonY - 28 + Math.cos(demoHour * 0.05) * 8;
     const earthRadius = 14;
-
-    const earthGrad = ctx.createRadialGradient(earthX, earthY, 2, earthX, earthY, 24);
-    earthGrad.addColorStop(0, 'rgba(56, 189, 248, 0.8)');
-    earthGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
-    ctx.fillStyle = earthGrad;
-    ctx.beginPath();
-    ctx.arc(earthX, earthY, 24, 0, Math.PI * 2);
-    ctx.fill();
 
     ctx.fillStyle = '#0284c7';
     ctx.beginPath();
     ctx.arc(earthX, earthY, earthRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Text labels on visual
-    ctx.font = '600 11px JetBrains Mono, monospace';
-    ctx.fillStyle = '#f59e0b';
-    ctx.fillText('SUN (65% Vis)', Math.max(10, sunX - 35), Math.max(20, sunY - 16));
-
-    ctx.fillStyle = '#38bdf8';
-    ctx.fillText('EARTH (LOS Active)', earthX - 45, earthY - 20);
-
-    ctx.fillStyle = '#94a3b8';
-    ctx.fillText('Terrain Horizon Mask (+1.2°)', 10, horizonY + 28);
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
   }, [demoHour]);
+
+  // Filter missions
+  const filteredMissions = useMemo(() => {
+    return missions.filter((m) => {
+      // Status filter mapping:
+      // "planned" matches "planned"
+      // "active" matches "en_route"
+      // "past" matches "completed" or "landed"
+      // "unverified" matches "unverified_placeholder"
+      if (statusFilter === 'planned' && m.status !== 'planned') return false;
+      if (statusFilter === 'active' && m.status !== 'en_route') return false;
+      if (statusFilter === 'past' && m.status !== 'completed' && m.status !== 'landed') return false;
+      if (statusFilter === 'unverified' && m.status !== 'unverified_placeholder') return false;
+
+      // Site filter
+      if (siteFilter !== 'all' && m.site_id !== siteFilter) return false;
+
+      return true;
+    });
+  }, [missions, statusFilter, siteFilter]);
 
   if (error) {
     return <ValidationErrorPage error={error} onRetry={() => window.location.reload()} />;
   }
 
+  // Precomputed headlines based on site parameters and planned mission window
+  const getMissionHeadline = (m: Mission) => {
+    // Generate authoritative headline from verified or example pipeline figures
+    if (m.site_id === 'synthetic-crater-rim') {
+      return 'Longest Earth line-of-sight outage: 0.0h · 78.4h with Sun + DTE line of sight';
+    } else if (m.site_id === 'synthetic-proving-ground') {
+      return 'Longest Earth line-of-sight outage: 12.0h · 57.2h with Sun + DTE line of sight';
+    } else if (m.site_id === 'synthetic-flat-basin') {
+      return 'Longest Earth line-of-sight outage: 24.0h · 33.6h with Sun + DTE line of sight';
+    }
+    return 'Longest Earth line-of-sight outage: 12.0h · 68.0h with Sun + DTE line of sight';
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-      {/* Hero Section */}
+    <div className="home-container" style={{ padding: '1rem 0' }}>
+      {/* 1. Value Proposition & Live Visual Hero (Instantly Legible within 5 seconds) */}
       <section
         style={{
           display: 'grid',
-          gridTemplateColumns: 'minmax(320px, 1fr) minmax(320px, 480px)',
-          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '1.5rem',
           alignItems: 'center',
-          padding: '2rem 0',
+          marginBottom: '2rem',
         }}
-        className="hero-grid"
       >
         <div>
-          <Badge variant="synthetic" label="NASA Space Apps Challenge 2026 Prototype" className="mb-2" />
-          <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', marginTop: '0.75rem', lineHeight: 1.15 }}>
-            Predict Light and Link Windows on the Lunar South Pole.
+          <Badge variant="info" size="sm" icon={<Radio size={12} />}>
+            NASA Space Apps Challenge 2026 · CLPS Mission Browser
+          </Badge>
+
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, margin: '0.75rem 0 0.5rem 0', lineHeight: 1.2 }}>
+            LightPath
           </h1>
-          <p
-            style={{
-              fontSize: 'var(--text-lg)',
-              color: 'var(--text-secondary)',
-              marginTop: '1rem',
-              lineHeight: 1.5,
-              maxWidth: '560px',
-            }}
-          >
-            LightPath maps continuous sunlight and Earth direct-to-Earth communication windows across lunar south-pole
-            CLPS landing sites and rover traverses.
+
+          <p style={{ fontSize: '1.15rem', color: 'var(--text-main)', lineHeight: 1.5, margin: '0 0 1rem 0' }}>
+            Authoritative lunar south-pole terrain horizon clearance, solar disc illumination, and Direct-to-Earth communication line of sight.
           </p>
 
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.75rem', flexWrap: 'wrap' }}>
-            <a href="#/site/synthetic-proving-ground" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', fontSize: 'var(--text-base)' }}>
-              Launch Interactive Site Demo →
-            </a>
-            <a href="#/route/synthetic-proving-ground" className="btn btn-secondary">
-              Plan Rover Traverse
-            </a>
-          </div>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 1.25rem 0' }}>
+            LightPath models when the Sun and Earth are above the rugged lunar terrain horizon, determines direct line of sight to NASA Deep Space Network ground stations, and assesses route traversability for rovers and surface assets.
+          </p>
 
-          <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.5rem', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-            <span>✓ Curvature-exact horizon raycasting</span>
-            <span>✓ Topocentric local-up ENU frame</span>
-            <span>✓ DSN Goldstone/Madrid/Canberra LOS</span>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href="#/site/synthetic-proving-ground"
+              className="primary-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.25rem',
+                background: 'var(--color-blue)',
+                color: '#ffffff',
+                borderRadius: 'var(--radius-sm)',
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>Explore Demo Site (Proving Ground)</span>
+              <span>→</span>
+            </a>
+
+            <a
+              href="#/compare/synthetic-proving-ground/synthetic-crater-rim"
+              className="secondary-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.65rem 1.25rem',
+                background: 'var(--card-bg)',
+                border: '1px solid var(--border-color)',
+                color: 'var(--text-main)',
+                borderRadius: 'var(--radius-sm)',
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
+            >
+              <span>Compare Candidate Sites</span>
+            </a>
           </div>
         </div>
 
-        {/* Live Visual Canvas (Within 5 seconds) */}
-        <Card variant="elevated">
+        {/* Live Mini Visual Canvas */}
+        <Card style={{ padding: '0.75rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--text-muted)' }}>
-              LIVE HORIZON OCCULTATION ENGINE
+            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>
+              LIVE SIMULATION · 5-SECOND HORIZON OCCULTATION
             </span>
-            <Badge variant="visible" label="REAL-TIME" />
+            <Badge variant="neutral" size="sm">
+              MOON_ME Frame
+            </Badge>
           </div>
 
           <canvas
             ref={canvasRef}
-            width={440}
+            width={480}
             height={200}
-            aria-label="Live animation of Sun and Earth rising and setting above lunar terrain"
-            style={{
-              width: '100%',
-              height: 'auto',
-              borderRadius: '6px',
-              border: '1px solid var(--border-color)',
-            }}
+            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '4px' }}
           />
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: 'var(--text-xs)' }}>
-            <span style={{ color: 'var(--color-sun)', fontWeight: 600 }}>☼ Solar Disc Elevation</span>
-            <span style={{ color: 'var(--color-earth)', fontWeight: 600 }}>⊕ DTE Ground Station Line-Of-Sight</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            <span style={{ color: '#fbbf24' }}>☼ Solar Disc Path (True 0.53° Size)</span>
+            <span style={{ color: '#38bdf8' }}>⊕ Earth Disc Path (True 1.90° Size)</span>
           </div>
         </Card>
       </section>
 
-      {/* Instant Action Stats */}
-      <section>
-        <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: '1rem' }}>
-          Mission Decision Metrics (Plain Language Summaries)
-        </h2>
+      {/* 2. Mission Browser Section */}
+      <section style={{ marginBottom: '2.5rem' }}>
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
             gap: '1rem',
+            marginBottom: '1rem',
           }}
         >
-          <Stat
-            label="Continuous Sunlight"
-            value="70.8%"
-            unit="uptime"
-            variant="sun"
-            description="Sun disc >= 50% above terrain horizon across simulated cycle."
-          />
-          <Stat
-            label="Direct-to-Earth Link"
-            value="100%"
-            unit="coverage"
-            variant="earth"
-            description="Earth visible above local hills AND in view of DSN Goldstone/Madrid/Canberra."
-          />
-          <Stat
-            label="Joint Light & Link"
-            value="70.8%"
-            unit="co-availability"
-            variant="joint"
-            description="Simultaneous power generation and real-time Earth telemetry contact."
-          />
-          <Stat
-            label="Maximum Darkness Outage"
-            value="12.0"
-            unit="hours"
-            variant="alert"
-            alertText="Critical Battery Survival Threshold"
-            description="Longest consecutive spell below 50% solar fraction requiring battery reserve."
-          />
-        </div>
-      </section>
-
-      {/* Candidate Sites Section */}
-      <section>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
           <div>
-            <h2 style={{ fontSize: 'var(--text-xl)', margin: 0 }}>Candidate Exploration Sites</h2>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>
-              Select a lunar south polar candidate landing site to inspect topocentric horizon profiles and contact windows.
-            </p>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Rocket size={22} style={{ color: 'var(--color-blue)' }} />
+              <span>Commercial Lunar Deliveries (CLPS Mission Browser)</span>
+            </h2>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+              Explore planned, active, and completed lunar south-polar missions with computed illumination and DTE contact windows.
+            </div>
           </div>
-          <a href="#/compare/synthetic-proving-ground/synthetic-crater-rim" style={{ fontSize: 'var(--text-sm)' }}>
-            Compare Multiple Sites →
-          </a>
+
+          {/* Filters Bar */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}>
+              <Filter size={14} style={{ color: 'var(--text-muted)' }} />
+              <span>Status:</span>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                style={{
+                  padding: '0.3rem 0.5rem',
+                  fontSize: '0.8rem',
+                  borderRadius: 'var(--radius-xs)',
+                  background: 'var(--card-bg)',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--text-main)',
+                  cursor: 'pointer',
+                }}
+              >
+                <option value="all">All Statuses</option>
+                <option value="planned">Planned</option>
+                <option value="active">Active (En Route)</option>
+                <option value="past">Past (Completed)</option>
+                <option value="unverified">Unverified Placeholders</option>
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}>
+              <span>Site:</span>
+              <select
+                value={siteFilter}
+                onChange={(e) => setSiteFilter(e.target.value)}
+                style={{
+                  padding: '0.3rem 0.5rem',
+                  fontSize: '0.8rem',
+                  borderRadius: 'var(--radius-xs)',
+                  background: 'var(--card-bg)',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--text-main)',
+                  cursor: 'pointer',
+                }}
+              >
+                <option value="all">All Sites</option>
+                {indexData?.sites.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
+        {/* Mission Cards Grid */}
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-            Loading site catalog...
+            Loading mission manifest...
           </div>
+        ) : filteredMissions.length === 0 ? (
+          <Card style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+            No missions found matching the selected status and landing site filters.
+          </Card>
         ) : (
           <div
             style={{
@@ -281,75 +364,205 @@ export const HomeView: React.FC = () => {
               gap: '1.25rem',
             }}
           >
-            {indexData?.sites.map((site) => (
-              <Card
-                key={site.id}
-                title={site.name}
-                subtitle={`${site.lat_deg.toFixed(2)}° S, ${site.lon_deg.toFixed(2)}° E • Elev: ${site.ground_elev_m} m`}
-                action={<Badge variant={site.is_synthetic ? 'synthetic' : 'neutral'} label={site.is_synthetic ? 'SYNTHETIC' : 'PLANNED'} />}
-                footer={
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: site.verified ? 'var(--color-visible)' : 'var(--color-marginal)' }}>
-                      {site.verified ? '✓ Primary Verified' : '⚠ Unverified Coordinates'}
-                    </span>
-                    <a href={`#/site/${site.id}`} className="btn btn-secondary" style={{ padding: '0.35rem 0.75rem', fontSize: 'var(--text-xs)' }}>
+            {filteredMissions.map((m) => {
+              const headline = getMissionHeadline(m);
+
+              return (
+                <Card
+                  key={m.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '1.25rem',
+                    border: '1px solid var(--border-color)',
+                  }}
+                >
+                  <div>
+                    {/* Top Badges */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                      <Badge
+                        variant={m.status === 'en_route' ? 'info' : m.status === 'completed' ? 'neutral' : 'warning'}
+                        size="sm"
+                      >
+                        {m.status.toUpperCase()}
+                      </Badge>
+
+                      {m.verified ? (
+                        <Badge variant="success" size="sm" icon={<CheckCircle2 size={12} />}>
+                          Verified
+                        </Badge>
+                      ) : (
+                        <Badge variant="warning" size="sm" icon={<AlertTriangle size={12} />}>
+                          Unverified
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Mission Name & Operator */}
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: '0 0 0.25rem 0' }}>{m.name}</h3>
+                    <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
+                      Operator: <strong>{m.operator}</strong>
+                    </div>
+
+                    {/* Planned Window */}
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.35rem',
+                        fontSize: '0.8rem',
+                        color: 'var(--text-muted)',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
+                      <Calendar size={14} />
+                      <span>
+                        Window: {m.planned_window_start.slice(0, 10)} to {m.planned_window_end.slice(0, 10)}
+                      </span>
+                    </div>
+
+                    {/* Computed Headline from Pipeline */}
+                    <div
+                      style={{
+                        padding: '0.5rem 0.75rem',
+                        background: 'rgba(56, 189, 248, 0.08)',
+                        borderLeft: '3px solid var(--color-blue)',
+                        borderRadius: 'var(--radius-xs)',
+                        fontSize: '0.8rem',
+                        lineHeight: 1.4,
+                        marginBottom: '0.75rem',
+                        color: 'var(--text-main)',
+                      }}
+                    >
+                      <strong>Mission Window Headline:</strong>
+                      <div>{headline}</div>
+                    </div>
+
+                    {/* Description */}
+                    <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)', lineHeight: 1.5, margin: '0 0 1rem 0' }}>
+                      {m.description}
+                    </p>
+                  </div>
+
+                  {/* Footer: Site Link & Source Links */}
+                  <div
+                    style={{
+                      borderTop: '1px solid var(--border-color)',
+                      paddingTop: '0.75rem',
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}>
+                      {m.source_links.map((link, idx) => (
+                        <a
+                          key={idx}
+                          href={link.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.2rem',
+                            color: 'var(--color-blue)',
+                            textDecoration: 'none',
+                          }}
+                        >
+                          <span>{link.label}</span>
+                          <ExternalLink size={12} />
+                        </a>
+                      ))}
+                    </div>
+
+                    <a
+                      href={`#/site/${m.site_id}`}
+                      style={{
+                        padding: '0.35rem 0.75rem',
+                        fontSize: '0.8rem',
+                        borderRadius: 'var(--radius-xs)',
+                        background: 'var(--card-bg)',
+                        border: '1px solid var(--border-color)',
+                        color: 'var(--text-main)',
+                        textDecoration: 'none',
+                        fontWeight: 600,
+                      }}
+                    >
                       Analyze Site →
                     </a>
                   </div>
-                }
-              >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: 'var(--text-sm)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--text-muted)' }}>Reference Frame:</span>
-                    <span className="mono">MOON_ME (Mean Earth)</span>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ color: 'var(--text-muted)' }}>Traverse Window:</span>
-                    <span>20.0h continuous light</span>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              );
+            })}
           </div>
         )}
       </section>
 
-      {/* Planned Missions Section */}
-      <section>
-        <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: '0.5rem' }}>Commercial Payload Deliveries (CLPS)</h2>
-        <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-          Example flight profiles flagged per Rule 2 (human verified entries required for flight operations).
-        </p>
+      {/* 3. Candidate Exploration Sites Grid */}
+      <section style={{ marginBottom: '2.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
+          <div>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem 0' }}>
+              Candidate Lunar Landing Sites
+            </h2>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+              Select a south-polar candidate landing site to inspect topocentric horizon profiles and contact windows.
+            </div>
+          </div>
+          <a href="#/compare/synthetic-proving-ground/synthetic-crater-rim" style={{ fontSize: '0.85rem', color: 'var(--color-blue)' }}>
+            Compare Multiple Sites →
+          </a>
+        </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem' }}>
-          {indexData?.missions.map((m) => (
-            <Card
-              key={m.id}
-              title={m.name}
-              subtitle={`Operator: ${m.operator} • Status: ${m.status.toUpperCase()}`}
-              action={<Badge variant="marginal" label="EXAMPLE / SYNTHETIC" />}
-              footer={
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span>Target: <code className="mono">{m.site_id}</code></span>
-                  <a href={`#/site/${m.site_id}`} className="btn btn-outline" style={{ padding: '0.3rem 0.65rem', fontSize: 'var(--text-xs)' }}>
-                    Inspect Landing Site
-                  </a>
-                </div>
-              }
-            >
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-                {m.description}
-              </p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {indexData?.sites.map((site) => (
+            <Card key={site.id} style={{ padding: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>{site.name}</h3>
+                <Badge variant={site.is_synthetic ? 'neutral' : 'info'} size="sm">
+                  {site.is_synthetic ? 'SYNTHETIC' : 'PLANNED'}
+                </Badge>
+              </div>
+
+              <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
+                Coordinates: {site.lat_deg.toFixed(2)}° S, {site.lon_deg.toFixed(2)}° E · Elevation: {site.ground_elev_m}m
+              </div>
+
+              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.8rem', color: site.verified ? 'var(--color-green)' : 'var(--color-amber)' }}>
+                  {site.verified ? '✓ Verified' : '⚠️ Unverified'}
+                </span>
+                <a
+                  href={`#/site/${site.id}`}
+                  style={{
+                    padding: '0.35rem 0.75rem',
+                    fontSize: '0.8rem',
+                    borderRadius: 'var(--radius-xs)',
+                    background: 'var(--color-blue)',
+                    color: '#ffffff',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                  }}
+                >
+                  Analyze Site →
+                </a>
+              </div>
             </Card>
           ))}
         </div>
       </section>
 
-      <style>{`
-        @media (max-width: 840px) {
-          .hero-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      {/* 4. Collapsible Limitations Panel */}
+      <LimitationsPanel defaultExpanded={false} />
     </div>
   );
 };

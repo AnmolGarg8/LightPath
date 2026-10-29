@@ -55,11 +55,11 @@
       "planned_window_start": "2026-11-01T00:00:00Z",
       "planned_window_end": "2026-11-05T00:00:00Z",
       "status": "planned",
-      "description": "Example commercial lunar payload services delivery testing optical communication and solar traverse planning at a south-polar ridge.",
+      "description": "Example commercial lunar payload services delivery testing optical line-of-sight communication and solar illumination at a south-polar ridge.",
       "source_links": [
         {
           "label": "NASA CLPS Overview",
-          "url": "https://www.nasa.gov/clps"
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
         }
       ],
       "verified": false,
@@ -68,17 +68,74 @@
     },
     {
       "id": "artemis-traverse-example",
-      "name": "Artemis Surface Rover Traverse (Example)",
+      "name": "Artemis Surface Scout (Example)",
       "operator": "NASA Exploration Ground Systems",
       "site_id": "synthetic-proving-ground",
       "planned_window_start": "2026-11-01T00:00:00Z",
       "planned_window_end": "2026-11-03T12:00:00Z",
-      "status": "concept",
+      "status": "planned",
       "description": "Example crewed and uncrewed rover traverse corridor assessing continuous line-of-sight communication with DSN ground stations.",
       "source_links": [
         {
           "label": "NASA Artemis Campaign",
           "url": "https://www.nasa.gov/artemis"
+        }
+      ],
+      "verified": false,
+      "is_synthetic": true,
+      "is_example": true
+    },
+    {
+      "id": "clps-active-transit",
+      "name": "CLPS Transit Flight (Example Active)",
+      "operator": "Commercial Lunar Lander Team",
+      "site_id": "synthetic-proving-ground",
+      "planned_window_start": "2026-11-01T00:00:00Z",
+      "planned_window_end": "2026-11-02T12:00:00Z",
+      "status": "en_route",
+      "description": "Example active translunar injection mission en route to south polar touchdown, tracking DSN ground station visibility.",
+      "source_links": [
+        {
+          "label": "Flight Status Dashboard",
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        }
+      ],
+      "verified": false,
+      "is_synthetic": true,
+      "is_example": true
+    },
+    {
+      "id": "polar-explorer-past",
+      "name": "Polar Reconnaissance Precursor (Example Past)",
+      "operator": "International Lunar Science Consortium",
+      "site_id": "synthetic-flat-basin",
+      "planned_window_start": "2026-10-15T00:00:00Z",
+      "planned_window_end": "2026-10-28T00:00:00Z",
+      "status": "completed",
+      "description": "Completed precursor south polar illumination campaign measuring local horizon elevation angles across a lunar day.",
+      "source_links": [
+        {
+          "label": "Consortium Mission Archive",
+          "url": "https://pds-geosciences.wustl.edu/"
+        }
+      ],
+      "verified": false,
+      "is_synthetic": true,
+      "is_example": true
+    },
+    {
+      "id": "unverified-shackleton-scout",
+      "name": "Deep Crater Rim Prospector (UNVERIFIED)",
+      "operator": "Unverified Operator Placeholder",
+      "site_id": "synthetic-crater-rim",
+      "planned_window_start": "2026-12-01T00:00:00Z",
+      "planned_window_end": "2026-12-14T00:00:00Z",
+      "status": "unverified_placeholder",
+      "description": "Unverified placeholder proposal for low-elevation solar line of sight mapping. Requires human confirmation of payload and trajectory parameters.",
+      "source_links": [
+        {
+          "label": "PDS Archive Guidelines",
+          "url": "https://pds.nasa.gov/"
         }
       ],
       "verified": false,
