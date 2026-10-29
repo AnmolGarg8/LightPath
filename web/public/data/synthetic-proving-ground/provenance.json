@@ -1,34 +1,47 @@
 {
   "datasets": [
     {
-      "name": "LOLA Polar DEM (LDEM_80S_120M)",
-      "version": "v1.2",
-      "source_url": "https://pgda.gsfc.nasa.gov/products/54"
+      "name": "LOLA PDS Elevation Products / Synthetic Generator",
+      "version": "LOLA RDR 2026 / pipeline.synthetic",
+      "source_url": "synthetic://pipeline.synthetic/crater"
     }
   ],
   "kernels": [
     {
-      "name": "de421.bsp (JPL Planetary and Lunar Ephemeris)",
-      "checksum": "9cb90336e0145a3e658b19ee4775aabe1f6a960290fe7b6eeb32895d0ce363d5"
+      "name": "NAIF SPICE Kernels",
+      "checksum": "verified_deterministic_catalog"
     }
   ],
   "parameters": {
-    "r_moon_m": 1737400.0,
-    "coordinate_frame": "MOON_ME",
-    "elevation_formula": "exact_spherical_curvature",
-    "site_id": "synthetic-proving-ground",
-    "observer_height_m": 2.0,
-    "start_utc": "2026-11-01T00:00:00Z",
-    "end_utc": "2026-11-15T00:00:00Z",
-    "step_minutes": 60
+    "step_minutes": 120,
+    "mast_heights_m": [
+      0.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "thresholds": {
+      "min_sun_frac": 0.5,
+      "min_earth_frac": 0.5,
+      "ground_station_mask_deg": 6.0,
+      "max_slope_deg": 15.0
+    },
+    "margins": {
+      "horizon_margin_deg": 0.1
+    },
+    "horizon_params": {
+      "az_step_deg": 5.0,
+      "max_range_m": 25000.0,
+      "step_m": 50.0
+    }
   },
   "tolerances": {
-    "az_step_deg": 1.0,
-    "disc_quadrature_samples": 37.0
+    "horizon_dip_deg": 0.005,
+    "wall_elevation_deg": 0.01
   },
   "tests_summary": {
-    "tests_passed": 30,
-    "tests_total": 30,
-    "last_verified_utc": "2026-10-29T10:20:25Z"
+    "tests_passed": 84,
+    "tests_total": 87,
+    "last_verified_utc": "2026-10-29T12:00:00Z"
   }
 }

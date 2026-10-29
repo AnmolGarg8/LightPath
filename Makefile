@@ -21,7 +21,7 @@ all: setup test lint web-build
 
 setup:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install pytest pytest-cov jsonschema numpy scipy ruff pydantic pyyaml matplotlib
+	$(PYTHON) -m pip install pytest pytest-cov jsonschema numpy scipy ruff pydantic pyyaml matplotlib spiceypy rasterio pyproj
 	cd web && $(NPM) install
 
 test: test-python test-web
@@ -41,7 +41,7 @@ lint-web:
 	cd web && $(NPM) run lint
 
 pipeline:
-	$(PYTHON) scripts/run_pipeline.py
+	$(PYTHON) -m pipeline.run --config configs/synthetic.yaml --mode synthetic
 
 web-dev:
 	cd web && $(NPM) run dev

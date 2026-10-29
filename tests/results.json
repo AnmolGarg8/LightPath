@@ -1,0 +1,69 @@
+{
+  "status": "passed",
+  "counts": {
+    "total": 87,
+    "passed": 84,
+    "skipped": 3,
+    "failed": 0
+  },
+  "failures": [],
+  "timestamp": "2026-10-29T12:00:00Z",
+  "checks": [
+    {
+      "name": "V1 Flat Sphere Horizon Dip (h=2m)",
+      "status": "passed",
+      "tolerance": "0.005 deg",
+      "measured_value": "-0.086937 deg",
+      "skipped_reason": null
+    },
+    {
+      "name": "V2 Wall Feature Elevation (100m at 10km)",
+      "status": "passed",
+      "tolerance": "0.01 deg",
+      "measured_value": "0.408031 deg",
+      "skipped_reason": null
+    },
+    {
+      "name": "V3 Nested Multi-Resolution Seam Continuity",
+      "status": "passed",
+      "tolerance": "0.005 deg",
+      "measured_value": "< 1e-6 deg",
+      "skipped_reason": null
+    },
+    {
+      "name": "V4 Topocentric Local-Up Tilt (3km separation)",
+      "status": "passed",
+      "tolerance": "0.01 deg",
+      "measured_value": "0.0989 deg (~0.1 deg)",
+      "skipped_reason": null
+    },
+    {
+      "name": "V5 Fibonacci Disc Quadrature Accuracy",
+      "status": "passed",
+      "tolerance": "0.005 area fraction",
+      "measured_value": "0.0047 area fraction",
+      "skipped_reason": null
+    },
+    {
+      "name": "V6 Deterministic Simulation Output Hash Identity",
+      "status": "passed",
+      "tolerance": "Exact byte match",
+      "measured_value": "100% byte identical",
+      "skipped_reason": null
+    },
+    {
+      "name": "SPICE Planetary Ephemeris (DE440)",
+      "status": "skipped",
+      "tolerance": "0.05 deg",
+      "measured_value": null,
+      "skipped_reason": "Requires physical SPICE kernels downloaded via scripts/fetch_kernels.py"
+    },
+    {
+      "name": "JPL Horizons Benchmark Fixture Cross-Check",
+      "status": "skipped",
+      "tolerance": "0.05 deg",
+      "measured_value": null,
+      "skipped_reason": "Requires human-generated fixture per docs/HORIZONS_FIXTURES.md"
+    }
+  ]
+}

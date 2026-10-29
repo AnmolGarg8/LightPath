@@ -69,7 +69,37 @@ def kernel_context(meta_kernel_path: Union[str, Path]) -> Generator[None, None, 
 
 def are_kernels_loaded() -> bool:
     """Check if any SPICE kernels are currently loaded in the kernel pool."""
-    return spice.ktotal("ALL") > 0
+    try:
+        return spice.ktotal("ALL") > 0
+    except Exception:
+        return False
+
+
+def get_sun_earth_moon_me_km(
+    ts: str,
+    et: Optional[float] = None,
+    frame: str = FRAME_MOON_ME,
+    abcorr: str = "NONE",
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Get position vectors of Sun and Earth from Moon center in MOON_ME frame (km).
+
+    Uses SPICE when kernels are loaded; falls back to analytical ephemeris otherwise.
+    """
+    if are_kernels_loaded():
+        if et is None:
+            et = float(utc_to_et(ts))
+        sun_pos, _ = spice.spkpos("SUN", et, frame, abcorr, "MOON")
+        earth_pos, _ = spice.spkpos("EARTH", et, frame, abcorr, "MOON")
+        return np.array(sun_pos, dtype=np.float64), np.array(earth_pos, dtype=np.float64)
+    else:
+        from pipeline.ephemeris import (
+            compute_moon_center_to_earth_moon_me_km,
+            compute_moon_center_to_sun_moon_me_km,
+            utc_iso_to_julian_date,
+        )
+        jd = utc_iso_to_julian_date(ts)
+        return compute_moon_center_to_sun_moon_me_km(jd), compute_moon_center_to_earth_moon_me_km(jd)
+
 
 
 def utc_to_et(utc_str: Union[str, Sequence[str]]) -> Union[float, np.ndarray]:

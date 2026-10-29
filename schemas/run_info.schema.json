@@ -14,6 +14,15 @@
       "type": "string",
       "format": "date-time"
     },
+    "start_utc": {
+      "type": "string"
+    },
+    "end_utc": {
+      "type": "string"
+    },
+    "duration_seconds": {
+      "type": "number"
+    },
     "git_commit": {
       "type": "string"
     },

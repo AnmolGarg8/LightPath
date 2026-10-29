@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/index.schema.json",
+  "title": "Index",
+  "description": "Global catalog index of sites, missions, and execution mode for LightPath",
+  "type": "object",
+  "required": [
+    "sites",
+    "missions",
+    "mode",
+    "is_synthetic"
+  ],
+  "properties": {
+    "sites": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "missions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["real", "synthetic"]
+    },
+    "is_synthetic": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

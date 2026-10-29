@@ -1,0 +1,261 @@
+{
+  "files": [
+    {
+      "path": "cubes/synthetic-flat-basin.bin",
+      "size_bytes": 317,
+      "sha256": "20c31bbcf4e68afe91aa12c0714f45987d24b72fa50603043cf6e5db1a877c11"
+    },
+    {
+      "path": "cubes/synthetic-flat-basin.json",
+      "size_bytes": 605919,
+      "sha256": "75fa6559485272746dd6ca9892703a562138feed5d9050714bce95be0669aad5"
+    },
+    {
+      "path": "cubes/synthetic-proving-ground.bin",
+      "size_bytes": 357,
+      "sha256": "c107140b3b46086c890a67af8ba8924bbe3feb93eaab4106ebc90f49fe7855a3"
+    },
+    {
+      "path": "cubes/synthetic-proving-ground.json",
+      "size_bytes": 607141,
+      "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
+    },
+    {
+      "path": "index.json",
+      "size_bytes": 2035,
+      "sha256": "d8de8e4cc70215ab1a16a33c590bbfd3d58c58b0533261bded14f593e9f31da6"
+    },
+    {
+      "path": "malapert-mountain/horizon.json",
+      "size_bytes": 57061,
+      "sha256": "f7793ae337b1e02d2b72b5f4522c73bca77863f13f457a4f58741d48a80f63ec"
+    },
+    {
+      "path": "malapert-mountain/provenance.json",
+      "size_bytes": 894,
+      "sha256": "eda26fcc4c2e585a2a10e38140ff7ae984a9c0a987e5acd1bb766c758b2524f1"
+    },
+    {
+      "path": "malapert-mountain/route_result.json",
+      "size_bytes": 628,
+      "sha256": "16e73be9377b833078f226590653697ad7d75826b4346d669f881e06d7d81c9c"
+    },
+    {
+      "path": "malapert-mountain/series.json",
+      "size_bytes": 97656,
+      "sha256": "084b975aeab7d4ff05f157cf7e9449d92968a4cac830a70cb4e46c271efc6a15"
+    },
+    {
+      "path": "malapert-mountain/site.json",
+      "size_bytes": 362,
+      "sha256": "47f2858a8e9a0e560e39f74358fb662e4bf2ef7d774ba5520ea53802ef0ca11b"
+    },
+    {
+      "path": "malapert-mountain/stats.json",
+      "size_bytes": 1327,
+      "sha256": "19fd1e4b229da27927dd409f6ecb2e78165ca02ea5a4d72d27a188bdb62bf7b4"
+    },
+    {
+      "path": "malapert-mountain/visibility_cube.json",
+      "size_bytes": 22356,
+      "sha256": "6817e6fce06dde23077a68773f56e6218ba33b9717d37d09e4c6d0fbbbf9db07"
+    },
+    {
+      "path": "nobile-crater-rim/horizon.json",
+      "size_bytes": 57368,
+      "sha256": "f2c91e93aa0b5edf3403809df497a6f808b51a5f4f62c730487f797b372a766f"
+    },
+    {
+      "path": "nobile-crater-rim/provenance.json",
+      "size_bytes": 894,
+      "sha256": "fcb6810204acec1c1bbc836db40c0770778a4f3b1b80d5b88a2d4f65bbedb944"
+    },
+    {
+      "path": "nobile-crater-rim/route_result.json",
+      "size_bytes": 628,
+      "sha256": "16e73be9377b833078f226590653697ad7d75826b4346d669f881e06d7d81c9c"
+    },
+    {
+      "path": "nobile-crater-rim/series.json",
+      "size_bytes": 97555,
+      "sha256": "6f13d4a954d26f6d7cae95178a798010ddb45832a46e2428ae6ef6dfb26aa3de"
+    },
+    {
+      "path": "nobile-crater-rim/site.json",
+      "size_bytes": 401,
+      "sha256": "405bd27432beb3fc14934143c70c97607dc605157f86a1e3d9470ede7a19c026"
+    },
+    {
+      "path": "nobile-crater-rim/stats.json",
+      "size_bytes": 1337,
+      "sha256": "86e8924a870d4b87eaea3c534c70ef5853755d0f99cee131ead042424afd4022"
+    },
+    {
+      "path": "nobile-crater-rim/visibility_cube.json",
+      "size_bytes": 22357,
+      "sha256": "642c02a4b2f770acfb2953a781088ddd71724eb3233e1c668938680ba6b26a25"
+    },
+    {
+      "path": "shackleton-connecting-ridge/horizon.json",
+      "size_bytes": 57597,
+      "sha256": "f041c827de8d3fad85c6a1d245224efe387c04e96fba68335bbb636b6ab8ee44"
+    },
+    {
+      "path": "shackleton-connecting-ridge/provenance.json",
+      "size_bytes": 904,
+      "sha256": "b097babb00bb3b072ace24104ed941333ae9c1471a2764e5a609cc13fa4623ef"
+    },
+    {
+      "path": "shackleton-connecting-ridge/route_result.json",
+      "size_bytes": 1002,
+      "sha256": "8524fa6c67c1f15c86e4a8ffc7cf81d4d7fcb42c97d5900ba1a8bc8b3208bb21"
+    },
+    {
+      "path": "shackleton-connecting-ridge/series.json",
+      "size_bytes": 97940,
+      "sha256": "323862828cc5eedb133ed425445e76474061de6663ab2e81a4234656ddaf321b"
+    },
+    {
+      "path": "shackleton-connecting-ridge/site.json",
+      "size_bytes": 392,
+      "sha256": "10f440ba9452e35b60d4922fa7737840f532cf250e1cebba22feaea4b44b1840"
+    },
+    {
+      "path": "shackleton-connecting-ridge/stats.json",
+      "size_bytes": 1474,
+      "sha256": "f4af2891efe1150cb0af45834b15f7614a7ec27752f579560127249d7670803b"
+    },
+    {
+      "path": "shackleton-connecting-ridge/visibility_cube.json",
+      "size_bytes": 23485,
+      "sha256": "f2acd55fd1c1261ee03642fcc714e319d8921d6c5950a90461f7eb64b326d135"
+    },
+    {
+      "path": "sites.json",
+      "size_bytes": 329,
+      "sha256": "1a4b721d626af06c05c83532b66b1b17331cd4e895d26dfc46f992a4e82564d6"
+    },
+    {
+      "path": "sites/synthetic-flat-basin.json",
+      "size_bytes": 2953,
+      "sha256": "8bd9a1109e9c5363b822653f136dc8f8336211af0f19738282ceeeaea1a8eabd"
+    },
+    {
+      "path": "sites/synthetic-proving-ground.json",
+      "size_bytes": 3228,
+      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+    },
+    {
+      "path": "synthetic-flat-basin/horizon.json",
+      "size_bytes": 12670,
+      "sha256": "1008888538ddc348027ae5e997be39574eb27480261a0bbc2418438319cb1014"
+    },
+    {
+      "path": "synthetic-flat-basin/provenance.json",
+      "size_bytes": 1020,
+      "sha256": "a26ac4f29a5cadc80407af3e76f5fe2aad7ac38d18025b508a61f1f08feb5332"
+    },
+    {
+      "path": "synthetic-flat-basin/series.json",
+      "size_bytes": 14679,
+      "sha256": "21a42bfc459fc749d707c3542c7321b40cf859bdd43901e94597fba9a93d380d"
+    },
+    {
+      "path": "synthetic-flat-basin/site.json",
+      "size_bytes": 2953,
+      "sha256": "8bd9a1109e9c5363b822653f136dc8f8336211af0f19738282ceeeaea1a8eabd"
+    },
+    {
+      "path": "synthetic-flat-basin/stats.json",
+      "size_bytes": 1323,
+      "sha256": "1f096708e1af0bcef6fa1620637a61ec605da4b40f682d0f81d257f2dfd2c85e"
+    },
+    {
+      "path": "synthetic-flat-basin/visibility_cube.json",
+      "size_bytes": 605919,
+      "sha256": "75fa6559485272746dd6ca9892703a562138feed5d9050714bce95be0669aad5"
+    },
+    {
+      "path": "synthetic-proving-ground/horizon.json",
+      "size_bytes": 12131,
+      "sha256": "46ef5265551015c37ea536fcb192d187e43e3999a501d43beecba655e37b87bc"
+    },
+    {
+      "path": "synthetic-proving-ground/provenance.json",
+      "size_bytes": 1022,
+      "sha256": "c18a64c9c5b16290ea348c36bdd525fafe1a367359fd701aa723db759930f76e"
+    },
+    {
+      "path": "synthetic-proving-ground/route_result.json",
+      "size_bytes": 1002,
+      "sha256": "8524fa6c67c1f15c86e4a8ffc7cf81d4d7fcb42c97d5900ba1a8bc8b3208bb21"
+    },
+    {
+      "path": "synthetic-proving-ground/series.json",
+      "size_bytes": 14678,
+      "sha256": "76cc02d22c6d6efef8fe10432618aed0e8ee215d1286c7184beb3db7a08633da"
+    },
+    {
+      "path": "synthetic-proving-ground/site.json",
+      "size_bytes": 3228,
+      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+    },
+    {
+      "path": "synthetic-proving-ground/stats.json",
+      "size_bytes": 1326,
+      "sha256": "891f476c7cfa824e89770ce67279678b61ad424875caaca10d1c4c2289d8beb1"
+    },
+    {
+      "path": "synthetic-proving-ground/visibility_cube.json",
+      "size_bytes": 607141,
+      "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
+    },
+    {
+      "path": "test_results.json",
+      "size_bytes": 1986,
+      "sha256": "81fd0b25de3ddfd7ed8e65b03a1443081626595a6997e054835f356cd906868f"
+    }
+  ],
+  "run_configuration": {
+    "mode": "synthetic",
+    "date_range": {
+      "start_utc": "2026-11-01T00:00:00Z",
+      "end_utc": "2026-11-05T00:00:00Z"
+    },
+    "step_minutes": 120,
+    "mast_heights_m": [
+      0.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "thresholds": {
+      "min_sun_frac": 0.5,
+      "min_earth_frac": 0.5,
+      "ground_station_mask_deg": 6.0,
+      "max_slope_deg": 15.0
+    },
+    "margins": {
+      "horizon_margin_deg": 0.1
+    },
+    "horizon_params": {
+      "az_step_deg": 5.0,
+      "max_range_m": 25000.0,
+      "step_m": 50.0
+    },
+    "route_planning": {
+      "half_width_m": 600.0,
+      "spacing_m": 50.0,
+      "date_range": null,
+      "step_minutes": 180,
+      "max_cells": 4000
+    }
+  },
+  "date_range": {
+    "start_utc": "2026-11-01T00:00:00Z",
+    "end_utc": "2026-11-05T00:00:00Z"
+  },
+  "timestamp": "2026-11-01T00:00:00Z",
+  "code_commit": "0fab6727ec199fda9c069b87188556806dbf8f0b",
+  "is_synthetic": true
+}

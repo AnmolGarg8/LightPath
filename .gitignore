@@ -33,4 +33,6 @@ Thumbs.db
 .vscode/
 .idea/
 Microsoft/
+*.cache_key
+
 

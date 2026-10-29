@@ -339,3 +339,9 @@ def check_dsn_ground_station_visibility(
         station_visible.append(bool(is_vis))
 
     return station_names, station_visible
+
+
+# Public aliases matching pipeline convention
+compute_moon_center_to_earth_pos_km = compute_moon_center_to_earth_moon_me_km
+compute_moon_center_to_sun_pos_km = compute_moon_center_to_sun_moon_me_km
+

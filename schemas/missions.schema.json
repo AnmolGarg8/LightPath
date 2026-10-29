@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/missions.schema.json",
+  "title": "Missions",
+  "description": "List of CLPS and lunar surface exploration missions associated with landing sites",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "id",
+      "name",
+      "operator",
+      "site_id",
+      "planned_window_start",
+      "planned_window_end",
+      "status",
+      "description",
+      "source_links",
+      "verified"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_-]+$"
+      },
+      "name": {
+        "type": "string"
+      },
+      "operator": {
+        "type": "string"
+      },
+      "site_id": {
+        "type": "string"
+      },
+      "planned_window_start": {
+        "type": "string"
+      },
+      "planned_window_end": {
+        "type": "string"
+      },
+      "status": {
+        "type": "string",
+        "enum": ["planned", "en_route", "landed", "completed", "cancelled", "unverified_placeholder"]
+      },
+      "description": {
+        "type": "string"
+      },
+      "source_links": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["label", "url"],
+          "properties": {
+            "label": { "type": "string" },
+            "url": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "verified": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false
+  }
+}

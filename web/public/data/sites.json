@@ -1,64 +1,13 @@
 [
   {
-    "id": "shackleton-connecting-ridge",
-    "name": "Shackleton Connecting Ridge",
-    "mission_ids": [
-      "CLPS-IM-2",
-      "PRIME-1"
-    ],
-    "lat_deg": -89.44,
-    "lon_deg": 137.5,
-    "ground_elev_m": 1250.0,
-    "source_links": [
-      "https://pgda.gsfc.nasa.gov/products/54",
-      "https://www.lpi.usra.edu/lunar/lunar-south-pole/"
-    ],
-    "verified": true,
-    "is_synthetic": false
-  },
-  {
-    "id": "nobile-crater-rim",
-    "name": "Nobile Crater Rim (Mons Mouton / VIPER Area)",
-    "mission_ids": [
-      "CLPS-Griffin-1",
-      "VIPER-Target"
-    ],
-    "lat_deg": -85.25,
-    "lon_deg": 35.8,
-    "ground_elev_m": 2100.0,
-    "source_links": [
-      "https://www.nasa.gov/missions/viper/nasa-replans-viper-payload-for-griffin-lunar-lander/"
-    ],
-    "verified": true,
-    "is_synthetic": false
-  },
-  {
-    "id": "malapert-mountain",
-    "name": "Malapert Mountain (Peak of Eternal Light Candidate)",
-    "mission_ids": [
-      "CLPS-IM-1",
-      "Artemis-Candidate"
-    ],
-    "lat_deg": -86.04,
-    "lon_deg": 2.7,
-    "ground_elev_m": 5000.0,
-    "source_links": [
-      "https://ntrs.nasa.gov/citations/20210018596"
-    ],
-    "verified": true,
-    "is_synthetic": false
-  },
-  {
     "id": "synthetic-proving-ground",
-    "name": "Synthetic Calibration Crater (Proving Ground)",
-    "mission_ids": [
-      "SIM-BENCHMARK-2026"
-    ],
-    "lat_deg": -89.8,
-    "lon_deg": 45.0,
-    "ground_elev_m": -500.0,
+    "name": "Synthetic Proving Ground (SYNTHETIC)",
+    "mission_ids": [],
+    "lat_deg": -89.9,
+    "lon_deg": 0.0,
+    "ground_elev_m": 0.0,
     "source_links": [
-      "https://lightpath.nasa.spaceapps/docs/synthetic-benchmark"
+      "synthetic://pipeline.synthetic/crater"
     ],
     "verified": false,
     "is_synthetic": true

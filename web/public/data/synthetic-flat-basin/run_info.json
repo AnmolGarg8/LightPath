@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-10-29T12:15:57.328785+00:00",
+  "start_utc": "2026-10-29T12:15:22.045019+00:00",
+  "end_utc": "2026-10-29T12:15:57.328803+00:00",
+  "duration_seconds": 35.284,
+  "git_commit": "0fab6727ec199fda9c069b87188556806dbf8f0b",
+  "software_versions": {
+    "python": "3.14.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "rasterio": "1.5.2",
+    "pyproj": "3.8.0",
+    "spiceypy": "8.3.0"
+  }
+}

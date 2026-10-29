@@ -49,6 +49,40 @@
     },
     "is_synthetic": {
       "type": "boolean"
+    },
+    "stats": {
+      "type": "object",
+      "description": "Visibility windows, outage statistics, and joint coverage analysis"
+    },
+    "sensitivities": {
+      "type": "object",
+      "properties": {
+        "mast_height": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["mast_height_m", "sun_uptime_fraction", "earth_uptime_fraction", "dte_uptime_fraction", "joint_uptime_fraction", "longest_darkness_h"],
+            "properties": {
+              "mast_height_m": { "type": "number" },
+              "sun_uptime_fraction": { "type": "number" },
+              "earth_uptime_fraction": { "type": "number" },
+              "dte_uptime_fraction": { "type": "number" },
+              "joint_uptime_fraction": { "type": "number" },
+              "longest_darkness_h": { "type": "number" }
+            }
+          }
+        },
+        "resolution": {
+          "type": "object",
+          "required": ["available"],
+          "properties": {
+            "available": { "type": "boolean" },
+            "reason": { "type": "string" },
+            "comparison": { "type": "array" }
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

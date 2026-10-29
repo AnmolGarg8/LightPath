@@ -1,0 +1,55 @@
+{
+  "sites": [
+    {
+      "id": "synthetic-proving-ground",
+      "name": "Synthetic Proving Ground (SYNTHETIC)",
+      "mission_ids": [],
+      "lat_deg": -89.9,
+      "lon_deg": 0.0,
+      "ground_elev_m": 0.0,
+      "source_links": [
+        "synthetic://pipeline.synthetic/crater"
+      ],
+      "verified": false,
+      "is_synthetic": true
+    }
+  ],
+  "missions": [
+    {
+      "id": "clps-placeholder-shackleton",
+      "name": "CLPS Polar Scout (UNVERIFIED PLACEHOLDER)",
+      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+      "site_id": "shackleton-connecting-ridge",
+      "planned_window_start": "2026-11-01T00:00:00Z",
+      "planned_window_end": "2026-11-15T00:00:00Z",
+      "status": "unverified_placeholder",
+      "description": "Example placeholder entry for CLPS mission browser scaffold. A human operator must verify exact payload, dates, and provider details from official NASA announcements.",
+      "source_links": [
+        {
+          "label": "NASA CLPS Portal (Verification Required)",
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        }
+      ],
+      "verified": false
+    },
+    {
+      "id": "clps-placeholder-malapert",
+      "name": "CLPS Malapert Lander (UNVERIFIED PLACEHOLDER)",
+      "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+      "site_id": "malapert-mountain",
+      "planned_window_start": "2026-11-05T00:00:00Z",
+      "planned_window_end": "2026-11-20T00:00:00Z",
+      "status": "unverified_placeholder",
+      "description": "Example placeholder entry for south-pole lunar exploration. To be updated by human operator once mission delivery task order is finalized.",
+      "source_links": [
+        {
+          "label": "NASA CLPS Schedule (Verification Required)",
+          "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        }
+      ],
+      "verified": false
+    }
+  ],
+  "mode": "synthetic",
+  "is_synthetic": true
+}

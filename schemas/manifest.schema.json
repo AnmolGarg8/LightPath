@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/manifest.schema.json",
+  "title": "Manifest",
+  "description": "Cryptographic manifest and provenance catalog of generated LightPath web assets",
+  "type": "object",
+  "required": [
+    "files",
+    "run_configuration",
+    "date_range",
+    "is_synthetic"
+  ],
+  "properties": {
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "size_bytes", "sha256"],
+        "properties": {
+          "path": { "type": "string" },
+          "size_bytes": { "type": "integer", "minimum": 0 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "run_configuration": {
+      "type": "object"
+    },
+    "date_range": {
+      "type": "object",
+      "required": ["start_utc", "end_utc"],
+      "properties": {
+        "start_utc": { "type": "string" },
+        "end_utc": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "timestamp": {
+      "type": ["string", "null"]
+    },
+    "code_commit": {
+      "type": ["string", "null"]
+    },
+    "is_synthetic": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

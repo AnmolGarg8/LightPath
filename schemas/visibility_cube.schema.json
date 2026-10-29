@@ -85,6 +85,18 @@
     "flags": {
       "type": "array",
       "items": { "type": "string" }
+    },
+    "cell_cap_explanation": {
+      "type": "string"
+    },
+    "runtime_seconds": {
+      "type": "number"
+    },
+    "binary_file": {
+      "type": "string"
+    },
+    "binary_size_bytes": {
+      "type": "integer"
     }
   },
   "additionalProperties": false
