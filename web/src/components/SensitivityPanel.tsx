@@ -39,9 +39,17 @@ export const SensitivityPanel: React.FC<SensitivityPanelProps> = ({
 
       {/* 1. SENSITIVITY VERSUS MAST HEIGHT */}
       <div style={{ marginBottom: '1.5rem' }}>
-        <h4 style={{ fontSize: '0.95rem', fontWeight: 600, margin: '0 0 0.5rem 0', color: 'var(--text-main)' }}>
-          Observer Mast Height Trade Study (0.5m – 5.0m)
-        </h4>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <h4 style={{ fontSize: '0.95rem', fontWeight: 600, margin: 0, color: 'var(--text-main)' }}>
+            Observer Mast Height Trade Study (0.5m – 5.0m)
+          </h4>
+          <Badge variant="neutral" size="sm">
+            Resolution-Limited (20m DEM)
+          </Badge>
+        </div>
+        <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)', marginBottom: '0.75rem', fontStyle: 'italic' }}>
+          Note (Knowledge Guide Sec. 9 &amp; 12): Sensitivity to observer height is meaningful only where terrain is resolved. A 20m grid cannot resolve metre-scale rocks; statistics reflect macro-skyline depression.
+        </div>
 
         {mastSensitivities.length > 0 ? (
           <div style={{ overflowX: 'auto' }}>

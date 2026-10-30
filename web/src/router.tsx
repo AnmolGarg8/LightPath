@@ -49,47 +49,51 @@ export function useRouter(): { currentPath: string; view: React.ReactNode } {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // Separate route path from query parameters (?demo=1, ?kiosk=1, etc.)
+  const [rawRoute] = currentPath.split('?');
+  const cleanPath = (rawRoute || '/').replace(/\/+$/, '') || '/';
+
   // Route matching
   let view: React.ReactNode;
 
   // 1. Home /
-  if (currentPath === '/' || currentPath === '') {
+  if (cleanPath === '/' || cleanPath === '') {
     view = <HomeView />;
   }
   // 2. Site /site/:id
-  else if (currentPath.startsWith('/site/')) {
-    const siteId = currentPath.replace('/site/', '').split('/')[0];
+  else if (cleanPath.startsWith('/site/')) {
+    const siteId = cleanPath.replace('/site/', '').split('/')[0];
     view = <SiteDetailView siteId={siteId} />;
   }
-  // 3. Compare /compare/:a/:b
-  else if (currentPath.startsWith('/compare/')) {
-    const parts = currentPath.replace('/compare/', '').split('/');
+  // 3. Compare /compare or /compare/:a/:b
+  else if (cleanPath === '/compare' || cleanPath.startsWith('/compare/')) {
+    const sub = cleanPath.replace('/compare/', '').replace('/compare', '');
+    const parts = sub ? sub.split('/') : [];
     const siteA = parts[0] || 'synthetic-proving-ground';
     const siteB = parts[1] || 'synthetic-crater-rim';
     view = <CompareView siteAId={siteA} siteBId={siteB} />;
   }
   // 4. Route Traverse /route/:id
-  else if (currentPath.startsWith('/route/')) {
-    const siteId = currentPath.replace('/route/', '').split('/')[0];
+  else if (cleanPath.startsWith('/route/')) {
+    const siteId = cleanPath.replace('/route/', '').split('/')[0];
     view = <RoutePlannerView siteId={siteId} />;
   }
   // 5. Area Scan /scan/:id
-  else if (currentPath.startsWith('/scan/')) {
-    const rawId = currentPath.replace('/scan/', '').split('?')[0];
-    const siteId = rawId.split('/')[0] || 'synthetic-proving-ground';
+  else if (cleanPath.startsWith('/scan/')) {
+    const siteId = cleanPath.replace('/scan/', '').split('/')[0] || 'synthetic-proving-ground';
     view = <ScanView siteId={siteId} />;
   }
   // 6. Evidence /evidence/:id
-  else if (currentPath.startsWith('/evidence/')) {
-    const siteId = currentPath.replace('/evidence/', '').split('/')[0];
+  else if (cleanPath.startsWith('/evidence/')) {
+    const siteId = cleanPath.replace('/evidence/', '').split('/')[0];
     view = <EvidenceView siteId={siteId} />;
   }
-  // 6. Trust /trust
-  else if (currentPath === '/trust' || currentPath.startsWith('/trust')) {
+  // 7. Trust /trust
+  else if (cleanPath === '/trust' || cleanPath.startsWith('/trust')) {
     view = <TrustView />;
   }
-  // 7. Explain /explain
-  else if (currentPath === '/explain' || currentPath.startsWith('/explain')) {
+  // 8. Explain /explain
+  else if (cleanPath === '/explain' || cleanPath.startsWith('/explain')) {
     view = <ExplainView />;
   }
   // Fallback

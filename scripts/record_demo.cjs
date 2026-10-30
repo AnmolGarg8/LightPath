@@ -104,10 +104,11 @@ const STEPS = [
   { idx: 1, route: '#/site/synthetic-proving-ground?demo=1', file: 'step_02.png', label: '360 Horizon Panorama' },
   { idx: 2, route: '#/site/synthetic-proving-ground?demo=1', file: 'step_03.png', label: 'Mast Height Sensitivity' },
   { idx: 3, route: '#/site/synthetic-proving-ground?demo=1', file: 'step_04.png', label: 'Direct-to-Earth Contact' },
-  { idx: 4, route: '#/route/synthetic-proving-ground?demo=1', file: 'step_05.png', label: 'Dynamic Space-Time Traverse' },
-  { idx: 5, route: '#/route/synthetic-proving-ground?demo=1', file: 'step_06.png', label: 'Infeasible Case & Relaxation' },
-  { idx: 6, route: '#/evidence/synthetic-proving-ground?demo=1', file: 'step_07.png', label: 'Evidence Card' },
-  { idx: 7, route: '#/trust?demo=1', file: 'step_08.png', label: 'Trust & Verification' },
+  { idx: 4, route: '#/compare/synthetic-proving-ground/synthetic-crater-rim?demo=1', file: 'step_05.png', label: 'Comparative Site Trade Study' },
+  { idx: 5, route: '#/route/synthetic-proving-ground?demo=1', file: 'step_06.png', label: 'Dynamic Space-Time Traverse' },
+  { idx: 6, route: '#/route/synthetic-proving-ground?demo=1', file: 'step_07.png', label: 'Infeasible Case & Relaxation' },
+  { idx: 7, route: '#/evidence/synthetic-proving-ground?demo=1', file: 'step_08.png', label: 'Evidence Card' },
+  { idx: 8, route: '#/trust?demo=1', file: 'step_09.png', label: 'Trust & Verification' },
 ];
 
 server.listen(PORT, async () => {

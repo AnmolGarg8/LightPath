@@ -775,6 +775,19 @@ export const Panorama: React.FC<PanoramaProps> = ({
           {currentTimeUtc} ({timeIndex + 1}/{series.time_utc.length})
         </div>
       </div>
+
+      {/* Explanatory takeaway mandated by Section 16 */}
+      <p
+        style={{
+          margin: '0.75rem 0 0 0',
+          fontSize: '0.825rem',
+          color: 'var(--text-muted)',
+          textAlign: 'center',
+          fontStyle: 'italic',
+        }}
+      >
+        The skyline is the terrain; anything below it cannot be seen.
+      </p>
     </Card>
   );
 };

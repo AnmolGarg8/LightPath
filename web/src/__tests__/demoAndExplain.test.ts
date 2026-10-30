@@ -15,8 +15,8 @@ import {
 } from '../lib/geometry';
 
 describe('Guided Demo Script (90-Second Walkthrough)', () => {
-  it('contains exactly eight scripted steps', () => {
-    expect(DEMO_STEPS.length).toBe(8);
+  it('contains nine scripted steps covering all core views', () => {
+    expect(DEMO_STEPS.length).toBe(9);
   });
 
   it('completes guided tour in approximately 90 seconds (80s - 100s)', () => {
@@ -29,9 +29,10 @@ describe('Guided Demo Script (90-Second Walkthrough)', () => {
     const routes = DEMO_STEPS.map((s) => s.route);
     expect(routes[0]).toBe('#/');
     expect(routes[1]).toContain('#/site/');
-    expect(routes[4]).toContain('#/route/');
-    expect(routes[6]).toContain('#/evidence/');
-    expect(routes[7]).toContain('#/trust');
+    expect(routes[4]).toContain('#/compare/');
+    expect(routes[5]).toContain('#/route/');
+    expect(routes[7]).toContain('#/evidence/');
+    expect(routes[8]).toContain('#/trust');
   });
 
   it('verifies Step 2 formula: 100m ridge at 10km produces ~0.408° (about 0.41°)', () => {

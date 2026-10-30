@@ -60,6 +60,23 @@ export const GuidedDemoOverlay: React.FC = () => {
     if (window.location.hash !== targetHash) {
       window.location.hash = targetHash;
     }
+
+    // Auto-scroll to view elements for presentation clarity
+    const scrollTimer = setTimeout(() => {
+      if (currentStepIdx === 2) {
+        // Step 3: Mast height sensitivity table
+        const el = document.querySelector('.sensitivity-panel-card');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (currentStepIdx === 3) {
+        // Step 4: Multi-lane timeline & DTE contact
+        const el = document.querySelector('.timeline-card');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 200);
+
+    return () => clearTimeout(scrollTimer);
   }, [currentStepIdx, isActive, isKiosk, currentStep]);
 
   // Step timer
