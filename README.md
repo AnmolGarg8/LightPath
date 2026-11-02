@@ -1,11 +1,25 @@
 # LightPath — CLPS Lunar Mission Browser & Space-Time Traverse Planner
 
 **NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
-*Track: Interactive Lunar Exploration & Trajectory Planning*
+*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*
 
 [![LightPath CI](https://github.com/AnmolGarg8/LightPath/actions/workflows/ci.yml/badge.svg)](https://github.com/AnmolGarg8/LightPath/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Verification: 100% Core Passing](https://img.shields.io/badge/Verification-106%2F106%20Pytest%20%7C%2053%20Vitest-10b981.svg)](docs/AUDIT.md)
+[![Verification: Core Passing](https://img.shields.io/badge/Verification-Passing%20(Pytest%20%26%20Vitest)-10b981.svg)](docs/AUDIT.md)
+
+---
+
+## Current Status
+
+| Component / Subsystem | Built | Verified by Tests | Verified Against Real Data |
+| :--- | :---: | :---: | :---: |
+| **Great-circle raycasting horizon engine** | Yes | Yes (V1, V2, V5 on synthetic DEM) | No (V4 NOT RUN pending human-provided published benchmark) |
+| **Topocentric Sun & Earth apparent geometry** | Yes | Yes (V2b, X1, X2, X3 on synthetic geometry) | No (V3 NOT RUN pending human-provided JPL Horizons query) |
+| **Direct-to-Earth (DTE) line-of-sight & DSN contact** | Yes | Yes (synthetic station test suite) | No (DSN station coordinates unverified placeholder in configs/dsn_stations.yaml) |
+| **4D space-time rover traverse solver** | Yes | Yes (V8 optimal vs brute-force; X4 12 adversarial cases) | No (synthetic terrain and lighting scenarios only) |
+| **Interactive web application & data viewers** | Yes | Yes (58 Vitest unit/integration tests) | No (operates on pipeline synthetic output) |
+
+*Note: Factual, conservative status. Subsystems marked without real-data verification operate on synthetic proving-ground fixtures or placeholder coordinates.*
 
 ---
 
@@ -17,14 +31,14 @@
 
 ## 2. Why It Matters
 
-At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casting shadows tens of kilometers long that sweep across crater rims at speeds comparable to a lunar rover. Landing just 500 meters off-target, raising an antenna mast by 3 meters, or departing a base two hours later can mean the difference between continuous solar power and a catastrophic, battery-depleting lunar night. LightPath gives mission planners, scientists, students, and the public instant, mathematically rigorous visibility into lunar south-pole lighting and direct communications without requiring specialized astrodynamics toolchains.
+At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casting shadows tens of kilometers long that sweep across crater rims at speeds comparable to an uncrewed robotic lunar rover (e.g., VIPER traverse speed $\sim 2-10\text{ cm/s}$; see [`docs/PHYSICS_NOTES.md`](docs/PHYSICS_NOTES.md)). Landing just 500 meters off-target, raising an antenna mast by 3 meters, or departing a base two hours later can mean the difference between continuous solar power and an extended, battery-depleting lunar night. LightPath gives mission planners, scientists, students, and the public instant, deterministic topocentric visibility into lunar south-pole lighting and direct communications without requiring specialized astrodynamics toolchains.
 
 ---
 
 ## 3. How It Works (In Five Sentences)
 
 1. We project high-resolution NASA Lunar Reconnaissance Orbiter (LRO) Lunar Orbiter Laser Altimeter (LOLA) elevation data onto the Mean Earth/Polar Axis frame (`MOON_ME`, $R = 1,737,400.0\text{ m}$) and raycast great-circle geodesics to compute exact $360^\circ$ terrain horizons for any observer mast height.
-2. Topocentric positions and apparent angular radii for the Sun ($0.53^\circ$) and Earth ($1.90^\circ$) are calculated with per-point local zenith vectors that account for lunar surface curvature tilt ($\sim 0.1^\circ/\text{km}$).
+2. Topocentric positions and apparent angular diameters for the Sun ($0.53^\circ$) and Earth ($1.90^\circ$) are calculated with per-point local zenith vectors that account for lunar surface curvature tilt ($\approx 0.033^\circ/\text{km}$, or $\sim 0.10^\circ$ per 3 km; see [`docs/PHYSICS_NOTES.md`](docs/PHYSICS_NOTES.md)).
 3. A 256-point Fibonacci-spiral quadrature integrates the visible illuminated fraction of celestial discs clipped by the irregular terrain skyline.
 4. Direct-to-Earth contact is evaluated by intersecting lunar site Earth line of sight with Earth-based NASA Deep Space Network (DSN) stations (Goldstone, Madrid, Canberra) above local station elevation masks.
 5. Our signature 4D space-time A* solver navigates across moving shadows and terrain slope hazards to determine whether, when, and how a rover or crew can travel between surface points under continuous light and link.
@@ -39,7 +53,7 @@ At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casti
 - **Dynamic 4D Space-Time Traverse Planner**: Plan rover routes on a spatial grid across moving shadows with mechanical slope constraints (Horn 1981 method) in under 1 second.
 - **Multi-Site Comparative Analysis**: Side-by-side comparison of competing CLPS candidate landing sites (e.g. Shackleton Connecting Ridge, Malapert Mountain, Nobile Rim).
 - **One-Page Printable Evidence Card**: Single-page PDF briefing layout with exact geodetic coordinates, kernel manifests, and SHA-256 provenance hashes.
-- **Scientific Trust & Verification Suite**: Live dashboard comparing calculations against NASA benchmarks (Barker et al. 2021) and shared Python/TypeScript vectors ($< 10^{-14\circ}$).
+- **Scientific Trust & Verification Suite**: Live dashboard comparing calculations against closed-form benchmarks, shared Python/TypeScript vectors ($< 10^{-14\circ}$), and peer-reviewed literature [CITATION NEEDED: human to confirm; see [`docs/CITATIONS.md`](docs/CITATIONS.md)].
 - **90-Second Guided Demo & Presenter Mode**: Self-guided judge tour (`?demo=1`), auto-looping kiosk mode (`?kiosk=1`), and projection-ready Presenter Mode (Key `P`).
 
 ---
@@ -48,45 +62,49 @@ At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casti
 
 Follow these exact steps to clone, verify, and run LightPath locally:
 
-### Prerequisites
-- **Python 3.10+** (tested on 3.11, 3.12, 3.14)
-- **Node.js 18+** & **npm 9+** (tested on Node 20 & 24)
-- **Git**
+### Prerequisites & Tested Environments
+- **Continuous Integration (CI)**: Validated against **Python 3.11** and **Node.js 20**.
+- **Local Compatibility**: Confirmed compatible with Python 3.10–3.14 and Node.js 18–24.
+- **Package Management**: Conda / Mamba via `environment.yml` or pip / npm via `Makefile`.
 
-### Step-by-Step Commands
+### Option A: Using Conda / Mamba (`environment.yml`)
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/AnmolGarg8/LightPath.git
 cd LightPath
 
-# 2. Set up Python environment & run verification tests (~2 minutes)
-python -m venv .venv
+# 2. Create and activate conda environment
+conda env create -f environment.yml
+conda activate lightpath
 
-# On Windows:
-.\.venv\Scripts\activate
-pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj
-ruff check .
+# 3. Run verification test suite
 pytest -v
 
-# On macOS / Linux:
-source .venv/bin/activate
-pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj
-ruff check .
-pytest -v
-# Output: 106 passed, 3 skipped (98% test pass rate)
-
-# 3. Set up Web Client & run Vitest shared vector checks (~1 minute)
+# 4. Set up web client & build
 cd web
-npm install
-npm run lint
+npm ci
 npm test
-# Output: 13 test files, 53 tests passed (100% passing)
-
-# 4. Build and preview production application (~1 minute)
 npm run build
-npm run preview
-# Web app will be live at: http://localhost:4173/
+```
+
+### Option B: Using standard `Makefile` (`pip` & `npm`)
+
+```bash
+# 1. Install dependencies
+make setup
+
+# 2. Run Python & Web verification test suites
+make test
+
+# 3. Run linters
+make lint
+
+# 4. Build and preview web application
+make web-build
+# Preview web application
+cd web && npm run preview
+# App will be live at: http://localhost:4173/
 ```
 
 Open `http://localhost:4173/#/?demo=1` in your browser to launch the automated 90-second judge walkthrough.
@@ -109,20 +127,29 @@ python scripts/generate_manifest.py --data-dir web/public/data
 
 ## 7. Verification & Scientific Benchmarks
 
-LightPath enforces **Rule 1: Correctness Before Features**. Calculations are verified against 8 independent verification benchmarks:
+LightPath enforces **Rule 1: Correctness Before Features**. The verification suite reports factual test execution statuses recorded directly in [`tests/results.json`](tests/results.json):
 
-| Benchmark | Description | Tolerance | Measured Error | Status |
-| :--- | :--- | :---: | :---: | :---: |
-| **V1** | Spherical Horizon Dip Angle ($h = 2\text{ m}$) | $\pm 0.005^\circ$ | $0.000^\circ$ | **Pass** |
-| **V2** | Ridge Elevation Angle ($100\text{ m}$ at $10\text{ km}$) | $\pm 0.005^\circ$ | $0.000^\circ$ | **Pass** |
-| **V3** | Flat-Horizon Disc Area Monotonicity & Symmetry | $\pm 10^{-6}$ | $10^{-15}$ | **Pass** |
-| **V4** | Fibonacci Spiral Quadrature Convergence ($N = 256$) | $\le 0.005$ | $0.002$ | **Pass** |
-| **V5** | South Pole Cartographic Ortho-Basis Singularity | $\pm 10^{-12}$ | $0.000$ | **Pass** |
-| **V6** | Python $\leftrightarrow$ TypeScript Shared Geodesy Vectors | $< 10^{-9\circ}$ | $< 10^{-14\circ}$ | **Pass** |
-| **V7** | 12-Case Adversarial Stress Suite | Exact | 12 / 12 passed | **Pass** |
-| **V8** | Barker et al. (2021) Horizon Profile Comparison | $\pm 0.10^\circ$ | $0.04^\circ$ | **Pass** |
+| Code | Benchmark Name | Tolerance | Measured Value | Data Type | Status |
+| :--- | :--- | :--- | :--- | :---: | :---: |
+| **V1** | Flat sphere horizon dip | `0.005 deg` | `-0.086937 deg (max error: 0.000001 deg)` | Synthetic | **PASS** |
+| **V2** | Wall feature elevation | `0.01 deg` | `0.409510 deg (max error: 0.002960 deg)` | Synthetic | **PASS** |
+| **V2b** | Celestial disc fraction | `0.005 area fraction (0.5%)` | `0.00256 max area fraction error` | Synthetic | **PASS** |
+| **V3** | Ephemeris cross-check against JPL Horizons | `0.05 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
+| **V4** | Comparison with published NASA result | `±2.0% illumination` | NOT RUN (fixture absent) | Real | **NOT RUN** |
+| **V5** | Sensitivity and convergence | `0.005 deg (step), 0.01 deg (azimuth), 0.001 deg (range), monotonic (mast)` | `5m error: 0.0000 deg; all 5 convergence bounds passed` | Synthetic | **PASS** |
+| **V6** | Reproducibility | `0 bytes delta (exact byte match)` | `100% byte identical across runs (0 bytes delta)` | Synthetic | **PASS** |
+| **V7** | Independent cross-check (optional) | `0.02 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
+| **V8** | Route solver optimality | `0.0% path delta vs brute force` | `0.0% path delta (2.68h vs 2.68h); exact match` | Synthetic | **PASS** |
+| **X1** | Python to TypeScript geodesy vectors | `0.01 deg (raster terrain) / 1e-9 deg (closed-form parity)` | `Raster error: 0.0012 deg; vector max diff: 0.00e+00 deg` | Synthetic | **PASS** |
+| **X2** | Quadrature convergence | `0.005 area fraction` | `0.00256 area fraction error at disc center` | Synthetic | **PASS** |
+| **X3** | South pole coordinate basis singularity | `±1e-12` | `Max basis error: 0.00e+00; dot products < 0.00e+00` | Synthetic | **PASS** |
+| **X4** | 12-case adversarial stress suite | `Exact (12/12 passed)` | `12 / 12 test cases passing` | Synthetic | **PASS** |
+| **X5** | Local vertical tilt rate per kilometre | `±0.0005 deg/km` | `0.03298 deg/km (0.033 deg/km)` | Synthetic | **PASS** |
+| **X6** | Citations and claims documentation integrity | `0 undocumented citations` | `0 undocumented citations across repo` | Synthetic | **PASS** |
 
-Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md).
+**Data Provenance Summary**: Benchmarks V1, V2, V2b, V5, V6, V8, and X1–X6 are evaluated on deterministic synthetic terrain or analytical formulas. Benchmarks V3, V4, and V7 require real external mission/ephemeris fixtures provided by human operators and are marked NOT RUN.
+
+Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md) and [`docs/CITATIONS.md`](docs/CITATIONS.md).
 
 ---
 
@@ -138,17 +165,21 @@ Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md).
 
 ## 9. Credits & NASA Data Sources
 
-- **NASA Lunar Reconnaissance Orbiter (LRO)**: Lunar Orbiter Laser Altimeter (LOLA) Digital Elevation Models provided via the NASA Planetary Data System (PDS).
-- **NASA Navigation and Ancillary Information Facility (NAIF)**: SPICE ephemeris toolkit, DE440 planetary ephemeris, and lunar orientation kernels.
+- **NASA Lunar Reconnaissance Orbiter (LRO)**: Lunar Orbiter Laser Altimeter (LOLA) Digital Elevation Models provided via the NASA Planetary Data System (PDS) (Smith et al. 2010).
+- **NASA Navigation and Ancillary Information Facility (NAIF)**: SPICE ephemeris toolkit, DE440 planetary ephemeris, and lunar orientation kernels (Acton 1996).
 - **NASA Jet Propulsion Laboratory (JPL)**: Deep Space Network (DSN) 810-005 telecommunications interface documents.
-- **Published Scientific Literature**: Barker, M. K., et al. (2021), *Lunar South Pole Illumination and Horizon Geometry*, Planetary Science Journal.
+- **Published Scientific Literature**: [CITATION NEEDED: human to confirm: see docs/CITATIONS.md for lead on Planetary and Space Science vol. 203].
 - *(Human team members complete personal credits, institutional affiliations, and challenge citations in accordance with challenge submission rules)*.
 
 ---
 
 ## 10. AI Assistance Disclosure
 
-In compliance with NASA Space Apps Challenge regulations, the authors disclose that modern AI coding assistants (including Google Antigravity / Gemini 2.0) were utilized as pair-programming tools for code scaffolding, type generation, unit test creation, and documentation drafting. All scientific formulas, mathematical algorithms, SPICE integration paths, and verification tests were designed, verified, and audited against NASA peer-reviewed publications.
+In compliance with NASA Space Apps Challenge regulations:
+- **AI Coding Tools Used**: AI coding assistants ([to be completed by the humans: e.g. Google Antigravity / Gemini 2.0]) were used to generate code, automated unit and integration tests, and documentation drafts.
+- **Human Review**: The architecture, code, and documentation were reviewed by team members [to be completed by the humans: insert names of human reviewers].
+- **Formula Verification**: Mathematical derivations and formulas were checked against [to be completed by the humans: insert reference literature or standards checked by humans].
+- **Data & Citation Integrity**: No claim of human verification of external data, kernels, or published literature comparisons is made in this repository unless explicitly verified and confirmed by a human team member.
 
 ---
 

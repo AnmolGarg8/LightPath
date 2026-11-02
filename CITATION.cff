@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, data, or methodology in academic research or mission planning, please cite it as below."
+title: "LightPath: Lunar South-Pole Solar Illumination, Direct-to-Earth Line of Sight, and Space-Time Route Solver"
+version: 1.0.0
+date-released: 2026-11-02
+license: MIT
+repository-code: "https://github.com/[team-to-fill]/lightpath"
+url: "https://[team-to-fill].github.io/lightpath/"
+abstract: >-
+  LightPath computes topocentric solar disc illumination, lunar terrain horizon occultation,
+  and Direct-to-Earth (DTE) communication line of sight for lunar south-pole exploration sites.
+  It includes a spatio-temporal route solver navigating moving polar shadows and provides
+  deterministic, reproducible open datasets in CSV and Apache Parquet formats.
+keywords:
+  - "lunar south pole"
+  - "solar illumination"
+  - "direct-to-earth line of sight"
+  - "CLPS lunar mission browser"
+  - "spatio-temporal route planning"
+  - "astrodynamics"
+authors:
+  - name: "[Human Contributor 1 - Name to be completed by team]"
+    affiliation: "[Institution / Organization - To be completed by team]"
+    orcid: "https://orcid.org/[0000-0000-0000-0000]"
+  - name: "[Human Contributor 2 - Name to be completed by team]"
+    affiliation: "[Institution / Organization - To be completed by team]"
+  - name: "[Human Contributor 3 - Name to be completed by team]"
+    affiliation: "[Institution / Organization - To be completed by team]"
+contact:
+  - name: "[Team Contact / Corresponding Author - To be completed by team]"
+    email: "[contact@example.org - To be completed by team]"
+preferred-citation:
+  type: data
+  title: "LightPath: Lunar South-Pole Solar Illumination and Direct-to-Earth Line of Sight Dataset"
+  authors:
+    - name: "[LightPath Team - Names to be confirmed by humans]"
+  year: 2026
+  version: "1.0.0"
+  publisher: "NASA Space Apps Challenge 2026"
+  doi: "[10.5281/zenodo.XXXXXXX - To be completed upon Zenodo deposition]"
+  url: "https://github.com/[team-to-fill]/lightpath"

@@ -9,7 +9,7 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
   isSynthetic = true,
   isUnverified = true,
 }) => {
-  // Always present permanent non-dismissible banner when synthetic or unverified
+  // Always present permanent non-dismissible banner when synthetic or unverified data is active
   if (!isSynthetic && !isUnverified) {
     return null;
   }
@@ -23,10 +23,10 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
         <span aria-hidden="true" style={{ fontSize: '1.25em' }}>
-          ⚠
+          ⚠️
         </span>
         <span>
-          <strong>PERMANENT SCIENTIFIC NOTICE:</strong> Displaying{' '}
+          <strong>PERMANENT NOTICE — SYNTHETIC / UNVERIFIED DATA ACTIVE:</strong> Displaying{' '}
           {isSynthetic ? 'synthetic demo proving-ground data' : 'preliminary simulation data'}.{' '}
           Sun visibility is not electrical power. Earth visibility is not a link budget. Not certified for flight operations.
         </span>

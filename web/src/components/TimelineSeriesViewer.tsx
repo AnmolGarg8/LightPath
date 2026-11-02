@@ -230,9 +230,18 @@ export const TimelineSeriesViewer: React.FC<Props> = ({
         </div>
 
         <div>
-          <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase', display: 'block', marginBottom: '0.2rem' }}>
-            Earth Ground Stations (DSN)
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+            <span style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>
+              Earth Ground Stations (DSN)
+            </span>
+            <span
+              className="badge badge-amber"
+              data-testid="unverified-dsn-badge"
+              style={{ fontSize: '0.6rem', padding: '0.1rem 0.35rem', borderRadius: '0.25rem' }}
+            >
+              Unverified
+            </span>
+          </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.2rem' }}>
             {stationNames.map((name, idx) => {
               const vis = currentStationsVis[idx];

@@ -2,7 +2,7 @@
 
 Rules:
 - Conforms to schemas/visibility_cube.schema.json.
-- Topocentric direction computed per grid cell (tilt ~0.1 deg per km).
+- Topocentric direction computed per grid cell (tilt ~0.033 deg per km, ~0.10 deg per 3 km; see docs/PHYSICS_NOTES.md).
 - Terrain slopes via Horn's (1981) method.
 - Deterministic and reproducible.
 """

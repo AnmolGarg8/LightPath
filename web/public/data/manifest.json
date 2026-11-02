@@ -1,6 +1,16 @@
 {
   "files": [
     {
+      "path": "all_sites_windows.csv",
+      "size_bytes": 2632,
+      "sha256": "b2e5fc625155dce01f01d191372d6e1b6bf7b2432330de198ef7c5b007f2d47d"
+    },
+    {
+      "path": "all_sites_windows.parquet",
+      "size_bytes": 4429,
+      "sha256": "6220d8e60b31cb95d1c98e5b64854b1de275c9f986316974978d941726cca840"
+    },
+    {
       "path": "cubes/synthetic-crater-rim.bin",
       "size_bytes": 558,
       "sha256": "d492ec3c76ce1732795223a98b5fb03ef4dd8e031c08f369deb1971f3f364495"
@@ -12,13 +22,13 @@
     },
     {
       "path": "cubes/synthetic-flat-basin.bin",
-      "size_bytes": 555,
-      "sha256": "17207fc4f7f69f511be57aea7d0ea2f5ab6bb2b806945353c3acf9d5c6b7d174"
+      "size_bytes": 317,
+      "sha256": "20c31bbcf4e68afe91aa12c0714f45987d24b72fa50603043cf6e5db1a877c11"
     },
     {
       "path": "cubes/synthetic-flat-basin.json",
-      "size_bytes": 204797,
-      "sha256": "3f27ab56fbbb11fd6a9f4a7878b33d20cd73f38b2245427dc414d12f42cf5980"
+      "size_bytes": 605889,
+      "sha256": "5a4232a52484556dda060f440ec729a398a291fad1e930f1a97b5155793fbc8f"
     },
     {
       "path": "cubes/synthetic-proving-ground.bin",
@@ -31,9 +41,14 @@
       "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
     },
     {
+      "path": "data_catalog.json",
+      "size_bytes": 7253,
+      "sha256": "4d30dbc01bab31f3fbfcb7610a2e988f81ce5de26f10a2eb351227216f7870f9"
+    },
+    {
       "path": "index.json",
-      "size_bytes": 2432,
-      "sha256": "2bb6d6c0bb7de3604408ebcbcf93aae697685cd9ffef8c7d93d90f47478db8fd"
+      "size_bytes": 2888,
+      "sha256": "167c6e2f9dbf1f676bd42a0fbc5245059a7464e2649bd706fb6683ecebf79237"
     },
     {
       "path": "malapert-mountain/horizon.json",
@@ -69,6 +84,16 @@
       "path": "malapert-mountain/visibility_cube.json",
       "size_bytes": 22356,
       "sha256": "6817e6fce06dde23077a68773f56e6218ba33b9717d37d09e4c6d0fbbbf9db07"
+    },
+    {
+      "path": "malapert-mountain/windows.csv",
+      "size_bytes": 504,
+      "sha256": "da29dad008b28bd6c827e899a73bc6eb23e595ee5b0eecd8d1d7efc2ad9f47c3"
+    },
+    {
+      "path": "malapert-mountain/windows.parquet",
+      "size_bytes": 4053,
+      "sha256": "393b7bb2a826715b6c05e6df735911a6dc7b2d82f741117a4eb9e70fed8cc051"
     },
     {
       "path": "missions.json",
@@ -111,6 +136,16 @@
       "sha256": "642c02a4b2f770acfb2953a781088ddd71724eb3233e1c668938680ba6b26a25"
     },
     {
+      "path": "nobile-crater-rim/windows.csv",
+      "size_bytes": 504,
+      "sha256": "eb5aa2c9fe8336b4b2172b7c30a6834e8c3168030fc0aa3d0b7b686497780d03"
+    },
+    {
+      "path": "nobile-crater-rim/windows.parquet",
+      "size_bytes": 4077,
+      "sha256": "f89c572a61dde8825eb31d5c921e27e7be5c831ec4a7a9c9090af33abc8ab057"
+    },
+    {
       "path": "shackleton-connecting-ridge/horizon.json",
       "size_bytes": 57597,
       "sha256": "f041c827de8d3fad85c6a1d245224efe387c04e96fba68335bbb636b6ab8ee44"
@@ -146,9 +181,19 @@
       "sha256": "f2acd55fd1c1261ee03642fcc714e319d8921d6c5950a90461f7eb64b326d135"
     },
     {
+      "path": "shackleton-connecting-ridge/windows.csv",
+      "size_bytes": 647,
+      "sha256": "b49a3c929d78e510d0486b5d9712f29fafaee803ab9fb4add38211f7b454db34"
+    },
+    {
+      "path": "shackleton-connecting-ridge/windows.parquet",
+      "size_bytes": 4162,
+      "sha256": "b7273c257337640412ec24b42d25d6ebba6ae2a094312745bb70fd989a5d1e9e"
+    },
+    {
       "path": "sites.json",
-      "size_bytes": 696,
-      "sha256": "68af31fc924846c9c9894c4504ce13b614953f52916075a5865823f0df217462"
+      "size_bytes": 609,
+      "sha256": "5db673bc93055b933684ef80a42e1ecd143d3f5156f0de2e849f8dbf63252ec7"
     },
     {
       "path": "sites/synthetic-crater-rim.json",
@@ -157,13 +202,13 @@
     },
     {
       "path": "sites/synthetic-flat-basin.json",
-      "size_bytes": 3308,
-      "sha256": "0db440e904e1a46275d7906389dad13e14667c623ca9b5d7f4da9455606e0e6f"
+      "size_bytes": 3210,
+      "sha256": "8911aff690b1a71d9bc01cde097159c194ea12d72aba4726f1e67e8c2defdc36"
     },
     {
       "path": "sites/synthetic-proving-ground.json",
-      "size_bytes": 3228,
-      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+      "size_bytes": 3500,
+      "sha256": "e86b7070e94d3fe866eb08d0abdb596657f7267afc0d1a546b5ccdb8b8530981"
     },
     {
       "path": "synthetic-crater-rim/horizon.json",
@@ -187,8 +232,8 @@
     },
     {
       "path": "synthetic-crater-rim/stats.json",
-      "size_bytes": 1476,
-      "sha256": "14c8c4f24aa628cc1e9dccb2d04af1abb508c34924b5725f37c5279b419adcf5"
+      "size_bytes": 1314,
+      "sha256": "746b51813f6cc6489cd6e592f126c6bb4358aedf0095ed633eccbe91b40d3460"
     },
     {
       "path": "synthetic-crater-rim/visibility_cube.json",
@@ -196,34 +241,54 @@
       "sha256": "57e710b717b3bdf5d58472a0922de1cddf0b62505bd0b5b1af5be73d2d6befce"
     },
     {
+      "path": "synthetic-crater-rim/windows.csv",
+      "size_bytes": 507,
+      "sha256": "d68e88bbe1b67f5010caedb53aee3608406d7b24a33544e39e10bc20c641b7be"
+    },
+    {
+      "path": "synthetic-crater-rim/windows.parquet",
+      "size_bytes": 4068,
+      "sha256": "ce45bc2d00ce63df282fd69447cecb9e78e4a921b8816286613a6e47312a5324"
+    },
+    {
       "path": "synthetic-flat-basin/horizon.json",
-      "size_bytes": 20068,
-      "sha256": "86330f482c3509553edd51b21bc9501005b055fff6058536a749772da8cc2386"
+      "size_bytes": 12670,
+      "sha256": "1008888538ddc348027ae5e997be39574eb27480261a0bbc2418438319cb1014"
     },
     {
       "path": "synthetic-flat-basin/provenance.json",
-      "size_bytes": 962,
-      "sha256": "e53ba530589be7c4dcb2ae8a8cf25dfba090fec1431e1fc8bdfa7a2e2d241f26"
+      "size_bytes": 1020,
+      "sha256": "a26ac4f29a5cadc80407af3e76f5fe2aad7ac38d18025b508a61f1f08feb5332"
     },
     {
       "path": "synthetic-flat-basin/series.json",
-      "size_bytes": 3519,
-      "sha256": "cc37a6baadbcc0ca61e419c15cc23e4f8931d5b6e354d1a02d44a60f9302fd63"
+      "size_bytes": 14679,
+      "sha256": "21a42bfc459fc749d707c3542c7321b40cf859bdd43901e94597fba9a93d380d"
     },
     {
       "path": "synthetic-flat-basin/site.json",
-      "size_bytes": 3308,
-      "sha256": "0db440e904e1a46275d7906389dad13e14667c623ca9b5d7f4da9455606e0e6f"
+      "size_bytes": 3210,
+      "sha256": "8911aff690b1a71d9bc01cde097159c194ea12d72aba4726f1e67e8c2defdc36"
     },
     {
       "path": "synthetic-flat-basin/stats.json",
-      "size_bytes": 1484,
-      "sha256": "89df668ea50afdfd08495de80c8a10b99d4f22d5421446d60bc864f4b8c5f3e1"
+      "size_bytes": 1323,
+      "sha256": "1f096708e1af0bcef6fa1620637a61ec605da4b40f682d0f81d257f2dfd2c85e"
     },
     {
       "path": "synthetic-flat-basin/visibility_cube.json",
-      "size_bytes": 204797,
-      "sha256": "3f27ab56fbbb11fd6a9f4a7878b33d20cd73f38b2245427dc414d12f42cf5980"
+      "size_bytes": 605889,
+      "sha256": "5a4232a52484556dda060f440ec729a398a291fad1e930f1a97b5155793fbc8f"
+    },
+    {
+      "path": "synthetic-flat-basin/windows.csv",
+      "size_bytes": 507,
+      "sha256": "2e3a5630c198ed43ec6155302a3dc305915980c14fa4eeb1fecb4661640a3e5a"
+    },
+    {
+      "path": "synthetic-flat-basin/windows.parquet",
+      "size_bytes": 4089,
+      "sha256": "6d1857a4933321a3444494d9479fc004e3806c500b43382e72323c4759d3217a"
     },
     {
       "path": "synthetic-proving-ground/horizon.json",
@@ -247,8 +312,8 @@
     },
     {
       "path": "synthetic-proving-ground/site.json",
-      "size_bytes": 3228,
-      "sha256": "b009a7b7c3307724be5fa45d57571be6454d3d17e6235a900a15ad2b706c7b78"
+      "size_bytes": 3500,
+      "sha256": "e86b7070e94d3fe866eb08d0abdb596657f7267afc0d1a546b5ccdb8b8530981"
     },
     {
       "path": "synthetic-proving-ground/stats.json",
@@ -261,9 +326,19 @@
       "sha256": "d6166468cb12acc179f7e74f0c0ece3cfd80866bba9b66976f46983c1e2616d4"
     },
     {
+      "path": "synthetic-proving-ground/windows.csv",
+      "size_bytes": 523,
+      "sha256": "c4c05dfb0d28903b67fd9ec88360680b3100549ee7b72df05a3a77fa6269f13b"
+    },
+    {
+      "path": "synthetic-proving-ground/windows.parquet",
+      "size_bytes": 4109,
+      "sha256": "415af6e3a265b212b06e0e0393b65ea25612e81393850ca4213dc66ec5c68bea"
+    },
+    {
       "path": "test_results.json",
-      "size_bytes": 6325,
-      "sha256": "75c1d06b9ccec893680b3ca095188151e90a250161feb1908df9601a45ea9bea"
+      "size_bytes": 11439,
+      "sha256": "e3eada4a54b8cfac93fb464ff3f4c0b732d11eb77ef4d7a22a4c8ed344b0a8b5"
     }
   ],
   "run_configuration": {
@@ -306,6 +381,6 @@
     "end_utc": "2026-11-05T00:00:00Z"
   },
   "timestamp": "2026-11-01T00:00:00Z",
-  "code_commit": "9c5c90917eaecfea3526da68fd462c9a5582b322",
+  "code_commit": "6d4c808eda2ef33fa0e83a2d275966741cc7c5ec",
   "is_synthetic": true
 }

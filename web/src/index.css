@@ -42,9 +42,9 @@
   --color-sun-bg: rgba(245, 158, 11, 0.15);
   --color-sun-border: rgba(245, 158, 11, 0.4);
 
-  --color-earth: #0284c7;     /* Earth Cyan/Blue */
-  --color-earth-bg: rgba(2, 132, 199, 0.15);
-  --color-earth-border: rgba(2, 132, 199, 0.4);
+  --color-earth: #38bdf8;     /* Earth Cyan/Sky Blue for high contrast on dark surfaces */
+  --color-earth-bg: rgba(56, 189, 248, 0.15);
+  --color-earth-border: rgba(56, 189, 248, 0.4);
 
   --color-joint: #a855f7;     /* Sun + Earth Purple */
   --color-joint-bg: rgba(168, 85, 247, 0.15);
@@ -308,4 +308,128 @@ code, pre, .mono {
   background-color: #fce7f3;
   color: #9d174d;
   border-bottom: 2px solid #f472b6;
+}
+
+/* ==========================================================================
+   Responsive Mobile Layout (WCAG 2.5.5 / 360px Viewports)
+   ========================================================================== */
+.planner-workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) 300px;
+  gap: 1.5rem;
+}
+
+.light-budget-strip-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+}
+
+@media (max-width: 860px) {
+  .planner-workspace-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Enforce minimum 44px touch targets on mobile viewports */
+  .btn,
+  button,
+  select,
+  .touch-target-44 {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  input[type='range'] {
+    height: 44px;
+    margin: 0;
+  }
+
+  .segmented-control-btn {
+    min-height: 44px;
+    padding: 0.65rem 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Print Stylesheet for Route Cards & Evidence Cards
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 12mm;
+    size: auto;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hide interactive, navigational, and non-printable chrome */
+  header,
+  nav,
+  footer,
+  .disclaimer-banner,
+  .no-print,
+  button,
+  .btn,
+  .theme-toggle,
+  .segmented-control,
+  input,
+  select,
+  [data-testid='onboarding-hint'],
+  .planner-actions-toolbar {
+    display: none !important;
+  }
+
+  /* Unconstrain modals so the printable evidence card takes full document page */
+  .route-evidence-modal-backdrop {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .route-evidence-modal-content {
+    max-width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #route-evidence-printable-card,
+  .evidence-card,
+  .card,
+  .printable-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin-bottom: 1.5rem !important;
+    padding: 1rem !important;
+  }
+
+  /* Typography adjustments for print */
+  h1, h2, h3, h4, h5, h6 {
+    color: #111827 !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  a {
+    color: #111827 !important;
+    text-decoration: underline !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }

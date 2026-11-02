@@ -47,8 +47,8 @@ export const SiteSelector: React.FC<Props> = ({ sites, selectedSiteId, onSelectS
                     <ShieldCheck size={10} style={{ marginRight: '2px' }} /> Verified
                   </span>
                 ) : (
-                  <span className="badge badge-amber" style={{ fontSize: '0.65rem' }}>
-                    <AlertCircle size={10} style={{ marginRight: '2px' }} /> Synthetic
+                  <span className="badge badge-amber" data-testid="unverified-site-badge" style={{ fontSize: '0.65rem' }}>
+                    <AlertCircle size={10} style={{ marginRight: '2px' }} /> Unverified
                   </span>
                 )}
               </div>

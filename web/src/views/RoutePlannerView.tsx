@@ -8,14 +8,44 @@ import { fetchBinaryCube, fetchJsonData } from '../utils/dataLoader';
 import { DecodedVisibilityCube } from '../utils/cubeDecoder';
 import { VisibilityCubeHeaderSchema, VisibilityCubeHeader } from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
+import { DepartureWindowMap } from '../components/DepartureWindowMap';
+import { MissionPlanner } from '../components/MissionPlanner';
+import { RobustnessPanel } from '../components/RobustnessPanel';
+import {
+  runConservativeComparisonWorker,
+  runDepartureMapWorker,
+  runLandingDispersionWorker,
+  runMissionPlanWorker,
+} from '../workers/routeWorkerClient';
+import {
+  ConservativeComparisonResult,
+  DepartureMapResult,
+  LandingDispersionPoint,
+  LandingDispersionResult,
+  MissionPlanResult,
+  MissionStop,
+  RouteResult,
+  Scenario,
+  VisibilityCube,
+} from '../types';
+import { Share2, Download, Upload, FileText, ArrowRightLeft } from 'lucide-react';
+import { RouteEvidenceCard } from '../components/RouteEvidenceCard';
+import {
+  buildRouteEvidenceData,
+  encodeScenarioHash,
+  exportScenarioJson,
+  importScenarioJson,
+  isHashTooLong,
+} from '../utils/scenarioCodec';
 
 interface RoutePlannerViewProps {
   siteId: string;
+  initialScenario?: Scenario | null;
 }
 
 type LayerMode = 'sun' | 'earth' | 'slope' | 'traversability';
 
-export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) => {
+export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, initialScenario = null }) => {
   const [header, setHeader] = useState<VisibilityCubeHeader | null>(null);
   const [cube, setCube] = useState<DecodedVisibilityCube | null>(null);
   const [loading, setLoading] = useState(true);
@@ -24,13 +54,88 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
   const [timeStep, setTimeStep] = useState<number>(0);
   const [mode, setMode] = useState<LayerMode>('sun');
 
+  // Planner Mode: Single Traverse vs Multi-Stop Mission Plan
+  const [plannerMode, setPlannerMode] = useState<'single' | 'mission'>(() => {
+    if (typeof window !== 'undefined' && window.location.hash.includes('planner=mission')) {
+      return 'mission';
+    }
+    return 'single';
+  });
+
   // Waypoints for traverse from A to B
-  const [startPoint, setStartPoint] = useState<[number, number]>([3, 3]);
-  const [endPoint, setEndPoint] = useState<[number, number]>([20, 20]);
+  const [startPoint, setStartPoint] = useState<[number, number]>(() => initialScenario?.start_coord || [3, 3]);
+  const [endPoint, setEndPoint] = useState<[number, number]>(() => initialScenario?.goal_coord || [20, 20]);
   const [hoverCell, setHoverCell] = useState<{ x: number; y: number } | null>(null);
+
+  // Active space-time route and departure window map
+  const [activeRoute, setActiveRoute] = useState<RouteResult | null>(null);
+  const [departureMap, setDepartureMap] = useState<DepartureMapResult | null>(null);
+  const [mapLoading, setMapLoading] = useState(false);
+  const [selectedDepIdx, setSelectedDepIdx] = useState<number>(0);
+
+  // Reproducibility, Evidence Card, & Sharing State
+  const [showEvidenceCard, setShowEvidenceCard] = useState<boolean>(false);
+  const [scenarioWarning, setScenarioWarning] = useState<string | null>(null);
+  const [shareNotice, setShareNotice] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Onboarding Hint (appears once, dismissible)
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    try {
+      return localStorage.getItem('lightpath_onboarding_dismissed') !== 'true';
+    } catch {
+      return true;
+    }
+  });
+
+  const handleDismissOnboarding = () => {
+    setShowOnboarding(false);
+    try {
+      localStorage.setItem('lightpath_onboarding_dismissed', 'true');
+    } catch {
+      // ignore
+    }
+  };
+
+  // Terrain uncertainty & Landing dispersion robustness
+  const [conservativeComparison, setConservativeComparison] = useState<ConservativeComparisonResult | null>(null);
+  const [compLoading, setCompLoading] = useState<boolean>(false);
+  const [dispersionResult, setDispersionResult] = useState<LandingDispersionResult | null>(null);
+  const [dispersionLoading, setDispersionLoading] = useState<boolean>(false);
+  const [dispersionRadiusM, setDispersionRadiusM] = useState<number>(250);
+  const [dispersionNumPoints, setDispersionNumPoints] = useState<number>(25);
+  const [selectedDispersionPt, setSelectedDispersionPt] = useState<LandingDispersionPoint | null>(null);
+
+  // Multi-stop mission plan state (up to 5 stops)
+  const [stops, setStops] = useState<MissionStop[]>([
+    {
+      stop_id: 'station_1',
+      name: 'Station 1 - PSR Rim',
+      coord: [10, 10],
+      dwell_time_h: 1.5,
+      min_sun_frac: 0.5,
+      min_earth_duration_h: 1.0,
+    },
+    {
+      stop_id: 'station_2',
+      name: 'Station 2 - Solar Peak',
+      coord: [20, 20],
+      dwell_time_h: 2.0,
+      min_sun_frac: 0.5,
+    },
+  ]);
+  const [missionPlan, setMissionPlan] = useState<MissionPlanResult | null>(null);
+  const [missionLoading, setMissionLoading] = useState<boolean>(false);
+
+  // Solver parameters
+  const [speedMs, setSpeedMs] = useState<number>(() => initialScenario?.speed_m_s ?? 0.05); // 0.05 m/s = 180 m/h
+  const [maxSlopeDeg, setMaxSlopeDeg] = useState<number>(() => initialScenario?.max_slope_deg ?? 15.0);
+  const [darkBudgetH, setDarkBudgetH] = useState<number>(0.0);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // 1. Fetch visibility cube JSON header and compressed binary
   useEffect(() => {
     setLoading(true);
     Promise.all([
@@ -48,7 +153,234 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
       });
   }, [siteId]);
 
-  // Render 2D Traversability and Visibility Grid
+  // 2. Compute Departure Window Map and Active Route whenever parameters or endpoints change
+  useEffect(() => {
+    if (!header) return;
+
+    let cancelled = false;
+    setMapLoading(true);
+
+    const cubePayload: VisibilityCube = {
+      grid: header.grid,
+      time_utc: header.time_utc,
+      sun_frac: header.sun_frac,
+      earth_frac: header.earth_frac,
+      slope_deg: header.slope_deg,
+      traversable: header.traversable,
+      flags: header.flags,
+    };
+
+    // Run Departure Window Map worker
+    runDepartureMapWorker(cubePayload, startPoint, endPoint, {
+      speed_m_s: speedMs,
+      max_slope_deg: maxSlopeDeg,
+      dark_budget_h: darkBudgetH,
+      min_sun_frac: 0.5,
+      min_earth_frac: 0.5,
+      allow_wait: true,
+    })
+      .then((depMap) => {
+        if (cancelled) return;
+        setDepartureMap(depMap);
+        setMapLoading(false);
+
+        // Pick initial selected departure: earliest feasible if available, else 0
+        const chosenDepIdx =
+          depMap.earliest_feasible_idx !== null ? depMap.earliest_feasible_idx : 0;
+        setSelectedDepIdx(chosenDepIdx);
+        setTimeStep(chosenDepIdx);
+
+        // Load route for the chosen departure
+        const depEntry = depMap.departures[chosenDepIdx];
+        if (depEntry && depEntry.feasible && depEntry.path) {
+          setCompLoading(true);
+          runConservativeComparisonWorker(cubePayload, startPoint, endPoint, {
+            startTimeIdx: chosenDepIdx,
+            speed_m_s: speedMs,
+            max_slope_deg: maxSlopeDeg,
+            dark_budget_h: darkBudgetH,
+            horizon_margin_deg: 0.10,
+          })
+            .then((comp) => {
+              if (!cancelled) {
+                setConservativeComparison(comp);
+                setActiveRoute(comp.nominal);
+                setCompLoading(false);
+              }
+            })
+            .catch(() => {
+              if (!cancelled) setCompLoading(false);
+            });
+        } else {
+          setActiveRoute(null);
+          setConservativeComparison(null);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error('Departure map worker error:', err);
+          setMapLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [header, startPoint, endPoint, speedMs, maxSlopeDeg, darkBudgetH]);
+
+  // 3. Handle user clicking a specific departure step in DepartureWindowMap
+  const handleSelectDeparture = (depIdx: number) => {
+    setSelectedDepIdx(depIdx);
+    setTimeStep(depIdx);
+
+    if (!header) return;
+    const cubePayload: VisibilityCube = {
+      grid: header.grid,
+      time_utc: header.time_utc,
+      sun_frac: header.sun_frac,
+      earth_frac: header.earth_frac,
+      slope_deg: header.slope_deg,
+      traversable: header.traversable,
+      flags: header.flags,
+    };
+
+    setCompLoading(true);
+    runConservativeComparisonWorker(cubePayload, startPoint, endPoint, {
+      startTimeIdx: depIdx,
+      speed_m_s: speedMs,
+      max_slope_deg: maxSlopeDeg,
+      dark_budget_h: darkBudgetH,
+      horizon_margin_deg: 0.10,
+    })
+      .then((comp) => {
+        setConservativeComparison(comp);
+        setActiveRoute(comp.nominal);
+        setCompLoading(false);
+      })
+      .catch((err) => {
+        console.error('Route solve error:', err);
+        setCompLoading(false);
+      });
+  };
+
+  const handleRunDispersion = () => {
+    if (!header) return;
+    setDispersionLoading(true);
+    const cubePayload: VisibilityCube = {
+      grid: header.grid,
+      time_utc: header.time_utc,
+      sun_frac: header.sun_frac,
+      earth_frac: header.earth_frac,
+      slope_deg: header.slope_deg,
+      traversable: header.traversable,
+      flags: header.flags,
+    };
+
+    runLandingDispersionWorker(cubePayload, startPoint, endPoint, {
+      radius_m: dispersionRadiusM,
+      num_points: dispersionNumPoints,
+      startTimeIdx: selectedDepIdx,
+      speed_m_s: speedMs,
+      max_slope_deg: maxSlopeDeg,
+      dark_budget_h: darkBudgetH,
+      horizon_margin_deg: 0.10,
+    })
+      .then((res) => {
+        setDispersionResult(res);
+        setDispersionLoading(false);
+      })
+      .catch((err) => {
+        console.error('Landing dispersion worker error:', err);
+        setDispersionLoading(false);
+      });
+  };
+
+  // Auto-run dispersion if requested in URL hash (e.g. for headless screenshots)
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      window.location.hash.includes('auto=dispersion') &&
+      header &&
+      !dispersionResult &&
+      !dispersionLoading
+    ) {
+      handleRunDispersion();
+    }
+  }, [header]);
+
+  // Auto-open Route Evidence Card if requested in URL hash (e.g. for headless screenshots)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash.includes('evidence=1') && activeRoute) {
+      setShowEvidenceCard(true);
+    }
+  }, [activeRoute]);
+
+  // 3b. Compute Multi-Stop Mission Plan whenever stops or solver parameters change
+  useEffect(() => {
+    if (!header || !cube) return;
+    let cancelled = false;
+    setMissionLoading(true);
+
+    const cubePayload: VisibilityCube = {
+      grid: header.grid,
+      time_utc: header.time_utc,
+      sun_frac: header.sun_frac,
+      earth_frac: header.earth_frac,
+      slope_deg: header.slope_deg,
+      traversable: header.traversable,
+      flags: header.flags,
+    };
+
+    runMissionPlanWorker(cubePayload, startPoint, selectedDepIdx, stops, {
+      speed_m_s: speedMs,
+      max_slope_deg: maxSlopeDeg,
+      dark_budget_h: darkBudgetH,
+      allow_wait: true,
+      mission_name: `${siteId || 'Lunar'} Sortie Plan`,
+    })
+      .then((res) => {
+        if (!cancelled) {
+          setMissionPlan(res);
+          setMissionLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error('Mission planner worker error:', err);
+          setMissionLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [header, cube, startPoint, selectedDepIdx, stops, speedMs, maxSlopeDeg, darkBudgetH]);
+
+  const handleApplyFix = (patch: Record<string, unknown>) => {
+    if (patch.new_stop_order && Array.isArray(patch.new_stop_order)) {
+      const orderIds = patch.new_stop_order as string[];
+      const reordered: MissionStop[] = [];
+      for (const id of orderIds) {
+        const found = stops.find((s) => s.stop_id === id);
+        if (found) reordered.push(found);
+      }
+      for (const s of stops) {
+        if (!reordered.some((r) => r.stop_id === s.stop_id)) reordered.push(s);
+      }
+      setStops(reordered);
+    } else if (patch.start_time_idx !== undefined) {
+      setSelectedDepIdx(patch.start_time_idx as number);
+      setTimeStep(patch.start_time_idx as number);
+    } else if (patch.stop_index !== undefined && patch.new_dwell_time_h !== undefined) {
+      const sIdx = patch.stop_index as number;
+      const updated = stops.map((s, idx) =>
+        idx === sIdx ? { ...s, dwell_time_h: patch.new_dwell_time_h as number } : s
+      );
+      setStops(updated);
+    }
+  };
+
+  // 4. Render 2D Traversability & Visibility Grid with Route Waypoints
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !cube) return;
@@ -66,49 +398,214 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
       for (let c = 0; c < nx; c++) {
         if (mode === 'sun') {
           const val = cube.getSunFrac(timeStep, r, c);
-          // Solar gradient: black (0%) to amber (100%)
           ctx.fillStyle = `rgb(${Math.round(val * 2.45)}, ${Math.round(val * 1.58)}, ${Math.round(val * 0.11)})`;
         } else if (mode === 'earth') {
           const val = cube.getEarthFrac(timeStep, r, c);
-          // Earth gradient: black (0%) to cyan (100%)
           ctx.fillStyle = `rgb(${Math.round(val * 0.06)}, ${Math.round(val * 1.82)}, ${Math.round(val * 2.48)})`;
         } else if (mode === 'slope') {
           const s = cube.getSlopeDeg(r, c);
-          // Green (<15 deg traversable) to Red (>25 deg steep)
           const norm = Math.min(1.0, s / 30.0);
           ctx.fillStyle = `rgb(${Math.round(norm * 240)}, ${Math.round((1 - norm) * 200)}, 40)`;
         } else {
-          // Traversability binary
           const trav = cube.isTraversable(r, c);
           ctx.fillStyle = trav ? '#059669' : '#dc2626';
         }
 
         ctx.fillRect(c * cellW, r * cellH, cellW, cellH);
 
-        // Thin cell grid lines
         ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
         ctx.lineWidth = 0.5;
         ctx.strokeRect(c * cellW, r * cellH, cellW, cellH);
       }
     }
 
-    // Draw planned traverse path line between startPoint and endPoint
-    if (startPoint && endPoint) {
+    // Draw planned space-time route if available
+    if (plannerMode === 'mission' && missionPlan) {
+      // Draw Multi-Stop Mission Plan legs
+      missionPlan.legs.forEach((leg, lIdx) => {
+        if (!leg.feasible || leg.path.length < 2) return;
+        ctx.strokeStyle = lIdx % 2 === 0 ? '#38bdf8' : '#60a5fa';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        leg.path.forEach((wp, wIdx) => {
+          const px = (wp.x + 0.5) * cellW;
+          const py = (wp.y + 0.5) * cellH;
+          if (wIdx === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.stroke();
+
+        leg.path.forEach((wp) => {
+          const px = (wp.x + 0.5) * cellW;
+          const py = (wp.y + 0.5) * cellH;
+          ctx.fillStyle = '#bae6fd';
+          ctx.beginPath();
+          ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        });
+      });
+
+      // Start Marker (Base Lander)
+      const sx = (startPoint[0] + 0.5) * cellW;
+      const sy = (startPoint[1] + 0.5) * cellH;
+      ctx.fillStyle = '#10b981';
+      ctx.beginPath();
+      ctx.arc(sx, sy, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Stops Markers (1..5)
+      stops.forEach((st, sIdx) => {
+        const px = (st.coord[0] + 0.5) * cellW;
+        const py = (st.coord[1] + 0.5) * cellH;
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath();
+        ctx.arc(px, py, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`${sIdx + 1}`, px, py);
+      });
+    } else if (activeRoute && activeRoute.feasible && activeRoute.path.length > 1) {
+      // 1. Conservative Route (if feasible, rendered in dashed amber beside nominal route)
+      if (
+        conservativeComparison?.conservative?.feasible &&
+        conservativeComparison.conservative.path.length > 1
+      ) {
+        ctx.strokeStyle = '#f59e0b';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([5, 3]);
+        ctx.beginPath();
+        conservativeComparison.conservative.path.forEach((wp, idx) => {
+          const px = (wp.x + 0.5) * cellW;
+          const py = (wp.y + 0.5) * cellH;
+          if (idx === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 2. Nominal Route (rendered in solid cyan)
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      activeRoute.path.forEach((wp, idx) => {
+        const px = (wp.x + 0.5) * cellW;
+        const py = (wp.y + 0.5) * cellH;
+        if (idx === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.stroke();
+
+      // Waypoint dots
+      activeRoute.path.forEach((wp) => {
+        const px = (wp.x + 0.5) * cellW;
+        const py = (wp.y + 0.5) * cellH;
+        ctx.fillStyle = '#bae6fd';
+        ctx.beginPath();
+        ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Smooth & Honest Rover Marker: tracks rover location as time slider is dragged
+      let activeRoverPos = activeRoute.path[0];
+      for (const wp of activeRoute.path) {
+        if (wp.t <= timeStep) {
+          activeRoverPos = wp;
+        } else {
+          break;
+        }
+      }
+
+      if (activeRoverPos) {
+        const rx = (activeRoverPos.x + 0.5) * cellW;
+        const ry = (activeRoverPos.y + 0.5) * cellH;
+
+        // Outer beacon glow
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(rx, ry, 8, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Rover chassis core
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(rx, ry, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Crosshair wheels/solar panels
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(rx - 7, ry);
+        ctx.lineTo(rx + 7, ry);
+        ctx.moveTo(rx, ry - 7);
+        ctx.lineTo(rx, ry + 7);
+        ctx.stroke();
+      }
+    } else if (startPoint && endPoint) {
+      // Fallback straight dashed guide line
       const sx = (startPoint[0] + 0.5) * cellW;
       const sy = (startPoint[1] + 0.5) * cellH;
       const ex = (endPoint[0] + 0.5) * cellW;
       const ey = (endPoint[1] + 0.5) * cellH;
 
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 3;
-      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(sx, sy);
       ctx.lineTo(ex, ey);
       ctx.stroke();
       ctx.setLineDash([]);
+    }
+
+    if (plannerMode === 'single') {
+      // Landing Dispersion Overlay (if computed)
+      if (dispersionResult && header) {
+        const spacingM = header.grid.spacing_m;
+        const radiusCells = dispersionRadiusM / spacingM;
+        const cx = (startPoint[0] + 0.5) * cellW;
+        const cy = (startPoint[1] + 0.5) * cellH;
+
+        // Dispersion boundary circle
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.5)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, radiusCells * cellW, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Sample points
+        dispersionResult.points.forEach((pt) => {
+          const px = (pt.coord[0] + 0.5) * cellW;
+          const py = (pt.coord[1] + 0.5) * cellH;
+          const isSelected = selectedDispersionPt?.point_id === pt.point_id;
+
+          ctx.fillStyle = pt.feasible ? '#10b981' : '#ef4444';
+          ctx.beginPath();
+          ctx.arc(px, py, isSelected ? 5.5 : 3.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#ffffff';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        });
+      }
 
       // Start Marker (A)
+      const sx = (startPoint[0] + 0.5) * cellW;
+      const sy = (startPoint[1] + 0.5) * cellH;
       ctx.fillStyle = '#10b981';
       ctx.beginPath();
       ctx.arc(sx, sy, 7, 0, Math.PI * 2);
@@ -118,6 +615,8 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
       ctx.stroke();
 
       // End Marker (B)
+      const ex = (endPoint[0] + 0.5) * cellW;
+      const ey = (endPoint[1] + 0.5) * cellH;
       ctx.fillStyle = '#f59e0b';
       ctx.beginPath();
       ctx.arc(ex, ey, 7, 0, Math.PI * 2);
@@ -126,7 +625,22 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
       ctx.lineWidth = 2;
       ctx.stroke();
     }
-  }, [cube, timeStep, mode, startPoint, endPoint]);
+  }, [
+    cube,
+    timeStep,
+    mode,
+    startPoint,
+    endPoint,
+    activeRoute,
+    plannerMode,
+    missionPlan,
+    stops,
+    conservativeComparison,
+    dispersionResult,
+    selectedDispersionPt,
+    dispersionRadiusM,
+    header,
+  ]);
 
   if (error) {
     return <ValidationErrorPage error={error} onRetry={() => window.location.reload()} />;
@@ -148,7 +662,6 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
     const y = Math.floor(((e.clientY - rect.top) / rect.height) * cube.ny);
 
     if (x >= 0 && x < cube.nx && y >= 0 && y < cube.ny) {
-      // Toggle start or end point
       if (Math.abs(x - startPoint[0]) + Math.abs(y - startPoint[1]) < 3) {
         setStartPoint([x, y]);
       } else {
@@ -168,59 +681,408 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
     }
   };
 
-  // Traverse calculation
-  const dxCells = endPoint[0] - startPoint[0];
-  const dyCells = endPoint[1] - startPoint[1];
-  const distM = Math.round(Math.hypot(dxCells, dyCells) * header.grid.spacing_m);
-  const estTraverseHours = (distM / 300.0).toFixed(1); // 300 m/h nominal rover speed
+  const traverseDistM = activeRoute?.metrics?.total_distance_m ?? Math.round(
+    Math.hypot(endPoint[0] - startPoint[0], endPoint[1] - startPoint[1]) * header.grid.spacing_m
+  );
+  const traverseDurationH = activeRoute?.metrics?.duration_h ?? (traverseDistM / (speedMs * 3600)).toFixed(1);
+
+  const getCurrentScenario = (): Scenario => ({
+    version: 'v1',
+    site_id: siteId,
+    start_date: header?.time_utc?.[0]?.split('T')[0] || '2026-11-01',
+    end_date: header?.time_utc?.[header.time_utc.length - 1]?.split('T')[0] || '2026-11-08',
+    min_sun_frac: 0.5,
+    min_earth_frac: 0.5,
+    mast_height_m: 2.0,
+    speed_m_s: speedMs,
+    max_slope_deg: maxSlopeDeg,
+    allow_wait: true,
+    mode: 'earliest-arrival',
+    conservative: false,
+    horizon_margin_deg: 0.0,
+    start_coord: startPoint,
+    goal_coord: endPoint,
+    data_version_hash: '9f8e21a0',
+  });
+
+  const handleShareScenario = () => {
+    const scen = getCurrentScenario();
+    const slug = encodeScenarioHash(scen);
+    if (isHashTooLong(slug)) {
+      alert('Scenario parameters exceed URL length budget (220 characters). Please download the scenario file (.json) instead.');
+      return;
+    }
+    const url = `${window.location.origin}${window.location.pathname}#/scenario/${slug}`;
+    navigator.clipboard.writeText(url);
+    setShareNotice('Reproducible link copied to clipboard! (Plain letters, digits, and hyphens only)');
+    setTimeout(() => setShareNotice(null), 4000);
+  };
+
+  const handleExportScenario = () => {
+    const scen = getCurrentScenario();
+    const jsonStr = exportScenarioJson(scen, '9f8e21a0', `Traverse ${siteId}`);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `scenario-${siteId}-${startPoint.join('-')}-to-${endPoint.join('-')}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target?.result as string;
+      const { scenario, warning, error: parseError } = importScenarioJson(content, '9f8e21a0');
+      if (parseError) {
+        alert(parseError);
+        return;
+      }
+      if (scenario) {
+        setStartPoint(scenario.start_coord);
+        setEndPoint(scenario.goal_coord);
+        setSpeedMs(scenario.speed_m_s);
+        setMaxSlopeDeg(scenario.max_slope_deg);
+        if (warning) {
+          setScenarioWarning(warning);
+        } else {
+          setScenarioWarning(null);
+        }
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  const evidenceData = activeRoute
+    ? buildRouteEvidenceData(
+        getCurrentScenario(),
+        activeRoute,
+        siteId === 'synthetic-proving-ground' ? 'Synthetic Proving Ground' : siteId,
+        { lat_deg: -89.9, lon_deg: 0.0, ground_elev_m: 0.0 },
+        conservativeComparison?.cost_of_caution
+          ? {
+              extra_distance_m: conservativeComparison.cost_of_caution.extra_distance_m,
+              extra_duration_h: conservativeComparison.cost_of_caution.extra_duration_h,
+            }
+          : undefined,
+        departureMap
+          ? {
+              earliest_utc: departureMap.earliest_feasible_utc || undefined,
+              latest_safe_utc: departureMap.latest_safe_utc || undefined,
+            }
+          : undefined
+      )
+    : null;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div>
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.4rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.4rem', alignItems: 'center' }}>
           <Badge variant="joint" label="SPATIO-TEMPORAL ROUTE PLANNER" />
           <Badge variant="synthetic" label="MOVING ILLUMINATION SHADOW" />
+          {mapLoading && (
+            <span className="mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-primary)', marginLeft: '0.5rem' }}>
+              ⚡ Updating departure map...
+            </span>
+          )}
         </div>
         <h1>Rover & Crew Traverse Planner</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-base)' }}>
-          Whether a rover can travel from A to B while continuous light and direct-to-Earth link are available.
+        <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-base)', marginBottom: '1rem' }}>
+          Calculate dynamic traverse paths across moving polar shadows and compute full departure feasibility windows.
         </p>
+
+        {/* Three-Step Onboarding Hint (appears once, dismissible) */}
+        {showOnboarding && (
+          <div
+            data-testid="onboarding-hint"
+            style={{
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-focus)',
+              borderRadius: '8px',
+              padding: '1.25rem',
+              marginBottom: '1rem',
+              boxShadow: 'var(--shadow-md)',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ fontSize: '1.25rem' }}>🚀</span>
+                <strong style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+                  How to Plan a Lunar Traverse (3 Steps)
+                </strong>
+              </div>
+              <button
+                onClick={handleDismissOnboarding}
+                data-testid="dismiss-onboarding-btn"
+                className="btn btn-outline touch-target-44"
+                style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem' }}
+                aria-label="Dismiss guide"
+              >
+                Dismiss [×]
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.75rem' }}>
+              <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                <div style={{ fontWeight: 700, color: '#38bdf8', fontSize: '0.825rem', marginBottom: '0.2rem' }}>
+                  1. Set Start & Goal
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                  Click anywhere on the terrain map to place Goal Point B. Green marker A indicates the landing site.
+                </div>
+              </div>
+
+              <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                <div style={{ fontWeight: 700, color: '#fbbf24', fontSize: '0.825rem', marginBottom: '0.2rem' }}>
+                  2. Press Solve
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                  Configure speed (0.05 m/s) and max slope (15°), then press Solve Traverse to compute the safest path.
+                </div>
+              </div>
+
+              <div style={{ backgroundColor: 'var(--bg-card)', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
+                <div style={{ fontWeight: 700, color: '#10b981', fontSize: '0.825rem', marginBottom: '0.2rem' }}>
+                  3. Drag the Time Slider
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                  Drag the timeline scrubber below to watch polar crater shadows sweep across the terrain and see the rover move.
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Scenario Version Warning */}
+        {scenarioWarning && (
+          <div
+            style={{
+              padding: '0.75rem 1rem',
+              backgroundColor: '#fef3c7',
+              borderLeft: '4px solid #f59e0b',
+              borderRadius: '4px',
+              fontSize: '0.85rem',
+              color: '#92400e',
+              marginBottom: '0.75rem',
+            }}
+          >
+            <strong>Version Warning:</strong> {scenarioWarning}
+          </div>
+        )}
+
+        {/* Share Link Notification Toast */}
+        {shareNotice && (
+          <div
+            style={{
+              padding: '0.5rem 0.75rem',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              borderLeft: '4px solid #22c55e',
+              borderRadius: '4px',
+              fontSize: '0.85rem',
+              color: '#16a34a',
+              marginBottom: '0.75rem',
+            }}
+          >
+            {shareNotice}
+          </div>
+        )}
+
+        {/* Reproducibility & Sharing Action Toolbar */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+          <button
+            onClick={handleShareScenario}
+            className="btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.4rem 0.75rem',
+              fontSize: '0.82rem',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+            }}
+          >
+            <Share2 size={14} />
+            Share Link (Plain Hash)
+          </button>
+          <button
+            onClick={handleExportScenario}
+            className="btn"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.4rem 0.75rem',
+              fontSize: '0.82rem',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+            }}
+          >
+            <Download size={14} />
+            Export Scenario (.json)
+          </button>
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.4rem 0.75rem',
+              fontSize: '0.82rem',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              color: 'var(--text-primary)',
+            }}
+          >
+            <Upload size={14} />
+            Import Scenario (.json)
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleImportFile}
+              style={{ display: 'none' }}
+            />
+          </label>
+          {activeRoute && (
+            <button
+              onClick={() => setShowEvidenceCard(true)}
+              className="btn"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                padding: '0.4rem 0.75rem',
+                fontSize: '0.82rem',
+                backgroundColor: 'var(--bg-secondary)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                color: 'var(--text-primary)',
+              }}
+            >
+              <FileText size={14} />
+              Route Evidence Card (1-Page Print)
+            </button>
+          )}
+          <a
+            href="#/compare-scenarios"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+              padding: '0.4rem 0.75rem',
+              fontSize: '0.82rem',
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              color: 'var(--accent-primary)',
+              fontWeight: 600,
+            }}
+          >
+            <ArrowRightLeft size={14} />
+            Compare Scenarios &rarr;
+          </a>
+        </div>
       </div>
+
+      {/* Route Evidence Card Printable Modal */}
+      {showEvidenceCard && evidenceData && (
+        <div
+          className="route-evidence-modal-backdrop"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            zIndex: 100,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '2rem',
+            overflowY: 'auto',
+          }}
+        >
+          <div className="route-evidence-modal-content" style={{ maxHeight: '95vh', overflowY: 'auto', width: '100%', maxWidth: '960px' }}>
+            <RouteEvidenceCard
+              data={evidenceData}
+              onClose={() => setShowEvidenceCard(false)}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Traverse Summary Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
         <Stat
           label="Traverse Distance"
-          value={distM}
+          value={traverseDistM}
           unit="meters"
           variant="neutral"
           description={`From Point A [${startPoint.join(',')}] to Point B [${endPoint.join(',')}].`}
         />
         <Stat
-          label="Estimated Traverse Time"
-          value={estTraverseHours}
+          label="Traverse Duration"
+          value={traverseDurationH}
           unit="hours"
           variant="sun"
-          description="At nominal 300 m/h lunar surface speed."
+          description={`At ${(speedMs * 3600).toFixed(0)} m/h (${speedMs} m/s) nominal surface speed.`}
         />
         <Stat
-          label="Corridor Traversability"
-          value={cube.isTraversable(endPoint[1], endPoint[0]) ? 'GO' : 'NO-GO'}
-          variant={cube.isTraversable(endPoint[1], endPoint[0]) ? 'success' : 'alert'}
-          description="Mechanical slope <= 15° along traverse endpoint."
+          label="Corridor Feasibility"
+          value={activeRoute ? (activeRoute.feasible ? 'FEASIBLE' : 'INFEASIBLE') : 'COMPUTING...'}
+          variant={activeRoute?.feasible ? 'success' : 'alert'}
+          description={
+            activeRoute
+              ? activeRoute.feasible
+                ? 'Valid route: rover reaches destination before dark within slope limits.'
+                : (activeRoute.explanation || 'No route found: darkness limit or slope threshold exceeded. Try increasing speed or slope limit.')
+              : 'Solving space-time A* route...'
+          }
         />
         <Stat
-          label="Moving Shadow Margin"
+          label="Destination Sunlight"
           value={`${cube.getSunFrac(timeStep, endPoint[1], endPoint[0])}%`}
           unit="sunlit"
           variant="joint"
-          description="Sunlight fraction at destination at scrubbed time."
+          description="Solar fraction at Point B at scrubbed time."
         />
+      </div>
+
+      {/* Planner Mode Toggle */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.25rem 0' }}>
+        <SegmentedControl<'single' | 'mission'>
+          value={plannerMode}
+          onChange={setPlannerMode}
+          size="md"
+          options={[
+            { value: 'single', label: 'Single Point-to-Point Traverse' },
+            { value: 'mission', label: `Small Mission Plan (${stops.length} Stops)` },
+          ]}
+        />
+        {plannerMode === 'mission' && missionLoading && (
+          <span className="mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-primary)' }}>
+            ⚡ Solving multi-stop mission plan...
+          </span>
+        )}
       </div>
 
       {/* Main Interactive Canvas & Controls */}
       <Card
-        title="Surface Visibility & Terrain Traversability Cube"
+        title="Surface Visibility & Terrain Traversability Grid"
         subtitle={`Grid size: ${cube.nx} x ${cube.ny} cells (${cube.nx * cube.ny} total), cell spacing: ${header.grid.spacing_m}m.`}
         action={
           <SegmentedControl<LayerMode>
@@ -236,7 +1098,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
           />
         }
       >
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 280px', gap: '1.5rem' }}>
+        <div className="planner-workspace-grid">
           <div>
             <canvas
               ref={canvasRef}
@@ -256,7 +1118,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
               }}
             />
             <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', marginTop: '0.4rem' }}>
-              Click anywhere on the map to set waypoint B. Green dot: Start Point A. Gold dot: Target Point B.
+              Click map to set target Point B (Gold). Green dot is Start Point A. Solid cyan line is the optimal space-time traverse.
             </p>
           </div>
 
@@ -288,20 +1150,95 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
 
             <div style={{ backgroundColor: 'var(--bg-surface)', padding: '1rem', borderRadius: '6px' }}>
               <span style={{ fontSize: 'var(--text-xs)', fontWeight: 700, color: 'var(--text-muted)' }}>
-                CUBE SPECIFICATION
+                SOLVER CONSTRAINTS
               </span>
-              <ul style={{ listStyle: 'none', padding: 0, marginTop: '0.5rem', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
-                <li>Binary Format: <strong className="mono">LPVC (v1, Gzip)</strong></li>
-                <li>Grid Spacing: <strong className="mono">{header.grid.spacing_m} m</strong></li>
-                <li>Time Steps: <strong className="mono">{cube.nt} steps</strong></li>
-                <li>Compressed Size: <strong className="mono">{header.binary_size_bytes} bytes</strong></li>
-              </ul>
+              <div style={{ marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', fontSize: 'var(--text-xs)' }}>
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.2rem' }}>
+                    Speed: <strong>{(speedMs * 3600).toFixed(0)} m/h</strong> ({speedMs} m/s)
+                  </label>
+                  <input
+                    type="range"
+                    min="0.01"
+                    max="0.20"
+                    step="0.01"
+                    value={speedMs}
+                    onChange={(e) => setSpeedMs(parseFloat(e.target.value))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.2rem' }}>
+                    Max Slope: <strong>{maxSlopeDeg}°</strong>
+                  </label>
+                  <input
+                    type="range"
+                    min="5"
+                    max="25"
+                    step="1"
+                    value={maxSlopeDeg}
+                    onChange={(e) => setMaxSlopeDeg(parseFloat(e.target.value))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.2rem' }}>
+                    Dark Budget: <strong>{darkBudgetH} h</strong>
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="5"
+                    step="0.5"
+                    value={darkBudgetH}
+                    onChange={(e) => setDarkBudgetH(parseFloat(e.target.value))}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!header) return;
+                    const cubePayload: VisibilityCube = {
+                      grid: header.grid,
+                      time_utc: header.time_utc,
+                      sun_frac: header.sun_frac,
+                      earth_frac: header.earth_frac,
+                      slope_deg: header.slope_deg,
+                      traversable: header.traversable,
+                      flags: header.flags,
+                    };
+                    setCompLoading(true);
+                    runConservativeComparisonWorker(cubePayload, startPoint, endPoint, {
+                      startTimeIdx: selectedDepIdx,
+                      speed_m_s: speedMs,
+                      max_slope_deg: maxSlopeDeg,
+                      dark_budget_h: darkBudgetH,
+                      horizon_margin_deg: 0.10,
+                    })
+                      .then((comp) => {
+                        setConservativeComparison(comp);
+                        setActiveRoute(comp.nominal);
+                        setCompLoading(false);
+                      })
+                      .catch((err) => {
+                        console.error('Manual solve error:', err);
+                        setCompLoading(false);
+                      });
+                  }}
+                  className="btn btn-primary touch-target-44"
+                  data-testid="solve-traverse-btn"
+                  style={{ width: '100%', marginTop: '0.5rem', fontWeight: 700 }}
+                >
+                  {compLoading ? 'Solving...' : 'Solve Traverse (A*)'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Time Scrub Slider */}
-        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
+        {/* Time Scrub Slider wrapped in scrollable light-budget strip container */}
+        <div className="light-budget-strip-container" style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-color)' }}>
           <Slider
             label={`Timeline Step ${timeStep + 1} of ${cube.nt}: ${header.time_utc[timeStep] || ''}`}
             value={timeStep}
@@ -311,8 +1248,87 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId }) =>
             onChange={setTimeStep}
           />
           <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', display: 'block', marginTop: '0.35rem' }}>
-            Scrub forward in time to watch the dynamic lunar shadow sweep across the terrain corridor.
+            Scrub forward in time to watch the dynamic lunar shadow sweep across the terrain corridor. White ring denotes rover position at current step.
           </span>
+        </div>
+      </Card>
+
+      {/* 5. Departure Window Map OR Multi-Stop Mission Plan */}
+      {plannerMode === 'single' && departureMap && (
+        <div className="light-budget-strip-container">
+          <DepartureWindowMap
+            data={departureMap}
+            selectedDepartureIdx={selectedDepIdx}
+            onSelectDeparture={handleSelectDeparture}
+          />
+        </div>
+      )}
+
+      {/* 5b. Terrain Uncertainty & Landing Dispersion Robustness Panel */}
+      {plannerMode === 'single' && (
+        <RobustnessPanel
+          comparison={conservativeComparison}
+          dispersion={dispersionResult}
+          isLoadingComparison={compLoading}
+          isLoadingDispersion={dispersionLoading}
+          dispersionRadiusM={dispersionRadiusM}
+          dispersionNumPoints={dispersionNumPoints}
+          onUpdateDispersionParams={(r, n) => {
+            setDispersionRadiusM(r);
+            setDispersionNumPoints(n);
+          }}
+          onRunDispersion={handleRunDispersion}
+          onSelectDispersionPoint={(pt) => {
+            setSelectedDispersionPt(pt);
+          }}
+          selectedPointId={selectedDispersionPt?.point_id}
+        />
+      )}
+
+      {plannerMode === 'mission' && (
+        <MissionPlanner
+          cube={{
+            grid: header.grid,
+            time_utc: header.time_utc,
+            sun_frac: header.sun_frac,
+            earth_frac: header.earth_frac,
+            slope_deg: header.slope_deg,
+            traversable: header.traversable,
+            flags: header.flags,
+          }}
+          startPoint={startPoint}
+          plan={missionPlan}
+          stops={stops}
+          onUpdateStops={setStops}
+          onApplyFix={handleApplyFix}
+          isLoading={missionLoading}
+          onSelectTimeStep={(step) => {
+            setSelectedDepIdx(step);
+            setTimeStep(step);
+          }}
+        />
+      )}
+
+      {/* 6. Related Work & Heritage Panel */}
+      <Card
+        title="Scientific Heritage & Related Work"
+        subtitle="Foundational space-time planning literature and lunar traverse systems"
+      >
+        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+          <p style={{ marginBottom: '0.75rem' }}>
+            Space-time graph pathfinding under moving lunar illumination builds on decades of pioneering planetary robotics research:
+          </p>
+          <ul style={{ paddingLeft: '1.25rem', marginBottom: '0.75rem' }}>
+            <li style={{ marginBottom: '0.4rem' }}>
+              <strong>MIT SEXTANT (Johnson 2010):</strong> Demonstrated lunar surface path planning incorporating solar elevation, slope limits, and battery charge state over static terrain.
+            </li>
+            <li>
+              <strong>NASA xGDS / VIPER Traverse Planning (Lees et al. 2016):</strong> Advanced ground data systems and spatio-temporal route evaluation for Resource Prospector and VIPER, tracking moving shadow boundaries across South Pole crater rims.
+            </li>
+          </ul>
+          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
+            LightPath contributes an open, zero-backend, client-side WebAssembly/WebWorker implementation designed for immediate accessibility in browsers and educational tools without proprietary astrodynamics toolchains.
+          </p>
         </div>
       </Card>
     </div>

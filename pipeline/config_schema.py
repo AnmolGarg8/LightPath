@@ -28,6 +28,10 @@ class SiteConfig(BaseModel):
     ground_elev_m: float
     terrain_layers: List[TerrainLayerConfig] = Field(default_factory=list)
     source_links: List[str] = Field(default_factory=list)
+    source_label: Optional[str] = None
+    source_url: Optional[str] = None
+    retrieved_on: Optional[str] = None
+    notes: Optional[str] = None
     verified: bool = False
     is_synthetic: bool = False
     mission_ids: List[str] = Field(default_factory=list)

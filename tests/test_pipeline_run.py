@@ -163,8 +163,9 @@ def test_trust_results_json():
 
     assert res["status"] in ("passed", "failed")
     assert "counts" in res
-    assert res["counts"]["passed"] >= 80
+    assert res["counts"]["total"] >= 9
+    assert res["counts"]["passed"] >= 6
     assert "failures" in res
     assert "timestamp" in res
     assert "checks" in res
-    assert len(res["checks"]) >= 5
+    assert len(res["checks"]) >= 8

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.space/schemas/backtest.schema.json",
+  "title": "LightPath Historical Mission Backtest Case and Comparison Schema",
+  "description": "Schema validating historical lunar south-pole surface mission timelines, reported events, and geometric comparison results.",
+  "type": "object",
+  "required": [
+    "case_id",
+    "mission_name",
+    "site_id",
+    "landing_time_utc",
+    "landing_coord",
+    "landing_uncertainty_m",
+    "dem_resolution_m",
+    "reported_events",
+    "disclaimer"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "mission_name": {
+      "type": "string",
+      "minLength": 2
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "landing_time_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "landing_coord": {
+      "type": "object",
+      "required": ["lat_deg", "lon_deg"],
+      "properties": {
+        "lat_deg": {
+          "type": "number",
+          "minimum": -90.0,
+          "maximum": 90.0
+        },
+        "lon_deg": {
+          "type": "number",
+          "minimum": -180.0,
+          "maximum": 360.0
+        },
+        "elev_m": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "landing_uncertainty_m": {
+      "type": "number",
+      "minimum": 0.0,
+      "description": "Radius of landing dispersion ellipse in meters."
+    },
+    "dem_resolution_m": {
+      "type": "number",
+      "minimum": 0.1,
+      "description": "DEM pixel resolution in meters."
+    },
+    "reported_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "event_type",
+          "time_utc",
+          "description",
+          "source_label",
+          "source_url",
+          "verified"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "sunset",
+              "loss_of_sunlight",
+              "earth_los",
+              "loss_of_signal",
+              "end_of_operations"
+            ]
+          },
+          "time_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "description": {
+            "type": "string"
+          },
+          "source_label": {
+            "type": "string"
+          },
+          "source_url": {
+            "type": "string"
+          },
+          "verified": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "comparison_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "event_id",
+          "event_name",
+          "reported_time_utc",
+          "status",
+          "geometry_explanation"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string"
+          },
+          "event_name": {
+            "type": "string"
+          },
+          "reported_time_utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "predicted_time_utc": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "delta_hours": {
+            "type": ["number", "null"]
+          },
+          "uncertainty": {
+            "type": "object",
+            "required": [
+              "terrain_resolution_h",
+              "landing_location_h",
+              "total_uncertainty_h"
+            ],
+            "properties": {
+              "terrain_resolution_h": {
+                "type": "number",
+                "minimum": 0.0
+              },
+              "landing_location_h": {
+                "type": "number",
+                "minimum": 0.0
+              },
+              "total_uncertainty_h": {
+                "type": "number",
+                "minimum": 0.0
+              }
+            },
+            "additionalProperties": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "MATCH_WITHIN_UNCERTAINTY",
+              "DISCREPANCY_EXPLAINED_BY_TERRAIN",
+              "UNEXPLAINED_BY_GEOMETRY",
+              "NO_PREDICTED_EVENT"
+            ]
+          },
+          "geometry_explanation": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "disclaimer": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

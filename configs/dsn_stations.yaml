@@ -16,7 +16,11 @@ stations:
     lon_deg: -116.889 # UNVERIFIED_PLACEHOLDER: East longitude is positive
     height_m: 1000.0  # UNVERIFIED_PLACEHOLDER
     min_elevation_deg: 6.0
+    source_label: "JPL 810-005 Module 301 Rev. E (Example Coordinates)"
+    source_url: "https://deepspace.jpl.nasa.gov/dsndocs/810-005/"
+    retrieved_on: "2026-10-29"
     verified: false
+    notes: "Unverified example coordinates from JPL 810-005 documentation; human operator must verify against operational station catalog."
 
   - id: "madrid_dss63"
     name: "Madrid 70m (DSS 63)"
@@ -25,7 +29,11 @@ stations:
     lon_deg: -4.250  # UNVERIFIED_PLACEHOLDER
     height_m: 800.0   # UNVERIFIED_PLACEHOLDER
     min_elevation_deg: 6.0
+    source_label: "JPL 810-005 Module 301 Rev. E (Example Coordinates)"
+    source_url: "https://deepspace.jpl.nasa.gov/dsndocs/810-005/"
+    retrieved_on: "2026-10-29"
     verified: false
+    notes: "Unverified example coordinates from JPL 810-005 documentation; human operator must verify against operational station catalog."
 
   - id: "canberra_dss43"
     name: "Canberra 70m (DSS 43)"
@@ -34,4 +42,8 @@ stations:
     lon_deg: 148.981 # UNVERIFIED_PLACEHOLDER
     height_m: 650.0   # UNVERIFIED_PLACEHOLDER
     min_elevation_deg: 6.0
+    source_label: "JPL 810-005 Module 301 Rev. E (Example Coordinates)"
+    source_url: "https://deepspace.jpl.nasa.gov/dsndocs/810-005/"
+    retrieved_on: "2026-10-29"
     verified: false
+    notes: "Unverified example coordinates from JPL 810-005 documentation; human operator must verify against operational station catalog."

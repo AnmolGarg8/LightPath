@@ -656,12 +656,12 @@ def export_test_results(dest_path: Path) -> Dict[str, Any]:
             },
             {
                 "id": "V4",
-                "name": "V4 Comparison with Published NASA Result (Barker et al. 2021)",
-                "status": "passed",
-                "tolerance": "±2.0% illumination",
-                "measured_value": "86.1% vs 86.4% (Δ = 0.3%)",
-                "skipped_reason": None,
-                "citation": "Barker et al. (2021) Planetary & Space Science, Connecting Ridge south-pole site",
+                "name": "V4 Comparison with Published NASA Result [CITATION NEEDED: human to confirm]",
+                "status": "skipped",
+                "tolerance": "TBD",
+                "measured_value": None,
+                "skipped_reason": "NOT RUN: Human benchmark input pending per Rule 2 [CITATION NEEDED: human to confirm; see docs/CITATIONS.md]",
+                "citation": "[CITATION NEEDED: human to confirm; lead: Planetary and Space Science vol. 203; see docs/CITATIONS.md]",
             },
             {
                 "id": "V5",
@@ -732,10 +732,10 @@ def export_test_results(dest_path: Path) -> Dict[str, Any]:
             ],
             "v4_barker_comparison": {
                 "site_name": "Connecting Ridge (South Pole)",
-                "published_pct": 86.4,
-                "published_uncertainty_pct": 2.0,
-                "computed_pct": 86.1,
-                "citation": "Barker et al. (2021) Planetary and Space Science, 203, 105280",
+                "published_pct": None,
+                "published_uncertainty_pct": None,
+                "computed_pct": None,
+                "citation": "[CITATION NEEDED: human to confirm; lead: Planetary and Space Science vol. 203; see docs/CITATIONS.md]",
             },
         },
     }
@@ -843,9 +843,13 @@ def run_pipeline(
                 "lat_deg": cached_site["lat_deg"],
                 "lon_deg": cached_site["lon_deg"],
                 "ground_elev_m": cached_site["ground_elev_m"],
-                "source_links": cached_site["source_links"],
+                "source_links": cached_site.get("source_links", []),
+                "source_label": cached_site.get("source_label", "Unspecified"),
+                "source_url": cached_site.get("source_url", ""),
+                "retrieved_on": cached_site.get("retrieved_on", "[human to supply date: YYYY-MM-DD]"),
                 "verified": cached_site["verified"],
                 "is_synthetic": cached_site["is_synthetic"],
+                "notes": cached_site.get("notes", ""),
             })
             continue
 
@@ -929,8 +933,12 @@ def run_pipeline(
             "lon_deg": site.lon_deg,
             "ground_elev_m": site.ground_elev_m,
             "source_links": site.source_links,
+            "source_label": site.source_label or (site.source_links[0] if site.source_links else "Unspecified"),
+            "source_url": site.source_url or (site.source_links[0] if site.source_links else ""),
+            "retrieved_on": site.retrieved_on or "[human to supply date: YYYY-MM-DD]",
             "verified": site.verified,
             "is_synthetic": site.is_synthetic,
+            "notes": site.notes or "",
         }
         full_site_doc = {
             **summary_doc,
@@ -1020,7 +1028,15 @@ def run_pipeline(
         json.dump(sites_summary_list, f, indent=2)
 
     # 7. Export test results
-    test_results = export_test_results(ROOT_DIR / "tests" / "results.json")
+    test_results_path = ROOT_DIR / "tests" / "results.json"
+    if test_results_path.exists():
+        try:
+            with open(test_results_path, "r", encoding="utf-8") as f:
+                test_results = json.load(f)
+        except Exception:
+            test_results = export_test_results(test_results_path)
+    else:
+        test_results = export_test_results(test_results_path)
     with open(out_base / "test_results.json", "w", encoding="utf-8") as f:
         json.dump(test_results, f, indent=2)
 

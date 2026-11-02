@@ -72,6 +72,39 @@ def test_topocentric_shift_difference():
     assert abs(state_a.el_deg - state_b.el_deg) > 1.2
 
 
+def test_topocentric_earth_direction_differs_from_moon_centre():
+    """Verify Rule 6: Earth direction is topocentric (from surface site), never Moon centre.
+
+    At South Pole (lat = -90.0 deg), observer is offset from Moon center by R_moon (~1737.4 km)
+    along the local vertical (Moon -Z axis). For Earth distance ~384,400 km, this introduces
+    a topocentric parallax shift of ~1737.4 / 384400 rad ~ 0.259 deg in elevation.
+    Using Moon center instead of site produces an unacceptable ~0.26 deg error.
+    """
+    from pipeline.constants import R_MOON_M
+    from pipeline.ephemeris import (
+        compute_moon_center_to_earth_moon_me_km,
+        utc_iso_to_julian_date,
+    )
+    from pipeline.geometry import vector_to_az_el_deg
+
+    ts = "2026-11-01T00:00:00Z"
+    lat_deg, lon_deg = -90.0, 0.0
+    state_topo = compute_topocentric_earth_state(ts, lat_deg, lon_deg, site_elev_m=0.0, observer_height_m=0.0)
+
+    # Selenocentric vector from Moon center
+    jd = utc_iso_to_julian_date(ts)
+    r_center = compute_moon_center_to_earth_moon_me_km(jd)
+    az_center, el_center = vector_to_az_el_deg(r_center, lat_deg, lon_deg)
+
+    # Parallax difference in elevation
+    el_diff = abs(state_topo.el_deg - el_center)
+    expected_parallax_deg = math.degrees((R_MOON_M / 1000.0) / float(state_topo.dist_km))
+    assert math.isclose(el_diff, expected_parallax_deg, abs_tol=0.02), (
+        f"Topocentric Earth elevation shift {el_diff:.4f} deg differs from expected parallax {expected_parallax_deg:.4f} deg"
+    )
+    assert el_diff > 0.20, "Topocentric elevation must differ significantly (> 0.20 deg) from Moon center"
+
+
 def test_dsn_ground_station_visibility():
     station_names, vis = check_dsn_ground_station_visibility("2026-11-01T00:00:00Z", station_mask_el_deg=10.0)
     assert len(station_names) == 3

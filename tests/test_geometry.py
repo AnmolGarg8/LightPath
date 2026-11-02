@@ -421,3 +421,32 @@ def test_local_up_tilt_over_distance():
 
     diff_el = abs(el1 - el2)
     assert math.isclose(diff_el, tilt_deg, abs_tol=0.01)
+
+
+def test_local_vertical_tilt_per_km():
+    """Verify that local vertical tilts by ~0.033 deg per kilometre (1 km / 1737.4 km in radians).
+
+    Physical rationale:
+        Delta theta_rad = 1.0 km / 1737.4 km = 0.000575573 rad.
+        Delta theta_deg = 0.000575573 * 180 / pi = 0.032978 deg ~= 0.033 deg/km.
+        Over 3 km, this accumulates to ~0.0989 deg (~0.10 deg).
+    """
+    dist_m = 1000.0
+    lat1, lon1 = -89.5, 0.0
+    delta_lat_deg = math.degrees(dist_m / R_MOON_M)
+    lat2 = lat1 + delta_lat_deg
+    lon2 = lon1
+
+    actual_dist_m = great_circle_distance_m(lat1, lon1, lat2, lon2)
+    assert math.isclose(actual_dist_m, 1000.0, rel_tol=1e-4)
+
+    _, _, up1 = enu_basis(lat1, lon1)
+    _, _, up2 = enu_basis(lat2, lon2)
+
+    cos_tilt = float(np.dot(up1, up2))
+    tilt_deg = math.degrees(math.acos(np.clip(cos_tilt, -1.0, 1.0)))
+
+    # Assert exact agreement with 0.033 deg/km
+    assert math.isclose(tilt_deg, 0.03298, abs_tol=0.0005)
+    assert f"{tilt_deg:.3f}" == "0.033"
+

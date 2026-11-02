@@ -173,7 +173,7 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
             label="Direct-to-Earth Contact"
             value={`${(dte.uptime_fraction * 100).toFixed(1)}%`}
             description={`${dte.total_uptime_h}h with DSN (mask ≥ 6.0°)`}
-            badge={<Badge variant="info" size="sm">DSN Visible</Badge>}
+            badge={<Badge variant="warning" size="sm">UNVERIFIED DSN</Badge>}
           />
 
           {/* Joint Sun + Earth */}

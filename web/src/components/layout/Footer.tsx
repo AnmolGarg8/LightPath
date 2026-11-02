@@ -32,12 +32,44 @@ export const Footer: React.FC = () => {
           </div>
 
           <nav aria-label="Footer links" style={{ display: 'flex', gap: '1.25rem' }}>
+            <a href="#/data">Reusable Data</a>
             <a href="#/explain">Operational Limitations</a>
             <a href="#/trust">Verification Benchmarks</a>
             <a href="https://github.com/AnmolGarg8/Lunar.git" target="_blank" rel="noopener noreferrer">
               GitHub Repository
             </a>
           </nav>
+        </div>
+
+        <div
+          data-testid="footer-provenance-status"
+          style={{
+            padding: '0.6rem 0.85rem',
+            background: 'rgba(245, 158, 11, 0.08)',
+            border: '1px solid rgba(245, 158, 11, 0.25)',
+            borderRadius: 'var(--radius-xs)',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
+            fontSize: 'var(--text-xs)',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-amber)' }}>
+            <span aria-hidden="true" style={{ fontSize: '1rem' }}>⚠️</span>
+            <span>
+              <strong>Data Provenance & Traceability:</strong> All entries fully sourced (sites, missions, DSN stations) — <strong style={{ color: '#fbbf24' }}>all entries currently unverified</strong> pending human verification against NASA PDS / NAIF / JPL records.
+            </span>
+          </div>
+          <a
+            href="https://github.com/AnmolGarg8/LightPath/blob/main/docs/HUMAN_TODO.md"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: 'var(--color-blue)', textDecoration: 'underline', fontWeight: 600 }}
+          >
+            Human Verification Checklist →
+          </a>
         </div>
 
         <hr style={{ borderColor: 'var(--border-color)', opacity: 0.6 }} />

@@ -36,12 +36,16 @@ output_dir: web/public/data
 
 sites:
   - id: synthetic-proving-ground
-    name: "Synthetic Proving Ground (SYNTHETIC)"
+    name: "Synthetic Proving Ground (SYNTHETIC EXAMPLE)"
     lat_deg: -89.90
     lon_deg: 0.00
     ground_elev_m: 0.0
+    source_label: "Synthetic Crater Proving Ground Model (pipeline/synthetic.py)"
+    source_url: "https://github.com/AnmolGarg8/LightPath"
+    retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
+    notes: "Synthetic math-generated crater for algorithm testing and verification."
     mission_ids: []
     synthetic_feature: crater
     source_links:
@@ -57,12 +61,16 @@ sites:
         pixel_size_m: 50.0
 
   - id: synthetic-flat-basin
-    name: "Synthetic Flat Basin (SYNTHETIC)"
+    name: "Synthetic Flat Basin (SYNTHETIC EXAMPLE)"
     lat_deg: -89.95
     lon_deg: 90.00
     ground_elev_m: 100.0
+    source_label: "Synthetic Flat Basin Model (pipeline/synthetic.py)"
+    source_url: "https://github.com/AnmolGarg8/LightPath"
+    retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
+    notes: "Synthetic math-generated flat terrain for horizon dip verification."
     mission_ids: []
     synthetic_feature: flat
     source_links:

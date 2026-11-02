@@ -1,0 +1,164 @@
+{
+  "version": "1.0.0",
+  "created_utc": "2026-11-02T04:00:00Z",
+  "total_files": 14,
+  "license_data": "CC-BY-4.0",
+  "license_code": "MIT",
+  "suggested_citation": "LightPath Team (2026). LightPath: Lunar South-Pole Solar Illumination and Direct-to-Earth Line of Sight Dataset (Version 1.0.0) [Data set]. NASA Space Apps Challenge 2026.",
+  "files": [
+    {
+      "site_id": "all-sites",
+      "filename": "all_sites_windows.parquet",
+      "rel_path": "./data/all_sites_windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4429,
+      "sha256": "6220d8e60b31cb95d1c98e5b64854b1de275c9f986316974978d941726cca840",
+      "rows": 25,
+      "license": "CC-BY-4.0",
+      "description": "Consolidated visibility windows across all 6 lunar sites (Parquet format with embedded metadata)."
+    },
+    {
+      "site_id": "all-sites",
+      "filename": "all_sites_windows.csv",
+      "rel_path": "./data/all_sites_windows.csv",
+      "format": "CSV",
+      "size_bytes": 2632,
+      "sha256": "b2e5fc625155dce01f01d191372d6e1b6bf7b2432330de198ef7c5b007f2d47d",
+      "rows": 25,
+      "license": "CC-BY-4.0",
+      "description": "Consolidated visibility windows across all 6 lunar sites (standard RFC 4180 CSV)."
+    },
+    {
+      "site_id": "synthetic-proving-ground",
+      "filename": "synthetic-proving-ground_windows.csv",
+      "rel_path": "./data/synthetic-proving-ground/windows.csv",
+      "format": "CSV",
+      "size_bytes": 523,
+      "sha256": "c4c05dfb0d28903b67fd9ec88360680b3100549ee7b72df05a3a77fa6269f13b",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (CSV)."
+    },
+    {
+      "site_id": "synthetic-proving-ground",
+      "filename": "synthetic-proving-ground_windows.parquet",
+      "rel_path": "./data/synthetic-proving-ground/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4109,
+      "sha256": "415af6e3a265b212b06e0e0393b65ea25612e81393850ca4213dc66ec5c68bea",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "synthetic-flat-basin",
+      "filename": "synthetic-flat-basin_windows.csv",
+      "rel_path": "./data/synthetic-flat-basin/windows.csv",
+      "format": "CSV",
+      "size_bytes": 507,
+      "sha256": "2e3a5630c198ed43ec6155302a3dc305915980c14fa4eeb1fecb4661640a3e5a",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-flat-basin (CSV)."
+    },
+    {
+      "site_id": "synthetic-flat-basin",
+      "filename": "synthetic-flat-basin_windows.parquet",
+      "rel_path": "./data/synthetic-flat-basin/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4089,
+      "sha256": "6d1857a4933321a3444494d9479fc004e3806c500b43382e72323c4759d3217a",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-flat-basin (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "synthetic-crater-rim",
+      "filename": "synthetic-crater-rim_windows.csv",
+      "rel_path": "./data/synthetic-crater-rim/windows.csv",
+      "format": "CSV",
+      "size_bytes": 507,
+      "sha256": "d68e88bbe1b67f5010caedb53aee3608406d7b24a33544e39e10bc20c641b7be",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-crater-rim (CSV)."
+    },
+    {
+      "site_id": "synthetic-crater-rim",
+      "filename": "synthetic-crater-rim_windows.parquet",
+      "rel_path": "./data/synthetic-crater-rim/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4068,
+      "sha256": "ce45bc2d00ce63df282fd69447cecb9e78e4a921b8816286613a6e47312a5324",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-crater-rim (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "shackleton-connecting-ridge",
+      "filename": "shackleton-connecting-ridge_windows.csv",
+      "rel_path": "./data/shackleton-connecting-ridge/windows.csv",
+      "format": "CSV",
+      "size_bytes": 647,
+      "sha256": "b49a3c929d78e510d0486b5d9712f29fafaee803ab9fb4add38211f7b454db34",
+      "rows": 5,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for shackleton-connecting-ridge (CSV)."
+    },
+    {
+      "site_id": "shackleton-connecting-ridge",
+      "filename": "shackleton-connecting-ridge_windows.parquet",
+      "rel_path": "./data/shackleton-connecting-ridge/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4162,
+      "sha256": "b7273c257337640412ec24b42d25d6ebba6ae2a094312745bb70fd989a5d1e9e",
+      "rows": 5,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for shackleton-connecting-ridge (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "malapert-mountain",
+      "filename": "malapert-mountain_windows.csv",
+      "rel_path": "./data/malapert-mountain/windows.csv",
+      "format": "CSV",
+      "size_bytes": 504,
+      "sha256": "da29dad008b28bd6c827e899a73bc6eb23e595ee5b0eecd8d1d7efc2ad9f47c3",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for malapert-mountain (CSV)."
+    },
+    {
+      "site_id": "malapert-mountain",
+      "filename": "malapert-mountain_windows.parquet",
+      "rel_path": "./data/malapert-mountain/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4053,
+      "sha256": "393b7bb2a826715b6c05e6df735911a6dc7b2d82f741117a4eb9e70fed8cc051",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for malapert-mountain (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "nobile-crater-rim",
+      "filename": "nobile-crater-rim_windows.csv",
+      "rel_path": "./data/nobile-crater-rim/windows.csv",
+      "format": "CSV",
+      "size_bytes": 504,
+      "sha256": "eb5aa2c9fe8336b4b2172b7c30a6834e8c3168030fc0aa3d0b7b686497780d03",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for nobile-crater-rim (CSV)."
+    },
+    {
+      "site_id": "nobile-crater-rim",
+      "filename": "nobile-crater-rim_windows.parquet",
+      "rel_path": "./data/nobile-crater-rim/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4077,
+      "sha256": "f89c572a61dde8825eb31d5c921e27e7be5c831ec4a7a9c9090af33abc8ab057",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for nobile-crater-rim (Parquet, Snappy compressed with metadata)."
+    }
+  ]
+}

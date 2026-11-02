@@ -515,7 +515,7 @@ export const ExplainView: React.FC = () => {
             </span>
           </div>
           <h2 style={{ fontSize: isPresenterMode ? '1.6rem' : '1.35rem', fontWeight: 700, margin: '0 0 1rem 0' }}>
-            3. Earth is Wide: Line of Sight vs Solar Power
+            3. Earth is Wide: Line of Sight vs Solar Illumination
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', alignItems: 'center' }}>
@@ -525,7 +525,7 @@ export const ExplainView: React.FC = () => {
                 <strong>~1.90°</strong> in the lunar sky!
               </p>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                Because Earth looms so large, Earthrise and Earthset transitions take many hours. A rover can be in total darkness while maintaining continuous high-speed direct-to-Earth (DTE) communication.
+                Because Earth looms so large, Earthrise and Earthset transitions take many hours. A rover can be in total darkness while maintaining continuous direct-to-Earth (DTE) line of sight.
               </p>
 
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>

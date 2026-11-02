@@ -1,7 +1,7 @@
 [
   {
     "id": "clps-placeholder-shackleton",
-    "name": "CLPS Polar Scout (UNVERIFIED PLACEHOLDER)",
+    "name": "CLPS Polar Scout (UNVERIFIED EXAMPLE)",
     "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
     "site_id": "shackleton-connecting-ridge",
     "planned_window_start": "2026-11-01T00:00:00Z",
@@ -10,15 +10,19 @@
     "description": "Example placeholder entry for CLPS mission browser scaffold. A human operator must verify exact payload, dates, and provider details from official NASA announcements.",
     "source_links": [
       {
-        "label": "NASA CLPS Portal (Verification Required)",
+        "label": "NASA CLPS Overview",
         "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
-    "verified": false
+    "source_label": "NASA Commercial Lunar Payload Services (CLPS) Overview",
+    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "retrieved_on": "2026-10-29",
+    "verified": false,
+    "notes": "Example placeholder entry awaiting official task order delivery dates from NASA CLPS announcements."
   },
   {
     "id": "clps-placeholder-malapert",
-    "name": "CLPS Malapert Lander (UNVERIFIED PLACEHOLDER)",
+    "name": "CLPS Malapert Lander (UNVERIFIED EXAMPLE)",
     "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
     "site_id": "malapert-mountain",
     "planned_window_start": "2026-11-05T00:00:00Z",
@@ -27,10 +31,14 @@
     "description": "Example placeholder entry for south-pole lunar exploration. To be updated by human operator once mission delivery task order is finalized.",
     "source_links": [
       {
-        "label": "NASA CLPS Schedule (Verification Required)",
+        "label": "NASA CLPS Task Orders",
         "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
-    "verified": false
+    "source_label": "NASA CLPS Deliveries and Task Orders",
+    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "retrieved_on": "2026-10-29",
+    "verified": false,
+    "notes": "Example placeholder entry awaiting official task order delivery dates from NASA CLPS announcements."
   }
 ]

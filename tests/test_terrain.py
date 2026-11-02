@@ -159,3 +159,40 @@ def test_nested_terrain_seam_continuity():
     # All points have identical lat/lon, so smooth_slope should give identical elevation
     expected_elev = (-89.90 - (-90.0)) * 1000.0
     assert np.allclose(sampled, expected_elev, atol=1e-10)
+
+
+def test_open_dem_window_metadata_scale_applied_once():
+    """Verify that GeoTIFF metadata scale and offset are applied exactly once."""
+    import rasterio
+    from rasterio.transform import from_origin
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        scaled_tif = Path(tmpdir) / "scaled_dem.tif"
+        width, height = 20, 20
+        pixel_size = 50.0
+        transform = from_origin(-500.0, 500.0, pixel_size, pixel_size)
+        raw_data = np.full((1, height, width), 100, dtype=np.int16)
+
+        with rasterio.open(
+            scaled_tif,
+            "w",
+            driver="GTiff",
+            height=height,
+            width=width,
+            count=1,
+            dtype="int16",
+            crs=LUNAR_SOUTH_POLE_STEREO_CRS,
+            transform=transform,
+        ) as dst:
+            dst.scales = (0.5,)
+            dst.offsets = (10.0,)
+            dst.write(raw_data)
+
+        # Open window
+        window = open_dem_window(scaled_tif, center_lat_deg=-90.0, center_lon_deg=0.0, half_width_m=400.0)
+        # Expected elevation: 100 * 0.5 + 10.0 = 60.0 m
+        # If scale was applied twice: (100 * 0.5 + 10.0) * 0.5 = 30.0 m
+        valid_elevations = window.array[~window.nodata_mask]
+        assert len(valid_elevations) > 0
+        assert np.allclose(valid_elevations, 60.0), f"Expected 60.0m, got {valid_elevations[0]}m"
+

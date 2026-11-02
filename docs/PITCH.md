@@ -1,16 +1,16 @@
 # LightPath — 3-Minute Presentation Pitch & Judge Defense Guide
 
 **NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
-*Track: Interactive Lunar Exploration & Trajectory Planning*
+*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*
 
 ---
 
 ## Part 1: 3-Minute Presentation Script & Outline
 
 ### [0:00 - 0:30] The Hook: The Peril of Lunar South-Pole Shadows
-> *"Judges, imagine landing a multi-million-dollar NASA CLPS payload at the lunar south pole. The Sun hovers barely one degree above the horizon. Mountains cast shadows twenty kilometers long that sweep across crater floors at the speed of a driving rover.*  
+> *"Judges, imagine landing a multi-million-dollar NASA CLPS payload at the lunar south pole. The Sun hovers barely one degree above the horizon. Mountains cast shadows twenty kilometers long that sweep across crater floors at speeds comparable to an uncrewed robotic rover (e.g., VIPER traverse speed ~2–10 cm/s; see docs/PHYSICS_NOTES.md).*  
 > *If you land just five hundred meters off-target, or depart two hours late, you are plunged into weeks of cryogenic, battery-killing darkness with zero communication back to Earth.*  
-> *Current trajectory and lighting tools require heavy desktop installations and hours of supercomputer time. Commercial providers, scientists, and students need instant, mathematically rigorous answers.*  
+> *Current trajectory and lighting tools require heavy desktop installations and hours of supercomputer time. Commercial providers, scientists, and students need instant, deterministic, topocentric answers.*  
 > *Welcome to **LightPath**."*
 
 ---
@@ -35,7 +35,7 @@
 ### [2:00 - 2:30] Scientific Integrity & Trust: Math Before Claims
 > *"At LightPath, we follow a strict rule: **Correctness Before Features**.*  
 > *We never invent data. Every station is clearly flagged. We never equate sunlight to battery power, and we never claim geometric line-of-sight is an RF link budget.*  
-> *Our calculations are verified across eight independent benchmarks (V1 through V8), matching peer-reviewed NASA publications from Barker et al. (2021) to within 0.04 degrees.*  
+> *Our calculations are verified across automated CI benchmarks (V1 through V7) and cross-checks with peer-reviewed literature [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md].*  
 > *Furthermore, our Python scientific engine and browser TypeScript engine share exact test vectors; if their calculations disagree by even $10^{-9}$ degrees, our continuous integration build fails."*
 
 ---
@@ -120,4 +120,4 @@ Raw LOLA polar DEMs exceed tens of gigabytes. We never load whole DEM files. In 
 
 ### Q12: How was the software verified and tested against independent benchmarks?
 **Answer**:  
-LightPath contains 106 automated Python tests (`pytest`) and 53 TypeScript tests (`vitest`). We benchmarked our terrain skyline generation against peer-reviewed data published by Barker et al. (2021) in the *Planetary Science Journal*, achieving an agreement within $\pm 0.04^\circ$. In addition, our 12-case adversarial stress suite (`test_adversarial.py`) specifically probes pole singularities, deep pits, razor ridges, single-pixel wall spikes, and tile edge boundaries.
+LightPath contains automated Python tests (`pytest`) and TypeScript tests (`vitest`). We benchmarked our terrain skyline generation against closed-form geometric models, sensitivity convergence sweeps, and published literature comparisons [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md for lead on Planetary and Space Science vol. 203]. In addition, our 12-case adversarial stress suite (`test_adversarial.py`) specifically probes pole singularities, deep pits, razor ridges, single-pixel wall spikes, and tile edge boundaries.

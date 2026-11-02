@@ -27,7 +27,7 @@ import { StatsPanel } from '../components/StatsPanel';
 import { SensitivityPanel } from '../components/SensitivityPanel';
 import { LimitationsPanel } from '../components/common/LimitationsPanel';
 import { calculateDynamicStats } from '../utils/statsCalculator';
-import { Compass, Mountain, CheckCircle2, AlertTriangle, Layers } from 'lucide-react';
+import { Compass, Mountain, CheckCircle2, AlertTriangle, Layers, ExternalLink } from 'lucide-react';
 
 interface SiteDetailViewProps {
   siteId: string;
@@ -134,6 +134,19 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
               <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <Layers size={15} />
                 <span>Azimuth Step: {horizonData.az_step_deg}°</span>
+              </span>
+
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <ExternalLink size={15} />
+                <a
+                  href={siteData.source_url || (siteData.source_links?.[0] ?? '#')}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="site-page-source-link"
+                  style={{ color: 'var(--color-blue)', textDecoration: 'underline' }}
+                >
+                  Source: {siteData.source_label || 'PDS Elevation'}
+                </a>
               </span>
             </div>
           </div>

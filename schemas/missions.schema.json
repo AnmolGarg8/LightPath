@@ -59,6 +59,18 @@
       },
       "verified": {
         "type": "boolean"
+      },
+      "source_label": {
+        "type": "string"
+      },
+      "source_url": {
+        "type": "string"
+      },
+      "retrieved_on": {
+        "type": "string"
+      },
+      "notes": {
+        "type": "string"
       }
     },
     "additionalProperties": false

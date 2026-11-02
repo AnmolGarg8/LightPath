@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.nasa.spaceapps/schemas/landing_dispersion.schema.json",
+  "title": "LandingDispersionAnalysis",
+  "description": "Analysis of rover traverse feasibility across an empirical landing dispersion ellipse",
+  "type": "object",
+  "required": [
+    "nominal_coord",
+    "goal_coord",
+    "radius_m",
+    "num_points",
+    "success_count",
+    "failure_count",
+    "success_rate",
+    "solve_time_ms",
+    "points",
+    "plain_language_summary",
+    "assumption_note"
+  ],
+  "properties": {
+    "nominal_coord": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Nominal landing coordinates [x, y]"
+    },
+    "goal_coord": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Destination coordinates [x, y]"
+    },
+    "radius_m": {
+      "type": "number",
+      "exclusiveMinimum": 0.0,
+      "description": "Dispersion pattern radius in meters (parameter and assumption, default 250m)"
+    },
+    "num_points": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of sample points within the dispersion pattern (default 25)"
+    },
+    "success_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "failure_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "success_rate": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "min_arrival_h": {
+      "type": ["number", "null"]
+    },
+    "max_arrival_h": {
+      "type": ["number", "null"]
+    },
+    "nominal_arrival_h": {
+      "type": ["number", "null"]
+    },
+    "min_dark_exposure_h": {
+      "type": ["number", "null"]
+    },
+    "max_dark_exposure_h": {
+      "type": ["number", "null"]
+    },
+    "solve_time_ms": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "plain_language_summary": {
+      "type": "string"
+    },
+    "assumption_note": {
+      "type": "string"
+    },
+    "points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "point_id",
+          "offset_m",
+          "coord",
+          "feasible",
+          "explanation"
+        ],
+        "properties": {
+          "point_id": { "type": "integer" },
+          "offset_m": {
+            "type": "array",
+            "items": { "type": "number" },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "dist_from_center_m": { "type": "number" },
+          "coord": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "feasible": { "type": "boolean" },
+          "explanation": { "type": "string" },
+          "arrival_h": { "type": ["number", "null"] },
+          "duration_h": { "type": ["number", "null"] },
+          "dark_exposure_h": { "type": ["number", "null"] },
+          "total_distance_m": { "type": ["number", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

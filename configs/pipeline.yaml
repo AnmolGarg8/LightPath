@@ -36,12 +36,16 @@ output_dir: web/public/data
 
 sites:
   - id: shackleton-connecting-ridge
-    name: "Shackleton Connecting Ridge"
+    name: "Shackleton Connecting Ridge (Candidate Site)"
     lat_deg: -89.78
     lon_deg: 128.80
     ground_elev_m: 1100.0
+    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
+    source_url: "https://pgda.gsfc.nasa.gov/products/78"
+    retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: false
+    notes: "Candidate Artemis/CLPS south-pole exploration zone on connecting ridge; coordinates require human operational verification."
     mission_ids: ["clps-placeholder-shackleton"]
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"
@@ -52,12 +56,16 @@ sites:
         pixel_size_m: 20.0
 
   - id: malapert-mountain
-    name: "Malapert Mountain"
+    name: "Malapert Mountain (Candidate Site)"
     lat_deg: -86.04
     lon_deg: 2.70
     ground_elev_m: 5000.0
+    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
+    source_url: "https://pgda.gsfc.nasa.gov/products/78"
+    retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: false
+    notes: "Candidate Artemis/CLPS south-pole exploration zone atop Malapert massif; coordinates require human operational verification."
     mission_ids: ["clps-placeholder-malapert"]
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"
@@ -68,12 +76,16 @@ sites:
         pixel_size_m: 20.0
 
   - id: nobile-crater-rim
-    name: "Nobile Crater Rim"
+    name: "Nobile Crater Rim (Candidate Site)"
     lat_deg: -85.20
     lon_deg: 35.80
     ground_elev_m: 200.0
+    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
+    source_url: "https://pgda.gsfc.nasa.gov/products/78"
+    retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: false
+    notes: "Candidate Artemis/CLPS exploration site on the rim of Nobile crater; coordinates require human operational verification."
     mission_ids: []
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"

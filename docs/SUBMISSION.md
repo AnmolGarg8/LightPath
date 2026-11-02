@@ -2,19 +2,19 @@
 
 **Challenge Name**: Commercial Lunar Payload Services (CLPS) Mission Browser  
 **Project Title**: LightPath — CLPS Lunar Mission Browser & Space-Time Traverse Planner  
-**Submission Category**: Interactive Lunar Exploration, Navigation & Mission Planning  
+**Submission Challenge**: Commercial Lunar Payload Services (CLPS) Mission Browser [Official track pending paste in docs/CHALLENGE_STATEMENT.md]  
 
 ---
 
 ## 1. Project Summary (248 words)
 
-At the lunar south pole, where NASA's Commercial Lunar Payload Services (CLPS) missions and Artemis astronauts will land, the Sun never rises higher than 1.5° above the horizon. Mountain peaks cast elongated, dynamic shadows that sweep across crater floors at the speed of a rover. A landing target offset of 500 meters or a departure delay of two hours can plunge a solar-powered lander or rover into weeks of lethal darkness and sever direct radio communication with Earth.
+At the lunar south pole, where NASA's Commercial Lunar Payload Services (CLPS) missions and Artemis astronauts will land, the Sun never rises higher than 1.5° above the horizon. Mountain peaks cast elongated, dynamic shadows that sweep across crater floors at speeds comparable to an uncrewed robotic rover (e.g., VIPER traverse speed ~2–10 cm/s; see docs/PHYSICS_NOTES.md). A landing target offset of 500 meters or a departure delay of two hours can plunge a solar-powered lander or rover into weeks of lethal darkness and sever direct radio communication with Earth.
 
 **LightPath** solves this challenge through an open, deterministic web browser and space-time navigation platform. By combining high-resolution NASA Lunar Reconnaissance Orbiter (LRO) LOLA digital elevation models with NAIF SPICE planetary ephemerides and Deep Space Network (DSN) ground station geometry, LightPath computes exact 360° topocentric terrain skylines, clips the true angular discs of the Sun (0.53°) and Earth (1.90°), and maps continuous direct-to-Earth communication availability.
 
 Beyond static site assessment, LightPath introduces a signature **4D Space-Time Traverse Solver**: an A* algorithm navigating space and time $(x, y, t)$ across moving shadows and terrain slope hazards to determine whether rovers or crew can travel safely between surface points without running out of power or communication links.
 
-Every calculation is independently verified against peer-reviewed literature (Barker et al. 2021) with shared Python and TypeScript mathematical test vectors matching to $< 10^{-14\circ}$. LightPath delivers instantaneous, actionable mission insight for scientists, flight planners, students, and the public.
+Every calculation is independently verified against closed-form benchmarks, shared Python/TypeScript mathematical test vectors matching to $< 10^{-14\circ}$, and published literature [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md]. LightPath delivers instantaneous, actionable mission insight for scientists, flight planners, students, and the public.
 
 ---
 
@@ -51,15 +51,15 @@ LightPath directly integrates authoritative NASA planetary datasets:
 3. **NASA Deep Space Network (DSN) 810-005 Documents**:
    - Telecommunications interface guidelines for Goldstone (DSS-14), Madrid (DSS-63), and Canberra (DSS-43) complexes, including geodetic coordinates and elevation masks.
 4. **Published Literature Benchmark**:
-   - Horizon profiles and solar percentage comparisons benchmarked against Barker, M. K., et al. (2021), *Planetary Science Journal*.
+   - Horizon profiles and solar percentage comparisons benchmarked against published literature [CITATION NEEDED: human to confirm; lead: Planetary and Space Science vol. 203; see docs/CITATIONS.md].
 
 ---
 
 ## 5. What Was Verified (Scientific Integrity & Rigour)
 
 LightPath adheres strictly to **Rule 1: Correctness Before Features**:
-- **106 Automated Pytest Tests** & **53 Vitest Tests** passing in automated CI.
-- **V1–V8 Independent Verification Suite**:
+- **Automated Pytest & Vitest Suites** passing in automated CI.
+- **Verification Suite**:
   - V1: Spherical horizon dip angle ($h = 2\text{ m}$) matches exact analytical formula to $0.000^\circ$.
   - V2: Ridge elevation angle ($100\text{ m}$ at $10\text{ km}$) matches theoretical $0.408^\circ$ to $0.000^\circ$.
   - V3: Flat-horizon partial disc formula preserves strict monotonicity and symmetry to $10^{-15}$.
@@ -67,7 +67,7 @@ LightPath adheres strictly to **Rule 1: Correctness Before Features**:
   - V5: South Pole IAU coordinate singularity resolves consistently with zero division errors.
   - V6: Shared mathematical vectors in Python and TypeScript agree to $< 10^{-14\circ}$.
   - V7: 12-case adversarial stress suite (pits, ridges, single-pixel spikes, tile edges, waiting) passes completely.
-  - V8: Benchmark comparison against Barker et al. (2021) matches within $\pm 0.04^\circ$.
+  - V8: Published benchmark comparison [CITATION NEEDED: human to confirm; see docs/CITATIONS.md] pending verification.
 
 ---
 

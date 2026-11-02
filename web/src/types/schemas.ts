@@ -66,6 +66,10 @@ export const SiteSummarySchema = z.object({
   lon_deg: z.number().min(-180.0).max(360.0),
   ground_elev_m: z.number(),
   source_links: z.array(z.string()),
+  source_label: z.string().optional(),
+  source_url: z.string().optional(),
+  retrieved_on: z.string().optional(),
+  notes: z.string().optional(),
   verified: z.boolean(),
   is_synthetic: z.boolean(),
 });
@@ -99,6 +103,10 @@ export const MissionSchema = z.object({
       url: z.string(),
     })
   ),
+  source_label: z.string().optional(),
+  source_url: z.string().optional(),
+  retrieved_on: z.string().optional(),
+  notes: z.string().optional(),
   verified: z.boolean(),
   is_synthetic: z.boolean().optional(),
   is_example: z.boolean().optional(),
@@ -233,11 +241,16 @@ export type Provenance = z.infer<typeof ProvenanceSchema>;
 
 export const CheckResultSchema = z.object({
   id: z.string().optional(),
+  code: z.string().optional(),
   name: z.string(),
-  status: z.enum(['passed', 'failed', 'skipped']),
+  status: z.enum(['passed', 'failed', 'not_run', 'skipped']),
+  data_type: z.enum(['synthetic', 'real']).optional(),
   tolerance: z.string().nullable(),
   measured_value: z.string().nullable(),
-  skipped_reason: z.string().nullable(),
+  expected_value: z.string().nullable().optional(),
+  source_of_expected_value: z.string().nullable().optional(),
+  skip_reason: z.string().nullable().optional(),
+  skipped_reason: z.string().nullable().optional(),
   citation: z.string().optional(),
 });
 
@@ -246,12 +259,14 @@ export const TestResultsSchema = z.object({
   counts: z.object({
     total: z.number().int().min(0),
     passed: z.number().int().min(0),
-    skipped: z.number().int().min(0),
+    not_run: z.number().int().min(0).optional(),
+    skipped: z.number().int().min(0).optional(),
     failed: z.number().int().min(0),
   }),
   failures: z.array(z.unknown()),
   timestamp: z.string(),
   checks: z.array(CheckResultSchema),
+  extra_checks: z.array(CheckResultSchema).optional(),
   charts: z
     .object({
       v3_ephemeris: z
@@ -284,9 +299,9 @@ export const TestResultsSchema = z.object({
       v4_barker_comparison: z
         .object({
           site_name: z.string(),
-          published_pct: z.number(),
-          published_uncertainty_pct: z.number(),
-          computed_pct: z.number(),
+          published_pct: z.number().nullable().optional(),
+          published_uncertainty_pct: z.number().nullable().optional(),
+          computed_pct: z.number().nullable().optional(),
           citation: z.string(),
         })
         .optional(),
@@ -328,3 +343,29 @@ export function validatePayload<T>(schema: z.ZodSchema<T>, data: unknown, source
   }
   return res.data;
 }
+
+// Data Catalog Schemas (Published datasets)
+export const DataCatalogFileSchema = z.object({
+  site_id: z.string(),
+  filename: z.string(),
+  rel_path: z.string(),
+  format: z.enum(['CSV', 'Parquet']),
+  size_bytes: z.number().int().nonnegative(),
+  sha256: z.string().length(64),
+  rows: z.number().int().nonnegative(),
+  license: z.string(),
+  description: z.string(),
+});
+
+export const DataCatalogSchema = z.object({
+  version: z.string(),
+  created_utc: z.string(),
+  total_files: z.number().int().nonnegative(),
+  license_data: z.string(),
+  license_code: z.string(),
+  suggested_citation: z.string(),
+  files: z.array(DataCatalogFileSchema),
+});
+
+export type DataCatalogFile = z.infer<typeof DataCatalogFileSchema>;
+export type DataCatalog = z.infer<typeof DataCatalogSchema>;

@@ -5,13 +5,13 @@
  * - Nothing is typed by hand; all results and tolerances come directly from tests/results.json.
  * - Table of verification tests with declared tolerance, measured value, and PASS / FAIL / NOT RUN badge:
  *   V1 (flat sphere), V2 (wall), V2b (disc fraction), V3 (ephemeris cross-check),
- *   V4 (Barker et al. 2021 published NASA result), V5 (sensitivity/convergence),
+ *   V4 (Published NASA baseline [CITATION NEEDED: human to confirm]), V5 (sensitivity/convergence),
  *   V6 (reproducibility), V7 (independent open implementation), V8 (route solver optimality).
  * - Interactive/responsive charts generated from data:
  *   1) V3 ephemeris difference against tolerance band
  *   2) V2 expected vs computed wall horizon
  *   3) Raycast step convergence plot
- *   4) V4 Barker et al. published value vs LightPath
+ *   4) V4 Published NASA baseline comparison [CITATION NEEDED]
  * - Section: "What this tool does not claim", in plain language.
  * - Last-updated stamp from run_info / results.
  * - Clear error message when test results file is missing instead of fake results.
@@ -334,36 +334,28 @@ export const TrustView: React.FC = () => {
             </div>
           </Card>
 
-          {/* Chart 4: V4 Barker et al. 2021 Published Comparison */}
+          {/* Chart 4: V4 Published NASA Horizon Cross-Check */}
           <Card style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
-                V4: NASA Barker et al. (2021) Cross-Check
+                V4: Published NASA Horizon Cross-Check
               </h3>
-              <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
-                Difference: 0.3% (&lt; declared ±2.0%)
+              <span style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 600 }}>
+                Pending Human Verification
               </span>
             </div>
-            <div style={{ height: '160px', width: '100%', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="100%" height="100%" viewBox="0 0 400 150">
-                {/* Published Band Box */}
-                <rect x="80" y="30" width="120" height="80" fill="rgba(2, 132, 199, 0.15)" stroke="#0284c7" strokeDasharray="3 3" />
-                <line x1="140" y1="30" x2="140" y2="110" stroke="#0284c7" strokeWidth="2" />
-                <circle cx="140" cy="70" r="5" fill="#0284c7" />
-                <text x="140" y="22" fill="#0284c7" fontSize="10" fontWeight="bold" textAnchor="middle">Barker (86.4% ±2%)</text>
-
-                {/* LightPath Value */}
-                <circle cx="260" cy="73" r="6" fill="#10b981" />
-                <line x1="260" y1="65" x2="260" y2="81" stroke="#10b981" strokeWidth="2" />
-                <text x="260" y="22" fill="#10b981" fontSize="10" fontWeight="bold" textAnchor="middle">LightPath (86.1%)</text>
-
-                <text x="200" y="135" fill="var(--text-secondary)" fontSize="9" textAnchor="middle">
-                  Connecting Ridge South-Pole Illumination Comparison
-                </text>
-              </svg>
+            <div style={{ height: '160px', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(245, 158, 11, 0.05)', borderRadius: '6px', padding: '1rem', border: '1px dashed rgba(245, 158, 11, 0.3)' }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#f59e0b', marginBottom: '0.5rem', textAlign: 'center' }}>
+                [CITATION NEEDED: human to confirm]
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.5 }}>
+                In accordance with Rule 2, external paper baseline requires human verification.
+                <br />
+                Lead for human investigator: <em>Planetary and Space Science</em> vol. 203 (Barker et al.).
+              </div>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>
-              Citation: Barker et al. (2021) Planetary and Space Science 203, 105280.
+              Citation: [CITATION NEEDED: human to confirm; see docs/CITATIONS.md]
             </div>
           </Card>
         </div>

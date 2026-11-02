@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lightpath.space/schemas/scenario.schema.json",
+  "title": "LightPath Scenario Export Schema",
+  "description": "Schema validating reproducible and shareable scenario files, including operational parameters, site coordinates, and data version provenance hash.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "name",
+    "created_utc",
+    "data_version_hash",
+    "site_id",
+    "date_range",
+    "thresholds",
+    "mast_height_m",
+    "route_params",
+    "start_coord",
+    "goal_coord",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["v1", "1.0.0"]
+    },
+    "scenario_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data_version_hash": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{8,64}$",
+      "description": "Short or full SHA-256 hash representing the data pipeline and DEM/kernel state when scenario was generated."
+    },
+    "site_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$"
+    },
+    "date_range": {
+      "type": "object",
+      "required": ["start_utc", "end_utc"],
+      "properties": {
+        "start_utc": {
+          "type": "string"
+        },
+        "end_utc": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "thresholds": {
+      "type": "object",
+      "required": ["min_sun_frac", "min_earth_frac"],
+      "properties": {
+        "min_sun_frac": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "min_earth_frac": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "min_earth_el_deg": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mast_height_m": {
+      "type": "number",
+      "minimum": 0.0
+    },
+    "route_params": {
+      "type": "object",
+      "required": ["speed_m_s", "max_slope_deg", "allow_wait", "mode"],
+      "properties": {
+        "speed_m_s": {
+          "type": "number",
+          "exclusiveMinimum": 0.0
+        },
+        "max_slope_deg": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 90.0
+        },
+        "allow_wait": {
+          "type": "boolean"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["earliest-arrival", "min-dark", "latest-safe-departure"]
+        },
+        "conservative": {
+          "type": "boolean"
+        },
+        "horizon_margin_deg": {
+          "type": "number",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "start_coord": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "goal_coord": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["software_version", "reference_frame"],
+      "properties": {
+        "software_version": {
+          "type": "string"
+        },
+        "reference_frame": {
+          "type": "string",
+          "enum": ["MOON_ME"]
+        },
+        "dem_resolution_m": {
+          "type": "number"
+        },
+        "kernel_set": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,6 @@
+site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,provenance_hash
+shackleton-connecting-ridge,sun,0,2026-11-01T00:00:00Z,2026-11-12T04:00:00Z,269.0,50.0,2.0,False,b097babb
+shackleton-connecting-ridge,sun,1,2026-11-14T10:00:00Z,2026-11-15T00:00:00Z,15.0,50.0,2.0,False,b097babb
+shackleton-connecting-ridge,earth,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,53.0,50.0,2.0,False,b097babb
+shackleton-connecting-ridge,dte,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,53.0,10.0,2.0,False,b097babb
+shackleton-connecting-ridge,joint,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,53.0,50.0,2.0,False,b097babb

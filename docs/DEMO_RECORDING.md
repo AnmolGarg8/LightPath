@@ -61,4 +61,4 @@ If preparing a backup video file for NASA Space Apps Challenge submission:
    - **Step 5 (0:44 - 0:58)**: Open Route Planner (`/#/route/synthetic-proving-ground`). Click **Solve Lunar Traverse**; observe the rover path avoiding moving shadows in under 1 second.
    - **Step 6 (0:58 - 1:10)**: Increase maximum slope constraint or move goal into an illuminated bottleneck to demonstrate the **Infeasible Explanation** and one-click suggested relaxation.
    - **Step 7 (1:10 - 1:20)**: Open Evidence Card (`/#/evidence/synthetic-proving-ground`). Click **Print / Save PDF** to demonstrate the single-page A4 audit report and synthetic data watermark.
-   - **Step 8 (1:20 - 1:30)**: Navigate to Trust page (`/#/trust`). Point out the live verification suite (V1–V8), audit hash, and mathematical references (Barker et al. 2021).
+   - **Step 8 (1:20 - 1:30)**: Navigate to Trust page (`/#/trust`). Point out the live verification suite (V1–V7), audit hash, and citations table [CITATION NEEDED: human to confirm published benchmark].

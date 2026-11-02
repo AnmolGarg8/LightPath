@@ -35,12 +35,12 @@ LightPath was subjected to an exhaustive technical audit across all 16 core math
 ---
 
 ### 2. Topocentric Directions with Per-Point Local Up
-- **Rule**: Sun and Earth directions must be topocentric using that point's outward radial unit vector ($\mathbf{u}$), never from the lunar centre. Route cells must compute local up individually ($~0.1^\circ/\text{km}$ tilt).
+- **Rule**: Sun and Earth directions must be topocentric using that point's outward radial unit vector ($\mathbf{u}$), never from the lunar centre. Route cells must compute local up individually ($\approx 0.033^\circ/\text{km}$ tilt, $\sim 0.10^\circ$ per 3 km; see `docs/PHYSICS_NOTES.md`).
 - **Evidence**:
   - `pipeline/geometry.py:180-259` (`enu_basis`): Up vector is $\mathbf{u} = [\cos\phi\cos\lambda, \cos\phi\sin\lambda, \sin\phi]$.
   - `pipeline/geometry.py:289-313` (`topocentric_az_el`): Projects $(\mathbf{r}_{\text{target}} - \mathbf{r}_{\text{site}})$ onto local basis unit vectors $[\mathbf{e}, \mathbf{n}, \mathbf{u}]$.
   - `pipeline/cube.py:129-163`: The spatio-temporal visibility cube computes `enu_basis` and topocentric states for every individual grid cell $(r, c)$ at $(cell\_lat, cell\_lon, cell\_elev)$.
-  - `tests/test_geometry.py:192-230`: Asserts that two points separated by 3 km exhibit $\approx 0.1^\circ$ topocentric elevation shift.
+  - `tests/test_geometry.py:384-423`: Asserts that two points separated by 3 km exhibit $\approx 0.099^\circ \approx 0.10^\circ$ topocentric elevation shift, and 1 km exhibits $0.033^\circ$ tilt.
 - **Status**: **VERIFIED CONCURRENT & STRICTLY COMPLIANT**.
 
 ---

@@ -39,7 +39,7 @@
 
 ### Step 5: Why Trust It (Correctness Before Features)
 - **Scientific Foundation:** Zero machine learning; zero runtime randomness. 
-- **Verification Suite:** 93 automated tests verifying closed-form spherical trigonometry, SPICE ephemerides against JPL Horizons, and published NASA results (Barker et al. 2021 Connecting Ridge illumination: 86.1% vs 86.4%, within 0.3%).
+- **Verification Suite:** Automated tests verifying closed-form spherical trigonometry, numerical convergence, and cross-platform mathematical equivalence (see `tests/results.json` and `docs/CITATIONS.md`). Published NASA benchmarks are flagged as pending human confirmation [CITATION NEEDED: human to confirm].
 - **Rule 8 Language:** We strictly say *"visible"*, not *"powered"*; *"in line of sight"*, not *"connected"*.
 
 ---

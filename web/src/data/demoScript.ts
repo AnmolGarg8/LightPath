@@ -81,7 +81,7 @@ export const DEMO_STEPS: DemoStep[] = [
   {
     id: 9,
     title: '9. Scientific Trust & Verification',
-    caption: 'V1 through V6 verification suite proving exact spherical formulas, convergence limits, and cross-checks with published NASA data (Barker et al. 2021). Math before claims.',
+    caption: 'V1 through V7 verification suite proving exact spherical formulas, convergence limits, and algorithmic robustness across stress tests. Math before claims.',
     route: '#/trust',
     durationSeconds: 10,
   },

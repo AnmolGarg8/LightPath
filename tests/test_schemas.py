@@ -224,3 +224,135 @@ def test_configs_sites_validation():
         validate(instance=site, schema=schema)
 
 
+
+
+def test_mission_plan_schema():
+    schema = load_schema("mission_plan")
+    valid_plan = {
+        "mission_name": "Test Sortie",
+        "start_coord": [0, 0],
+        "start_time_idx": 0,
+        "start_time_utc": "2026-11-01T00:00:00Z",
+        "feasible": True,
+        "stops": [
+            {
+                "stop_id": "stop_1",
+                "name": "Station 1",
+                "coord": [1, 1],
+                "dwell_time_h": 2.0,
+            }
+        ],
+        "legs": [
+            {
+                "leg_index": 1,
+                "from_name": "Base",
+                "to_name": "Station 1",
+                "start_coord": [0, 0],
+                "end_coord": [1, 1],
+                "start_time_idx": 0,
+                "end_time_idx": 1,
+                "start_time_utc": "2026-11-01T00:00:00Z",
+                "end_time_utc": "2026-11-01T01:00:00Z",
+                "feasible": True,
+                "duration_h": 1.0,
+                "distance_m": 50.0,
+                "path": [{"x": 0, "y": 0, "t": 0}, {"x": 1, "y": 1, "t": 1}],
+            }
+        ],
+        "dwells": [
+            {
+                "stop_id": "stop_1",
+                "name": "Station 1",
+                "coord": [1, 1],
+                "start_time_idx": 1,
+                "end_time_idx": 3,
+                "start_time_utc": "2026-11-01T01:00:00Z",
+                "end_time_utc": "2026-11-01T03:00:00Z",
+                "duration_h": 2.0,
+                "sun_satisfied": True,
+                "earth_satisfied": True,
+                "deadline_satisfied": True,
+                "violations": [],
+            }
+        ],
+        "timeline": [
+            {
+                "event_id": "leg_1",
+                "type": "transit",
+                "label": "Transit: Base -> Station 1",
+                "start_time_idx": 0,
+                "end_time_idx": 1,
+                "start_time_utc": "2026-11-01T00:00:00Z",
+                "end_time_utc": "2026-11-01T01:00:00Z",
+                "duration_h": 1.0,
+                "violations": [],
+            }
+        ],
+        "metrics": {
+            "total_distance_m": 50.0,
+            "transit_duration_h": 1.0,
+            "dwell_duration_h": 2.0,
+            "total_duration_h": 3.0,
+            "total_dark_duration_h": 0.0,
+            "num_stops": 1,
+        },
+        "violations": [],
+        "limits_disclaimer": "Geometric Sun and Earth visibility only; no power or link budget.",
+    }
+    validate(instance=valid_plan, schema=schema)
+
+
+def test_landing_dispersion_schema():
+    schema = load_schema("landing_dispersion")
+    valid_dispersion = {
+        "nominal_coord": [10, 10],
+        "goal_coord": [20, 20],
+        "radius_m": 250.0,
+        "num_points": 25,
+        "success_count": 22,
+        "failure_count": 3,
+        "success_rate": 0.88,
+        "min_arrival_h": 2.1,
+        "max_arrival_h": 3.4,
+        "nominal_arrival_h": 2.5,
+        "min_dark_exposure_h": 0.0,
+        "max_dark_exposure_h": 0.2,
+        "solve_time_ms": 35.2,
+        "plain_language_summary": "22 of 25 landing points allow the trip within the window; the failures are on the shadowed side of the ridge.",
+        "assumption_note": "Dispersion radius (250m) and point count (25) are operational parameters and engineering assumptions.",
+        "points": [
+            {
+                "point_id": 0,
+                "offset_m": [0.0, 0.0],
+                "dist_from_center_m": 0.0,
+                "coord": [10, 10],
+                "feasible": True,
+                "explanation": "Optimal nominal route.",
+                "arrival_h": 2.5,
+                "duration_h": 2.5,
+                "dark_exposure_h": 0.0,
+                "total_distance_m": 500.0,
+            }
+        ],
+    }
+    validate(instance=valid_dispersion, schema=schema)
+
+
+def test_backtest_schema():
+    schema = load_schema("backtest")
+    fixture_path = Path(__file__).parent / "fixtures" / "backtest_fixture.json"
+    with open(fixture_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    from pipeline.backtest import compute_backtest_comparison
+    res = compute_backtest_comparison(data["case"], data["series"])
+    validate(instance=res, schema=schema)
+
+
+def test_scenario_schema():
+    schema = load_schema("scenario")
+    from pipeline.scenario import Scenario, export_scenario_json
+    scen = Scenario()
+    data = export_scenario_json(scen, scenario_name="Validation Scenario", data_version_hash="abcdef0123")
+    validate(instance=data, schema=schema)
+
+

@@ -1,0 +1,5 @@
+site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,provenance_hash
+synthetic-crater-rim,sun,0,2026-11-01T00:00:00Z,2026-11-02T20:00:00Z,48.0,50.0,2.0,True,683d8aa6
+synthetic-crater-rim,earth,0,2026-11-01T00:00:00Z,2026-11-02T20:00:00Z,48.0,50.0,2.0,True,683d8aa6
+synthetic-crater-rim,dte,0,2026-11-01T00:00:00Z,2026-11-02T20:00:00Z,48.0,6.0,2.0,True,683d8aa6
+synthetic-crater-rim,joint,0,2026-11-01T00:00:00Z,2026-11-02T20:00:00Z,48.0,50.0,2.0,True,683d8aa6

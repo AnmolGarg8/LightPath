@@ -65,11 +65,15 @@ export const HomeView: React.FC = () => {
       });
   }, []);
 
-  // 5-second live mini visual loop
+  // Live miniature horizon panorama loop (respects prefers-reduced-motion)
   useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     const timer = setInterval(() => {
-      setDemoHour((prev) => (prev + 1) % 96);
-    }, 400);
+      setDemoHour((prev) => (prev + 1) % 192);
+    }, 120);
     return () => clearInterval(timer);
   }, []);
 
@@ -82,54 +86,45 @@ export const HomeView: React.FC = () => {
     const w = canvas.width;
     const h = canvas.height;
 
-    // Clear background
-    ctx.fillStyle = '#060913';
+    // Clear deep space background
+    ctx.fillStyle = '#05070e';
     ctx.fillRect(0, 0, w, h);
 
-    // Horizon line
-    const horizonY = h * 0.65;
-    ctx.fillStyle = '#151c2e';
-    ctx.beginPath();
-    ctx.moveTo(0, horizonY);
-    for (let x = 0; x <= w; x += 10) {
-      const terrainH = Math.sin(x * 0.02) * 12 + Math.cos(x * 0.05) * 6;
-      ctx.lineTo(x, horizonY + terrainH);
+    // Subtle star field (deterministic positions based on index)
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    for (let i = 0; i < 45; i++) {
+      const sx = ((i * 137.5) % w);
+      const sy = ((i * 83.1) % (h * 0.6));
+      const sRad = (i % 3 === 0) ? 1.2 : 0.8;
+      ctx.beginPath();
+      ctx.arc(sx, sy, sRad, 0, Math.PI * 2);
+      ctx.fill();
     }
-    ctx.lineTo(w, h);
-    ctx.lineTo(0, h);
-    ctx.fill();
 
     // 0 deg elevation reference line
-    ctx.strokeStyle = '#334155';
-    ctx.setLineDash([4, 4]);
+    const horizonY = h * 0.70;
+    ctx.strokeStyle = 'rgba(51, 65, 85, 0.6)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 6]);
     ctx.beginPath();
     ctx.moveTo(0, horizonY);
     ctx.lineTo(w, horizonY);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Sun disc
-    const sunX = ((demoHour * 8) % (w + 40)) - 20;
-    const sunY = horizonY - 14 - Math.sin((demoHour * Math.PI) / 48) * 18;
-    const sunRadius = 8;
+    // Earth disc in lunar sky (slowly librating, true ~1.90° apparent diameter)
+    const earthX = w * 0.82 + Math.sin(demoHour * 0.04) * 20;
+    const earthY = horizonY - 55 + Math.cos(demoHour * 0.03) * 12;
+    const earthRadius = 18;
 
-    const sunGrad = ctx.createRadialGradient(sunX, sunY, 2, sunX, sunY, 24);
-    sunGrad.addColorStop(0, 'rgba(251, 191, 36, 0.6)');
-    sunGrad.addColorStop(1, 'rgba(251, 191, 36, 0)');
-    ctx.fillStyle = sunGrad;
+    // Earth glow & body
+    const earthGlow = ctx.createRadialGradient(earthX, earthY, 10, earthX, earthY, 35);
+    earthGlow.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+    earthGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+    ctx.fillStyle = earthGlow;
     ctx.beginPath();
-    ctx.arc(sunX, sunY, 24, 0, Math.PI * 2);
+    ctx.arc(earthX, earthY, 35, 0, Math.PI * 2);
     ctx.fill();
-
-    ctx.fillStyle = '#fbbf24';
-    ctx.beginPath();
-    ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Earth disc (slowly librating)
-    const earthX = w * 0.75 + Math.sin(demoHour * 0.08) * 16;
-    const earthY = horizonY - 28 + Math.cos(demoHour * 0.05) * 8;
-    const earthRadius = 14;
 
     ctx.fillStyle = '#0284c7';
     ctx.beginPath();
@@ -138,6 +133,57 @@ export const HomeView: React.FC = () => {
 
     ctx.strokeStyle = '#38bdf8';
     ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Sun disc (moving along polar horizon, true ~0.53° apparent diameter)
+    const sunProgress = (demoHour / 192) * (w + 80) - 40;
+    const sunX = sunProgress;
+    const sunY = horizonY - 12 - Math.sin((demoHour * Math.PI) / 96) * 32;
+    const sunRadius = 10;
+
+    // Solar corona glow
+    const sunGrad = ctx.createRadialGradient(sunX, sunY, 3, sunX, sunY, 40);
+    sunGrad.addColorStop(0, 'rgba(251, 191, 36, 0.65)');
+    sunGrad.addColorStop(0.5, 'rgba(245, 158, 11, 0.2)');
+    sunGrad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+    ctx.fillStyle = sunGrad;
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, 40, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Sun core
+    ctx.fillStyle = '#fbbf24';
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, sunRadius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Rugged Lunar South Pole Horizon Silhouette (multi-frequency topography)
+    ctx.fillStyle = '#111827';
+    ctx.beginPath();
+    ctx.moveTo(0, horizonY);
+    for (let x = 0; x <= w; x += 6) {
+      const peak1 = Math.sin(x * 0.008) * 28;
+      const peak2 = Math.cos(x * 0.022) * 14;
+      const peak3 = Math.sin(x * 0.045) * 6;
+      ctx.lineTo(x, horizonY - 8 + peak1 + peak2 + peak3);
+    }
+    ctx.lineTo(w, h);
+    ctx.lineTo(0, h);
+    ctx.closePath();
+    ctx.fill();
+
+    // Ridge rim highlight line
+    ctx.strokeStyle = 'rgba(75, 85, 99, 0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let x = 0; x <= w; x += 6) {
+      const peak1 = Math.sin(x * 0.008) * 28;
+      const peak2 = Math.cos(x * 0.022) * 14;
+      const peak3 = Math.sin(x * 0.045) * 6;
+      const y = horizonY - 8 + peak1 + peak2 + peak3;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
     ctx.stroke();
   }, [demoHour]);
 
@@ -180,97 +226,109 @@ export const HomeView: React.FC = () => {
 
   return (
     <div className="home-container" style={{ padding: '1rem 0' }}>
-      {/* 1. Value Proposition & Live Visual Hero (Instantly Legible within 5 seconds) */}
+      {/* 1. Persuasive Hero with Live Miniature Horizon Panorama Playing in Background */}
       <section
         style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          gap: '1.5rem',
-          alignItems: 'center',
-          marginBottom: '2rem',
+          position: 'relative',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          border: '1px solid var(--border-color)',
+          backgroundColor: '#05070e',
+          marginBottom: '2.5rem',
+          boxShadow: 'var(--shadow-lg)',
         }}
       >
-        <div>
+        {/* Live Miniature Horizon Panorama Playing in Background */}
+        <canvas
+          ref={canvasRef}
+          width={1200}
+          height={380}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+            zIndex: 0,
+            opacity: 0.5,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Foreground Content with Translucent Vignette for High Contrast */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            padding: '3.5rem 2rem',
+            background: 'radial-gradient(ellipse at center, rgba(5, 7, 14, 0.72) 0%, rgba(5, 7, 14, 0.94) 100%)',
+            textAlign: 'center',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <Badge variant="info" size="sm" icon={<Radio size={12} />}>
-            NASA Space Apps Challenge 2026 · CLPS Mission Browser
+            NASA Space Apps Challenge 2026 · CLPS Mission Browser & Route Solver
           </Badge>
 
-          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, margin: '0.75rem 0 0.5rem 0', lineHeight: 1.2 }}>
+          <h1
+            style={{
+              fontSize: '3.25rem',
+              fontWeight: 800,
+              margin: '0.85rem 0 0.5rem 0',
+              lineHeight: 1.15,
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
+            }}
+          >
             LightPath
           </h1>
 
-          <p style={{ fontSize: '1.15rem', color: 'var(--text-main)', lineHeight: 1.5, margin: '0 0 1rem 0' }}>
-            Authoritative lunar south-pole terrain horizon clearance, solar disc illumination, and Direct-to-Earth communication line of sight.
+          {/* One-Sentence Purpose */}
+          <p
+            style={{
+              fontSize: '1.35rem',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              lineHeight: 1.5,
+              maxWidth: '820px',
+              margin: '0.5rem auto 1.75rem auto',
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.9)',
+            }}
+          >
+            Every tool tells you when a lunar site has light; LightPath tells you whether you can still get there before it goes.
           </p>
 
-          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 1.25rem 0' }}>
-            LightPath models when the Sun and Earth are above the rugged lunar terrain horizon, determines direct line of sight to NASA Deep Space Network ground stations, and assesses route traversability for rovers and surface assets.
-          </p>
-
-          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+          {/* One Try the Demo Button Leading to Prepared Route Scenario */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
             <a
-              href="#/site/synthetic-proving-ground"
-              className="primary-btn"
+              href="#/route/synthetic-proving-ground"
+              className="btn btn-primary"
+              data-testid="try-the-demo-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.65rem 1.25rem',
-                background: 'var(--color-blue)',
-                color: '#ffffff',
-                borderRadius: 'var(--radius-sm)',
-                fontWeight: 600,
+                gap: '0.6rem',
+                padding: '0.85rem 2.25rem',
+                fontSize: '1.15rem',
+                fontWeight: 700,
+                borderRadius: '8px',
                 textDecoration: 'none',
+                minHeight: '48px',
+                boxShadow: '0 4px 20px rgba(56, 189, 248, 0.45)',
               }}
             >
-              <span>Explore Demo Site (Proving Ground)</span>
-              <span>→</span>
+              <span>Try the demo</span>
+              <span aria-hidden="true">→</span>
             </a>
-
-            <a
-              href="#/compare/synthetic-proving-ground/synthetic-crater-rim"
-              className="secondary-btn"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.65rem 1.25rem',
-                background: 'var(--card-bg)',
-                border: '1px solid var(--border-color)',
-                color: 'var(--text-main)',
-                borderRadius: 'var(--radius-sm)',
-                fontWeight: 600,
-                textDecoration: 'none',
-              }}
-            >
-              <span>Compare Candidate Sites</span>
-            </a>
+            <span style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
+              Prepared scenario: 1.4 km rover traverse under moving South Pole crater shadows
+            </span>
           </div>
         </div>
-
-        {/* Live Mini Visual Canvas */}
-        <Card style={{ padding: '0.75rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-              LIVE SIMULATION · 5-SECOND HORIZON OCCULTATION
-            </span>
-            <Badge variant="neutral" size="sm">
-              MOON_ME Frame
-            </Badge>
-          </div>
-
-          <canvas
-            ref={canvasRef}
-            width={480}
-            height={200}
-            style={{ width: '100%', height: 'auto', display: 'block', borderRadius: '4px' }}
-          />
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-            <span style={{ color: '#fbbf24' }}>☼ Solar Disc Path (True 0.53° Size)</span>
-            <span style={{ color: '#38bdf8' }}>⊕ Earth Disc Path (True 1.90° Size)</span>
-          </div>
-        </Card>
       </section>
 
       {/* 2. Mission Browser Section */}
@@ -299,8 +357,10 @@ export const HomeView: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}>
               <Filter size={14} style={{ color: 'var(--text-muted)' }} />
-              <span>Status:</span>
+              <label htmlFor="mission-status-filter">Status:</label>
               <select
+                id="mission-status-filter"
+                aria-label="Filter missions by status"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
                 style={{
@@ -322,8 +382,10 @@ export const HomeView: React.FC = () => {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8rem' }}>
-              <span>Site:</span>
+              <label htmlFor="mission-site-filter">Site:</label>
               <select
+                id="mission-site-filter"
+                aria-label="Filter missions by site"
                 value={siteFilter}
                 onChange={(e) => setSiteFilter(e.target.value)}
                 style={{
@@ -458,12 +520,12 @@ export const HomeView: React.FC = () => {
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8rem' }}>
-                      {m.source_links.map((link, idx) => (
+                      {m.source_url ? (
                         <a
-                          key={idx}
-                          href={link.url}
+                          href={m.source_url}
                           target="_blank"
                           rel="noreferrer"
+                          data-testid="mission-source-link"
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -472,10 +534,29 @@ export const HomeView: React.FC = () => {
                             textDecoration: 'none',
                           }}
                         >
-                          <span>{link.label}</span>
+                          <span>{m.source_label || 'Official Source'}</span>
                           <ExternalLink size={12} />
                         </a>
-                      ))}
+                      ) : (
+                        m.source_links.map((link, idx) => (
+                          <a
+                            key={idx}
+                            href={link.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.2rem',
+                              color: 'var(--color-blue)',
+                              textDecoration: 'none',
+                            }}
+                          >
+                            <span>{link.label}</span>
+                            <ExternalLink size={12} />
+                          </a>
+                        ))
+                      )}
                     </div>
 
                     <a
@@ -533,14 +614,27 @@ export const HomeView: React.FC = () => {
                 </Badge>
               </div>
 
-              <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.75rem' }}>
+              <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                 Coordinates: {site.lat_deg.toFixed(2)}° S, {site.lon_deg.toFixed(2)}° E · Elevation: {site.ground_elev_m}m
               </div>
 
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <ExternalLink size={12} />
+                <a
+                  href={site.source_url || (site.source_links?.[0] ?? '#')}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="site-source-link"
+                  style={{ color: 'var(--color-blue)', textDecoration: 'none' }}
+                >
+                  Source: {site.source_label || 'PDS Elevation'}
+                </a>
+              </div>
+
               <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.8rem', color: site.verified ? 'var(--color-green)' : 'var(--color-amber)' }}>
-                  {site.verified ? '✓ Verified' : '⚠️ Unverified'}
-                </span>
+                <Badge variant={site.verified ? 'success' : 'warning'} size="sm">
+                  {site.verified ? '✓ Verified' : '⚠ Unverified'}
+                </Badge>
                 <a
                   href={`#/site/${site.id}`}
                   style={{
