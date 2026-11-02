@@ -10,17 +10,13 @@ Governed by docs/PROJECT_RULES.md:
 from __future__ import annotations
 
 import csv
-import json
 from pathlib import Path
 
 import pyarrow.parquet as pq
-import pyarrow.types as pat
-import pytest
 
-from pipeline.export_data import ARROW_SCHEMA, export_all_datasets
+from pipeline.export_data import export_all_datasets
 from scripts.validate_exported_data import (
     EXPECTED_COLUMNS,
-    EXPECTED_METADATA,
     VALID_TARGETS,
     validate_catalog,
     validate_duration_conservation_against_series,

@@ -546,8 +546,11 @@ def test_adversarial_14_nested_terrain_seam_and_step_discontinuity():
     from pipeline.terrain import NestedTerrain, NestedTerrainLayer
 
     # 1. Aligned layers: both report 150.0m elevation
-    inner_aligned = lambda lat, lon: np.full_like(lat, 150.0)
-    outer_aligned = lambda lat, lon: np.full_like(lat, 150.0)
+    def inner_aligned(lat, lon):
+        return np.full_like(lat, 150.0)
+
+    def outer_aligned(lat, lon):
+        return np.full_like(lat, 150.0)
 
     nt_aligned = NestedTerrain([
         NestedTerrainLayer(dem=inner_aligned, max_range_m=5000.0, name="fine_inner"),
@@ -563,8 +566,11 @@ def test_adversarial_14_nested_terrain_seam_and_step_discontinuity():
     assert np.allclose(elevs_aligned, 150.0), "Aligned layers must be perfectly continuous across seam"
 
     # 2. Unaligned layers: 5m datum offset between inner (150m) and outer (155m)
-    inner_offset = lambda lat, lon: np.full_like(lat, 150.0)
-    outer_offset = lambda lat, lon: np.full_like(lat, 155.0)
+    def inner_offset(lat, lon):
+        return np.full_like(lat, 150.0)
+
+    def outer_offset(lat, lon):
+        return np.full_like(lat, 155.0)
 
     nt_offset = NestedTerrain([
         NestedTerrainLayer(dem=inner_offset, max_range_m=5000.0, name="fine_inner"),
@@ -650,8 +656,8 @@ def test_adversarial_17_date_range_kernel_boundary():
     Verifies that utc_to_et and topocentric calculations execute analytical fallbacks
     without raising an error, but that physical SPICE kernels are absent.
     """
-    from pipeline.geometry import are_kernels_loaded, utc_to_et
     from pipeline.ephemeris import compute_topocentric_sun_state
+    from pipeline.geometry import are_kernels_loaded, utc_to_et
 
     # Kernels are not loaded in default synthetic test environment
     assert not are_kernels_loaded()

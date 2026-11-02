@@ -15,12 +15,12 @@ Governed by docs/PROJECT_RULES.md (Rule 1: Correctness, Rule 5: MOON_ME frame, R
 from __future__ import annotations
 
 import csv
-from datetime import datetime, timezone
 import hashlib
 import json
-from pathlib import Path
 import sys
-from typing import Any, Dict, List
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict
 
 import pyarrow.parquet as pq
 import pyarrow.types as pat

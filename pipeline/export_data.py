@@ -12,13 +12,11 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
-import os
 from pathlib import Path
 from typing import Any, Dict, List
 
 import pyarrow as pa
 import pyarrow.parquet as pq
-
 
 ARROW_SCHEMA = pa.schema(
     [

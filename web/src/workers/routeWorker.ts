@@ -1098,7 +1098,7 @@ export function generateMissionPlanIcs(plan: MissionPlanResult): string {
   };
 
   for (const ev of plan.timeline) {
-    let dtstart = toIcsDate(ev.start_time_utc);
+    const dtstart = toIcsDate(ev.start_time_utc);
     let dtend = toIcsDate(ev.end_time_utc);
     if (dtstart === dtend) {
       const d = new Date(ev.end_time_utc);

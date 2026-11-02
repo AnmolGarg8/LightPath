@@ -14,7 +14,6 @@ from pipeline.routing import (
     compute_departure_window_map,
     export_mission_plan_csv,
     export_mission_plan_ics,
-    generate_dispersion_pattern,
     plan_lunar_traverse,
     plan_mission,
 )

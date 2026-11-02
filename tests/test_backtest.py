@@ -11,7 +11,6 @@ import json
 import math
 from pathlib import Path
 
-import pytest
 from jsonschema import validate
 
 from pipeline.backtest import (
