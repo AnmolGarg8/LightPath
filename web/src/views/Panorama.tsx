@@ -697,7 +697,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
             type="button"
             className="primary-btn"
             onClick={() => setIsPlaying(!isPlaying)}
-            title={isPlaying ? 'Pause (Space)' : 'Play simulation (Space)'}
+            title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -765,7 +765,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
               setIsPlaying(false);
               onTimeChange(Number(e.target.value));
             }}
-            aria-label="Simulation Time Slider"
+            aria-label="Mission Time Slider"
             style={{ flex: 1, accentColor: 'var(--color-blue)', cursor: 'pointer' }}
           />
         </div>

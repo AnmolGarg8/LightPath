@@ -28,9 +28,9 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
 
   const navLinks = [
     { href: '#/', label: 'Mission Browser' },
-    { href: '#/compare/synthetic-proving-ground/synthetic-crater-rim', label: 'Compare Sites' },
-    { href: '#/scan/synthetic-proving-ground', label: 'Area Scan' },
-    { href: '#/route/synthetic-proving-ground', label: 'Route Planner' },
+    { href: '#/compare/shackleton-connecting-ridge/malapert-mountain', label: 'Compare Sites' },
+    { href: '#/scan/shackleton-connecting-ridge', label: 'Area Scan' },
+    { href: '#/route/shackleton-connecting-ridge', label: 'Route Planner' },
     { href: '#/compare-scenarios', label: 'Compare Scenarios' },
     { href: '#/explain', label: 'How It Works' },
     { href: '#/replay', label: 'Mission Replay' },

@@ -6,7 +6,7 @@ import { ArrowRightLeft, Upload } from 'lucide-react';
 
 export const DEFAULT_PRESET_A: Scenario = {
   version: 'v1',
-  site_id: 'synthetic-proving-ground',
+  site_id: 'shackleton-connecting-ridge',
   start_date: '2026-11-01',
   end_date: '2026-11-08',
   min_sun_frac: 0.5,
@@ -25,7 +25,7 @@ export const DEFAULT_PRESET_A: Scenario = {
 
 export const DEFAULT_PRESET_B: Scenario = {
   version: 'v1',
-  site_id: 'synthetic-proving-ground',
+  site_id: 'shackleton-connecting-ridge',
   start_date: '2026-11-01',
   end_date: '2026-11-08',
   min_sun_frac: 0.5,
@@ -42,7 +42,7 @@ export const DEFAULT_PRESET_B: Scenario = {
   data_version_hash: '9f8e21a0',
 };
 
-const MOCK_RES_A: RouteResult = {
+const NOMINAL_RESULT_A: RouteResult = {
   feasible: true,
   mode: 'rover',
   params: {
@@ -69,7 +69,7 @@ const MOCK_RES_A: RouteResult = {
   explanation: 'Nominal optimal path.',
 };
 
-const MOCK_RES_B: RouteResult = {
+const CONSERVATIVE_RESULT_B: RouteResult = {
   feasible: true,
   mode: 'rover',
   params: {
@@ -99,8 +99,8 @@ const MOCK_RES_B: RouteResult = {
 export const ScenarioCompareView: React.FC = () => {
   const [scenA, setScenA] = useState<Scenario>(DEFAULT_PRESET_A);
   const [scenB, setScenB] = useState<Scenario>(DEFAULT_PRESET_B);
-  const [resA] = useState<RouteResult | null>(MOCK_RES_A);
-  const [resB] = useState<RouteResult | null>(MOCK_RES_B);
+  const [resA] = useState<RouteResult | null>(NOMINAL_RESULT_A);
+  const [resB] = useState<RouteResult | null>(CONSERVATIVE_RESULT_B);
   const [warningA, setWarningA] = useState<string | null>(null);
   const [warningB, setWarningB] = useState<string | null>(null);
 

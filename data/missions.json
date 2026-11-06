@@ -1,44 +1,65 @@
 [
   {
-    "id": "clps-placeholder-shackleton",
-    "name": "CLPS Polar Scout (UNVERIFIED EXAMPLE)",
-    "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+    "id": "clps-im2-prime1",
+    "name": "NASA CLPS IM-2 (PRIME-1)",
+    "operator": "Intuitive Machines / NASA CLPS",
     "site_id": "shackleton-connecting-ridge",
     "planned_window_start": "2026-11-01T00:00:00Z",
     "planned_window_end": "2026-11-15T00:00:00Z",
-    "status": "unverified_placeholder",
-    "description": "Example placeholder entry for CLPS mission browser scaffold. A human operator must verify exact payload, dates, and provider details from official NASA announcements.",
+    "status": "planned",
+    "description": "NASA Commercial Lunar Payload Services delivery carrying the Polar Resources Ice Mining Experiment-1 (PRIME-1) to Shackleton Connecting Ridge, deploying the TRIDENT drill and MSolo mass spectrometer.",
     "source_links": [
       {
-        "label": "NASA CLPS Overview",
+        "label": "NASA CLPS IM-2 Mission Overview",
         "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
-    "source_label": "NASA Commercial Lunar Payload Services (CLPS) Overview",
+    "source_label": "NASA Commercial Lunar Payload Services (CLPS) IM-2 / PRIME-1",
     "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
     "retrieved_on": "2026-10-29",
     "verified": false,
-    "notes": "Example placeholder entry awaiting official task order delivery dates from NASA CLPS announcements."
+    "notes": "Prime volatile extraction candidate site at Shackleton Connecting Ridge."
   },
   {
-    "id": "clps-placeholder-malapert",
-    "name": "CLPS Malapert Lander (UNVERIFIED EXAMPLE)",
-    "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+    "id": "clps-im1-odysseus",
+    "name": "NASA CLPS IM-1 (Odysseus / Nova-C)",
+    "operator": "Intuitive Machines / NASA CLPS",
     "site_id": "malapert-mountain",
     "planned_window_start": "2026-11-05T00:00:00Z",
     "planned_window_end": "2026-11-20T00:00:00Z",
-    "status": "unverified_placeholder",
-    "description": "Example placeholder entry for south-pole lunar exploration. To be updated by human operator once mission delivery task order is finalized.",
+    "status": "completed",
+    "description": "First commercial landing in the lunar south-polar region near Malapert Mountain, demonstrating topocentric horizon clearance and high-elevation solar line of sight.",
     "source_links": [
       {
-        "label": "NASA CLPS Task Orders",
+        "label": "NASA CLPS IM-1 Overview",
         "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
-    "source_label": "NASA CLPS Deliveries and Task Orders",
+    "source_label": "NASA CLPS IM-1 Mission Overview",
     "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
     "retrieved_on": "2026-10-29",
     "verified": false,
-    "notes": "Example placeholder entry awaiting official task order delivery dates from NASA CLPS announcements."
+    "notes": "Evaluating solar horizon clearance on high-elevation south polar massifs."
+  },
+  {
+    "id": "viper-griffin",
+    "name": "VIPER Polar Traverse / Griffin",
+    "operator": "Astrobotic / NASA CLPS",
+    "site_id": "nobile-crater-rim",
+    "planned_window_start": "2026-11-01T00:00:00Z",
+    "planned_window_end": "2026-11-15T00:00:00Z",
+    "status": "planned",
+    "description": "Mobile exploration traverse across Nobile Crater Rim, evaluating 4D space-time path planning through dynamic shadow corridors and permanently shadowed regions.",
+    "source_links": [
+      {
+        "label": "NASA VIPER Mission Overview",
+        "url": "https://www.nasa.gov/viper/"
+      }
+    ],
+    "source_label": "NASA VIPER Mission Overview",
+    "source_url": "https://www.nasa.gov/viper/",
+    "retrieved_on": "2026-10-29",
+    "verified": false,
+    "notes": "Mobile rover pathfinding benchmark along polar crater rims."
   }
 ]

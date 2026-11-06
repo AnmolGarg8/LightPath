@@ -383,8 +383,8 @@ export function compareScenarios(
 export function buildRouteEvidenceData(
   scenario: Scenario,
   routeResult: RouteResult,
-  siteName = 'Synthetic Proving Ground',
-  siteCoords = { lat_deg: -89.9, lon_deg: 0.0, ground_elev_m: 0.0 },
+  siteName = 'Shackleton Connecting Ridge',
+  siteCoords = { lat_deg: -89.78, lon_deg: 120.0, ground_elev_m: 1850.0 },
   conservativeCaution?: { extra_distance_m: number; extra_duration_h: number },
   departureBounds?: { earliest_utc?: string; latest_safe_utc?: string }
 ) {

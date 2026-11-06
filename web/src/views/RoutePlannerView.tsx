@@ -756,12 +756,25 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
     reader.readAsText(file);
   };
 
+  const resolvedSiteName = 
+    siteId === 'shackleton-connecting-ridge' ? 'Shackleton Connecting Ridge'
+    : siteId === 'malapert-mountain' ? 'Malapert Mountain'
+    : siteId === 'nobile-crater-rim' ? 'Nobile Crater Rim'
+    : siteId === 'synthetic-proving-ground' ? 'Synthetic Proving Ground'
+    : siteId;
+
+  const resolvedSiteCoords =
+    siteId === 'shackleton-connecting-ridge' ? { lat_deg: -89.78, lon_deg: 120.0, ground_elev_m: 1850.0 }
+    : siteId === 'malapert-mountain' ? { lat_deg: -85.99, lon_deg: 0.0, ground_elev_m: 5000.0 }
+    : siteId === 'nobile-crater-rim' ? { lat_deg: -85.25, lon_deg: 35.8, ground_elev_m: 2100.0 }
+    : { lat_deg: -89.9, lon_deg: 0.0, ground_elev_m: 0.0 };
+
   const evidenceData = activeRoute
     ? buildRouteEvidenceData(
         getCurrentScenario(),
         activeRoute,
-        siteId === 'synthetic-proving-ground' ? 'Synthetic Proving Ground' : siteId,
-        { lat_deg: -89.9, lon_deg: 0.0, ground_elev_m: 0.0 },
+        resolvedSiteName,
+        resolvedSiteCoords,
         conservativeComparison?.cost_of_caution
           ? {
               extra_distance_m: conservativeComparison.cost_of_caution.extra_distance_m,
@@ -782,7 +795,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       <div>
         <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.4rem', alignItems: 'center' }}>
           <Badge variant="joint" label="SPATIO-TEMPORAL ROUTE PLANNER" />
-          <Badge variant="synthetic" label="MOVING ILLUMINATION SHADOW" />
+          <Badge variant="neutral" label="DYNAMIC SOLAR ILLUMINATION" />
           {mapLoading && (
             <span className="mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--accent-primary)', marginLeft: '0.5rem' }}>
               ⚡ Updating departure map...

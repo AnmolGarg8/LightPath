@@ -62,7 +62,7 @@ export const ExplainView: React.FC = () => {
   useEffect(() => {
     // Load series data and test results for live numbers
     Promise.all([
-      fetchJsonData('./data/synthetic-proving-ground/series.json', SeriesSchema).catch(() => null),
+      fetchJsonData('./data/shackleton-connecting-ridge/series.json', SeriesSchema).catch(() => null),
       fetchJsonData('./data/test_results.json', TestResultsSchema).catch(() => null),
     ]).then(([series, tests]) => {
       if (series) setSeriesData(series);
@@ -441,7 +441,7 @@ export const ExplainView: React.FC = () => {
               />
 
               <Slider
-                label="Simulated Sun Centre Elevation"
+                label="Solar Elevation Angle"
                 min={-1.5}
                 max={1.5}
                 step={0.05}
@@ -632,7 +632,7 @@ export const ExplainView: React.FC = () => {
 
               <div style={{ marginTop: '1.25rem' }}>
                 <a
-                  href="#/route/synthetic-proving-ground"
+                  href="#/route/shackleton-connecting-ridge"
                   className="btn btn-primary"
                   style={{ fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >

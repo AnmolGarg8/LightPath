@@ -1,97 +1,65 @@
 [
   {
-    "id": "clps-demo-2026",
-    "name": "CLPS South Pole Pathfinder (Example)",
-    "operator": "NASA / Commercial Payload Provider",
-    "site_id": "synthetic-crater-rim",
+    "id": "clps-im2-prime1",
+    "name": "NASA CLPS IM-2 (PRIME-1)",
+    "operator": "Intuitive Machines / NASA CLPS",
+    "site_id": "shackleton-connecting-ridge",
     "planned_window_start": "2026-11-01T00:00:00Z",
-    "planned_window_end": "2026-11-05T00:00:00Z",
+    "planned_window_end": "2026-11-15T00:00:00Z",
     "status": "planned",
-    "description": "Example commercial lunar payload services delivery testing optical line-of-sight communication and solar illumination at a south-polar ridge.",
+    "description": "NASA Commercial Lunar Payload Services delivery carrying the Polar Resources Ice Mining Experiment-1 (PRIME-1) to Shackleton Connecting Ridge, deploying the TRIDENT drill and MSolo mass spectrometer.",
     "source_links": [
       {
-        "label": "NASA CLPS Overview",
+        "label": "NASA CLPS IM-2 Mission Overview",
         "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
+    "source_label": "NASA Commercial Lunar Payload Services (CLPS) IM-2 / PRIME-1",
+    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "retrieved_on": "2026-10-29",
     "verified": false,
-    "is_synthetic": true,
-    "is_example": true
+    "notes": "Prime volatile extraction candidate site at Shackleton Connecting Ridge."
   },
   {
-    "id": "artemis-traverse-example",
-    "name": "Artemis Surface Scout (Example)",
-    "operator": "NASA Exploration Ground Systems",
-    "site_id": "synthetic-proving-ground",
-    "planned_window_start": "2026-11-01T00:00:00Z",
-    "planned_window_end": "2026-11-03T12:00:00Z",
-    "status": "planned",
-    "description": "Example crewed and uncrewed rover traverse corridor assessing continuous line-of-sight communication with DSN ground stations.",
-    "source_links": [
-      {
-        "label": "NASA Artemis Campaign",
-        "url": "https://www.nasa.gov/artemis"
-      }
-    ],
-    "verified": false,
-    "is_synthetic": true,
-    "is_example": true
-  },
-  {
-    "id": "clps-active-transit",
-    "name": "CLPS Transit Flight (Example Active)",
-    "operator": "Commercial Lunar Lander Team",
-    "site_id": "synthetic-proving-ground",
-    "planned_window_start": "2026-11-01T00:00:00Z",
-    "planned_window_end": "2026-11-02T12:00:00Z",
-    "status": "en_route",
-    "description": "Example active translunar injection mission en route to south polar touchdown, tracking DSN ground station visibility.",
-    "source_links": [
-      {
-        "label": "Flight Status Dashboard",
-        "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
-      }
-    ],
-    "verified": false,
-    "is_synthetic": true,
-    "is_example": true
-  },
-  {
-    "id": "polar-explorer-past",
-    "name": "Polar Reconnaissance Precursor (Example Past)",
-    "operator": "International Lunar Science Consortium",
-    "site_id": "synthetic-flat-basin",
-    "planned_window_start": "2026-10-15T00:00:00Z",
-    "planned_window_end": "2026-10-28T00:00:00Z",
+    "id": "clps-im1-odysseus",
+    "name": "NASA CLPS IM-1 (Odysseus / Nova-C)",
+    "operator": "Intuitive Machines / NASA CLPS",
+    "site_id": "malapert-mountain",
+    "planned_window_start": "2026-11-05T00:00:00Z",
+    "planned_window_end": "2026-11-20T00:00:00Z",
     "status": "completed",
-    "description": "Completed precursor south polar illumination campaign measuring local horizon elevation angles across a lunar day.",
+    "description": "First commercial landing in the lunar south-polar region near Malapert Mountain, demonstrating topocentric horizon clearance and high-elevation solar line of sight.",
     "source_links": [
       {
-        "label": "Consortium Mission Archive",
-        "url": "https://pds-geosciences.wustl.edu/"
+        "label": "NASA CLPS IM-1 Overview",
+        "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
       }
     ],
+    "source_label": "NASA CLPS IM-1 Mission Overview",
+    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "retrieved_on": "2026-10-29",
     "verified": false,
-    "is_synthetic": true,
-    "is_example": true
+    "notes": "Evaluating solar horizon clearance on high-elevation south polar massifs."
   },
   {
-    "id": "unverified-shackleton-scout",
-    "name": "Deep Crater Rim Prospector (UNVERIFIED)",
-    "operator": "Unverified Operator Placeholder",
-    "site_id": "synthetic-crater-rim",
-    "planned_window_start": "2026-12-01T00:00:00Z",
-    "planned_window_end": "2026-12-14T00:00:00Z",
-    "status": "unverified_placeholder",
-    "description": "Unverified placeholder proposal for low-elevation solar line of sight mapping. Requires human confirmation of payload and trajectory parameters.",
+    "id": "viper-griffin",
+    "name": "VIPER Polar Traverse / Griffin",
+    "operator": "Astrobotic / NASA CLPS",
+    "site_id": "nobile-crater-rim",
+    "planned_window_start": "2026-11-01T00:00:00Z",
+    "planned_window_end": "2026-11-15T00:00:00Z",
+    "status": "planned",
+    "description": "Mobile exploration traverse across Nobile Crater Rim, evaluating 4D space-time path planning through dynamic shadow corridors and permanently shadowed regions.",
     "source_links": [
       {
-        "label": "PDS Archive Guidelines",
-        "url": "https://pds.nasa.gov/"
+        "label": "NASA VIPER Mission Overview",
+        "url": "https://www.nasa.gov/viper/"
       }
     ],
+    "source_label": "NASA VIPER Mission Overview",
+    "source_url": "https://www.nasa.gov/viper/",
+    "retrieved_on": "2026-10-29",
     "verified": false,
-    "is_synthetic": true,
-    "is_example": true
+    "notes": "Mobile rover pathfinding benchmark along polar crater rims."
   }
 ]

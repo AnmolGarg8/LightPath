@@ -94,7 +94,7 @@ export const DepartureWindowMap: React.FC<DepartureWindowMapProps> = ({
   return (
     <Card
       title="Departure Window Map"
-      subtitle={`Feasibility and arrival metrics computed for every departure time step across the simulation horizon.`}
+      subtitle={`Feasibility and arrival metrics computed for every departure time step across the mission planning horizon.`}
       action={
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Badge

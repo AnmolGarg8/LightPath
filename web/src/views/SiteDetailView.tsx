@@ -102,9 +102,13 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
                 <Badge variant="success" size="sm" icon={<CheckCircle2 size={12} />}>
                   Verified Site
                 </Badge>
-              ) : (
+              ) : siteData.is_synthetic ? (
                 <Badge variant="warning" size="sm" icon={<AlertTriangle size={12} />}>
-                  Unverified / Synthetic
+                  Synthetic Benchmark
+                </Badge>
+              ) : (
+                <Badge variant="info" size="sm">
+                  CLPS Candidate Site
                 </Badge>
               )}
             </div>

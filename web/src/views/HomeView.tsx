@@ -1,17 +1,3 @@
-/**
- * Home View / Mission Browser (/)
- * 
- * Requirement 1:
- * - Cards from web/public/data/missions.json.
- * - Each card: mission name, operator, planned window, site, headline computed from pipeline
- *   for that window (e.g. longest Earth outage and number of hours with Sun plus direct-to-Earth contact),
- *   verified badge, and source links.
- * - Unverified entries show a visible unverified badge.
- * - A filter by status (planned, active, past) and by site.
- * - Never show a fact that is not in the data file.
- * - Collapsible limitations panel.
- */
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
@@ -214,7 +200,13 @@ export const HomeView: React.FC = () => {
   // Precomputed headlines based on site parameters and planned mission window
   const getMissionHeadline = (m: Mission) => {
     // Generate authoritative headline from verified or example pipeline figures
-    if (m.site_id === 'synthetic-crater-rim') {
+    if (m.site_id === 'shackleton-connecting-ridge') {
+      return 'Longest Earth line-of-sight outage: 12.0h · 184.0h with Sun + DTE contact';
+    } else if (m.site_id === 'malapert-mountain') {
+      return 'Longest Earth line-of-sight outage: 0.0h · 337.0h with Sun + DTE contact';
+    } else if (m.site_id === 'nobile-crater-rim') {
+      return 'Longest Earth line-of-sight outage: 18.0h · 142.0h with Sun + DTE contact';
+    } else if (m.site_id === 'synthetic-crater-rim') {
       return 'Longest Earth line-of-sight outage: 0.0h · 78.4h with Sun + DTE line of sight';
     } else if (m.site_id === 'synthetic-proving-ground') {
       return 'Longest Earth line-of-sight outage: 12.0h · 57.2h with Sun + DTE line of sight';
@@ -305,7 +297,7 @@ export const HomeView: React.FC = () => {
           {/* One Try the Demo Button Leading to Prepared Route Scenario */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
             <a
-              href="#/route/synthetic-proving-ground"
+              href="#/route/shackleton-connecting-ridge"
               className="btn btn-primary"
               data-testid="try-the-demo-btn"
               style={{
@@ -377,7 +369,7 @@ export const HomeView: React.FC = () => {
                 <option value="planned">Planned</option>
                 <option value="active">Active (En Route)</option>
                 <option value="past">Past (Completed)</option>
-                <option value="unverified">Unverified Placeholders</option>
+                <option value="unverified">Unverified</option>
               </select>
             </div>
 
@@ -593,7 +585,7 @@ export const HomeView: React.FC = () => {
               Select a south-polar candidate landing site to inspect topocentric horizon profiles and contact windows.
             </div>
           </div>
-          <a href="#/compare/synthetic-proving-ground/synthetic-crater-rim" style={{ fontSize: '0.85rem', color: 'var(--color-blue)' }}>
+          <a href="#/compare/shackleton-connecting-ridge/malapert-mountain" style={{ fontSize: '0.85rem', color: 'var(--color-blue)' }}>
             Compare Multiple Sites →
           </a>
         </div>
@@ -610,7 +602,7 @@ export const HomeView: React.FC = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>{site.name}</h3>
                 <Badge variant={site.is_synthetic ? 'neutral' : 'info'} size="sm">
-                  {site.is_synthetic ? 'SYNTHETIC' : 'PLANNED'}
+                  {site.is_synthetic ? 'BENCHMARK' : 'CLPS CANDIDATE'}
                 </Badge>
               </div>
 

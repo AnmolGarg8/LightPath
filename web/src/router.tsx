@@ -75,19 +75,19 @@ export function useRouter(): { currentPath: string; view: React.ReactNode } {
   else if (cleanPath === '/compare' || cleanPath.startsWith('/compare/')) {
     const sub = cleanPath.replace('/compare/', '').replace('/compare', '');
     const parts = sub ? sub.split('/') : [];
-    const siteA = parts[0] || 'synthetic-proving-ground';
-    const siteB = parts[1] || 'synthetic-crater-rim';
+    const siteA = parts[0] || 'shackleton-connecting-ridge';
+    const siteB = parts[1] || 'malapert-mountain';
     view = <CompareView siteAId={siteA} siteBId={siteB} />;
   }
   // 4. Route Traverse /route or /route/:id
   else if (cleanPath === '/route' || cleanPath.startsWith('/route/')) {
     const sub = cleanPath.replace('/route/', '').replace('/route', '');
-    const siteId = sub.split('/')[0] || 'synthetic-proving-ground';
+    const siteId = sub.split('/')[0] || 'shackleton-connecting-ridge';
     view = <RoutePlannerView siteId={siteId} />;
   }
   // 5. Area Scan /scan/:id
   else if (cleanPath.startsWith('/scan/')) {
-    const siteId = cleanPath.replace('/scan/', '').split('/')[0] || 'synthetic-proving-ground';
+    const siteId = cleanPath.replace('/scan/', '').split('/')[0] || 'shackleton-connecting-ridge';
     view = <ScanView siteId={siteId} />;
   }
   // 6. Evidence /evidence/:id

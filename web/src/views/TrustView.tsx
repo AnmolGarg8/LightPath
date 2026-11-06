@@ -70,7 +70,7 @@ export const TrustView: React.FC = () => {
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0 }}>Verification Test Results Missing or Unavailable</h2>
           </div>
           <p style={{ color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: '1rem' }}>
-            LightPath strictly adheres to <strong>Prompt 0 Rule 2</strong>: <em>Never present fake, mocked, or unverified results</em>. 
+            LightPath strictly adheres to <strong>Scientific Integrity Principles</strong>: <em>Never present unverified or ungrounded claims</em>. 
             The required test report file <code>tests/results.json</code> could not be loaded or failed schema validation.
           </p>
           <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '1rem', borderRadius: '6px', fontFamily: 'monospace', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>

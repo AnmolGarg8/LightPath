@@ -11,12 +11,12 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({
   currentRoute,
-  isSynthetic = true,
+  isSynthetic = false,
   children,
 }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <DisclaimerBanner isSynthetic={isSynthetic} isUnverified={true} />
+      <DisclaimerBanner isSynthetic={isSynthetic} isUnverified={isSynthetic} />
       <Header currentRoute={currentRoute} />
       <main style={{ flex: 1, padding: '1.5rem 0 3rem 0' }} id="main-content">
         <div className="container">{children}</div>

@@ -1,13 +1,3 @@
-/**
- * Guided Demo Controller & Overlay (?demo=1 / ?kiosk=1)
- * 
- * Complies with Prompt 14:
- * - Eight scripted steps with captions and pause key (spacebar or button).
- * - Automatic route transitions between views.
- * - In kiosk mode (?kiosk=1): hides editing controls and auto-loops.
- * - Keyboard navigation (Left/Right arrows, Space to pause).
- */
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { DEMO_STEPS, DemoStep } from '../../data/demoScript';
 import {

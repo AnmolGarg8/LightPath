@@ -18,7 +18,7 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
     <aside
       className="disclaimer-banner"
       role="region"
-      aria-label="Simulation Data Disclaimer"
+      aria-label="Mission Planning Data Disclaimer"
       data-testid="permanent-disclaimer-banner"
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>

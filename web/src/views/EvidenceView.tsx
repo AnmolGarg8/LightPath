@@ -282,7 +282,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
           <div style={{ textAlign: 'right' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', borderRadius: '4px', backgroundColor: site.verified ? '#dcfce7' : '#fef3c7', color: site.verified ? '#15803d' : '#b45309', fontWeight: 700, fontSize: '10px' }}>
               <ShieldCheck size={12} />
-              {site.verified ? 'VERIFIED METRICS' : 'SYNTHETIC PROVING GROUND'}
+              {site.verified ? 'VERIFIED METRICS' : site.is_synthetic ? 'BENCHMARK METRICS' : 'CLPS CANDIDATE METRICS'}
             </div>
             <div style={{ fontSize: '9px', color: '#64748b', marginTop: '4px', fontFamily: 'monospace' }}>
               Provenance Hash: {shortProvenanceHash}
@@ -435,7 +435,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
                   </div>
                 ))
               ) : (
-                <div style={{ color: '#64748b' }}>Synthetic Proving Ground Nested DEM (20m, 60m)</div>
+                <div style={{ color: '#64748b' }}>{site.is_synthetic ? 'Synthetic Benchmark DEM (20m, 60m)' : 'LOLA South Pole Polar DEM (20m/px, 60m/px)'}</div>
               )}
             </div>
 
@@ -464,7 +464,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
           </div>
         </div>
 
-        {/* Plain Language Limitations (Non-negotiable Prompt 0 Rule 8) */}
+        {/* Plain Language Operational Limitations */}
         <div style={{ borderTop: '1px dashed #cbd5e1', paddingTop: '8px', fontSize: '8.5px', color: '#64748b', lineHeight: 1.35 }}>
           <strong style={{ color: '#475569' }}>OPERATIONAL LIMITATIONS & NON-CLAIMS:</strong> LightPath is an early-stage illumination and direct-to-Earth line-of-sight analysis and education tool. 
           Sun visibility is <em>not electrical power</em> (solar panel orientation, incidence angles, thermal degradation, and dust are excluded). 

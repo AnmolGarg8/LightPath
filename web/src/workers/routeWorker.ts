@@ -658,7 +658,7 @@ export function solveMissionPlan(params: MissionWorkerPayload): MissionPlanResul
 
     if (curT >= numT) {
       allFeasible = false;
-      const vMsg = `Cannot start leg to '${stopName}': departure step ${curT} is beyond simulation horizon (${numT - 1}).`;
+      const vMsg = `Cannot start leg to '${stopName}': departure step ${curT} is beyond mission planning horizon (${numT - 1}).`;
       violations.push({
         stop_index: i,
         stop_name: stopName,
@@ -784,7 +784,7 @@ export function solveMissionPlan(params: MissionWorkerPayload): MissionPlanResul
     if (departureT >= numT) {
       allFeasible = false;
       deadlineSatisfied = false;
-      const vMsg = `Dwell at '${stopName}' extends to step ${departureT}, beyond simulation horizon (${numT - 1}).`;
+      const vMsg = `Dwell at '${stopName}' extends to step ${departureT}, beyond mission planning horizon (${numT - 1}).`;
       dwellViolations.push(vMsg);
       violations.push({
         stop_index: i,

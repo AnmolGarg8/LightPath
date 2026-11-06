@@ -85,7 +85,7 @@ export const LimitationsPanel: React.FC<LimitationsPanelProps> = ({ defaultExpan
               🧭 Preliminary Planning & Education Tool
             </h4>
             <p style={{ margin: 0 }}>
-              LightPath is designed for mission trade studies, comparative window analysis, and educational simulation. It does not certify touchdown safety, hazard avoidance, thermal survivability, or real-time flight operations.
+              LightPath is designed for mission trade studies, comparative window analysis, and educational mission analysis. It does not certify touchdown safety, hazard avoidance, thermal survivability, or real-time flight operations.
             </p>
           </div>
         </div>
