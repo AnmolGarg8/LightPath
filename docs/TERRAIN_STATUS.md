@@ -42,7 +42,7 @@ The web application enforces complete transparency regarding data provenance:
 2. **Site Status Badges:** Display `Synthetic Benchmark`, `Terrain: Synthetic`, and `Ephemeris: Analytic Approx` adjacent to the site title.
 3. **Hero Honest Status Line:** Displays `Demo uses synthetic terrain; approximate analytic ephemeris (SPICE kernels pending)` directly beneath the primary call to action.
 4. **Candidate Sites Section:** Candidate sites (`shackleton-connecting-ridge`, `malapert-mountain`, `nobile-crater-rim`) are listed in a dedicated section with status `Site data not available (not computed)` without failing links.
-5. **Trust & Verification Live Panel:** Verification metrics read dynamically from `tests/results.json`. Tests relying on real DEM data or external peer-reviewed benchmarks (`V3`, `V4`, `V7`) are explicitly presented as `NOT RUN`.
+5. **Trust & Verification Live Panel:** Verification metrics read dynamically from `tests/results.json`. Tests relying on real DEM data or external literature fixtures (`V3`, `V4`, `V7`) are explicitly presented as `NOT RUN`.
 
 ---
 
