@@ -354,6 +354,28 @@ code, pre, .mono {
   }
 }
 
+@media (max-width: 480px) {
+  html, body {
+    overflow-x: hidden;
+  }
+
+  .home-container,
+  .app-container,
+  main {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+
+  .planner-workspace-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  canvas {
+    max-width: 100% !important;
+  }
+}
+
 /* ==========================================================================
    Print Stylesheet for Route Cards & Evidence Cards
    ========================================================================== */

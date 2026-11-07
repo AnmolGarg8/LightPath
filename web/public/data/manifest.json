@@ -3,12 +3,12 @@
     {
       "path": "all_sites_windows.csv",
       "size_bytes": 3349,
-      "sha256": "a1a5dcde2e2bded89debc9ad9c6f3aec4ee64eaedf65fad51ddf1191396fbcae"
+      "sha256": "a3453adcb29c2f6bcc75daec5b2c2caad3ac0c47c3a3c8ab011ec6d5e885e1dd"
     },
     {
       "path": "all_sites_windows.parquet",
-      "size_bytes": 5015,
-      "sha256": "ec739371aec3db5d4032f2cdbc75ca8c758063f719a99f9c3e32b8a02912ecab"
+      "size_bytes": 5016,
+      "sha256": "6be2fb85e36f8622d895b0a6925f66a27cfec73fe95545be923d10f7321918ac"
     },
     {
       "path": "cubes/synthetic-crater-rim.bin",
@@ -43,7 +43,7 @@
     {
       "path": "data_catalog.json",
       "size_bytes": 7253,
-      "sha256": "7b7ab1a7c703fda2a1d5c0d47e9e8ce1272e33e8a8dd78d9987bf875bec067ce"
+      "sha256": "2b5569721f4f022e27ea1835aa1a837a3c7d885b8e0266b477a106ebfcc188da"
     },
     {
       "path": "data_status.json",
@@ -313,7 +313,7 @@
     {
       "path": "synthetic-proving-ground/provenance.json",
       "size_bytes": 1804,
-      "sha256": "0bb033fbaf7e84050f1e66d5d7343618eaa8d0234f3c869ff5e42c1f8fba1621"
+      "sha256": "4dcbfa82bab09650ad00f547b0ae23bfb784ff5aba70c03609d526d5f1de4dc0"
     },
     {
       "path": "synthetic-proving-ground/route_result.json",
@@ -343,17 +343,17 @@
     {
       "path": "synthetic-proving-ground/windows.csv",
       "size_bytes": 687,
-      "sha256": "9111304744e5552d9639ac11f4fa4351ba1705418da44a5479eb93d70f8fb561"
+      "sha256": "b6a301625b14db81062306c4038083c522fd0d9e1d01c9c9b5308cc52a0140e0"
     },
     {
       "path": "synthetic-proving-ground/windows.parquet",
       "size_bytes": 4747,
-      "sha256": "a8f866f1bf9b12e4172a1aab0716a1b0365a61ff9782a44f4141e972253ce265"
+      "sha256": "87c1ece2842cdd99592d29032216ea1f3277d9c881d300831c32e6c6695f33c6"
     },
     {
       "path": "test_results.json",
       "size_bytes": 11097,
-      "sha256": "8c941ea298cab643c806881a461d71a31492ebb240da6ec0a3657bbcbcda8239"
+      "sha256": "8d022185287027e03a1acc9a68c8d9b5a25a5aae3be8d7bf755146c48fedbe9e"
     }
   ],
   "run_configuration": {
@@ -396,6 +396,6 @@
     "end_utc": "2026-11-05T00:00:00Z"
   },
   "timestamp": "2026-11-01T00:00:00Z",
-  "code_commit": "1273c0c8a7fbecf52236b61c14ad2850c43239d1",
+  "code_commit": "ce4100782977e6e9508a78982dd03c72a3e667bf",
   "is_synthetic": true
 }

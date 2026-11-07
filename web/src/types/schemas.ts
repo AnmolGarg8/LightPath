@@ -391,3 +391,13 @@ export const DataCatalogSchema = z.object({
 
 export type DataCatalogFile = z.infer<typeof DataCatalogFileSchema>;
 export type DataCatalog = z.infer<typeof DataCatalogSchema>;
+
+export const DataStatusSchema = z.object({
+  has_lola_dem: z.boolean(),
+  has_spice_kernels: z.boolean(),
+  has_horizons_fixture: z.boolean(),
+  has_peer_reviewed_benchmark: z.boolean(),
+});
+
+export type DataStatus = z.infer<typeof DataStatusSchema>;
+

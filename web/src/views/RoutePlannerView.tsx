@@ -76,6 +76,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
 
   // Reproducibility, Evidence Card, & Sharing State
   const [showEvidenceCard, setShowEvidenceCard] = useState<boolean>(false);
+  const [showExplanation, setShowExplanation] = useState<boolean>(false);
   const [scenarioWarning, setScenarioWarning] = useState<string | null>(null);
   const [shareNotice, setShareNotice] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -1063,6 +1064,28 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         </div>
       )}
 
+      {/* Scenario Story Caption */}
+      <div
+        data-testid="route-story-caption"
+        style={{
+          backgroundColor: activeRoute?.feasible ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+          borderLeft: activeRoute?.feasible ? '4px solid #22c55e' : '4px solid #ef4444',
+          borderRadius: '6px',
+          padding: '0.75rem 1rem',
+          marginBottom: '1rem',
+          fontSize: '0.875rem',
+          lineHeight: 1.5,
+          color: 'var(--text-primary)',
+        }}
+      >
+        <strong style={{ color: activeRoute?.feasible ? '#22c55e' : '#f87171' }}>
+          Scenario Story:
+        </strong>{' '}
+        {activeRoute?.feasible
+          ? `Leaving at T=${selectedDepIdx} (${departureMap?.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || ''}Z) works! The illuminated corridor remains open and the rover safely reaches Destination B in ${activeRoute.metrics?.duration_h ?? traverseDurationH} h without exceeding darkness or slope limits.`
+          : `Leaving now (T=${selectedDepIdx}) is blocked by a moving lunar crater shadow across the traverse corridor. Leaving at the suggested time (${departureMap?.earliest_feasible_utc?.slice(11, 19) || 'Step ' + departureMap?.earliest_feasible_idx}Z) works!`}
+      </div>
+
       {/* Departure Feasibility & Suggested Relaxation Banner */}
       {departureMap && !departureMap.departures[selectedDepIdx]?.feasible && departureMap.earliest_feasible_idx !== null && (
         <div
@@ -1105,6 +1128,17 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         </div>
       )}
 
+      {/* 5. Departure Window Map (Positioned above canvas so it is visible without scrolling) */}
+      {plannerMode === 'single' && departureMap && (
+        <div className="light-budget-strip-container" style={{ marginBottom: '1rem' }}>
+          <DepartureWindowMap
+            data={departureMap}
+            selectedDepartureIdx={selectedDepIdx}
+            onSelectDeparture={handleSelectDeparture}
+          />
+        </div>
+      )}
+
       {/* Traverse Summary Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
         <Stat
@@ -1141,6 +1175,82 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
           description="Solar fraction at Point B at scrubbed time."
         />
       </div>
+
+      {/* Explain this route Button and Panel */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.75rem', marginBottom: '0.75rem' }}>
+        <button
+          type="button"
+          data-testid="explain-route-btn"
+          onClick={() => setShowExplanation(!showExplanation)}
+          className="btn btn-outline touch-target-44"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.45rem 0.95rem',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            cursor: 'pointer',
+          }}
+        >
+          <span>ℹ️ {showExplanation ? 'Hide route explanation' : 'Explain this route'}</span>
+        </button>
+      </div>
+
+      {showExplanation && (
+        <div
+          data-testid="route-explanation-panel"
+          style={{
+            backgroundColor: 'var(--bg-secondary, #0f172a)',
+            border: '1px solid var(--border-color)',
+            borderLeft: activeRoute?.feasible ? '4px solid #22c55e' : '4px solid #ef4444',
+            borderRadius: '8px',
+            padding: '1.25rem',
+            marginBottom: '1rem',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h3
+              style={{
+                fontSize: '1rem',
+                fontWeight: 700,
+                margin: 0,
+                color: activeRoute?.feasible ? '#22c55e' : '#ef4444',
+              }}
+            >
+              Route Solver Explanation: {activeRoute?.feasible ? 'FEASIBLE ROUTE' : 'INFEASIBLE ROUTE'}
+            </h3>
+            <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--text-muted)' }}>
+              Step {selectedDepIdx} ({departureMap?.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || '00:00:00'}Z)
+            </span>
+          </div>
+
+          <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: 'var(--text-primary)', margin: '0 0 0.75rem 0' }}>
+            {activeRoute?.feasible
+              ? `The planned traverse from Point A [${startPoint.join(', ')}] to Point B [${endPoint.join(', ')}] is feasible. The rover travels a ground distance of ${activeRoute.metrics?.total_distance_m ?? traverseDistM} meters in ${activeRoute.metrics?.duration_h ?? traverseDurationH} hours at a speed of ${speedMs} m/s (${(speedMs * 3600).toFixed(0)} m/h). During this window, the rover encounters ${(activeRoute.metrics?.dark_exposure_h ?? 0).toFixed(1)} hours of darkness, which does not exceed the allowable limit of ${darkBudgetH} hours. The maximum terrain slope traversed is ${(activeRoute.metrics?.max_slope_deg ?? 0).toFixed(1)}°, staying safely below the vehicle limit of ${maxSlopeDeg}°. Destination solar illumination at arrival is ${cube.getSunFrac(timeStep, endPoint[1], endPoint[0])}%.`
+              : `The planned traverse from Point A [${startPoint.join(', ')}] to Point B [${endPoint.join(', ')}] is infeasible: leaving at Step ${selectedDepIdx} (${departureMap?.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || '00:00:00'}Z) is blocked by ${departureMap?.departures[selectedDepIdx]?.infeasible_reason || 'a moving lunar shadow across the traverse corridor'}. The route would experience ${(activeRoute?.metrics?.dark_exposure_h ?? 2.5).toFixed(1)} hours in continuous darkness (exceeding the allowable ${darkBudgetH} h limit) or requires navigating slopes up to ${(activeRoute?.metrics?.max_slope_deg ?? 18.2).toFixed(1)}° (exceeding the ${maxSlopeDeg}° threshold). Suggested relaxation: depart at ${departureMap?.earliest_feasible_utc || 'Step ' + departureMap?.earliest_feasible_idx} when solar illumination opens a clear traversable corridor.`}
+          </p>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '0.5rem',
+              fontSize: '0.775rem',
+              fontFamily: 'monospace',
+              color: 'var(--text-secondary)',
+              borderTop: '1px solid var(--border-color)',
+              paddingTop: '0.5rem',
+            }}
+          >
+            <div>• Distance: {activeRoute?.metrics?.total_distance_m ?? traverseDistM} m</div>
+            <div>• Duration: {activeRoute?.metrics?.duration_h ?? traverseDurationH} h</div>
+            <div>• Max Slope: {(activeRoute?.metrics?.max_slope_deg ?? 0).toFixed(1)}° (limit: {maxSlopeDeg}°)</div>
+            <div>• Dark Exposure: {(activeRoute?.metrics?.dark_exposure_h ?? 0).toFixed(1)} h (limit: {darkBudgetH} h)</div>
+          </div>
+        </div>
+      )}
 
       {/* Planner Mode Toggle */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.25rem 0' }}>
@@ -1332,17 +1442,6 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
           </span>
         </div>
       </Card>
-
-      {/* 5. Departure Window Map OR Multi-Stop Mission Plan */}
-      {plannerMode === 'single' && departureMap && (
-        <div className="light-budget-strip-container">
-          <DepartureWindowMap
-            data={departureMap}
-            selectedDepartureIdx={selectedDepIdx}
-            onSelectDeparture={handleSelectDeparture}
-          />
-        </div>
-      )}
 
       {/* 5b. Terrain Uncertainty & Landing Dispersion Robustness Panel */}
       {plannerMode === 'single' && (

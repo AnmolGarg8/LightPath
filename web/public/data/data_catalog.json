@@ -11,8 +11,8 @@
       "filename": "all_sites_windows.parquet",
       "rel_path": "./data/all_sites_windows.parquet",
       "format": "Parquet",
-      "size_bytes": 5015,
-      "sha256": "ec739371aec3db5d4032f2cdbc75ca8c758063f719a99f9c3e32b8a02912ecab",
+      "size_bytes": 5016,
+      "sha256": "6be2fb85e36f8622d895b0a6925f66a27cfec73fe95545be923d10f7321918ac",
       "rows": 24,
       "license": "CC-BY-4.0",
       "description": "Consolidated visibility windows across all 6 lunar sites (Parquet format with embedded metadata)."
@@ -23,7 +23,7 @@
       "rel_path": "./data/all_sites_windows.csv",
       "format": "CSV",
       "size_bytes": 3349,
-      "sha256": "a1a5dcde2e2bded89debc9ad9c6f3aec4ee64eaedf65fad51ddf1191396fbcae",
+      "sha256": "a3453adcb29c2f6bcc75daec5b2c2caad3ac0c47c3a3c8ab011ec6d5e885e1dd",
       "rows": 24,
       "license": "CC-BY-4.0",
       "description": "Consolidated visibility windows across all 6 lunar sites (standard RFC 4180 CSV)."
@@ -34,7 +34,7 @@
       "rel_path": "./data/synthetic-proving-ground/windows.csv",
       "format": "CSV",
       "size_bytes": 687,
-      "sha256": "9111304744e5552d9639ac11f4fa4351ba1705418da44a5479eb93d70f8fb561",
+      "sha256": "b6a301625b14db81062306c4038083c522fd0d9e1d01c9c9b5308cc52a0140e0",
       "rows": 4,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (CSV)."
@@ -45,7 +45,7 @@
       "rel_path": "./data/synthetic-proving-ground/windows.parquet",
       "format": "Parquet",
       "size_bytes": 4747,
-      "sha256": "a8f866f1bf9b12e4172a1aab0716a1b0365a61ff9782a44f4141e972253ce265",
+      "sha256": "87c1ece2842cdd99592d29032216ea1f3277d9c881d300831c32e6c6695f33c6",
       "rows": 4,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (Parquet, Snappy compressed with metadata)."

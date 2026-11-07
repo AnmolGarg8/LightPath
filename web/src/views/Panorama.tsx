@@ -20,7 +20,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Horizon, Series } from '../types/schemas';
-import { COMPASS_POINTS, createPanoramaScales, discRadiusInPixels, verifyAngularDiameter } from '../utils/scales';
+import { COMPASS_POINTS, createPanoramaScales, verifyAngularDiameter } from '../utils/scales';
 import { Play, Pause, SkipBack, SkipForward, Camera, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface PanoramaProps {
@@ -50,6 +50,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
   const [verticalExaggeration, setVerticalExaggeration] = useState<number>(1.0); // 1.0 = off, 2.5 = on
   const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(false);
   const [hoverInfo, setHoverInfo] = useState<{ az: number; el: number; horizonEl: number } | null>(null);
+  const [lensTarget, setLensTarget] = useState<'sun' | 'earth'>('sun');
 
   const lastFrameTimeRef = useRef<number>(performance.now());
   const frameCountRef = useRef<number>(0);
@@ -266,48 +267,59 @@ export const Panorama: React.FC<PanoramaProps> = ({
     }
     ctx.setLineDash([]);
 
-    // 5. Draw Celestial Discs at Current Time Step
+    // 5. Draw Celestial Markers on Main Strip (Round Markers with Labels to avoid sliver distortion)
     const currentSunAz = series.sun.az_deg[timeIndex];
     const currentSunEl = series.sun.el_deg[timeIndex];
     const currentSunFrac = series.sun.frac[timeIndex];
-    const { rx: sunRx, ry: sunRy } = discRadiusInPixels(sunR, scales);
 
     const currentEarthAz = series.earth.az_deg[timeIndex];
     const currentEarthEl = series.earth.el_deg[timeIndex];
     const currentEarthFrac = series.earth.frac[timeIndex];
-    const { rx: earthRx, ry: earthRy } = discRadiusInPixels(earthR, scales);
 
-    // Draw Sun Glow
     const sunX = scaleX(currentSunAz);
     const sunY = scaleY(currentSunEl * verticalExaggeration);
-    const sunGlow = ctx.createRadialGradient(sunX, sunY, sunRx, sunX, sunY, sunRx * 3.5);
-    sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.4)');
+    const earthX = scaleX(currentEarthAz);
+    const earthY = scaleY(currentEarthEl * verticalExaggeration);
+
+    const markerR = 7; // Round marker on main strip
+
+    // Draw Sun Marker & Glow on main strip
+    const sunGlow = ctx.createRadialGradient(sunX, sunY, markerR, sunX, sunY, markerR * 3);
+    sunGlow.addColorStop(0, 'rgba(251, 191, 36, 0.5)');
     sunGlow.addColorStop(1, 'rgba(251, 191, 36, 0.0)');
     ctx.fillStyle = sunGlow;
     ctx.beginPath();
-    ctx.ellipse(sunX, sunY, sunRx * 3.5, sunRy * 3.5, 0, 0, Math.PI * 2);
+    ctx.arc(sunX, sunY, markerR * 3, 0, Math.PI * 2);
     ctx.fill();
 
-    // Draw Sun Disc (Unclipped Base)
     ctx.fillStyle = '#fbbf24';
     ctx.beginPath();
-    ctx.ellipse(sunX, sunY, sunRx, sunRy, 0, 0, Math.PI * 2);
+    ctx.arc(sunX, sunY, markerR, 0, Math.PI * 2);
     ctx.fill();
 
-    // Draw Earth Disc
-    const earthX = scaleX(currentEarthAz);
-    const earthY = scaleY(currentEarthEl * verticalExaggeration);
+    // Sun Label
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Sun', sunX, sunY - markerR - 4);
+
+    // Draw Earth Marker on main strip
     ctx.fillStyle = '#0284c7';
     ctx.beginPath();
-    ctx.ellipse(earthX, earthY, earthRx, earthRy, 0, 0, Math.PI * 2);
+    ctx.arc(earthX, earthY, markerR, 0, Math.PI * 2);
     ctx.fill();
 
-    // Earth atmosphere rim
     ctx.strokeStyle = '#38bdf8';
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.ellipse(earthX, earthY, earthRx, earthRy, 0, 0, Math.PI * 2);
+    ctx.arc(earthX, earthY, markerR, 0, Math.PI * 2);
     ctx.stroke();
+
+    // Earth Label
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 10px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Earth', earthX, earthY - markerR - 4);
 
     // 6. Draw Terrain Skyline as a Solid Filled Shape
     const numPoints = skylineElevations.length;
@@ -370,29 +382,27 @@ export const Panorama: React.FC<PanoramaProps> = ({
     }
 
     // 8. Re-render Dimmed/Clipped Portions of Discs Below Skyline
-    // Find horizon elevation at Sun azimuth
     const sunAzIdx = Math.round(currentSunAz / azStep) % numPoints;
     const sunHorizonEl = skylineElevations[sunAzIdx] ?? 0;
 
-    // Find horizon elevation at Earth azimuth
     const earthAzIdx = Math.round(currentEarthAz / azStep) % numPoints;
     const earthHorizonEl = skylineElevations[earthAzIdx] ?? 0;
 
-    // Dimmed overlay if disc is partially or fully below skyline
-    if (currentSunEl < sunHorizonEl + sunR) {
+    // Dimmed overlay if marker is below skyline
+    if (currentSunEl < sunHorizonEl) {
       ctx.save();
       ctx.fillStyle = 'rgba(10, 14, 23, 0.75)';
       ctx.beginPath();
-      ctx.ellipse(sunX, sunY, sunRx + 1, sunRy + 1, 0, 0, Math.PI * 2);
+      ctx.arc(sunX, sunY, markerR + 1, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
 
-    if (currentEarthEl < earthHorizonEl + earthR) {
+    if (currentEarthEl < earthHorizonEl) {
       ctx.save();
       ctx.fillStyle = 'rgba(10, 14, 23, 0.75)';
       ctx.beginPath();
-      ctx.ellipse(earthX, earthY, earthRx + 1, earthRy + 1, 0, 0, Math.PI * 2);
+      ctx.arc(earthX, earthY, markerR + 1, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     }
@@ -405,7 +415,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
     ctx.fillStyle = currentSunFrac >= threshold ? '#fbbf24' : '#94a3b8';
     ctx.fillText(
       `Sun: ${Math.round(currentSunFrac * 100)}% visible`,
-      Math.min(width - 160, Math.max(10, sunX + sunRx + 8)),
+      Math.min(width - 160, Math.max(10, sunX + 16)),
       Math.max(25, sunY - 6)
     );
 
@@ -413,7 +423,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
     ctx.fillStyle = currentEarthFrac >= threshold ? '#38bdf8' : '#94a3b8';
     ctx.fillText(
       `Earth: ${Math.round(currentEarthFrac * 100)}% in line of sight`,
-      Math.min(width - 210, Math.max(10, earthX + earthRx + 8)),
+      Math.min(width - 210, Math.max(10, earthX + 16)),
       Math.max(45, earthY - 6)
     );
 
@@ -434,6 +444,171 @@ export const Panorama: React.FC<PanoramaProps> = ({
       ctx.stroke();
       ctx.setLineDash([]);
     }
+
+    // 11. Draw Disc Lens Inset (1:1 isometric scale, 20° wide by 8° tall, following selected body)
+    const isSunTarget = lensTarget === 'sun';
+    const targetAz = isSunTarget ? currentSunAz : currentEarthAz;
+    const targetEl = isSunTarget ? currentSunEl : currentEarthEl;
+    const targetR = isSunTarget ? sunR : earthR; // angular radius in deg
+    const targetFrac = isSunTarget ? currentSunFrac : currentEarthFrac;
+    const targetName = isSunTarget ? 'Sun' : 'Earth';
+
+    // Inset dimensions: 20 deg x 8 deg at 13 px/deg = 260 x 104 px
+    const lensDegW = 20;
+    const lensDegH = 8;
+    const lensScale = 13; // px per degree (identical on both X and Y for 1:1 isometric circular aspect)
+    const lensW = lensDegW * lensScale; // 260 px
+    const lensH = lensDegH * lensScale; // 104 px
+
+    // Position inset away from the target body on main canvas
+    const mainTargetX = scaleX(targetAz);
+    const lensX = mainTargetX > width / 2 ? 16 : width - lensW - 16;
+    const lensY = 16;
+
+    ctx.save();
+
+    // Outer backdrop & clip to lens box
+    ctx.beginPath();
+    ctx.rect(lensX, lensY, lensW, lensH);
+    ctx.save();
+    ctx.clip();
+
+    // Dark space backdrop
+    ctx.fillStyle = '#070a14';
+    ctx.fillRect(lensX, lensY, lensW, lensH);
+
+    // Grid lines inside lens (every 2 degrees)
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.12)';
+    ctx.lineWidth = 1;
+    for (let d = -10; d <= 10; d += 2) {
+      const gx = lensX + (d + 10) * lensScale;
+      ctx.beginPath();
+      ctx.moveTo(gx, lensY);
+      ctx.lineTo(gx, lensY + lensH);
+      ctx.stroke();
+    }
+    for (let d = -4; d <= 4; d += 2) {
+      const gy = lensY + (4 - d) * lensScale;
+      ctx.beginPath();
+      ctx.moveTo(lensX, gy);
+      ctx.lineTo(lensX + lensW, gy);
+      ctx.stroke();
+    }
+
+    // Center crosshair (target position)
+    const lensCenterX = lensX + lensW / 2;
+    const lensCenterY = lensY + lensH / 2;
+    ctx.strokeStyle = 'rgba(203, 213, 225, 0.3)';
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath();
+    ctx.moveTo(lensCenterX, lensY);
+    ctx.lineTo(lensCenterX, lensY + lensH);
+    ctx.moveTo(lensX, lensCenterY);
+    ctx.lineTo(lensX + lensW, lensCenterY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw True Circular Celestial Disc (Equal X and Y radius)
+    const discRadiusPx = targetR * lensScale; // exactly circular
+    if (isSunTarget) {
+      // Sun glow
+      const sGlow = ctx.createRadialGradient(lensCenterX, lensCenterY, discRadiusPx, lensCenterX, lensCenterY, discRadiusPx * 2.5);
+      sGlow.addColorStop(0, 'rgba(251, 191, 36, 0.45)');
+      sGlow.addColorStop(1, 'rgba(251, 191, 36, 0.0)');
+      ctx.fillStyle = sGlow;
+      ctx.beginPath();
+      ctx.arc(lensCenterX, lensCenterY, discRadiusPx * 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sun disc
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(lensCenterX, lensCenterY, discRadiusPx, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      // Earth disc
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.arc(lensCenterX, lensCenterY, discRadiusPx, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(lensCenterX, lensCenterY, discRadiusPx, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Draw Terrain Skyline Clipped Across the Inset (20° span)
+    const azMin = targetAz - 10;
+    const azMax = targetAz + 10;
+    const elMax = targetEl + 4;
+
+    ctx.beginPath();
+    ctx.moveTo(lensX, lensY + lensH); // start bottom left
+
+    // Step across azimuth window
+    const sampleStepDeg = 0.25;
+    for (let curAz = azMin; curAz <= azMax; curAz += sampleStepDeg) {
+      const normAz = ((curAz % 360) + 360) % 360;
+      const hIdx = Math.round(normAz / azStep) % numPoints;
+      const hEl = skylineElevations[hIdx] ?? 0;
+      const lx = lensX + (curAz - azMin) * lensScale;
+      const ly = lensY + (elMax - hEl) * lensScale;
+      ctx.lineTo(lx, ly);
+    }
+    // Finish bottom right and close polygon
+    ctx.lineTo(lensX + lensW, lensY + lensH);
+    ctx.closePath();
+
+    // Fill terrain in lens
+    const lensTerrainGrad = ctx.createLinearGradient(lensX, lensY, lensX, lensY + lensH);
+    lensTerrainGrad.addColorStop(0, '#151c2e');
+    lensTerrainGrad.addColorStop(1, '#070a12');
+    ctx.fillStyle = lensTerrainGrad;
+    ctx.fill();
+
+    // Stroke terrain skyline outline in lens
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // If disc is occluded, draw faint dashed outline of hidden part
+    ctx.setLineDash([2, 2]);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(lensCenterX, lensCenterY, discRadiusPx, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.restore(); // restore clipping
+
+    // Inset Border Frame
+    ctx.strokeStyle = isSunTarget ? '#fbbf24' : '#38bdf8';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(lensX, lensY, lensW, lensH);
+
+    // Inset Header Bar
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+    ctx.fillRect(lensX, lensY, lensW, 18);
+    ctx.fillStyle = isSunTarget ? '#fbbf24' : '#38bdf8';
+    ctx.font = 'bold 9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText(`DISC LENS (1:1 TRUE SCALE · 20°×8°) [${targetName.toUpperCase()}]`, lensX + 6, lensY + 12);
+
+    // Inset Footer Bar
+    ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+    ctx.fillRect(lensX, lensY + lensH - 18, lensW, 18);
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = 'bold 9px "JetBrains Mono", monospace';
+    ctx.fillText(
+      `${targetName}: ${Math.round(targetFrac * 100)}% visible · Dia: ${(targetR * 2).toFixed(2)}°`,
+      lensX + 6,
+      lensY + lensH - 6
+    );
+
+    ctx.restore();
   }, [
     horizon,
     series,
@@ -449,6 +624,7 @@ export const Panorama: React.FC<PanoramaProps> = ({
     minElRange,
     sunR,
     earthR,
+    lensTarget,
   ]);
 
   // Handle Resize & Re-render
@@ -540,6 +716,58 @@ export const Panorama: React.FC<PanoramaProps> = ({
 
         {/* Action Controls */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Disc Lens Target Selector */}
+          <div
+            style={{
+              display: 'inline-flex',
+              borderRadius: 'var(--radius-sm)',
+              overflow: 'hidden',
+              border: '1px solid var(--border-color)',
+            }}
+          >
+            <button
+              type="button"
+              data-testid="lens-sun-btn"
+              onClick={() => setLensTarget('sun')}
+              title="Focus 1:1 isometric Disc Lens on Sun"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                padding: '0.4rem 0.65rem',
+                fontSize: '0.825rem',
+                fontWeight: lensTarget === 'sun' ? 700 : 500,
+                background: lensTarget === 'sun' ? 'rgba(251, 191, 36, 0.2)' : 'var(--card-bg)',
+                color: lensTarget === 'sun' ? 'var(--color-amber)' : 'var(--text-muted)',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <span>☉ Sun Lens</span>
+            </button>
+            <button
+              type="button"
+              data-testid="lens-earth-btn"
+              onClick={() => setLensTarget('earth')}
+              title="Focus 1:1 isometric Disc Lens on Earth"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                padding: '0.4rem 0.65rem',
+                fontSize: '0.825rem',
+                fontWeight: lensTarget === 'earth' ? 700 : 500,
+                background: lensTarget === 'earth' ? 'rgba(56, 189, 248, 0.2)' : 'var(--card-bg)',
+                color: lensTarget === 'earth' ? 'var(--color-blue)' : 'var(--text-muted)',
+                border: 'none',
+                borderLeft: '1px solid var(--border-color)',
+                cursor: 'pointer',
+              }}
+            >
+              <span>♁ Earth Lens</span>
+            </button>
+          </div>
+
           {/* Vertical Exaggeration Toggle */}
           <button
             type="button"
@@ -774,6 +1002,24 @@ export const Panorama: React.FC<PanoramaProps> = ({
         <div style={{ fontSize: '0.85rem', fontFamily: 'monospace', color: 'var(--text-main)' }}>
           {currentTimeUtc} ({timeIndex + 1}/{series.time_utc.length})
         </div>
+      </div>
+
+      {/* Real Scale Caption reporting horizontal and vertical scales */}
+      <div
+        data-testid="panorama-scale-caption"
+        style={{
+          marginTop: '0.75rem',
+          padding: '0.4rem 0.75rem',
+          backgroundColor: 'rgba(15, 23, 42, 0.6)',
+          borderRadius: 'var(--radius-sm)',
+          fontSize: '0.775rem',
+          fontFamily: 'monospace',
+          color: 'var(--text-secondary)',
+          textAlign: 'center',
+          border: '1px solid var(--border-color)',
+        }}
+      >
+        Main strip scale: 1° horizontally = {(1000 / 360).toFixed(2)} px; 1° vertically = {((350 / (maxElRange - minElRange)) * verticalExaggeration).toFixed(2)} px (scales differ: {(((350 / (maxElRange - minElRange)) * verticalExaggeration) / (1000 / 360)).toFixed(1)}× vertical expansion). Disc Lens inset provides true 1:1 circular aspect with terrain skyline clipped.
       </div>
 
       {/* Explanatory takeaway mandated by Section 16 */}
