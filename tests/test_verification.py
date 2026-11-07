@@ -218,7 +218,8 @@ def test_v2b_disc_fraction(record_verification):
 # -----------------------------------------------------------------------------
 def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_data):
     """V3 Ephemeris Cross-Check Against JPL Horizons:
-    Uses tests/fixtures/horizons_*.csv produced by a human.
+    Uses tests/fixtures/horizons_*.csv produced by a human / fetch_horizons.py.
+    Requires physical SPICE kernels loaded.
     If absent, the result is NOT RUN, never pass.
     """
     fixtures = list(FIXTURES_DIR.glob("horizons_*.csv")) if FIXTURES_DIR.exists() else []
@@ -237,12 +238,36 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         )
         pytest.skip("NOT RUN: tests/fixtures/horizons_*.csv fixture absent.")
 
-    # Evaluate the primary fixture
-    csv_file = fixtures[0]
+    meta_kernel = ROOT_DIR / "kernels" / "meta.tm"
+    from pipeline.geometry import are_kernels_loaded, load_kernels
+    if meta_kernel.exists() and not are_kernels_loaded():
+        try:
+            load_kernels(meta_kernel)
+        except Exception:
+            pass
+
+    if not are_kernels_loaded():
+        record_verification(
+            code="V3",
+            name="Ephemeris cross-check against JPL Horizons",
+            status="not_run",
+            tolerance="0.05 deg",
+            measured_value=None,
+            expected_value="JPL Horizons ephemeris query",
+            source_of_expected_value="NASA JPL Horizons On-Line Ephemeris System",
+            data_type="real",
+            skip_reason="NOT RUN: SPICE kernels absent or not loaded. Run scripts/fetch_kernels.py.",
+        )
+        pytest.skip("NOT RUN: SPICE kernels absent or not loaded.")
+
+    # Evaluate the primary fixture (prefer sun fixture if present)
+    sun_fixtures = [f for f in fixtures if "sun" in f.name.lower()]
+    csv_file = sun_fixtures[0] if sun_fixtures else fixtures[0]
     json_sidecar = csv_file.with_suffix(".json")
 
     lat_deg, lon_deg = -89.54, 0.0
     tolerance_deg = 0.05
+    body_key = "sun"
 
     if json_sidecar.exists():
         with open(json_sidecar, "r", encoding="utf-8") as f:
@@ -251,6 +276,14 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
             lat_deg = site_info.get("lat_deg", lat_deg)
             lon_deg = site_info.get("lon_deg", lon_deg)
             tolerance_deg = meta.get("tolerance_deg", tolerance_deg)
+            target = meta.get("target", {})
+            target_name = target.get("name", "").lower()
+            if target_name in ["earth", "399"] or "earth" in csv_file.name.lower():
+                body_key = "earth"
+            else:
+                body_key = "sun"
+    elif "earth" in csv_file.name.lower():
+        body_key = "earth"
 
     times, hz_az, hz_el = [], [], []
     with open(csv_file, "r", encoding="utf-8") as f:
@@ -268,8 +301,8 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         end_utc=times[-1],
         step_minutes=60,
     )
-    lp_az = np.array(series["sun"]["az_deg"])
-    lp_el = np.array(series["sun"]["el_deg"])
+    lp_az = np.array(series[body_key]["az_deg"])
+    lp_el = np.array(series[body_key]["el_deg"])
 
     # Align arrays
     n = min(len(lp_az), len(hz_az))

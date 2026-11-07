@@ -1,0 +1,38 @@
+================================================================================
+LIGHTPATH BASELINE ACCURACY REPORT: SPICE & ANALYTIC vs JPL HORIZONS (2026-11-07T13:31:06.989919+00:00)
+Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 10: Fail loud)
+================================================================================
+
+Furnished SPICE meta-kernel: kernels\meta.tm
+
+Site: TEST_LOCATION_NOT_A_MISSION_SITE (ID: test_location) at Lat=-89.5°, Lon=0.0°
+--------------------------------------------------------------------------------
+Target: SUN (721 hourly samples, 2026-11-01 to 2026-12-01)
+  [SPICE vs Horizons]
+    Azimuth:   Max Err = 0.00000°, RMS = 0.00000° -> Verdict: PASS (<=0.05°)
+    Elevation: Max Err = 0.00001°, RMS = 0.00001° -> Verdict: PASS (<=0.05°)
+  [Analytic Approx vs Horizons]
+    Azimuth:   Max Err = 61.21702°, RMS = 60.71921° -> Verdict: EXCEEDS (61.2170° > 0.05°)
+    Elevation: Max Err = 2.59745°, RMS = 1.69573° -> Verdict: EXCEEDS (2.5974° > 0.05°)
+
+Target: EARTH (721 hourly samples, 2026-11-01 to 2026-12-01)
+  [SPICE vs Horizons]
+    Azimuth:   Max Err = 0.00001°, RMS = 0.00000° -> Verdict: PASS (<=0.05°)
+    Elevation: Max Err = 0.00004°, RMS = 0.00002° -> Verdict: PASS (<=0.05°)
+  [Analytic Approx vs Horizons]
+    Azimuth:   Max Err = 14.51264°, RMS = 9.36521° -> Verdict: EXCEEDS (14.5126° > 0.05°)
+    Elevation: Max Err = 1.43035°, RMS = 0.92177° -> Verdict: EXCEEDS (1.4303° > 0.05°)
+
+================================================================================
+ACCURACY SUMMARY MATRIX
+================================================================================
+| Site ID | Target | SPICE Max Az (deg) | SPICE Max El (deg) | SPICE Verdict | Analytic Max Az (deg) | Analytic Max El (deg) | Analytic Verdict |
+| :--- | :--- | :-: | :-: | :-: | :-: | :-: | :-: |
+| test_location | sun | 0.0000 | 0.0000 | PASS | 61.2170 | 2.5974 | EXCEEDS |
+| test_location | earth | 0.0000 | 0.0000 | PASS | 14.5126 | 1.4303 | EXCEEDS |
+
+--- Checked Differences Analysis & Possible Root Causes ---
+1. Frame Definition: SPICE MOON_ME frame aligns with Horizons MEAN_ME within DE421/DE441 nutation/precession bounds.
+2. Aberration Correction: Evaluated using LT+S (light-time plus stellar aberration) vs Horizons AIRLESS apparent position.
+3. Observer Local Up: Local up defined on sphere of radius R=1737.4 km in MOON_ME.
+4. Time Scale: TDB/TDT vs UTC leapsecond handling via naif0012.tls.

@@ -4,19 +4,38 @@
 PYTHON ?= python
 NPM ?= npm
 
-.PHONY: all setup test lint pipeline web-dev web-build clean help test-e2e
+.PHONY: all setup test lint pipeline web-dev web-build clean help test-e2e fetch-terrain fetch-kernels fetch-horizons check-data
 
 help:
 	@echo "LightPath Build System"
 	@echo "Targets:"
-	@echo "  make setup      - Install Python & Web dependencies"
-	@echo "  make test       - Run Python pytest and Web vitest test suites"
-	@echo "  make test-e2e   - Run Playwright E2E smoke tests"
-	@echo "  make lint       - Run Python ruff check and Web eslint"
-	@echo "  make pipeline   - Execute science pipeline and generate site artifacts"
-	@echo "  make web-dev    - Start local Vite development server"
-	@echo "  make web-build  - Build static web production bundle"
-	@echo "  make clean      - Clean cache and build artifacts"
+	@echo "  make setup          - Install Python & Web dependencies"
+	@echo "  make test           - Run Python pytest and Web vitest test suites"
+	@echo "  make test-e2e       - Run Playwright E2E smoke tests"
+	@echo "  make lint           - Run Python ruff check and Web eslint"
+	@echo "  make pipeline       - Execute science pipeline and generate site artifacts"
+	@echo "  make fetch-terrain  - Download far layer DEM and crop near layer windows"
+	@echo "  make fetch-kernels  - Download and verify NAIF SPICE kernels"
+	@echo "  make fetch-horizons - Download JPL Horizons reference ephemerides"
+	@echo "  make check-data     - Verify checksums of all real data and kernels offline"
+	@echo "  make web-dev        - Start local Vite development server"
+	@echo "  make web-build      - Build static web production bundle"
+	@echo "  make clean          - Clean cache and build artifacts"
+
+fetch-terrain:
+	$(PYTHON) scripts/fetch_dem_windows.py
+
+fetch-kernels:
+	$(PYTHON) scripts/fetch_kernels.py
+
+fetch-horizons:
+	$(PYTHON) scripts/fetch_horizons.py
+
+check-data:
+	$(PYTHON) scripts/check_kernels.py
+	$(PYTHON) scripts/check_data_offline.py
+	pytest -v -m "real_data and not network" tests/test_real_terrain_crop.py
+
 
 all: setup test lint web-build
 

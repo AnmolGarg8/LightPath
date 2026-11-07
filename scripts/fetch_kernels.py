@@ -1,134 +1,159 @@
 #!/usr/bin/env python3
-"""Fetch SPICE kernels defined in kernels/kernels.json.
+"""Step 7: Propose, download, and verify NAIF SPICE kernels for LightPath.
 
-Rules:
-- Never overwrite existing files silently.
-- Verify SHA-256 checksums when present in manifest.
-- Print clear summary of actions taken.
-- Detect and report TODO placeholders requiring human verification.
+Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts/checksums).
+Allowed hosts: naif.jpl.nasa.gov
 """
 
-import argparse
+import datetime
 import hashlib
 import json
+import subprocess
 import sys
-import urllib.error
+import time
 import urllib.request
 from pathlib import Path
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
-MANIFEST_PATH = ROOT_DIR / "kernels" / "kernels.json"
+ROOT = Path(__file__).resolve().parent.parent
+KERNELS_DIR = ROOT / "kernels"
+SOURCES_DIR = ROOT / "docs" / "sources"
+LOGS_DIR = ROOT / "logs"
 
+KERNELS_DIR.mkdir(parents=True, exist_ok=True)
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
-def compute_sha256(file_path: Path) -> str:
-    hasher = hashlib.sha256()
-    with open(file_path, "rb") as f:
-        while chunk := f.read(65536):
-            hasher.update(chunk)
-    return hasher.hexdigest().lower()
+PROPOSED_KERNELS = [
+    {
+        "name": "naif0012.tls",
+        "description": "NAIF leapseconds kernel (newest available in generic_kernels/lsk)",
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+        "local_path": "kernels/naif0012.tls",
+        "listing_file": "naif_lsk.html",
+    },
+    {
+        "name": "pck00010.tpc",
+        "description": "Planetary physical constants kernel matching DE421",
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00010.tpc",
+        "local_path": "kernels/pck00010.tpc",
+        "listing_file": "naif_pck.html",
+    },
+    {
+        "name": "moon_pa_de421_1900-2050.bpc",
+        "description": "Lunar orientation binary PCK in DE421 frame (covers 1900-2050)",
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de421_1900-2050.bpc",
+        "local_path": "kernels/moon_pa_de421_1900-2050.bpc",
+        "listing_file": "naif_pck.html",
+    },
+    {
+        "name": "moon_080317.tf",
+        "description": "Lunar frame kernel defining MOON_ME and MOON_PA frames for DE421",
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_080317.tf",
+        "local_path": "kernels/moon_080317.tf",
+        "listing_file": "naif_fk_satellites.html",
+    },
+    {
+        "name": "de421.bsp",
+        "description": "Planetary and lunar ephemeris SPK (DE421 family, 1900-2050)",
+        "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp",
+        "local_path": "kernels/de421.bsp",
+        "listing_file": "naif_spk_planets_old_versions.html",
+    },
+]
 
+def compute_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while chunk := f.read(1024 * 1024):
+            h.update(chunk)
+    return h.hexdigest()
 
-def fetch_kernels(dry_run: bool = False, force: bool = False) -> int:
-    if not MANIFEST_PATH.exists():
-        print(f"Error: Manifest not found at {MANIFEST_PATH}", file=sys.stderr)
-        return 1
+def download_file(url: str, dest_path: Path, log):
+    if dest_path.exists() and dest_path.stat().st_size > 0:
+        log(f"  {dest_path.name} exists ({dest_path.stat().st_size:,} bytes). Checking remote size...")
+        req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "LightPath/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            expected_size = int(r.getheader("Content-Length", 0))
+        if dest_path.stat().st_size == expected_size and expected_size > 0:
+            log(f"  Size matches ({expected_size:,} bytes). Skipping download.")
+            return dest_path.stat().st_size
 
-    with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
-        try:
-            kernels = json.load(f)
-        except json.JSONDecodeError as e:
-            print(f"Error parsing {MANIFEST_PATH}: {e}", file=sys.stderr)
-            return 1
-
-    print("=== LightPath SPICE Kernel Fetcher ===")
-    print(f"Manifest: {MANIFEST_PATH}")
-    print(f"Found {len(kernels)} kernel definition(s).\n")
-
-    summary = {
-        "downloaded": 0,
-        "already_exists": 0,
-        "skipped_todo": 0,
-        "checksum_verified": 0,
-        "failed": 0,
-    }
-
-    for item in kernels:
-        name = item.get("name", "Unnamed")
-        url = item.get("url", "")
-        expected_sha256 = item.get("sha256", "").strip().lower()
-        rel_local_path = item.get("local_path", "")
-
-        if not rel_local_path:
-            print(f"[-] {name}: Missing 'local_path' in manifest. Skipping.")
-            summary["failed"] += 1
-            continue
-
-        target_path = ROOT_DIR / rel_local_path
-
-        # Check for placeholder
-        if url.startswith("TODO_") or not url.startswith("http"):
-            print(f"[!] {name}: Manifest entry has placeholder URL ('{url}').")
-            print("    Action required: Human operator must fill verified NAIF URL in kernels/kernels.json.")
-            summary["skipped_todo"] += 1
-            continue
-
-        # Check existing file
-        if target_path.exists() and not force:
-            print(f"[=] {name}: File already exists at {rel_local_path}. Never overwriting silently.")
-            if expected_sha256 and not expected_sha256.startswith("todo_"):
-                actual_sha = compute_sha256(target_path)
-                if actual_sha == expected_sha256:
-                    print("    Checksum verified: SHA256 matches.")
-                    summary["checksum_verified"] += 1
-                else:
-                    print(f"    [WARNING] Checksum MISMATCH! Expected {expected_sha256}, got {actual_sha}.")
-                    summary["failed"] += 1
-            summary["already_exists"] += 1
-            continue
-
-        if dry_run:
-            print(f"[*] [DRY-RUN] Would download: {url} -> {rel_local_path}")
-            summary["downloaded"] += 1
-            continue
-
-        # Download
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        print(f"[+] Downloading {name} from {url}...")
-        try:
-            urllib.request.urlretrieve(url, target_path)
-            print(f"    Saved to {rel_local_path}")
-            summary["downloaded"] += 1
-
-            if expected_sha256 and not expected_sha256.startswith("todo_"):
-                actual_sha = compute_sha256(target_path)
-                if actual_sha == expected_sha256:
-                    print("    Checksum verified: SHA256 matches.")
-                    summary["checksum_verified"] += 1
-                else:
-                    print(f"    [ERROR] Checksum MISMATCH! Expected {expected_sha256}, got {actual_sha}.")
-                    summary["failed"] += 1
-        except Exception as e:
-            print(f"    [ERROR] Download failed: {e}", file=sys.stderr)
-            summary["failed"] += 1
-
-    print("\n=== Fetch Summary ===")
-    print(f"  Downloaded:         {summary['downloaded']}")
-    print(f"  Already exists:     {summary['already_exists']}")
-    print(f"  Skipped (TODO):     {summary['skipped_todo']}")
-    print(f"  Verified Checksums: {summary['checksum_verified']}")
-    print(f"  Failed:             {summary['failed']}")
-
-    return 0 if summary["failed"] == 0 else 1
-
+    log(f"  Downloading {url} -> {dest_path.name}...")
+    req = urllib.request.Request(url, headers={"User-Agent": "LightPath/1.0"})
+    t0 = time.time()
+    with urllib.request.urlopen(req, timeout=60) as resp, open(dest_path, "wb") as f:
+        total = int(resp.getheader("Content-Length", 0))
+        done = 0
+        while chunk := resp.read(1024 * 1024):
+            f.write(chunk)
+            done += len(chunk)
+            if total > 5 * 1024 * 1024 and (done % (10 * 1024 * 1024) < len(chunk)):
+                log(f"    Progress: {done/(1024*1024):.1f} MB / {total/(1024*1024):.1f} MB")
+    elapsed = time.time() - t0
+    log(f"  Completed in {elapsed:.1f}s ({dest_path.stat().st_size:,} bytes).")
+    return dest_path.stat().st_size
 
 def main():
-    parser = argparse.ArgumentParser(description="Fetch and verify SPICE kernels for LightPath")
-    parser.add_argument("--dry-run", action="store_true", help="Print actions without downloading")
-    parser.add_argument("--force", action="store_true", help="Overwrite existing files if already downloaded")
-    args = parser.parse_args()
+    log_lines = []
+    def log(msg):
+        print(msg, flush=True)
+        log_lines.append(msg)
 
-    sys.exit(fetch_kernels(dry_run=args.dry_run, force=args.force))
+    now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    log(f"=== STEP 7: Propose, Download & Verify SPICE Kernels ({now}) ===\n")
 
+    # 1. Propose and verify against listings
+    log("--- Proposed SPICE Kernel Set (Verified against NAIF listings) ---")
+    for k in PROPOSED_KERNELS:
+        listing_path = SOURCES_DIR / k["listing_file"]
+        if not listing_path.exists():
+            raise FileNotFoundError(f"Listing file missing: {listing_path}")
+        listing_content = listing_path.read_text(encoding="utf-8")
+        if k["name"] not in listing_content:
+            log(f"CRITICAL ERROR: {k['name']} was NOT found in {listing_path.name}!")
+            sys.exit(1)
+        log(f"Verified in listing: {k['name']} (Source listing: docs/sources/{k['listing_file']})")
+        log(f"  Purpose: {k['description']}")
+        log(f"  URL: {k['url']}")
+
+    log("\nAll 5 proposed kernels confirmed in official NAIF listings. Proceeding with download...\n")
+
+    # 2. Download kernels
+    kernel_records = []
+    for k in PROPOSED_KERNELS:
+        dest_path = ROOT / k["local_path"]
+        log(f"Processing {k['name']}...")
+        size_bytes = download_file(k["url"], dest_path, log)
+        sha = compute_sha256(dest_path)
+        log(f"  SHA-256: {sha}")
+        retrieval_date = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+        kernel_records.append({
+            "name": k["name"],
+            "description": k["description"],
+            "url": k["url"],
+            "sha256": sha,
+            "size_bytes": size_bytes,
+            "retrieved_on": retrieval_date,
+            "local_path": k["local_path"],
+            "verified": False  # per Rule 2, requires human verification
+        })
+
+    # 3. Write kernels/kernels.json
+    kernels_json_path = KERNELS_DIR / "kernels.json"
+    kernels_json_path.write_text(json.dumps(kernel_records, indent=2), encoding="utf-8")
+    log(f"\nWrote manifest with real checksums to {kernels_json_path.relative_to(ROOT)}")
+
+    # 4. Regenerate kernels/meta.tm via scripts/make_meta_kernel.py
+    log("\nRegenerating kernels/meta.tm via scripts/make_meta_kernel.py...")
+    res = subprocess.run([sys.executable, str(ROOT / "scripts" / "make_meta_kernel.py")], capture_output=True, text=True)
+    log(res.stdout)
+    if res.returncode != 0:
+        log(f"Error regenerating meta.tm: {res.stderr}")
+        sys.exit(1)
+
+    log_path = LOGS_DIR / "step7_fetch_kernels.log"
+    log_path.write_text("\n".join(log_lines), encoding="utf-8")
+    log(f"\nWrote log to {log_path.relative_to(ROOT)}")
 
 if __name__ == "__main__":
     main()

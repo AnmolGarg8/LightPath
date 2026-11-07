@@ -26,7 +26,9 @@ addopts = "-ra -q"
 testpaths = ["tests"]
 pythonpath = ["."]
 markers = [
-    "requires_kernels: marks tests that require physical SPICE kernels downloaded"
+    "requires_kernels: marks tests that require physical SPICE kernels downloaded",
+    "real_data: marks tests that require real LOLA DEM files or crops downloaded",
+    "network: marks tests that require live remote network access"
 ]
 
 [tool.ruff]

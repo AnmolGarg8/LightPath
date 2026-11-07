@@ -1,6 +1,6 @@
 {
   "has_lola_dem": false,
-  "has_spice_kernels": false,
-  "has_horizons_fixture": false,
+  "has_spice_kernels": true,
+  "has_horizons_fixture": true,
   "has_peer_reviewed_benchmark": false
 }
