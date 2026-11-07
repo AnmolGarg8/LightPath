@@ -291,37 +291,10 @@ def pytest_sessionfinish(session, exitstatus):
 
     overall_status = "failed" if failed > 0 else "passed"
 
-    # Default charts data if not recorded during this session
-    default_charts = {
-        "v2_wall_horizon": [
-            {"az_deg": 0, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 25, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 30, "expected_el_deg": 0.408, "computed_el_deg": 0.408},
-            {"az_deg": 45, "expected_el_deg": 0.408, "computed_el_deg": 0.408},
-            {"az_deg": 60, "expected_el_deg": 0.408, "computed_el_deg": 0.408},
-            {"az_deg": 65, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 90, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 180, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 270, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-            {"az_deg": 360, "expected_el_deg": -0.087, "computed_el_deg": -0.087},
-        ],
-        "convergence": [
-            {"step_m": 50, "max_error_deg": 0.0182},
-            {"step_m": 25, "max_error_deg": 0.0074},
-            {"step_m": 10, "max_error_deg": 0.0028},
-            {"step_m": 5, "max_error_deg": 0.0011},
-        ],
-        "v3_ephemeris": CHARTS_DATA.get("v3_ephemeris", []),
-        "v4_barker_comparison": {
-            "site_name": "Connecting Ridge (South Pole)",
-            "published_pct": None,
-            "published_uncertainty_pct": None,
-            "computed_pct": None,
-            "citation": "[CITATION NEEDED: human to confirm; lead: Planetary and Space Science vol. 203; see docs/CITATIONS.md]",
-        },
-    }
-
-    charts = {**default_charts, **CHARTS_DATA}
+    # Charts data must strictly come from measurements recorded during test execution.
+    # No hard-coded chart data is permitted (PROJECT_RULES.md Rule 2).
+    # If a test did not run, its chart is not recorded and not drawn.
+    charts = dict(CHARTS_DATA)
 
     results_data = {
         "status": overall_status,

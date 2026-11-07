@@ -10,7 +10,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { z } from 'zod';
-import { validatePayload, DataValidationError } from '../types/schemas';
+import { validatePayload, DataValidationError, IndexSchema, IndexData } from '../types/schemas';
 import { decodeVisibilityCube, DecodedVisibilityCube } from './cubeDecoder';
 
 const memoryCache = new Map<string, unknown>();
@@ -114,4 +114,49 @@ export function useDataLoader<T>(
   }, [...deps, reloadIndex]);
 
   return { data, loading, error, reload };
+}
+
+/**
+ * Single source of truth helper to load index.json catalog.
+ */
+export async function getSiteCatalog(): Promise<IndexData> {
+  return fetchJsonData('./data/index.json', IndexSchema);
+}
+
+/**
+ * Hook to access the site catalog, demo site ID, and secondary site ID.
+ * Follows Rule 1: index.json is the single source of truth.
+ */
+export function useSiteCatalog(): {
+  catalog: IndexData | null;
+  demoSiteId: string;
+  secondSiteId: string;
+  loading: boolean;
+} {
+  const [catalog, setCatalog] = useState<IndexData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let active = true;
+    getSiteCatalog()
+      .then((data) => {
+        if (active) {
+          setCatalog(data);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const demoSite = catalog?.sites.find((s) => s.is_demo_site) || catalog?.sites[0];
+  const demoSiteId = demoSite?.id || 'synthetic-proving-ground';
+  const secondSite = catalog?.sites.find((s) => s.id !== demoSiteId) || catalog?.sites[1];
+  const secondSiteId = secondSite?.id || demoSiteId;
+
+  return { catalog, demoSiteId, secondSiteId, loading };
 }

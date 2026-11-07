@@ -21,6 +21,8 @@ All datasets are distributed in dual formats:
 | `threshold_pct` | `pa.float64()` / `DOUBLE` | Percentage or degrees (`_pct`) | Applied visibility threshold: disc visible fraction percentage (e.g. `50.0`%) for `sun`, `earth`, and `joint`; or minimum ground-station elevation angle (e.g. `10.0`°) for `dte`. |
 | `mast_height_m` | `pa.float64()` / `DOUBLE` | Meters (`_m`) | Observer mast elevation above local terrain ground in meters. |
 | `is_synthetic` | `pa.bool_()` / `BOOLEAN` | `true` / `false` | Distinguishes synthetic benchmark models (`true`) from real lunar data (`false`) in compliance with Project Rule 3. |
+| `ephemeris_source` | `pa.string()` / `VARCHAR` | Categorical | Source of ephemeris trajectory: `analytic_approximation` or `spice_kernels`. |
+| `terrain_source` | `pa.string()` / `VARCHAR` | Categorical | Source of digital elevation model: `synthetic` or `lola_dem`. |
 | `provenance_hash`| `pa.string()` / `VARCHAR(8)` | Hexadecimal string | Short 8-character SHA-256 hash tracing the calculation to its exact DEM, SPICE kernels, and pipeline parameters. |
 
 ---

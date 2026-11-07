@@ -68,7 +68,7 @@ LightPath is an open-source, deterministic web platform that solves this challen
 > *Every existing tool can tell you when a stationary site has light. **LightPath is the only tool that tells you whether you can still get to your scientific objective before that light disappears.**"*
 
 ### [0:35 – 1:15] The Platform: Physically Exact Real-Time Horizons
-> *"Let's look at LightPath in action. Running entirely in the browser without any runtime servers, LightPath loads high-resolution NASA LOLA elevation models and DE440 planetary ephemerides on the Moon Mean Earth coordinate datum.*  
+> *"Let's look at LightPath in action. Running entirely in the browser without any runtime servers, LightPath loads candidate landing site synthetic terrain models and approximate analytic ephemerides (to be replaced by SPICE) on the Moon Mean Earth coordinate datum.*  
 > *Notice our 360° Horizon Panorama: we don't treat the Sun and Earth as dimensionless dots. We render their true physical angular discs—the Sun at zero-point-five-three degrees, and the Earth four times wider at one-point-nine degrees. As we scrub our time slider, watch the solar disc get physically sliced and occulted by the crater rim.*  
 > *With our Observer Mast tool, an engineer can slide the rover mast from two meters to five meters and watch the horizon depress in real time, immediately recovering ninety hours of lost sunlight.*  
 > *Below, our multi-lane timeline correlates solar illumination with Earth line-of-sight across NASA's Deep Space Network stations in Goldstone, Madrid, and Canberra."*
@@ -113,7 +113,7 @@ CLPS mission planners must rapidly evaluate candidate landing sites (e.g., Shack
 #### Physics & Engineering Under the Hood
 - Background Hero displays a live miniature canvas rendering topocentric lunar skyline silhouette with real-time solar disc animation.
 - Incorporates Project Rule 1 (Data Traceability): Every mission card explicitly displays geodetic coordinates (lat/lon in `MOON_ME`), elevation, data source link, retrieval date, and verified badge.
-- Search and filter bar enables instant filtering across real NASA LOLA sites and mathematical synthetic proving grounds.
+- Search and filter bar enables instant filtering across candidate exploration sites and mathematical synthetic proving grounds.
 
 #### Demo Narration & Actions
 1. **Action**: Open `#/` in the browser. Point to the moving miniature skyline at the top.
@@ -400,7 +400,7 @@ Collaboration across disparate NASA centers and commercial contractors is plague
 
 ```
 Route: #/evidence/:id and Modal Evidence Card
-Key UI Elements: Evidence Dossier Card, LOLA Grid Specs, DE440 Checksums, SHA-256 Provenance Hash, Print Button
+Key UI Elements: Evidence Dossier Card, Grid Specs, Provenance Record, SHA-256 Provenance Hash, Print Button
 ```
 
 #### What It Is
@@ -411,11 +411,11 @@ Mission boards and safety panels do not accept screenshots or black-box claims. 
 
 #### Physics & Engineering Under the Hood
 - Formatted with dedicated CSS print stylesheets (`@media print`) fitting onto a clean single page.
-- Lists exact geodetic coordinates, LOLA DEM resolution ($20\text{ m/px}$), SPICE DE440 ephemeris manifests, software version, cryptographic SHA-256 provenance hash, solver inputs, outputs, alternative paths, and explicit operational limitations.
+- Lists exact geodetic coordinates, terrain source, ephemeris source, software version, cryptographic SHA-256 provenance hash, solver inputs, outputs, alternative paths, and explicit operational limitations.
 
 #### Demo Narration & Actions
 1. **Action**: Click **"Evidence Card"** on the site or route view.
-2. **Narration**: *"For formal mission reviews, LightPath outputs a one-page, printable NASA Evidence Card. It includes the exact geodetic coordinates, LOLA elevation kernel checksums, software version, and cryptographic SHA-256 provenance hash. It explicitly states our operational boundaries: visible is not powered; line of sight is not a link budget."*
+2. **Narration**: *"For formal mission reviews, LightPath outputs a one-page, printable NASA Evidence Card. It includes the exact geodetic coordinates, data provenance record, software version, and cryptographic SHA-256 provenance hash. It explicitly states our operational boundaries: visible is not powered; line of sight is not a link budget."*
 
 ---
 
@@ -487,11 +487,11 @@ Scientific software is plagued by vanity metrics and unverifiable claims. Missio
 
 #### Physics & Engineering Under the Hood
 Presents eight core analytical benchmarks:
-- **V1 (Flat Sphere Dip)**: Verified against closed-form $-\arccos(R/(R+h)) = -0.086937^\circ$ ($< 0.005^\circ$ tolerance).
-- **V2 (Wall Feature Elevation)**: Verified against spherical formula for a 100m wall at 10km ($+0.408031^\circ$).
-- **V2b (Celestial Disc Fraction)**: 256-sample Fibonacci spiral verified against exact analytical circular-segment lens formula ($< 0.005$ area fraction).
-- **V3 (Ephemeris Cross-Check)**: Cross-checked against NASA JPL Horizons ephemeris.
-- **V4 (Published NASA Baseline)**: Cross-checked against published peer-reviewed polar lighting studies.
+- **V1 (Flat Sphere Dip)**: Tested against closed-form $-\arccos(R/(R+h)) = -0.086937^\circ$ ($< 0.005^\circ$ tolerance).
+- **V2 (Wall Feature Elevation)**: Tested against spherical formula for a 100m wall at 10km ($+0.408031^\circ$).
+- **V2b (Celestial Disc Fraction)**: 256-sample Fibonacci spiral tested against exact analytical circular-segment lens formula ($< 0.005$ area fraction).
+- **V3 (Ephemeris Difference)**: Horizons check not yet run (fixture pending).
+- **V4 (Published NASA Baseline)**: Published baseline pending human verification.
 - **V5 (Raycast Convergence)**: Verified asymptotic convergence across grid resolutions.
 - **V6 (End-to-End Reproducibility)**: Hash-level reproducibility across clean runs.
 - **V7 (Independent Cross-Engine Parity)**: Asserts that Python and browser TypeScript engines agree on all vectors to $< 10^{-9}$ degrees.
@@ -578,7 +578,7 @@ During a high-stakes hackathon presentation, manual clicking can be slow or erro
 
 ### Q4: How can this run entirely in the browser without an active backend server?
 > **Answer**:  
-> *"We precompute topocentric horizons and SPICE DE440 planetary ephemerides into compact, schema-validated binary visibility cubes and JSON tables. The client-side TypeScript application loads these static assets and runs all dynamic pathfinding, departure sweeps, and dispersion calculations locally using Web Workers. This ensures zero runtime cloud costs, zero latency, complete offline operability, and total immutability."*
+> *"We precompute topocentric horizons and approximate analytic ephemerides into compact, schema-validated binary visibility cubes and JSON tables. The client-side TypeScript application loads these static assets and runs all dynamic pathfinding, departure sweeps, and dispersion calculations locally using Web Workers. This ensures zero runtime cloud costs, zero latency, complete offline operability, and total immutability."*
 
 ### Q5: How do you prove that your route solver is actually optimal?
 > **Answer**:  

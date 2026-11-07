@@ -276,6 +276,10 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
               <span>Mission: <strong>{matchingMission ? matchingMission.name : 'CLPS Target Assessment'}</strong></span>
               <span>•</span>
               <span>Operator: <strong>{matchingMission ? matchingMission.operator : 'NASA CLPS Provider'}</strong></span>
+              <span>•</span>
+              <span>Terrain: <strong>{site.terrain_source === 'lola_dem' ? 'LOLA DEM' : 'Synthetic'}</strong></span>
+              <span>•</span>
+              <span>Ephemeris: <strong>{site.ephemeris_source === 'spice_kernels' ? 'SPICE Kernels' : 'Analytic Approx'}</strong></span>
             </div>
           </div>
 
@@ -435,12 +439,12 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
                   </div>
                 ))
               ) : (
-                <div style={{ color: '#64748b' }}>{site.is_synthetic ? 'Synthetic Benchmark DEM (20m, 60m)' : 'LOLA South Pole Polar DEM (20m/px, 60m/px)'}</div>
+                <div style={{ color: '#64748b' }}>{site.is_synthetic ? 'Synthetic Benchmark DEM' : 'Synthetic terrain model (PDS DEM pending)'}</div>
               )}
             </div>
 
             <div>
-              <strong style={{ display: 'block', color: '#0f172a', marginBottom: '2px' }}>SPICE Ephemeris Kernels:</strong>
+              <strong style={{ display: 'block', color: '#0f172a', marginBottom: '2px' }}>Ephemeris Source:</strong>
               {provenance.kernels && provenance.kernels.length > 0 ? (
                 provenance.kernels.map((k, i) => (
                   <div key={i} style={{ color: '#334155', fontFamily: 'monospace' }}>
@@ -448,7 +452,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
                   </div>
                 ))
               ) : (
-                <div style={{ color: '#64748b' }}>de440.bsp, naif0012.tls, moon_pa_de421.bpc</div>
+                <div style={{ color: '#64748b' }}>none (analytic approximation, to be replaced by SPICE)</div>
               )}
             </div>
 

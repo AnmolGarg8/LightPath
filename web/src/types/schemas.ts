@@ -72,6 +72,9 @@ export const SiteSummarySchema = z.object({
   notes: z.string().optional(),
   verified: z.boolean(),
   is_synthetic: z.boolean(),
+  is_demo_site: z.boolean().optional(),
+  ephemeris_source: z.enum(['analytic_approximation', 'spice_kernels']).optional(),
+  terrain_source: z.enum(['synthetic', 'lola_dem']).optional(),
 });
 
 export type SiteSummary = z.infer<typeof SiteSummarySchema>;
@@ -173,9 +176,28 @@ export const VisibilityCubeHeaderSchema = z.object({
 
 export type VisibilityCubeHeader = z.infer<typeof VisibilityCubeHeaderSchema>;
 
+export const CandidateSiteSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  lat_deg: z.number(),
+  lon_deg: z.number(),
+  elevation_m: z.number().optional(),
+  ground_elev_m: z.number().optional(),
+  status: z.string().optional(),
+  reason_not_computed: z.string().optional(),
+  source: z.string().optional(),
+  source_label: z.string().optional(),
+  source_url: z.string().optional(),
+  source_links: z.array(z.string()).optional(),
+  notes: z.string().optional(),
+});
+
+export type CandidateSite = z.infer<typeof CandidateSiteSchema>;
+
 export const IndexSchema = z.object({
   sites: z.array(SiteSummarySchema),
   missions: z.array(MissionSchema),
+  candidate_sites: z.array(CandidateSiteSchema).optional(),
   mode: z.enum(['real', 'synthetic']),
   is_synthetic: z.boolean(),
 });

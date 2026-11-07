@@ -23,6 +23,12 @@
         "type": "object"
       }
     },
+    "candidate_sites": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
     "mode": {
       "type": "string",
       "enum": ["real", "synthetic"]

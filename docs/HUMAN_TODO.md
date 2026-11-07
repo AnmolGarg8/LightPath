@@ -15,8 +15,8 @@
 | **3** | South-Pole Site Coordinates & DEMs | `configs/pipeline.yaml`<br>`data/dem_manifest.json`<br>`data/raw/` | NASA PDS Geosciences Node / LOLA Archive | ⏳ Awaiting Human |
 | **4** | DSN Station Coordinates & Cutoffs | `configs/dsn_stations.yaml` | JPL 810-005 Telecommunications Handbook | ⏳ Awaiting Human |
 | **5** | NAIF SPICE Ephemeris Kernels | `kernels/kernels.json`<br>`kernels/meta.tm`<br>`kernels/` | NASA NAIF Generic Kernels Server | ⏳ Awaiting Human |
-| **6** | JPL Horizons Validation Fixtures | `tests/fixtures/` | NASA JPL Horizons On-Line Ephemeris Web API | ⏳ Awaiting Human |
-| **7** | Peer-Reviewed Literature Citations | `docs/CITATIONS.md`<br>`README.md` | NASA ADS / Planetary and Space Science vol. 203 | ⏳ Awaiting Human |
+| **6** | Horizons Validation Fixtures | `tests/fixtures/` | NASA Horizons On-Line Ephemeris Web API | ⏳ Awaiting Human |
+| **7** | Published Literature Citations | `docs/CITATIONS.md`<br>`README.md` | NASA ADS / Planetary and Space Science vol. 203 | ⏳ Awaiting Human |
 | **8** | Team Credits & AI Disclosure | `README.md`<br>`docs/SUBMISSION.md` | Human Team Members & Institutional Records | ⏳ Awaiting Human |
 | **9** | Historical Mission Backtest Case | `docs/BACKTEST_CASE.md` | Official Mission Flight & Operations Telemetry | ⏳ Awaiting Human |
 
@@ -100,15 +100,15 @@
     - `naif0012.tls` (Leapseconds Kernel) $\to$ `generic_kernels/lsk/`
     - `pck00010.tpc` (Planetary Constants Kernel) $\to$ `generic_kernels/pck/`
     - `moon_pa_de421_1900-2050.bpc` (High-Precision Lunar Orientation PCK) $\to$ `generic_kernels/pck/`
-    - `de421.bsp` or `de440.bsp` (Solar System Ephemeris SPK) $\to$ `generic_kernels/spk/`
+    - `de421.bsp` or SPK ephemeris (Solar System Ephemeris SPK) $\to$ `generic_kernels/spk/`
   - Compute SHA-256 hashes for each kernel and replace `TODO_FILL_OFFICIAL_SHA256_CHECKSUM` in `kernels/kernels.json`.
 
 ---
 
-## 6. JPL Horizons Validation Fixtures (Benchmark V3)
+## 6. Horizons Validation Fixtures (Benchmark V3)
 
 - [ ] **Generate Two Real Topocentric Fixtures**:
-  - **Where to look**: [NASA JPL Horizons Web API](https://ssd.jpl.nasa.gov/horizons/).
+  - **Where to look**: [NASA Horizons Web API](https://ssd.jpl.nasa.gov/horizons/).
   - **Instructions**: Follow [`docs/HORIZONS_FIXTURES.md`](HORIZONS_FIXTURES.md).
   - **Command**:
     ```bash
@@ -121,7 +121,7 @@
 
 ---
 
-## 7. Peer-Reviewed Literature Citations (Benchmark V4)
+## 7. Published Literature Citations (Benchmark V4)
 
 - [ ] **NASA Literature Citation & Illumination Numbers**:
   - **Where to look**: [NASA Astrophysics Data System (ADS)](https://ui.adsabs.harvard.edu/) or publisher journal: *Planetary and Space Science*, Volume 203 (Barker et al. 2021: Improved LOLA elevation models for lunar south pole landing sites).

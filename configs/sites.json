@@ -10,8 +10,14 @@
       "https://pgda.gsfc.nasa.gov/products/54",
       "https://www.lpi.usra.edu/lunar/lunar-south-pole/"
     ],
-    "verified": true,
-    "is_synthetic": false
+    "source_label": "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S",
+    "source_url": "https://pgda.gsfc.nasa.gov/products/54",
+    "retrieved_on": "2026-10-29",
+    "notes": "Candidate south-pole site; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
+    "verified": false,
+    "is_synthetic": true,
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   },
   {
     "id": "nobile-crater-rim",
@@ -23,8 +29,14 @@
     "source_links": [
       "https://www.nasa.gov/missions/viper/nasa-replans-viper-payload-for-griffin-lunar-lander/"
     ],
-    "verified": true,
-    "is_synthetic": false
+    "source_label": "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S",
+    "source_url": "https://www.nasa.gov/missions/viper/nasa-replans-viper-payload-for-griffin-lunar-lander/",
+    "retrieved_on": "2026-10-29",
+    "notes": "Candidate exploration area; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
+    "verified": false,
+    "is_synthetic": true,
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   },
   {
     "id": "malapert-mountain",
@@ -36,8 +48,14 @@
     "source_links": [
       "https://ntrs.nasa.gov/citations/20210018596"
     ],
-    "verified": true,
-    "is_synthetic": false
+    "source_label": "NASA NTRS / Artemis Candidate Studies",
+    "source_url": "https://ntrs.nasa.gov/citations/20210018596",
+    "retrieved_on": "2026-10-29",
+    "notes": "Candidate massif summit; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
+    "verified": false,
+    "is_synthetic": true,
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   },
   {
     "id": "synthetic-proving-ground",
@@ -49,7 +67,13 @@
     "source_links": [
       "https://lightpath.nasa.spaceapps/docs/synthetic-benchmark"
     ],
+    "source_label": "Synthetic Calibration Model (pipeline/synthetic.py)",
+    "source_url": "https://lightpath.nasa.spaceapps/docs/synthetic-benchmark",
+    "retrieved_on": "2026-10-29",
+    "notes": "Synthetic math-generated crater for algorithm verification.",
     "verified": false,
-    "is_synthetic": true
+    "is_synthetic": true,
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   }
 ]

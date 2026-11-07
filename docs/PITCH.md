@@ -35,7 +35,7 @@
 ### [2:00 - 2:30] Scientific Integrity & Trust: Math Before Claims
 > *"At LightPath, we follow a strict rule: **Correctness Before Features**.*  
 > *We never invent data. Every station is clearly flagged. We never equate sunlight to battery power, and we never claim geometric line-of-sight is an RF link budget.*  
-> *Our calculations are verified across automated CI benchmarks (V1 through V7) and cross-checks with peer-reviewed literature [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md].*  
+> *Our calculations are tested across automated CI benchmarks (V1 through V8) with external published baselines pending human verification [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md].*  
 > *Furthermore, our Python scientific engine and browser TypeScript engine share exact test vectors; if their calculations disagree by even $10^{-9}$ degrees, our continuous integration build fails."*
 
 ---

@@ -2,7 +2,7 @@
  * Core Lunar Geodesy & Celestial Geometry Library
  * 
  * Complies with docs/PROJECT_RULES.md:
- * - Shared mathematical library verified against Python reference implementation.
+ * - Shared mathematical library tested against Python reference implementation.
  * - Units in parameter names (_m, _deg, _km).
  * - Exact spherical curvature formula; zero flat-Moon approximations.
  * - Flat-horizon disc fraction with arccos clipping.

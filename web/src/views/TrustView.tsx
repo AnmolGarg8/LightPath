@@ -104,7 +104,7 @@ export const TrustView: React.FC = () => {
             Trust, Benchmarks & Mathematical Verification
           </h1>
           <p style={{ color: 'var(--text-secondary)', margin: 0, maxWidth: '850px', fontSize: '0.95rem', lineHeight: 1.5 }}>
-            Every calculation in LightPath is verified against closed-form analytic solutions, SPICE ephemerides, and peer-reviewed NASA publications. No machine learning; zero runtime randomness.
+            Every calculation in LightPath is tested against closed-form analytic solutions. Approximate analytic ephemeris to be replaced by SPICE; Horizons check not yet run; published baselines pending verification. No machine learning; zero runtime randomness.
           </p>
         </div>
       </div>
@@ -125,7 +125,7 @@ export const TrustView: React.FC = () => {
           />
           <Stat
             label="Pending External Fixtures"
-            value={counts.skipped}
+            value={counts.not_run ?? counts.skipped ?? 0}
             description="Flagged NOT RUN per Rule 2"
             variant="neutral"
           />
@@ -186,7 +186,7 @@ export const TrustView: React.FC = () => {
                     <td style={{ padding: '0.7rem 0.5rem' }}>
                       {c.status === 'passed' ? (
                         <Badge variant="success">PASS</Badge>
-                      ) : c.status === 'skipped' ? (
+                      ) : c.status === 'skipped' || c.status === 'not_run' ? (
                         <Badge variant="neutral">NOT RUN</Badge>
                       ) : (
                         <Badge variant="blocked">FAIL</Badge>
@@ -219,38 +219,53 @@ export const TrustView: React.FC = () => {
           <Card style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
-                V3: Ephemeris Difference vs JPL Horizons
+                V3: Ephemeris Difference (Horizons check not yet run)
               </h3>
-              <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
-                Tolerance Band: ±0.05°
-              </span>
+              {charts?.v3_ephemeris && charts.v3_ephemeris.length > 0 ? (
+                <span style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 600 }}>
+                  Tolerance Band: ±0.05°
+                </span>
+              ) : (
+                <Badge variant="neutral">NOT RUN</Badge>
+              )}
             </div>
-            <div style={{ height: '160px', width: '100%', position: 'relative' }}>
-              <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none">
-                {/* Tolerance Band Box */}
-                <rect x="40" y="20" width="340" height="110" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" strokeDasharray="3 3" />
-                <line x1="40" y1="75" x2="380" y2="75" stroke="var(--border-color)" strokeWidth="1" />
-                {/* Error Curves */}
-                {charts?.v3_ephemeris && (
-                  <path
-                    d={charts.v3_ephemeris
-                      .map((pt, i) => `${i === 0 ? 'M' : 'L'} ${40 + (i / (charts.v3_ephemeris!.length - 1)) * 340} ${75 - (pt.az_diff_deg / 0.05) * 50}`)
-                      .join(' ')}
-                    fill="none"
-                    stroke="#00f0ff"
-                    strokeWidth="2"
-                  />
-                )}
-                {/* Axes labels */}
-                <text x="45" y="15" fill="#10b981" fontSize="9" fontWeight="bold">+0.05° Upper Bound</text>
-                <text x="45" y="142" fill="#10b981" fontSize="9" fontWeight="bold">-0.05° Lower Bound</text>
-                <text x="380" y="70" fill="var(--text-secondary)" fontSize="9" textAnchor="end">0.0° Parity</text>
-              </svg>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>
-              <span>Time: 0h to 48h (SPICE DE440 vs Horizons)</span>
-              <span style={{ color: '#00f0ff' }}>● Azimuth & Elevation Error (max 0.015°)</span>
-            </div>
+            {charts?.v3_ephemeris && charts.v3_ephemeris.length > 0 ? (
+              <>
+                <div style={{ height: '160px', width: '100%', position: 'relative' }}>
+                  <svg width="100%" height="100%" viewBox="0 0 400 150" preserveAspectRatio="none">
+                    {/* Tolerance Band Box */}
+                    <rect x="40" y="20" width="340" height="110" fill="rgba(16, 185, 129, 0.08)" stroke="#10b981" strokeDasharray="3 3" />
+                    <line x1="40" y1="75" x2="380" y2="75" stroke="var(--border-color)" strokeWidth="1" />
+                    {/* Error Curves */}
+                    <path
+                      d={charts.v3_ephemeris
+                        .map((pt, i) => `${i === 0 ? 'M' : 'L'} ${40 + (i / (charts.v3_ephemeris!.length - 1)) * 340} ${75 - (pt.az_diff_deg / 0.05) * 50}`)
+                        .join(' ')}
+                      fill="none"
+                      stroke="#00f0ff"
+                      strokeWidth="2"
+                    />
+                    {/* Axes labels */}
+                    <text x="45" y="15" fill="#10b981" fontSize="9" fontWeight="bold">+0.05° Upper Bound</text>
+                    <text x="45" y="142" fill="#10b981" fontSize="9" fontWeight="bold">-0.05° Lower Bound</text>
+                    <text x="380" y="70" fill="var(--text-secondary)" fontSize="9" textAnchor="end">0.0° Parity</text>
+                  </svg>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>
+                  <span>Time: 0h to 48h</span>
+                  <span style={{ color: '#00f0ff' }}>● Azimuth & Elevation Error</span>
+                </div>
+              </>
+            ) : (
+              <div style={{ height: '160px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', border: '1px dashed var(--border-color)', padding: '1rem', textAlign: 'center' }}>
+                <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                  NOT RUN
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '340px', lineHeight: 1.4 }}>
+                  No chart drawn. Ephemeris benchmark fixture absent; Horizons check not yet run.
+                </div>
+              </div>
+            )}
           </Card>
 
           {/* Chart 2: V2 Expected vs Computed Wall Horizon */}
@@ -338,20 +353,16 @@ export const TrustView: React.FC = () => {
           <Card style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
-                V4: Published NASA Horizon Cross-Check
+                V4: Published NASA Horizon Baseline
               </h3>
-              <span style={{ fontSize: '0.75rem', color: '#f59e0b', fontWeight: 600 }}>
-                Pending Human Verification
-              </span>
+              <Badge variant="neutral">NOT RUN</Badge>
             </div>
-            <div style={{ height: '160px', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(245, 158, 11, 0.05)', borderRadius: '6px', padding: '1rem', border: '1px dashed rgba(245, 158, 11, 0.3)' }}>
-              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#f59e0b', marginBottom: '0.5rem', textAlign: 'center' }}>
-                [CITATION NEEDED: human to confirm]
+            <div style={{ height: '160px', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', padding: '1rem', border: '1px dashed var(--border-color)', textAlign: 'center' }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                NOT RUN
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.5 }}>
-                In accordance with Rule 2, external paper baseline requires human verification.
-                <br />
-                Lead for human investigator: <em>Planetary and Space Science</em> vol. 203 (Barker et al.).
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '340px', lineHeight: 1.4 }}>
+                No chart drawn. External published NASA baseline pending human verification per Project Rule 2.
               </div>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>

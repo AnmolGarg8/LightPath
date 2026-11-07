@@ -45,6 +45,8 @@ sites:
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
     notes: "Synthetic math-generated crater for algorithm testing and verification."
     mission_ids: []
     synthetic_feature: crater
@@ -70,6 +72,8 @@ sites:
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
     notes: "Synthetic math-generated flat terrain for horizon dip verification."
     mission_ids: []
     synthetic_feature: flat
@@ -80,3 +84,30 @@ sites:
         path: "data/processed/synthetic/dem_flat_fine.tif"
         max_range_m: 10000.0
         pixel_size_m: 25.0
+
+  - id: synthetic-crater-rim
+    name: "Synthetic Shackleton Ridge (Demo Peak)"
+    lat_deg: -89.75
+    lon_deg: 120.00
+    ground_elev_m: 1420.0
+    source_label: "Synthetic Crater Rim Model (pipeline/synthetic.py)"
+    source_url: "https://github.com/AnmolGarg8/LightPath"
+    retrieved_on: "2026-10-29"
+    verified: false
+    is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
+    notes: "Synthetic math-generated crater rim model for ridge illumination verification."
+    mission_ids: ["clps-demo-2026"]
+    synthetic_feature: crater
+    source_links:
+      - "synthetic://pipeline.synthetic/synthetic-crater-rim"
+    terrain_layers:
+      - name: "fine"
+        path: "data/processed/synthetic/dem_crater_fine.tif"
+        max_range_m: 5000.0
+        pixel_size_m: 10.0
+      - name: "medium"
+        path: "data/processed/synthetic/dem_crater_medium.tif"
+        max_range_m: 30000.0
+        pixel_size_m: 50.0

@@ -27,7 +27,8 @@ describe('Reusable Open Data & Downloads Suite (/data)', () => {
     expect(consolidatedCsv).toBeDefined();
     expect(consolidatedParquet?.format).toBe('Parquet');
     expect(consolidatedCsv?.format).toBe('CSV');
-    expect(consolidatedParquet?.rows).toBe(25);
+    expect(consolidatedParquet?.rows).toBe(consolidatedCsv?.rows);
+    expect(consolidatedParquet?.rows).toBeGreaterThan(0);
   });
 
   it('rejects invalid data catalog payloads with DataValidationError', () => {

@@ -8,9 +8,14 @@ import sys
 import tempfile
 from pathlib import Path
 
+import pytest
 from jsonschema import validate
 
-from pipeline.provenance import create_provenance_record, create_run_info
+from pipeline.provenance import (
+    create_provenance_record,
+    create_run_info,
+    validate_provenance_files_exist,
+)
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 SCHEMAS_DIR = ROOT_DIR / "schemas"
@@ -75,3 +80,27 @@ def test_check_provenance_script_fails_on_missing_source():
         assert "Missing required source field 'source_label'" in proc.stdout
     finally:
         bad_path.unlink(missing_ok=True)
+
+
+def test_provenance_rejects_nonexistent_files():
+    """Verify that validate_provenance_files_exist fails if any entry names a non-existent file."""
+    # Test dataset with non-existent file
+    prov_bad_dataset = {
+        "datasets": [{"name": "non_existent_dem.tif", "file_path": "data/raw/non_existent.tif"}],
+        "kernels": [],
+    }
+    with pytest.raises(FileNotFoundError, match="non-existent"):
+        validate_provenance_files_exist(prov_bad_dataset)
+
+    # Test kernel with non-existent file
+    prov_bad_kernel = {
+        "datasets": [],
+        "kernels": [{"name": "fake_kernel.bsp", "file_path": "kernels/fake_de440.bsp"}],
+    }
+    with pytest.raises(FileNotFoundError, match="non-existent"):
+        validate_provenance_files_exist(prov_bad_kernel)
+
+    # Test synthetic records pass
+    prov_synthetic = create_provenance_record()
+    validate_provenance_files_exist(prov_synthetic)
+

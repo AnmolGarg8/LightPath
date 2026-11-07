@@ -62,6 +62,17 @@
     "is_synthetic": {
       "type": "boolean"
     },
+    "is_demo_site": {
+      "type": "boolean"
+    },
+    "ephemeris_source": {
+      "type": "string",
+      "enum": ["analytic_approximation", "spice_kernels"]
+    },
+    "terrain_source": {
+      "type": "string",
+      "enum": ["synthetic", "lola_dem"]
+    },
     "stats": {
       "type": "object",
       "description": "Visibility windows, outage statistics, and joint coverage analysis"

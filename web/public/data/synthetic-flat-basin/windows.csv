@@ -1,5 +1,5 @@
-site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,provenance_hash
-synthetic-flat-basin,sun,0,2026-11-01T00:00:00Z,2026-11-05T00:00:00Z,98.0,50.0,2.0,True,a26ac4f2
-synthetic-flat-basin,earth,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,50.0,2.0,True,a26ac4f2
-synthetic-flat-basin,dte,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,6.0,2.0,True,a26ac4f2
-synthetic-flat-basin,joint,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,50.0,2.0,True,a26ac4f2
+site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,ephemeris_source,terrain_source,provenance_hash
+synthetic-flat-basin,sun,0,2026-11-01T00:00:00Z,2026-11-05T00:00:00Z,98.0,50.0,2.0,True,analytic_approximation,synthetic,c4b19bb9
+synthetic-flat-basin,earth,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,50.0,2.0,True,analytic_approximation,synthetic,c4b19bb9
+synthetic-flat-basin,dte,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,6.0,2.0,True,analytic_approximation,synthetic,c4b19bb9
+synthetic-flat-basin,joint,0,2026-11-01T00:00:00Z,2026-11-03T04:00:00Z,54.0,50.0,2.0,True,analytic_approximation,synthetic,c4b19bb9

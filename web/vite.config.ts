@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -6,6 +7,10 @@ export default defineConfig({
   base: './', // Relative base path for subfolder and GitHub Pages static hosting
   server: {
     port: 3000,
+  },
+  test: {
+    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['e2e/**', 'node_modules/**', 'dist/**'],
   },
   build: {
     chunkSizeWarningLimit: 600,

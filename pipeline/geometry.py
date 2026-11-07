@@ -19,7 +19,13 @@ from pathlib import Path
 from typing import Any, Dict, Generator, List, Optional, Tuple, Union
 
 import numpy as np
-import spiceypy as spice
+
+try:
+    import spiceypy as spice
+    HAS_SPICE = True
+except ImportError:
+    spice = None
+    HAS_SPICE = False
 
 from pipeline.constants import (
     FRAME_MOON_ME,
@@ -46,6 +52,8 @@ def load_kernels(meta_kernel_path: Union[str, Path]) -> None:
     if not path.is_file():
         raise FileNotFoundError(f"SPICE meta-kernel file not found: {path}")
 
+    if not HAS_SPICE or spice is None:
+        raise RuntimeError("spiceypy is not installed; SPICE kernel loading is unavailable.")
     try:
         spice.furnsh(str(path))
     except Exception as e:
@@ -54,7 +62,8 @@ def load_kernels(meta_kernel_path: Union[str, Path]) -> None:
 
 def unload_kernels() -> None:
     """Unload all currently loaded SPICE kernels and clear the kernel pool."""
-    spice.kclear()
+    if HAS_SPICE and spice is not None:
+        spice.kclear()
 
 
 @contextmanager
@@ -69,6 +78,8 @@ def kernel_context(meta_kernel_path: Union[str, Path]) -> Generator[None, None, 
 
 def are_kernels_loaded() -> bool:
     """Check if any SPICE kernels are currently loaded in the kernel pool."""
+    if not HAS_SPICE or spice is None:
+        return False
     try:
         return spice.ktotal("ALL") > 0
     except Exception:

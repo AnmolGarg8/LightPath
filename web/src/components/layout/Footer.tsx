@@ -77,11 +77,10 @@ export const Footer: React.FC = () => {
         {/* NASA Credit lines (Placeholders for human to fill exact official citations per Rule 2) */}
         <div style={{ lineHeight: 1.6 }}>
           <p>
-            <strong>Citations & Primary Data Sources:</strong> Topography derived from Lunar Orbiter Laser Altimeter
-            (LOLA) elevation products via the NASA Planetary Data System (PDS) Geosciences Node and GSFC Planetary
-            Geodesy Data Archive. Planetary ephemerides computed via NASA NAIF SPICE system (DE440 planetary ephemeris,
-            MOON_ME polar axis body-fixed frame). Deep Space Network (DSN) ground station geometry adapted from JPL
-            810-005.
+            <strong>Citations & Primary Data Sources:</strong> Elevation models use synthetic terrain and candidate landing
+            site parameters pending PDS product verification. Planetary ephemerides use approximate analytic ephemeris, to be
+            replaced by SPICE (MOON_ME polar axis body-fixed frame). Deep Space Network (DSN) ground station geometry adapted
+            from JPL 810-005.
           </p>
           <p style={{ marginTop: '0.5rem', color: 'var(--color-blocked)' }}>
             <strong>Operational Boundary:</strong> LightPath is a preliminary planning and education tool. Sun visibility

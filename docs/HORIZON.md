@@ -125,7 +125,7 @@ To support the route-planning visibility cube ($N_x \times N_y$ cells $\times N_
 
 ## 6. Verification and Physics Validation Benchmarks
 
-The horizon engine is verified against seven rigorous test suites:
+The horizon engine is tested against analytical test suites:
 
 ### V1. Flat Sphere Horizon Dip Benchmark
 On a smooth sphere of radius $R = 1,737,400\text{ m}$ with zero ground elevation ($z = 0$), an observer at mast height $h$ observes the geometric horizon at the tangent point where the line of sight grazes the sphere:

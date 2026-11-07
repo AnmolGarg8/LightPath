@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { DEMO_STEPS, DemoStep } from '../../data/demoScript';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { getDemoSteps, DemoStep } from '../../data/demoScript';
+import { useSiteCatalog } from '../../utils/dataLoader';
 import {
   Play,
   Pause,
@@ -34,7 +35,9 @@ export const GuidedDemoOverlay: React.FC = () => {
     return () => window.removeEventListener('hashchange', checkUrlParams);
   }, [checkUrlParams]);
 
-  const currentStep: DemoStep = DEMO_STEPS[currentStepIdx] || DEMO_STEPS[0];
+  const { demoSiteId, secondSiteId } = useSiteCatalog();
+  const demoSteps = useMemo(() => getDemoSteps(demoSiteId, secondSiteId), [demoSiteId, secondSiteId]);
+  const currentStep: DemoStep = demoSteps[currentStepIdx] || demoSteps[0];
 
   // Navigate to step route when step changes
   useEffect(() => {
@@ -78,7 +81,7 @@ export const GuidedDemoOverlay: React.FC = () => {
         if (prev <= 1) {
           // Advance to next step or loop in kiosk mode
           setCurrentStepIdx((idx) => {
-            if (idx + 1 < DEMO_STEPS.length) {
+            if (idx + 1 < demoSteps.length) {
               return idx + 1;
             }
             return isKiosk ? 0 : idx;
@@ -104,7 +107,7 @@ export const GuidedDemoOverlay: React.FC = () => {
         setIsPaused((p) => !p);
       } else if (e.code === 'ArrowRight') {
         e.preventDefault();
-        setCurrentStepIdx((idx) => Math.min(DEMO_STEPS.length - 1, idx + 1));
+        setCurrentStepIdx((idx) => Math.min(demoSteps.length - 1, idx + 1));
       } else if (e.code === 'ArrowLeft') {
         e.preventDefault();
         setCurrentStepIdx((idx) => Math.max(0, idx - 1));
@@ -173,7 +176,7 @@ export const GuidedDemoOverlay: React.FC = () => {
               {isKiosk ? 'KIOSK EXHIBIT MODE' : 'EXECUTIVE 90-SECOND DEMO'}
             </span>
             <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-              • Step {currentStepIdx + 1} of {DEMO_STEPS.length} ({remainingSeconds}s)
+              • Step {currentStepIdx + 1} of {demoSteps.length} ({remainingSeconds}s)
             </span>
           </div>
 
@@ -209,8 +212,8 @@ export const GuidedDemoOverlay: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setCurrentStepIdx((idx) => Math.min(DEMO_STEPS.length - 1, idx + 1))}
-            disabled={currentStepIdx === DEMO_STEPS.length - 1 && !isKiosk}
+            onClick={() => setCurrentStepIdx((idx) => Math.min(demoSteps.length - 1, idx + 1))}
+            disabled={currentStepIdx === demoSteps.length - 1 && !isKiosk}
             className="btn btn-secondary"
             title="Next Step (Right Arrow)"
             style={{ padding: '0.4rem', borderRadius: '6px' }}

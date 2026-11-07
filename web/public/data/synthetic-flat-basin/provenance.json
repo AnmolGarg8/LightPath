@@ -1,18 +1,27 @@
 {
   "datasets": [
     {
-      "name": "LOLA PDS Elevation Products / Synthetic Generator",
-      "version": "LOLA RDR 2026 / pipeline.synthetic",
-      "source_url": "synthetic://pipeline.synthetic/flat"
+      "name": "none (synthetic)",
+      "version": "none (synthetic)",
+      "source_url": "none (synthetic)",
+      "generator": "pipeline.synthetic",
+      "parameters": {
+        "synthetic_feature": "flat"
+      },
+      "code_version": "0.1.0"
     }
   ],
   "kernels": [
     {
-      "name": "NAIF SPICE Kernels",
-      "checksum": "verified_deterministic_catalog"
+      "name": "none (synthetic)",
+      "checksum": "none (synthetic)",
+      "ephemeris_source": "analytic_approximation"
     }
   ],
   "parameters": {
+    "r_moon_m": 1737400.0,
+    "coordinate_frame": "MOON_ME",
+    "elevation_formula": "exact_spherical_curvature",
     "step_minutes": 120,
     "mast_heights_m": [
       0.0,
@@ -33,15 +42,19 @@
       "az_step_deg": 5.0,
       "max_range_m": 25000.0,
       "step_m": 50.0
-    }
+    },
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   },
   "tolerances": {
+    "az_step_deg": 1.0,
+    "disc_quadrature_samples": 37.0,
     "horizon_dip_deg": 0.005,
     "wall_elevation_deg": 0.01
   },
   "tests_summary": {
-    "tests_passed": 84,
-    "tests_total": 87,
-    "last_verified_utc": "2026-10-29T12:00:00Z"
+    "tests_passed": 12,
+    "tests_total": 15,
+    "last_verified_utc": "2026-11-07T12:08:18.137134+00:00"
   }
 }

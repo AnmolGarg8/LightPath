@@ -24,7 +24,7 @@ from pipeline.constants import (
 from pipeline.geometry import latlon_to_cartesian_moon_me_m, vector_to_az_el_deg
 
 # Canonical DSN station coordinates (JPL 810-005)
-# Verified station locations on Earth (WGS84 lat_deg, lon_deg)
+# Unverified station locations on Earth (WGS84 lat_deg, lon_deg) pending human confirmation
 DSN_STATIONS = [
     {"id": "goldstone", "name": "Goldstone (DSS 14/25)", "lat_deg": 35.247, "lon_deg": -116.889},
     {"id": "madrid", "name": "Madrid (DSS 63/65)", "lat_deg": 40.427, "lon_deg": -4.250},

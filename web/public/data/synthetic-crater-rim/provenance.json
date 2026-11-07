@@ -1,47 +1,66 @@
 {
   "datasets": [
     {
-      "name": "Synthetic Geometric Surface Generator",
-      "version": "pipeline.synthetic-v1.0",
-      "source_url": "synthetic://pipeline.synthetic/synthetic-crater-rim"
+      "name": "dem_crater_fine.tif",
+      "version": "1.0",
+      "source_url": "data/processed/synthetic/dem_crater_fine.tif",
+      "file_path": "data/processed/synthetic/dem_crater_fine.tif",
+      "size_bytes": 5776307,
+      "sha256": "2a7d5128e6905de486b514f29d98d6606dca51df6883fd5a03383079472d7da9"
+    },
+    {
+      "name": "dem_crater_medium.tif",
+      "version": "1.0",
+      "source_url": "data/processed/synthetic/dem_crater_medium.tif",
+      "file_path": "data/processed/synthetic/dem_crater_medium.tif",
+      "size_bytes": 7858707,
+      "sha256": "1b161a323c1c5834187c568abfc3d828a4a617a3d78d30c7e91bfa618d9b4281"
     }
   ],
   "kernels": [
     {
-      "name": "Analytical Lunar Libration & Solar Ephemeris",
-      "checksum": "analytical_deterministic_ephemeris"
+      "name": "none (synthetic)",
+      "checksum": "none (synthetic)",
+      "ephemeris_source": "analytic_approximation"
     }
   ],
   "parameters": {
-    "step_minutes": 240,
+    "r_moon_m": 1737400.0,
+    "coordinate_frame": "MOON_ME",
+    "elevation_formula": "exact_spherical_curvature",
+    "step_minutes": 120,
     "mast_heights_m": [
-      0.5,
-      1,
-      2,
-      3,
-      5
+      0.0,
+      2.0,
+      5.0,
+      10.0
     ],
     "thresholds": {
       "min_sun_frac": 0.5,
       "min_earth_frac": 0.5,
-      "ground_station_mask_deg": 6
+      "ground_station_mask_deg": 6.0,
+      "max_slope_deg": 15.0
     },
     "margins": {
       "horizon_margin_deg": 0.1
     },
     "horizon_params": {
-      "az_step_deg": 2,
-      "max_range_m": 25000,
-      "step_m": 50
-    }
+      "az_step_deg": 5.0,
+      "max_range_m": 25000.0,
+      "step_m": 50.0
+    },
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic"
   },
   "tolerances": {
+    "az_step_deg": 1.0,
+    "disc_quadrature_samples": 37.0,
     "horizon_dip_deg": 0.005,
     "wall_elevation_deg": 0.01
   },
   "tests_summary": {
-    "tests_passed": 89,
-    "tests_total": 92,
-    "last_verified_utc": "2026-10-29T12:00:00Z"
+    "tests_passed": 12,
+    "tests_total": 15,
+    "last_verified_utc": "2026-11-07T12:08:18.137134+00:00"
   }
 }

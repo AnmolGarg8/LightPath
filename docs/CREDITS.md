@@ -7,7 +7,7 @@ In accordance with Rule 11 of the project guidelines, all third-party libraries,
   - Reference: Smith, D. E., et al. (2010), *The Lunar Orbiter Laser Altimeter Investigation on the Lunar Reconnaissance Orbiter Mission*, Space Sci Rev.
   - Coordinate Frame: Moon Mean Earth/Polar Axis (MOON_ME), reference radius $R = 1,737,400\text{ m}$.
   - Product: LOLA South Pole DEMs (LDEM_80S to 90S).
-- **JPL Planetary and Lunar Ephemerides (DE421 / DE440)**:
+- **JPL Planetary and Lunar Ephemerides (SPK Kernels)**:
   - Reference: Folkner, W. M., et al., *The Planetary and Lunar Ephemeris DE430 and DE431*, IPN Progress Report 42-196 (2014).
   - Used for topocentric Sun and Earth vectors referenced to the lunar center of mass and transformed to topocentric local frames.
 - **NASA Deep Space Network (DSN)**:

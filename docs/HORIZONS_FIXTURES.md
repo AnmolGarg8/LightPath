@@ -1,6 +1,6 @@
-# JPL Horizons Validation Fixtures Guide
+# NASA Horizons Validation Fixtures Guide
 
-This document explains how human operators produce independent benchmark validation fixtures from the NASA JPL Horizons system, how Horizons defines local vertical and coordinate frames, and how to verify LightPath against Horizons data.
+This document explains how human operators produce independent benchmark validation fixtures from the NASA Horizons system, how Horizons defines local vertical and coordinate frames, and how to verify LightPath against Horizons data.
 
 ---
 
@@ -44,12 +44,12 @@ utc,az_deg,el_deg
 
 ## 2. Understanding Coordinate Definitions & Local Vertical
 
-When comparing LightPath topocentric Az/El against JPL Horizons, subtle frame differences must be accounted for:
+When comparing LightPath topocentric Az/El against NASA Horizons, subtle frame differences must be accounted for:
 
 ### A. Datum Reference Sphere vs Horizons Ellipsoid
 - **LightPath**: Strictly adopts the NASA LOLA reference sphere ($R_{\text{moon}} = 1,737,400.0\text{ m}$) in the Moon Mean Earth/Polar Axis frame (`MOON_ME`). The local vertical (zenith unit vector $\mathbf{u}$) is the outward radial unit vector:
   $$\mathbf{u} = [\cos(\phi)\cos(\lambda), \cos(\phi)\sin(\lambda), \sin(\phi)]^T$$
-- **JPL Horizons**: Uses the IAU lunar reference triaxial/ellipsoid for Moon body 301. For `COORD_TYPE='GEODETIC'`, the local geodetic vertical is perpendicular to the reference ellipsoid tangent plane. On the Moon, flattening is negligible ($f \approx 0.0012$), causing $< 0.01^\circ$ deflection of vertical between geocentric/spherical and geodetic coordinates.
+- **NASA Horizons**: Uses the IAU lunar reference triaxial/ellipsoid for Moon body 301. For `COORD_TYPE='GEODETIC'`, the local geodetic vertical is perpendicular to the reference ellipsoid tangent plane. On the Moon, flattening is negligible ($f \approx 0.0012$), causing $< 0.01^\circ$ deflection of vertical between geocentric/spherical and geodetic coordinates.
 
 ### B. Azimuth Definition
 - Both LightPath and Horizons define topocentric Azimuth clockwise from local geodetic North:

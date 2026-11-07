@@ -182,7 +182,7 @@ export const DataView: React.FC = () => {
           <strong>Topographic Distinction (Project Rule 3):</strong> Datasets prefixed with <code>synthetic-</code> represent
           controlled geometric benchmarks (flat basin, 100m wall, crater rim) for mathematical algorithm verification. Datasets for{' '}
           <strong>Shackleton Connecting Ridge</strong>, <strong>Malapert Mountain</strong>, and <strong>Nobile Crater Rim</strong>{' '}
-          are derived from NASA LOLA digital elevation models and DE440 planetary ephemerides.
+          use synthetic terrain models and approximate analytic ephemeris, to be replaced by SPICE and verified PDS DEMs.
         </div>
       </div>
 
@@ -501,7 +501,7 @@ export const DataView: React.FC = () => {
               Citing LightPath Data and Software
             </h2>
             <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-              Standard academic citations for mission studies, peer-reviewed publications, and conference proceedings.
+              Standard academic citations for mission studies, scientific publications, and conference proceedings.
             </p>
           </div>
           <a

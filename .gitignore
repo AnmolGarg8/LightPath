@@ -36,5 +36,7 @@ Microsoft/
 *.cache_key
 screenshots/
 web/screenshots/
+test-results/
+web/test-results/
 
 

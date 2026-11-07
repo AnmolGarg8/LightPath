@@ -4,13 +4,14 @@
 PYTHON ?= python
 NPM ?= npm
 
-.PHONY: all setup test lint pipeline web-dev web-build clean help
+.PHONY: all setup test lint pipeline web-dev web-build clean help test-e2e
 
 help:
 	@echo "LightPath Build System"
 	@echo "Targets:"
 	@echo "  make setup      - Install Python & Web dependencies"
 	@echo "  make test       - Run Python pytest and Web vitest test suites"
+	@echo "  make test-e2e   - Run Playwright E2E smoke tests"
 	@echo "  make lint       - Run Python ruff check and Web eslint"
 	@echo "  make pipeline   - Execute science pipeline and generate site artifacts"
 	@echo "  make web-dev    - Start local Vite development server"
@@ -21,16 +22,20 @@ all: setup test lint web-build
 
 setup:
 	$(PYTHON) -m pip install --upgrade pip
-	$(PYTHON) -m pip install pytest pytest-cov jsonschema numpy scipy ruff pydantic pyyaml matplotlib spiceypy rasterio pyproj
+	$(PYTHON) -m pip install pytest pytest-cov jsonschema numpy scipy ruff pydantic pyyaml matplotlib spiceypy rasterio pyproj pyarrow
 	cd web && $(NPM) install
 
 test: test-python test-web
 
 test-python:
+	$(PYTHON) scripts/claims_guard.py
 	$(PYTHON) -m pytest -v
 
 test-web:
 	cd web && $(NPM) test
+
+test-e2e: web-build
+	cd web && $(NPM) run test:e2e
 
 lint: lint-python lint-web
 

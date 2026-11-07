@@ -66,7 +66,7 @@ flowchart TD
 | Feature | Real Mode (`--mode real`) | Synthetic Mode (`--mode synthetic`) |
 | :--- | :--- | :--- |
 | **Target Dataset** | NASA PDS LOLA GDR/RDR elevation products | Deterministic geometric surfaces (crater, wall, cone, flat) |
-| **Ephemeris** | NAIF SPICE DE440 / MOON_ME via `kernels/meta.tm` | Analytical lunar libration & orbital ephemeris |
+| **Ephemeris** | NAIF SPICE SPK / MOON_ME via `kernels/meta.tm` | Analytical lunar libration & orbital ephemeris |
 | **Preflight Policy** | **Refuses to execute** if kernels or DEMs are missing | Runs end-to-end on clean checkout without external network |
 | **Flagging** | Real metadata; `verified` false unless checked | Permanent `is_synthetic: true` on all products & UI banners |
 | **Use Case** | NASA CLPS site assessment & scientific review | Offline development, automated CI testing, UI testing |
@@ -174,7 +174,7 @@ python -m pipeline.run --config configs/synthetic.yaml --mode synthetic --force
 ## 6. How a Human Updates the Data
 
 ### A. Updating SPICE Kernels
-1. Inspect official NAIF JPL repositories for updated planetary ephemeris (DE440 / DE442) and lunar orientation frames (`moon_pa_de440_200108.bpc`, `pck00011.tpc`, `naif0012.tls`).
+1. Inspect official NAIF JPL repositories for updated planetary ephemeris (SPK kernels) and lunar orientation frames (`moon_pa_de421_1900-2050.bpc`, `pck00011.tpc`, `naif0012.tls`).
 2. Add kernel filename, NAIF download URL, and SHA-256 to `kernels/kernels.json`.
 3. Run download script:
    ```bash

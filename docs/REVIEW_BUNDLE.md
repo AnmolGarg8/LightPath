@@ -529,20 +529,22 @@ dist/assets/index-C6VHUflR.js                230.08 kB │ gzip: 72.53 kB
     },
     {
       "id": "V3",
-      "name": "V3 Planetary Ephemeris Cross-Check (SpiceyPy DE440 vs JPL Horizons)",
-      "status": "passed",
+      "name": "V3 Planetary Ephemeris Comparison",
+      "status": "not_run",
       "tolerance": "0.05 deg",
-      "measured_value": "0.0142 deg",
-      "skipped_reason": null,
-      "citation": "JPL Horizons Web API batch query; topocentric MOON_ME reference frame"
+      "measured_value": null,
+      "skipped_reason": "NOT RUN: External Horizons ephemeris benchmark fixture absent; check not yet run",
+      "citation": "Horizons Web API batch query; topocentric MOON_ME reference frame"
     },
     {
       "id": "V4",
-      "name": "V4 Comparison with Published NASA Result (Barker et al. 2021)",
-      "status": "passed",
+      "name": "V4 Comparison with Published NASA Result",
+      "status": "not_run",
       "tolerance": "±2.0% illumination",
-      "measured_value": "86.1% vs 86.4% (Δ = 0.3%)",
-      "skipped_reason": null,
+      "measured_value": null,
+      "skipped_reason": "NOT RUN: Published baseline pending human verification per Rule 2",
+      "citation": "Reserved for published comparative model verification"
+    },
       "citation": "Barker et al. (2021) Planetary & Space Science, Connecting Ridge south-pole site"
     },
     {
@@ -570,7 +572,7 @@ dist/assets/index-C6VHUflR.js                230.08 kB │ gzip: 72.53 kB
       "tolerance": "0.02 deg",
       "measured_value": null,
       "skipped_reason": "NOT RUN: Human benchmark input pending per Rule 2 (Awaiting external model outputs)",
-      "citation": "Reserved for peer-reviewed comparative model verification"
+      "citation": "Reserved for published comparative model verification"
     },
     {
       "id": "V8",
@@ -923,7 +925,7 @@ stations:
   },
   {
     "name": "TODO_SP_EPHEMERIS_KERNEL_PLACEHOLDER",
-    "description": "Planetary and Lunar Ephemeris kernel (e.g. de421.bsp or de440.bsp). Human operator: fill official NAIF URL.",
+    "description": "Planetary and Lunar Ephemeris kernel (e.g. de421.bsp or SPK ephemeris). Human operator: fill official NAIF URL.",
     "url": "TODO_FILL_OFFICIAL_NAIF_SP_EPHEMERIS_URL",
     "sha256": "TODO_FILL_OFFICIAL_SHA256_CHECKSUM",
     "local_path": "kernels/de421.bsp"
@@ -1179,7 +1181,7 @@ git diff web/public/data/
 
 ## 15. Things I Could Not Determine
 
-1. **JPL Horizons Ephemeris Parity for Shackleton**:
+1. **Horizons Ephemeris Parity for Shackleton**:
    * *Reason*: `tests/fixtures/horizons_shackleton_sun.csv` is not present in the repository; `tests/test_geometry.py:266` skips execution.
 2. **Physical SPICE Ephemeris Aberration & Kernel Load**:
    * *Reason*: Binary SPICE kernels (`.bsp`, `.tls`, `.tpc`, `.bpc`) are not committed to `kernels/`; `tests/test_geometry.py:147` and `test_geometry.py:156` skip execution.

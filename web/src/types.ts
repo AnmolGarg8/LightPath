@@ -16,6 +16,9 @@ export interface Site {
   notes?: string;
   verified: boolean;
   is_synthetic: boolean;
+  is_demo_site?: boolean;
+  ephemeris_source?: 'analytic_approximation' | 'spice_kernels';
+  terrain_source?: 'synthetic' | 'lola_dem';
 }
 
 export interface Horizon {

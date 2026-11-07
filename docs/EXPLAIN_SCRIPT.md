@@ -10,7 +10,7 @@
 - **The Core Fact:** The Moon’s equator is tilted only **1.54°** relative to the ecliptic plane. Unlike Earth, which experiences strong seasonal tilt (23.5°), the lunar poles never see the Sun rise high in the sky.
 - **What You See:** The Sun skims the horizon, oscillating between **-1.5° and +1.5°** elevation over an 18.6-year nodal cycle. At polar ground level, solar elevation rarely exceeds 1.5° above the horizon.
 - **Why It Matters:** Because the Sun is so low, even tiny topographic features cast enormous shadows across the landscape.
-- **Rule 2 Notice:** Solar elevation numbers are derived from NASA LOLA topography and SPICE ephemerides (marked *verify until sourced* for external citations).
+- **Rule 2 Notice:** Solar elevation numbers use synthetic terrain models and approximate analytic ephemeris, to be replaced by SPICE and verified PDS DEMs.
 
 ---
 
@@ -55,7 +55,7 @@
 | **5. Feasible Traverse** | `#/route/...` | 14s | *"Our signature feature: a 4D space-time solver. The rover navigates from the lander to an elevated ridge while staying in sunlight."* |
 | **6. Suggested Relaxation** | `#/route/...` | 12s | *"When terrain or darkness blocks the path, LightPath explains why and suggests a mathematical relaxation you can apply in one click."* |
 | **7. Evidence Card** | `#/evidence/...` | 12s | *"A single-page printable audit card with exact geodetic coordinates, kernel checksums, provenance hash, and synthetic watermark."* |
-| **8. Trust & Verification** | `#/trust` | 10s | *"Every formula is backed by analytical tests and cross-checked with published NASA data. Trust is earned through math."* |
+| **8. Trust & Verification** | `#/trust` | 10s | *"Every formula is backed by analytical tests and validated against closed-form benchmarks. Trust is earned through math."* |
 
 ---
 

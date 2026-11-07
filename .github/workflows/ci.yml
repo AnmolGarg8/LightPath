@@ -38,6 +38,9 @@ jobs:
       - name: Python Lint (ruff)
         run: ruff check .
 
+      - name: Claims Guard (Scientific Claims Audit)
+        run: python scripts/claims_guard.py
+
       - name: Python Test Suite (pytest)
         run: pytest -v
 
@@ -52,3 +55,19 @@ jobs:
       - name: Web Static Build (tsc + vite)
         working-directory: web
         run: npm run build
+
+      - name: Install Playwright Browsers
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+
+      - name: E2E Production Smoke Test (Playwright)
+        working-directory: web
+        run: npm run test:e2e
+
+      - name: Upload E2E Screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-screenshots
+          path: web/e2e-screenshots/
+          if-no-files-found: ignore

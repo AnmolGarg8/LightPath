@@ -44,8 +44,10 @@ sites:
     source_url: "https://pgda.gsfc.nasa.gov/products/78"
     retrieved_on: "2026-10-29"
     verified: false
-    is_synthetic: false
-    notes: "Candidate Artemis/CLPS south-pole exploration zone on connecting ridge; coordinates require human operational verification."
+    is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
+    notes: "Candidate Artemis/CLPS south-pole exploration zone on connecting ridge; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: ["clps-placeholder-shackleton"]
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"
@@ -64,8 +66,10 @@ sites:
     source_url: "https://pgda.gsfc.nasa.gov/products/78"
     retrieved_on: "2026-10-29"
     verified: false
-    is_synthetic: false
-    notes: "Candidate Artemis/CLPS south-pole exploration zone atop Malapert massif; coordinates require human operational verification."
+    is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
+    notes: "Candidate Artemis/CLPS south-pole exploration zone atop Malapert massif; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: ["clps-placeholder-malapert"]
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"
@@ -84,8 +88,10 @@ sites:
     source_url: "https://pgda.gsfc.nasa.gov/products/78"
     retrieved_on: "2026-10-29"
     verified: false
-    is_synthetic: false
-    notes: "Candidate Artemis/CLPS exploration site on the rim of Nobile crater; coordinates require human operational verification."
+    is_synthetic: true
+    ephemeris_source: "analytic_approximation"
+    terrain_source: "synthetic"
+    notes: "Candidate Artemis/CLPS exploration site on the rim of Nobile crater; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: []
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"

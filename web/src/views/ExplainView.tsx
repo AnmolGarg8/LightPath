@@ -16,7 +16,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Slider } from '../components/ui/Slider';
-import { fetchJsonData } from '../utils/dataLoader';
+import { fetchJsonData, useSiteCatalog } from '../utils/dataLoader';
 import {
   SeriesSchema,
   Series,
@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 
 export const ExplainView: React.FC = () => {
+  const { demoSiteId } = useSiteCatalog();
   // Live data bindings
   const [seriesData, setSeriesData] = useState<Series | null>(null);
   const [testResults, setTestResults] = useState<TestResults | null>(null);
@@ -62,7 +63,7 @@ export const ExplainView: React.FC = () => {
   useEffect(() => {
     // Load series data and test results for live numbers
     Promise.all([
-      fetchJsonData('./data/shackleton-connecting-ridge/series.json', SeriesSchema).catch(() => null),
+      fetchJsonData(`./data/${demoSiteId}/series.json`, SeriesSchema).catch(() => null),
       fetchJsonData('./data/test_results.json', TestResultsSchema).catch(() => null),
     ]).then(([series, tests]) => {
       if (series) setSeriesData(series);
@@ -363,8 +364,8 @@ export const ExplainView: React.FC = () => {
                   (from data series)
                 </div>
                 <div style={{ marginTop: '0.35rem', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  Source: NASA LOLA Geodesy / SPICE Planetary Ephemeris DE440{' '}
-                  <span style={{ color: '#b45309', fontWeight: 600 }}>[unverified / verify until sourced]</span>
+                  Source: Synthetic Proving Ground / Approximate Analytic Ephemeris{' '}
+                  <span style={{ color: '#b45309', fontWeight: 600 }}>[approximate analytic ephemeris, to be replaced by SPICE]</span>
                 </div>
               </div>
             </div>
@@ -632,7 +633,7 @@ export const ExplainView: React.FC = () => {
 
               <div style={{ marginTop: '1.25rem' }}>
                 <a
-                  href="#/route/shackleton-connecting-ridge"
+                  href={`#/route/${demoSiteId}`}
                   className="btn btn-primary"
                   style={{ fontSize: '0.85rem', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}
                 >
@@ -657,7 +658,7 @@ export const ExplainView: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'center' }}>
             <div>
               <p style={{ color: 'var(--text-primary)', marginBottom: '0.8rem' }}>
-                Every calculation in LightPath is verified against exact spherical geometry, SPICE ephemerides, and peer-reviewed NASA publications.
+                Every calculation in LightPath is tested against exact spherical geometry, with approximate analytic ephemeris to be replaced by SPICE, and external baselines marked pending verification.
               </p>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
                 Our Python core and browser TypeScript engine share exact test vectors. If they disagree by even $10^{-9}$ degrees, the build fails.

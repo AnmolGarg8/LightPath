@@ -14,7 +14,7 @@ At the lunar south pole, where NASA's Commercial Lunar Payload Services (CLPS) m
 
 Beyond static site assessment, LightPath introduces a signature **4D Space-Time Traverse Solver**: an A* algorithm navigating space and time $(x, y, t)$ across moving shadows and terrain slope hazards to determine whether rovers or crew can travel safely between surface points without running out of power or communication links.
 
-Every calculation is independently verified against closed-form benchmarks, shared Python/TypeScript mathematical test vectors matching to $< 10^{-14\circ}$, and published literature [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md]. LightPath delivers instantaneous, actionable mission insight for scientists, flight planners, students, and the public.
+Every calculation is independently tested against closed-form benchmarks, shared Python/TypeScript mathematical test vectors, and external published baselines pending human verification [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md]. LightPath delivers instantaneous, actionable mission insight for scientists, flight planners, students, and the public.
 
 ---
 
@@ -47,7 +47,7 @@ LightPath directly integrates authoritative NASA planetary datasets:
    - High-resolution gridded elevation models from the Lunar Orbiter Laser Altimeter team via the NASA Planetary Data System (PDS).
    - Referenced to the IAU Mean Earth/Polar Axis sphere ($R = 1,737,400.0\text{ m}$).
 2. **NASA NAIF SPICE Toolkit & Ephemerides**:
-   - Planetary ephemeris kernel DE440 and lunar orientation binary PCK kernels for subsolar and sub-Earth coordinate transformations.
+   - Approximate analytic ephemeris (to be replaced by SPICE planetary ephemeris) and lunar orientation transformations.
 3. **NASA Deep Space Network (DSN) 810-005 Documents**:
    - Telecommunications interface guidelines for Goldstone (DSS-14), Madrid (DSS-63), and Canberra (DSS-43) complexes, including geodetic coordinates and elevation masks.
 4. **Published Literature Benchmark**:
@@ -103,4 +103,4 @@ In compliance with NASA Space Apps rules, LightPath states clear scientific boun
 
 ## 9. AI Coding Tools Disclosure
 
-In accordance with NASA Space Apps Challenge regulations, the team discloses that AI coding assistants (including Google Antigravity / Gemini 2.0) were utilized for code scaffolding, type generation, unit test creation, and documentation drafting. All scientific formulas, mathematical algorithms, SPICE integration paths, and verification tests were designed, verified, and audited against NASA peer-reviewed publications.
+In accordance with NASA Space Apps Challenge regulations, the team discloses that AI coding assistants (including Google Antigravity / Gemini 2.0) were utilized for code scaffolding, type generation, unit test creation, and documentation drafting. All scientific formulas, mathematical algorithms, SPICE integration paths, and verification tests were designed and tested against NASA published literature and closed-form benchmarks.

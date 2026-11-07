@@ -96,7 +96,7 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
           }}
         >
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem', flexWrap: 'wrap' }}>
               <h1 style={{ fontSize: '1.75rem', fontWeight: 800, margin: 0 }}>{siteData.name}</h1>
               {siteData.verified ? (
                 <Badge variant="success" size="sm" icon={<CheckCircle2 size={12} />}>
@@ -111,6 +111,12 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
                   CLPS Candidate Site
                 </Badge>
               )}
+              <Badge variant="neutral" size="sm">
+                Terrain: {siteData.terrain_source === 'lola_dem' ? 'LOLA DEM' : 'Synthetic'}
+              </Badge>
+              <Badge variant="neutral" size="sm">
+                Ephemeris: {siteData.ephemeris_source === 'spice_kernels' ? 'SPICE Kernels' : 'Analytic Approx'}
+              </Badge>
             </div>
 
             <div

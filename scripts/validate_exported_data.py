@@ -39,6 +39,8 @@ EXPECTED_COLUMNS = [
     "threshold_pct",
     "mast_height_m",
     "is_synthetic",
+    "ephemeris_source",
+    "terrain_source",
     "provenance_hash",
 ]
 

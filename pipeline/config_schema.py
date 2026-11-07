@@ -33,7 +33,9 @@ class SiteConfig(BaseModel):
     retrieved_on: Optional[str] = None
     notes: Optional[str] = None
     verified: bool = False
-    is_synthetic: bool = False
+    is_synthetic: bool = True
+    ephemeris_source: str = "analytic_approximation"
+    terrain_source: str = "synthetic"
     mission_ids: List[str] = Field(default_factory=list)
     synthetic_feature: Optional[str] = None  # e.g. "flat", "wall", "crater"
 

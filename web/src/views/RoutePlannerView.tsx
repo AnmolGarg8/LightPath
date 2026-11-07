@@ -6,7 +6,7 @@ import { Slider } from '../components/ui/Slider';
 import { SegmentedControl } from '../components/ui/SegmentedControl';
 import { fetchBinaryCube, fetchJsonData } from '../utils/dataLoader';
 import { DecodedVisibilityCube } from '../utils/cubeDecoder';
-import { VisibilityCubeHeaderSchema, VisibilityCubeHeader } from '../types/schemas';
+import { VisibilityCubeHeaderSchema, VisibilityCubeHeader, SiteSummarySchema, SiteSummary } from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { DepartureWindowMap } from '../components/DepartureWindowMap';
 import { MissionPlanner } from '../components/MissionPlanner';
@@ -48,6 +48,7 @@ type LayerMode = 'sun' | 'earth' | 'slope' | 'traversability';
 export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, initialScenario = null }) => {
   const [header, setHeader] = useState<VisibilityCubeHeader | null>(null);
   const [cube, setCube] = useState<DecodedVisibilityCube | null>(null);
+  const [siteMeta, setSiteMeta] = useState<SiteSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -135,16 +136,20 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // 1. Fetch visibility cube JSON header and compressed binary
+  // 1. Fetch visibility cube JSON header, compressed binary, and site metadata
   useEffect(() => {
     setLoading(true);
     Promise.all([
       fetchJsonData(`./data/cubes/${siteId}.json`, VisibilityCubeHeaderSchema),
       fetchBinaryCube(`./data/cubes/${siteId}.bin`),
+      fetchJsonData<SiteSummary>(`./data/sites/${siteId}.json`, SiteSummarySchema)
+        .catch(() => fetchJsonData<SiteSummary>(`./data/${siteId}/site.json`, SiteSummarySchema))
+        .catch(() => null),
     ])
-      .then(([hdr, cb]) => {
+      .then(([hdr, cb, meta]) => {
         setHeader(hdr);
         setCube(cb);
+        if (meta) setSiteMeta(meta);
         setLoading(false);
       })
       .catch((err) => {
@@ -184,9 +189,8 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         setDepartureMap(depMap);
         setMapLoading(false);
 
-        // Pick initial selected departure: earliest feasible if available, else 0
-        const chosenDepIdx =
-          depMap.earliest_feasible_idx !== null ? depMap.earliest_feasible_idx : 0;
+        // Initial selected departure: start at Step 0 (departure now)
+        const chosenDepIdx = 0;
         setSelectedDepIdx(chosenDepIdx);
         setTimeStep(chosenDepIdx);
 
@@ -211,6 +215,32 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
             .catch(() => {
               if (!cancelled) setCompLoading(false);
             });
+        } else if (depEntry) {
+          setActiveRoute({
+            mode: 'rover',
+            params: {
+              start_coord: startPoint,
+              end_coord: endPoint,
+              start_time_idx: chosenDepIdx,
+              speed_m_s: speedMs,
+              max_slope_deg: maxSlopeDeg,
+              min_sun_frac: 0.5,
+              min_earth_frac: 0.5,
+            },
+            feasible: false,
+            path: [],
+            explanation: depEntry.infeasible_reason || 'Departure at this timestep is blocked by shadow or slope.',
+            metrics: {
+              total_distance_m: 0,
+              duration_h: 0,
+              average_slope_deg: 0,
+              max_slope_deg: 0,
+              min_sun_frac_observed: 0,
+              min_earth_frac_observed: 0,
+            },
+            alternatives: [],
+          });
+          setConservativeComparison(null);
         } else {
           setActiveRoute(null);
           setConservativeComparison(null);
@@ -756,18 +786,13 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
     reader.readAsText(file);
   };
 
-  const resolvedSiteName = 
-    siteId === 'shackleton-connecting-ridge' ? 'Shackleton Connecting Ridge'
-    : siteId === 'malapert-mountain' ? 'Malapert Mountain'
-    : siteId === 'nobile-crater-rim' ? 'Nobile Crater Rim'
-    : siteId === 'synthetic-proving-ground' ? 'Synthetic Proving Ground'
-    : siteId;
+  const resolvedSiteName = siteMeta?.name || siteId;
 
-  const resolvedSiteCoords =
-    siteId === 'shackleton-connecting-ridge' ? { lat_deg: -89.78, lon_deg: 120.0, ground_elev_m: 1850.0 }
-    : siteId === 'malapert-mountain' ? { lat_deg: -85.99, lon_deg: 0.0, ground_elev_m: 5000.0 }
-    : siteId === 'nobile-crater-rim' ? { lat_deg: -85.25, lon_deg: 35.8, ground_elev_m: 2100.0 }
-    : { lat_deg: -89.9, lon_deg: 0.0, ground_elev_m: 0.0 };
+  const resolvedSiteCoords = {
+    lat_deg: siteMeta?.lat_deg ?? header?.grid.origin[1] ?? -89.9,
+    lon_deg: siteMeta?.lon_deg ?? header?.grid.origin[0] ?? 0.0,
+    ground_elev_m: siteMeta?.ground_elev_m ?? 0.0,
+  };
 
   const evidenceData = activeRoute
     ? buildRouteEvidenceData(
@@ -1034,6 +1059,48 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
               data={evidenceData}
               onClose={() => setShowEvidenceCard(false)}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Departure Feasibility & Suggested Relaxation Banner */}
+      {departureMap && !departureMap.departures[selectedDepIdx]?.feasible && departureMap.earliest_feasible_idx !== null && (
+        <div
+          data-testid="departure-relaxation-banner"
+          style={{
+            backgroundColor: 'rgba(239, 68, 68, 0.12)',
+            border: '1px solid rgba(239, 68, 68, 0.5)',
+            borderRadius: '8px',
+            padding: '1rem 1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            marginBottom: '1rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', fontWeight: 700, fontSize: '0.95rem' }}>
+            <span>⚠️</span>
+            <span>
+              Departure at T={selectedDepIdx} ({departureMap.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || '00:00:00'}Z) is Infeasible: {departureMap.departures[selectedDepIdx]?.infeasible_reason || 'Moving shadows obstruct the corridor.'}
+            </span>
+          </div>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+            💡 <strong>Suggested Relaxation:</strong> Wait until <strong>{departureMap.earliest_feasible_utc}</strong> (Step {departureMap.earliest_feasible_idx}) for the illuminated corridor to open. Alternatively, increase speed or relax slope limits.
+          </div>
+          <div style={{ marginTop: '0.25rem' }}>
+            <button
+              className="btn btn-sm btn-primary"
+              data-testid="apply-relaxation-btn"
+              onClick={() => handleSelectDeparture(departureMap.earliest_feasible_idx!)}
+              style={{
+                fontSize: '0.85rem',
+                padding: '0.4rem 0.85rem',
+                borderRadius: '6px',
+                fontWeight: 600,
+              }}
+            >
+              Apply Suggested Relaxation: Depart at Step {departureMap.earliest_feasible_idx} ({departureMap.earliest_feasible_utc?.slice(11, 19)}Z) →
+            </button>
           </div>
         </div>
       )}

@@ -197,16 +197,19 @@ export const HomeView: React.FC = () => {
     return <ValidationErrorPage error={error} onRetry={() => window.location.reload()} />;
   }
 
+  // Single source of truth demo targets from index.json
+  const demoSite = indexData?.sites.find((s) => s.is_demo_site) || indexData?.sites[0];
+  const demoSiteId = demoSite?.id || 'synthetic-proving-ground';
+  const secondSite = indexData?.sites.find((s) => s.id !== demoSiteId) || indexData?.sites[1];
+  const secondSiteId = secondSite?.id || demoSiteId;
+
   // Precomputed headlines based on site parameters and planned mission window
   const getMissionHeadline = (m: Mission) => {
-    // Generate authoritative headline from verified or example pipeline figures
-    if (m.site_id === 'shackleton-connecting-ridge') {
-      return 'Longest Earth line-of-sight outage: 12.0h · 184.0h with Sun + DTE contact';
-    } else if (m.site_id === 'malapert-mountain') {
-      return 'Longest Earth line-of-sight outage: 0.0h · 337.0h with Sun + DTE contact';
-    } else if (m.site_id === 'nobile-crater-rim') {
-      return 'Longest Earth line-of-sight outage: 18.0h · 142.0h with Sun + DTE contact';
-    } else if (m.site_id === 'synthetic-crater-rim') {
+    const siteExists = indexData?.sites.some((s) => s.id === m.site_id);
+    if (!siteExists) {
+      return `Candidate target site: ${m.site_id} (site data not computed)`;
+    }
+    if (m.site_id === 'synthetic-crater-rim') {
       return 'Longest Earth line-of-sight outage: 0.0h · 78.4h with Sun + DTE line of sight';
     } else if (m.site_id === 'synthetic-proving-ground') {
       return 'Longest Earth line-of-sight outage: 12.0h · 57.2h with Sun + DTE line of sight';
@@ -297,7 +300,7 @@ export const HomeView: React.FC = () => {
           {/* One Try the Demo Button Leading to Prepared Route Scenario */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}>
             <a
-              href="#/route/shackleton-connecting-ridge"
+              href={`#/route/${demoSiteId}`}
               className="btn btn-primary"
               data-testid="try-the-demo-btn"
               style={{
@@ -317,7 +320,7 @@ export const HomeView: React.FC = () => {
               <span aria-hidden="true">→</span>
             </a>
             <span style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
-              Prepared scenario: 1.4 km rover traverse under moving South Pole crater shadows
+              Prepared scenario: rover traverse under moving South Pole crater shadows
             </span>
           </div>
         </div>
@@ -551,21 +554,38 @@ export const HomeView: React.FC = () => {
                       )}
                     </div>
 
-                    <a
-                      href={`#/site/${m.site_id}`}
-                      style={{
-                        padding: '0.35rem 0.75rem',
-                        fontSize: '0.8rem',
-                        borderRadius: 'var(--radius-xs)',
-                        background: 'var(--card-bg)',
-                        border: '1px solid var(--border-color)',
-                        color: 'var(--text-main)',
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                      }}
-                    >
-                      Analyze Site →
-                    </a>
+                    {indexData?.sites.some((s) => s.id === m.site_id) ? (
+                      <a
+                        href={`#/site/${m.site_id}`}
+                        style={{
+                          padding: '0.35rem 0.75rem',
+                          fontSize: '0.8rem',
+                          borderRadius: 'var(--radius-xs)',
+                          background: 'var(--card-bg)',
+                          border: '1px solid var(--border-color)',
+                          color: 'var(--text-main)',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Analyze Site →
+                      </a>
+                    ) : (
+                      <span
+                        data-testid="site-data-unavailable"
+                        style={{
+                          padding: '0.35rem 0.75rem',
+                          fontSize: '0.75rem',
+                          borderRadius: 'var(--radius-xs)',
+                          background: 'var(--bg-surface)',
+                          border: '1px solid var(--border-color)',
+                          color: 'var(--text-muted)',
+                          fontWeight: 500,
+                        }}
+                      >
+                        Site data not available (not computed)
+                      </span>
+                    )}
                   </div>
                 </Card>
               );
@@ -574,18 +594,18 @@ export const HomeView: React.FC = () => {
         )}
       </section>
 
-      {/* 3. Candidate Exploration Sites Grid */}
+      {/* 3. Computed Benchmark Exploration Sites Grid */}
       <section style={{ marginBottom: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1rem' }}>
           <div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem 0' }}>
-              Candidate Lunar Landing Sites
+              Computed Exploration Sites
             </h2>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Select a south-polar candidate landing site to inspect topocentric horizon profiles and contact windows.
+              Select a computed site to inspect topocentric horizon profiles, contact windows, and 4D space-time traverses.
             </div>
           </div>
-          <a href="#/compare/shackleton-connecting-ridge/malapert-mountain" style={{ fontSize: '0.85rem', color: 'var(--color-blue)' }}>
+          <a href={`#/compare/${demoSiteId}/${secondSiteId}`} style={{ fontSize: '0.85rem', color: 'var(--color-blue)' }}>
             Compare Multiple Sites →
           </a>
         </div>
@@ -599,11 +619,24 @@ export const HomeView: React.FC = () => {
         >
           {indexData?.sites.map((site) => (
             <Card key={site.id} style={{ padding: '1.25rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>{site.name}</h3>
-                <Badge variant={site.is_synthetic ? 'neutral' : 'info'} size="sm">
-                  {site.is_synthetic ? 'BENCHMARK' : 'CLPS CANDIDATE'}
-                </Badge>
+                <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
+                  {site.is_demo_site && (
+                    <Badge variant="visible" size="sm">
+                      DEMO SITE
+                    </Badge>
+                  )}
+                  <Badge variant={site.is_synthetic ? 'neutral' : 'info'} size="sm">
+                    {site.is_synthetic ? 'BENCHMARK' : 'CLPS CANDIDATE'}
+                  </Badge>
+                  <Badge variant="neutral" size="sm">
+                    {site.terrain_source === 'lola_dem' ? 'LOLA DEM' : 'Synthetic DEM'}
+                  </Badge>
+                  <Badge variant="neutral" size="sm">
+                    {site.ephemeris_source === 'spice_kernels' ? 'SPICE Kernels' : 'Analytic Ephemeris'}
+                  </Badge>
+                </div>
               </div>
 
               <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
@@ -619,7 +652,7 @@ export const HomeView: React.FC = () => {
                   data-testid="site-source-link"
                   style={{ color: 'var(--color-blue)', textDecoration: 'none' }}
                 >
-                  Source: {site.source_label || 'PDS Elevation'}
+                  Source: {site.source_label || 'Elevation Model'}
                 </a>
               </div>
 
@@ -641,6 +674,72 @@ export const HomeView: React.FC = () => {
                 >
                   Analyze Site →
                 </a>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Candidate Sites (not computed) Section */}
+      <section style={{ marginBottom: '2.5rem' }} data-testid="candidate-sites-section">
+        <div style={{ marginBottom: '1rem' }}>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem 0' }}>
+            Candidate sites (not computed)
+          </h2>
+          <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            Real south-polar exploration targets with sourced coordinates. Detailed illumination and visibility datasets are not computed (require high-resolution LOLA DEM and SPICE operational validation).
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {(indexData?.candidate_sites || []).map((cs) => (
+            <Card key={cs.id} style={{ padding: '1.25rem', opacity: 0.9 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', flexWrap: 'wrap', gap: '0.25rem' }}>
+                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>{cs.name}</h3>
+                <Badge variant="warning" size="sm">
+                  NOT COMPUTED
+                </Badge>
+              </div>
+
+              <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
+                Coordinates: {Number(cs.lat_deg).toFixed(2)}° S, {Number(cs.lon_deg).toFixed(2)}° E · Elevation: {cs.ground_elev_m}m
+              </div>
+
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <ExternalLink size={12} />
+                <a
+                  href={cs.source_url || (cs.source_links?.[0] ?? '#')}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: 'var(--color-blue)', textDecoration: 'none' }}
+                >
+                  Source: {cs.source_label || 'PDS / LOLA'}
+                </a>
+              </div>
+
+              <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  {cs.notes || 'Candidate site (not computed)'}
+                </span>
+                <span
+                  style={{
+                    padding: '0.35rem 0.75rem',
+                    fontSize: '0.75rem',
+                    borderRadius: 'var(--radius-xs)',
+                    background: 'var(--bg-surface)',
+                    border: '1px solid var(--border-color)',
+                    color: 'var(--text-muted)',
+                    fontWeight: 500,
+                  }}
+                >
+                  Site data not available (not computed)
+                </span>
               </div>
             </Card>
           ))}

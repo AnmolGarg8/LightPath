@@ -14,6 +14,9 @@
     "retrieved_on": "2026-10-29",
     "verified": false,
     "is_synthetic": true,
-    "notes": "Synthetic math-generated crater for algorithm testing and verification."
+    "ephemeris_source": "analytic_approximation",
+    "terrain_source": "synthetic",
+    "notes": "Synthetic math-generated crater for algorithm testing and verification.",
+    "is_demo_site": true
   }
 ]

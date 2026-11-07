@@ -15,7 +15,10 @@
       "retrieved_on": "2026-10-29",
       "verified": false,
       "is_synthetic": true,
-      "notes": "Synthetic math-generated crater for algorithm testing and verification."
+      "ephemeris_source": "analytic_approximation",
+      "terrain_source": "synthetic",
+      "notes": "Synthetic math-generated crater for algorithm testing and verification.",
+      "is_demo_site": true
     }
   ],
   "missions": [
@@ -81,6 +84,41 @@
       "retrieved_on": "2026-10-29",
       "verified": false,
       "notes": "Mobile rover pathfinding benchmark along polar crater rims."
+    }
+  ],
+  "candidate_sites": [
+    {
+      "id": "shackleton-connecting-ridge",
+      "name": "Shackleton Connecting Ridge",
+      "lat_deg": -89.44,
+      "lon_deg": 137.5,
+      "ground_elev_m": 1250.0,
+      "status": "not_computed",
+      "reason_not_computed": "Real LOLA DEM and SPICE kernel ephemerides pending human verification and staging.",
+      "source": "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S",
+      "source_url": "https://pgda.gsfc.nasa.gov/products/54"
+    },
+    {
+      "id": "nobile-crater-rim",
+      "name": "Nobile Crater Rim (Mons Mouton / VIPER Area)",
+      "lat_deg": -85.25,
+      "lon_deg": 35.8,
+      "ground_elev_m": 2100.0,
+      "status": "not_computed",
+      "reason_not_computed": "Real LOLA DEM and SPICE kernel ephemerides pending human verification and staging.",
+      "source": "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S",
+      "source_url": "https://www.nasa.gov/missions/viper/nasa-replans-viper-payload-for-griffin-lunar-lander/"
+    },
+    {
+      "id": "malapert-mountain",
+      "name": "Malapert Mountain (Peak of Eternal Light Candidate)",
+      "lat_deg": -86.04,
+      "lon_deg": 2.7,
+      "ground_elev_m": 5000.0,
+      "status": "not_computed",
+      "reason_not_computed": "Real LOLA DEM and SPICE kernel ephemerides pending human verification and staging.",
+      "source": "NASA NTRS / Artemis Candidate Studies",
+      "source_url": "https://ntrs.nasa.gov/citations/20210018596"
     }
   ],
   "mode": "synthetic",

@@ -81,6 +81,28 @@ describe('Trust & Verification Page Dynamic Binding', () => {
       expect(result.error.issues.length).toBeGreaterThan(0);
     }
   });
+
+  it('verifies V3, V4, and V7 are NOT RUN with no chart in live public test_results.json', async () => {
+    // Read web/public/data/test_results.json via Node fs
+    const fs = await import('fs');
+    const path = await import('path');
+    const resultsPath = path.resolve(__dirname, '../../public/data/test_results.json');
+    if (fs.existsSync(resultsPath)) {
+      const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'));
+      const parsed = TestResultsSchema.parse(raw);
+
+      const v3 = parsed.checks.find((c) => c.code === 'V3' || c.id === 'V3');
+      const v4 = parsed.checks.find((c) => c.code === 'V4' || c.id === 'V4');
+      const v7 = parsed.checks.find((c) => c.code === 'V7' || c.id === 'V7');
+
+      expect(v3?.status === 'not_run' || v3?.status === 'skipped').toBe(true);
+      expect(v4?.status === 'not_run' || v4?.status === 'skipped').toBe(true);
+      expect(v7?.status === 'not_run' || v7?.status === 'skipped').toBe(true);
+
+      // Verify no charts drawn for unrun tests
+      expect(!parsed.charts?.v3_ephemeris || parsed.charts.v3_ephemeris.length === 0).toBe(true);
+    }
+  });
 });
 
 describe('Evidence Card Data Exports', () => {

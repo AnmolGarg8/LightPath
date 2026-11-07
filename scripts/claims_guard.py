@@ -1,0 +1,146 @@
+#!/usr/bin/env python3
+"""Claims Guard — Verification of Scientific Claims against Provenance Status.
+
+Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 9: Every number traces to a record).
+
+Scans README.md, docs/, and web/src/ for forbidden phrases implying unverified real-data
+sources or benchmarks unless data_status.json explicitly certifies the condition.
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+
+# Rule mapping: (list of forbidden phrases, required condition key in data_status.json)
+CONDITIONAL_RULES: List[Tuple[List[str], str]] = [
+    (
+        ["Real NASA LOLA", "LOLA topography at"],
+        "has_lola_dem",
+    ),
+    (
+        ["DE440", "SPICE ephemerides"],
+        "has_spice_kernels",
+    ),
+    (
+        ["JPL Horizons"],
+        "has_horizons_fixture",
+    ),
+    (
+        ["peer-reviewed"],
+        "has_peer_reviewed_benchmark",
+    ),
+    (
+        ["cross-checked", "verified against"],
+        "has_peer_reviewed_benchmark",
+    ),
+]
+
+SCAN_TARGETS = [
+    ROOT_DIR / "README.md",
+    ROOT_DIR / "docs",
+    ROOT_DIR / "web" / "src",
+]
+
+ALLOWED_EXTENSIONS = {".md", ".ts", ".tsx", ".json", ".html", ".js", ".css"}
+
+
+def load_data_status() -> Dict[str, bool]:
+    """Load data_status.json if present; otherwise default all flags to False."""
+    candidates = [
+        ROOT_DIR / "data" / "data_status.json",
+        ROOT_DIR / "web" / "public" / "data" / "data_status.json",
+    ]
+    for c in candidates:
+        if c.exists():
+            try:
+                with open(c, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"[WARN] Failed to parse {c}: {e}", file=sys.stderr)
+
+    return {
+        "has_lola_dem": False,
+        "has_spice_kernels": False,
+        "has_horizons_fixture": False,
+        "has_peer_reviewed_benchmark": False,
+    }
+
+
+def scan_file(file_path: Path, active_forbidden: Dict[str, str]) -> List[str]:
+    """Scan a single file for active forbidden phrases."""
+    violations = []
+    try:
+        content = file_path.read_text(encoding="utf-8", errors="replace")
+    except Exception as e:
+        print(f"[WARN] Cannot read {file_path}: {e}", file=sys.stderr)
+        return violations
+
+    for line_no, line in enumerate(content.splitlines(), start=1):
+        for phrase, condition in active_forbidden.items():
+            pattern = re.compile(re.escape(phrase), re.IGNORECASE)
+            if pattern.search(line):
+                try:
+                    rel_path = file_path.relative_to(ROOT_DIR)
+                except ValueError:
+                    rel_path = file_path
+                violations.append(
+                    f"{rel_path}:{line_no}: forbidden phrase '{phrase}' (requires {condition}=true)\n"
+                    f"    {line.strip()}"
+                )
+
+    return violations
+
+
+def main() -> int:
+    status = load_data_status()
+    print("[1/2] Evaluated data status conditions:")
+    for k, v in status.items():
+        print(f"      - {k}: {v}")
+
+    active_forbidden: Dict[str, str] = {}
+    for phrases, condition in CONDITIONAL_RULES:
+        if not status.get(condition, False):
+            for p in phrases:
+                active_forbidden[p] = condition
+
+    print(f"\n[2/2] Scanning README.md, docs/, and web/src/ for {len(active_forbidden)} active forbidden phrase(s)...")
+
+    files_to_scan: List[Path] = []
+    for target in SCAN_TARGETS:
+        if not target.exists():
+            continue
+        if target.is_file():
+            files_to_scan.append(target)
+        else:
+            for p in target.rglob("*"):
+                if p.is_file() and p.suffix.lower() in ALLOWED_EXTENSIONS:
+                    # Skip build outputs or tests inside web if any
+                    parts = p.parts
+                    if "node_modules" in parts or "dist" in parts or ".git" in parts:
+                        continue
+                    files_to_scan.append(p)
+
+    all_violations: List[str] = []
+    for fp in files_to_scan:
+        violations = scan_file(fp, active_forbidden)
+        all_violations.extend(violations)
+
+    if all_violations:
+        print(f"\n[FAIL] Claims guard detected {len(all_violations)} violation(s):")
+        for v in all_violations:
+            print(f"  ✗ {v}")
+        print("\nFix: Replace unverified claims with factual status (e.g. synthetic terrain, approximate analytic ephemeris).")
+        return 1
+
+    print(f"[PASS] Claims guard: 0 forbidden claims found across {len(files_to_scan)} files.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

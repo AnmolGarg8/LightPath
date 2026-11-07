@@ -11,10 +11,10 @@
 
 ## Current Status
 
-| Component / Subsystem | Built | Verified by Tests | Verified Against Real Data |
+| Component / Subsystem | Built | Tested by Automated Suite | Real Data Status |
 | :--- | :---: | :---: | :---: |
 | **Great-circle raycasting horizon engine** | Yes | Yes (V1, V2, V5 on synthetic DEM) | No (V4 NOT RUN pending human-provided published benchmark) |
-| **Topocentric Sun & Earth apparent geometry** | Yes | Yes (V2b, X1, X2, X3 on synthetic geometry) | No (V3 NOT RUN pending human-provided JPL Horizons query) |
+| **Topocentric Sun & Earth apparent geometry** | Yes | Yes (V2b, X1, X2, X3 on synthetic geometry) | No (V3 NOT RUN: Horizons check not yet run) |
 | **Direct-to-Earth (DTE) line-of-sight & DSN contact** | Yes | Yes (synthetic station test suite) | No (DSN station coordinates unverified placeholder in configs/dsn_stations.yaml) |
 | **4D space-time rover traverse solver** | Yes | Yes (V8 optimal vs brute-force; X4 12 adversarial cases) | No (synthetic terrain and lighting scenarios only) |
 | **Interactive web application & data viewers** | Yes | Yes (58 Vitest unit/integration tests) | No (operates on pipeline synthetic output) |
@@ -53,7 +53,7 @@ At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casti
 - **Dynamic 4D Space-Time Traverse Planner**: Plan rover routes on a spatial grid across moving shadows with mechanical slope constraints (Horn 1981 method) in under 1 second.
 - **Multi-Site Comparative Analysis**: Side-by-side comparison of competing CLPS candidate landing sites (e.g. Shackleton Connecting Ridge, Malapert Mountain, Nobile Rim).
 - **One-Page Printable Evidence Card**: Single-page PDF briefing layout with exact geodetic coordinates, kernel manifests, and SHA-256 provenance hashes.
-- **Scientific Trust & Verification Suite**: Live dashboard comparing calculations against closed-form benchmarks, shared Python/TypeScript vectors ($< 10^{-14\circ}$), and peer-reviewed literature [CITATION NEEDED: human to confirm; see [`docs/CITATIONS.md`](docs/CITATIONS.md)].
+- **Scientific Trust & Verification Suite**: Live dashboard comparing calculations against closed-form benchmarks, shared Python/TypeScript vectors, and published baselines pending verification [CITATION NEEDED: human to confirm; see [`docs/CITATIONS.md`](docs/CITATIONS.md)].
 - **90-Second Guided Demo & Presenter Mode**: Self-guided judge tour (`?demo=1`), auto-looping kiosk mode (`?kiosk=1`), and projection-ready Presenter Mode (Key `P`).
 
 ---
@@ -134,7 +134,7 @@ LightPath enforces **Rule 1: Correctness Before Features**. The verification sui
 | **V1** | Flat sphere horizon dip | `0.005 deg` | `-0.086937 deg (max error: 0.000001 deg)` | Synthetic | **PASS** |
 | **V2** | Wall feature elevation | `0.01 deg` | `0.409510 deg (max error: 0.002960 deg)` | Synthetic | **PASS** |
 | **V2b** | Celestial disc fraction | `0.005 area fraction (0.5%)` | `0.00256 max area fraction error` | Synthetic | **PASS** |
-| **V3** | Ephemeris cross-check against JPL Horizons | `0.05 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
+| **V3** | Ephemeris difference (Horizons check not yet run) | `0.05 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
 | **V4** | Comparison with published NASA result | `±2.0% illumination` | NOT RUN (fixture absent) | Real | **NOT RUN** |
 | **V5** | Sensitivity and convergence | `0.005 deg (step), 0.01 deg (azimuth), 0.001 deg (range), monotonic (mast)` | `5m error: 0.0000 deg; all 5 convergence bounds passed` | Synthetic | **PASS** |
 | **V6** | Reproducibility | `0 bytes delta (exact byte match)` | `100% byte identical across runs (0 bytes delta)` | Synthetic | **PASS** |
@@ -166,7 +166,7 @@ Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md) and [`docs/CITATIONS.md`](d
 ## 9. Credits & NASA Data Sources
 
 - **NASA Lunar Reconnaissance Orbiter (LRO)**: Lunar Orbiter Laser Altimeter (LOLA) Digital Elevation Models provided via the NASA Planetary Data System (PDS) (Smith et al. 2010).
-- **NASA Navigation and Ancillary Information Facility (NAIF)**: SPICE ephemeris toolkit, DE440 planetary ephemeris, and lunar orientation kernels (Acton 1996).
+- **NASA Navigation and Ancillary Information Facility (NAIF)**: SPICE ephemeris toolkit and lunar orientation kernels (Acton 1996).
 - **NASA Jet Propulsion Laboratory (JPL)**: Deep Space Network (DSN) 810-005 telecommunications interface documents.
 - **Published Scientific Literature**: [CITATION NEEDED: human to confirm: see docs/CITATIONS.md for lead on Planetary and Space Science vol. 203].
 - *(Human team members complete personal credits, institutional affiliations, and challenge citations in accordance with challenge submission rules)*.

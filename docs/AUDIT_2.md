@@ -467,11 +467,11 @@ tests\audit\test_adversarial.py::test_adversarial_17_date_range_kernel_boundary 
 
 The following items cannot be fully certified because the external flight fixtures and real data files have not been provided:
 
-1. **JPL Horizons Ephemeris Comparison (V3)**:
+1. **External Horizons Ephemeris Comparison (V3)**:
    - *Status*: `NOT RUN`.
    - *Reason*: `tests/fixtures/horizons_*.csv` fixture absent.
-   - *Requirement*: Human must query JPL Horizons Web API for topocentric coordinates at Shackleton Connecting Ridge and place CSV in `tests/fixtures/`.
-2. **Peer-Reviewed Illumination Comparison (V4)**:
+   - *Requirement*: Human must query Horizons Web API for topocentric coordinates at Shackleton Connecting Ridge and place CSV in `tests/fixtures/`.
+2. **Published NASA Illumination Comparison (V4)**:
    - *Status*: `NOT RUN`.
    - *Reason*: `tests/fixtures/published_*.json` fixture absent.
    - *Requirement*: Human must confirm exact title, volume, authors, DOI, and illumination numbers for Barker et al. (2021) in *Planetary and Space Science*, Vol. 203.

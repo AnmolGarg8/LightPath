@@ -13,7 +13,6 @@ Rules & Non-Negotiables:
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
@@ -92,7 +91,7 @@ def _write_synthetic_geotiff(
     path.parent.mkdir(parents=True, exist_ok=True)
 
     nrows, ncols = data.shape
-    created_utc = datetime.now(timezone.utc).isoformat()
+    created_utc = "2026-11-01T00:00:00Z"
 
     tags = {
         "is_synthetic": "true",

@@ -153,7 +153,7 @@ Mission plans can be exported in three independent formats:
 ### 5.6 Operational Boundaries & Disclaimers
 In strict compliance with `docs/PROJECT_RULES.md`, all UI components, plan cards, CSV headers, and calendar descriptions display the following operational disclaimer:
 > **"Geometric Sun and Earth visibility only; no power or link budget."**
-The solver calculates line-of-sight and illumination angles from digital elevation models and SPICE ephemerides. Thermal dynamics, battery SOC discharge curves, radio frequency link margins, and slip coefficients must be verified by dedicated subsystem engineering models.
+The solver calculates line-of-sight and illumination angles from digital elevation models and approximate analytic ephemeris (to be replaced by SPICE). Thermal dynamics, battery SOC discharge curves, radio frequency link margins, and slip coefficients must be verified by dedicated subsystem engineering models.
 
 ---
 

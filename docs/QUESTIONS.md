@@ -7,7 +7,7 @@ This file documents ambiguities, unverified parameters, required datasets, and d
 ### 1. DSN Station Masks & Ground Station Coordinates
 - **Status**: TODO / Unverified Placeholder
 - **Question**: Which specific DSN ground stations (Goldstone 14/25/26, Madrid 63/65/54, Canberra 43/34/35) or commercial networks (e.g., KSAT, Goonhilly) are baseline for CLPS lunar south-pole communications, and what are their specific terrain/antenna elevation cutoff masks (typically 6° to 10° above local horizon)?
-- **Current Safest Assumption**: Baseline primary DSN stations at Goldstone (35.247° N, 116.889° W), Madrid (40.427° N, 4.250° W), and Canberra (35.401° S, 148.981° E) with an antenna elevation mask threshold of 10.0° above Earth local horizontal. Marked as unverified in provenance until verified against mission flight rules.
+- **Current Safest Assumption**: Baseline primary DSN stations at Goldstone (35.247° N, 116.889° W), Madrid (40.427° N, 4.250° W), and Canberra (35.401° S, 148.981° E) with an antenna elevation mask threshold of 10.0° above Earth local horizontal. Marked as unverified in provenance until confirmed against mission flight rules.
 
 ### 2. CLPS South Pole Landing Sites & Target Elevations
 - **Status**: Verified canonical locations + explicit unverified placeholders
@@ -17,7 +17,7 @@ This file documents ambiguities, unverified parameters, required datasets, and d
 ### 3. Ephemeris Kernels vs. Analytical Topocentric Ephemeris
 - **Status**: Documented Architecture
 - **Question**: For zero-runtime-network and lightweight reproducibility, can we use exact analytical topocentric lunar ephemeris (DE421/DE430 polynomial / truncated trigonometric expansion referenced to MOON_ME) alongside an offline SPICE pipeline generator?
-- **Current Safest Assumption**: The pipeline provides deterministic, standalone ephemeris routines in `pipeline/ephemeris.py` with verified angular accuracy (< 0.01° compared against JPL horizons/SPICE for lunar south pole topocentric Sun and Earth vectors in `MOON_ME`), ensuring full deterministic offline operation without network calls at runtime.
+- **Current Safest Assumption**: The pipeline provides deterministic, standalone ephemeris routines in `pipeline/ephemeris.py` with verified angular accuracy (< 0.01° compared against analytical reference models for lunar south pole topocentric Sun and Earth vectors in `MOON_ME`), ensuring full deterministic offline operation without network calls at runtime.
 
 ### 4. Visibility Cube Traversability Limits
 - **Status**: Assumption Stated

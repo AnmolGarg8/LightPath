@@ -1,13 +1,13 @@
 {
-  "created_utc": "2026-11-01T08:13:48.615599+00:00",
-  "start_utc": "2026-11-01T08:12:48.758157+00:00",
-  "end_utc": "2026-11-01T08:13:48.615617+00:00",
-  "duration_seconds": 59.857,
-  "git_commit": "6d4c808eda2ef33fa0e83a2d275966741cc7c5ec",
+  "created_utc": "2026-11-07T12:13:08.533780+00:00",
+  "start_utc": "2026-11-07T12:12:55.226617+00:00",
+  "end_utc": "2026-11-07T12:13:08.533790+00:00",
+  "duration_seconds": 13.307,
+  "git_commit": "1273c0c8a7fbecf52236b61c14ad2850c43239d1",
   "software_versions": {
     "python": "3.14.2",
-    "numpy": "2.5.4",
-    "scipy": "1.18.1",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
     "rasterio": "1.5.2",
     "pyproj": "3.8.0",
     "spiceypy": "8.3.0"

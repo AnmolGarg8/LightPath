@@ -29,6 +29,8 @@ ARROW_SCHEMA = pa.schema(
         ("threshold_pct", pa.float64()),
         ("mast_height_m", pa.float64()),
         ("is_synthetic", pa.bool_()),
+        ("ephemeris_source", pa.string()),
+        ("terrain_source", pa.string()),
         ("provenance_hash", pa.string()),
     ],
     metadata={
@@ -76,6 +78,8 @@ def export_site_windows(
     prov_hash = compute_provenance_hash(prov_path)
     site_id = site_info.get("id", site_dir.name)
     is_synthetic = bool(site_info.get("is_synthetic", False))
+    ephemeris_source = str(site_info.get("ephemeris_source", "analytic_approximation"))
+    terrain_source = str(site_info.get("terrain_source", "synthetic"))
 
     thresholds = stats.get("thresholds", {})
     min_sun_pct = float(thresholds.get("min_sun_frac", 0.5)) * 100.0
@@ -116,6 +120,8 @@ def export_site_windows(
                     "threshold_pct": thresh,
                     "mast_height_m": mast_height_m,
                     "is_synthetic": is_synthetic,
+                    "ephemeris_source": ephemeris_source,
+                    "terrain_source": terrain_source,
                     "provenance_hash": prov_hash,
                 }
             )
@@ -136,6 +142,8 @@ def write_csv(dest_path: Path, rows: List[Dict[str, Any]]) -> None:
         "threshold_pct",
         "mast_height_m",
         "is_synthetic",
+        "ephemeris_source",
+        "terrain_source",
         "provenance_hash",
     ]
     with open(dest_path, "w", newline="", encoding="utf-8") as f:
@@ -157,6 +165,8 @@ def write_parquet(dest_path: Path, rows: List[Dict[str, Any]]) -> None:
         "threshold_pct": [r["threshold_pct"] for r in rows],
         "mast_height_m": [r["mast_height_m"] for r in rows],
         "is_synthetic": [r["is_synthetic"] for r in rows],
+        "ephemeris_source": [r["ephemeris_source"] for r in rows],
+        "terrain_source": [r["terrain_source"] for r in rows],
         "provenance_hash": [r["provenance_hash"] for r in rows],
     }
     table = pa.Table.from_pydict(pydict, schema=ARROW_SCHEMA)

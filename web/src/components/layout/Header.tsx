@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSiteCatalog } from '../../utils/dataLoader';
 
 interface HeaderProps {
   currentRoute: string;
@@ -26,11 +27,13 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
     document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
+  const { demoSiteId, secondSiteId } = useSiteCatalog();
+
   const navLinks = [
     { href: '#/', label: 'Mission Browser' },
-    { href: '#/compare/shackleton-connecting-ridge/malapert-mountain', label: 'Compare Sites' },
-    { href: '#/scan/shackleton-connecting-ridge', label: 'Area Scan' },
-    { href: '#/route/shackleton-connecting-ridge', label: 'Route Planner' },
+    { href: `#/compare/${demoSiteId}/${secondSiteId}`, label: 'Compare Sites' },
+    { href: `#/scan/${demoSiteId}`, label: 'Area Scan' },
+    { href: `#/route/${demoSiteId}`, label: 'Route Planner' },
     { href: '#/compare-scenarios', label: 'Compare Scenarios' },
     { href: '#/explain', label: 'How It Works' },
     { href: '#/replay', label: 'Mission Replay' },
