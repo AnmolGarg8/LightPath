@@ -19,9 +19,34 @@
   ],
   "kernels": [
     {
-      "name": "none (synthetic)",
-      "checksum": "none (synthetic)",
-      "ephemeris_source": "analytic_approximation"
+      "name": "naif0012.tls",
+      "checksum": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+      "file_path": "kernels/naif0012.tls",
+      "size_bytes": 5257
+    },
+    {
+      "name": "pck00010.tpc",
+      "checksum": "59468328349aa730d18bf1f8d7e86efe6e40b75dfb921908f99321b3a7a701d2",
+      "file_path": "kernels/pck00010.tpc",
+      "size_bytes": 126143
+    },
+    {
+      "name": "moon_pa_de421_1900-2050.bpc",
+      "checksum": "656f90616403d75a75f0cd6c8830fc5b44f8cb4facb5ccb8915e752b397520cf",
+      "file_path": "kernels/moon_pa_de421_1900-2050.bpc",
+      "size_bytes": 1770496
+    },
+    {
+      "name": "moon_080317.tf",
+      "checksum": "78732477b96f9863e7b0d65bcee3c22b8707ca5ed0db56d1173319cb2e8c7993",
+      "file_path": "kernels/moon_080317.tf",
+      "size_bytes": 21437
+    },
+    {
+      "name": "de421.bsp",
+      "checksum": "08b20db2ae22488650641c5a9033e5bfda4b1c4b440cfeaf20f621cfa18ecdb3",
+      "file_path": "kernels/de421.bsp",
+      "size_bytes": 16790528
     }
   ],
   "parameters": {
@@ -49,7 +74,7 @@
       "max_range_m": 25000.0,
       "step_m": 50.0
     },
-    "ephemeris_source": "analytic_approximation",
+    "ephemeris_source": "spice_kernels",
     "terrain_source": "synthetic"
   },
   "tolerances": {
@@ -59,8 +84,8 @@
     "wall_elevation_deg": 0.01
   },
   "tests_summary": {
-    "tests_passed": 12,
+    "tests_passed": 13,
     "tests_total": 15,
-    "last_verified_utc": "2026-11-07T12:55:07.063380+00:00"
+    "last_verified_utc": "2026-11-07T16:43:41.108036+00:00"
   }
 }

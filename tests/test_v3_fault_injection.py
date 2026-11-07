@@ -20,6 +20,7 @@ from pipeline.constants import (
     R_MOON_M,
 )
 from pipeline.geometry import (
+    are_kernels_available,
     are_kernels_loaded,
     enu_basis,
     load_kernels,
@@ -36,8 +37,8 @@ TOLERANCE_DEG = 0.01  # Tightened tolerance
 
 @pytest.fixture(autouse=True)
 def ensure_spice_kernels():
-    if not META_KERNEL.exists():
-        pytest.skip("SPICE meta-kernel missing. Run scripts/fetch_kernels.py.")
+    if not are_kernels_available(META_KERNEL):
+        pytest.skip("Physical SPICE kernels not present on disk. Run scripts/fetch_kernels.py.")
     if not are_kernels_loaded():
         load_kernels(META_KERNEL)
 

@@ -28,11 +28,26 @@ except ImportError:
     HAS_SPICE = False
 
 from pipeline.constants import (
+    ABCORR_FOR_VALIDATION,
     FRAME_MOON_ME,
     R_EARTH_KM,
     R_MOON_M,
     R_SUN_KM,
 )
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+_ALLOW_APPROXIMATE_EPHEMERIS: bool = False
+
+
+def set_allow_approximate_ephemeris(allowed: bool) -> None:
+    """Set flag permitting unverified analytic ephemeris fallback when kernels are missing."""
+    global _ALLOW_APPROXIMATE_EPHEMERIS
+    _ALLOW_APPROXIMATE_EPHEMERIS = bool(allowed)
+
+
+def get_allow_approximate_ephemeris() -> bool:
+    """Check whether unverified analytic ephemeris fallback is permitted."""
+    return _ALLOW_APPROXIMATE_EPHEMERIS
 
 # -----------------------------------------------------------------------------
 # 1. SPICE Kernel Management
@@ -57,7 +72,28 @@ def load_kernels(meta_kernel_path: Union[str, Path]) -> None:
     try:
         spice.furnsh(str(path))
     except Exception as e:
+        unload_kernels()
         raise RuntimeError(f"SpiceyPy failed to load meta-kernel '{path}': {e}") from e
+
+
+def are_kernels_available(meta_kernel_path: Optional[Union[str, Path]] = None) -> bool:
+    """Check whether physical SPICE kernels referenced by meta-kernel are present on disk."""
+    if meta_kernel_path is None:
+        meta_kernel_path = ROOT_DIR / "kernels" / "meta.tm"
+    p = Path(meta_kernel_path)
+    if not p.is_file():
+        return False
+    manifest = p.parent / "kernels.json"
+    if manifest.is_file():
+        try:
+            import json
+            items = json.loads(manifest.read_text(encoding="utf-8"))
+            if items and all((ROOT_DIR / item.get("local_path", f"kernels/{item['name']}")).is_file() for item in items):
+                return True
+        except Exception:
+            pass
+    expected = ["naif0012.tls", "pck00010.tpc", "moon_pa_de421_1900-2050.bpc", "moon_080317.tf", "de421.bsp"]
+    return all((p.parent / name).is_file() for name in expected)
 
 
 def unload_kernels() -> None:
@@ -90,11 +126,11 @@ def get_sun_earth_moon_me_km(
     ts: str,
     et: Optional[float] = None,
     frame: str = FRAME_MOON_ME,
-    abcorr: str = "NONE",
+    abcorr: str = ABCORR_FOR_VALIDATION,
 ) -> Tuple[np.ndarray, np.ndarray]:
     """Get position vectors of Sun and Earth from Moon center in MOON_ME frame (km).
 
-    Uses SPICE when kernels are loaded; falls back to analytical ephemeris otherwise.
+    Uses SPICE when kernels are loaded; falls back to analytical ephemeris only if explicitly permitted.
     """
     if are_kernels_loaded():
         if et is None:
@@ -103,6 +139,12 @@ def get_sun_earth_moon_me_km(
         earth_pos, _ = spice.spkpos("EARTH", et, frame, abcorr, "MOON")
         return np.array(sun_pos, dtype=np.float64), np.array(earth_pos, dtype=np.float64)
     else:
+        if not get_allow_approximate_ephemeris():
+            raise RuntimeError(
+                "SPICE kernels are required for ephemeris calculations. "
+                "Furnish kernels/meta.tm or provide required kernels. "
+                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+            )
         from pipeline.ephemeris import (
             compute_moon_center_to_earth_moon_me_km,
             compute_moon_center_to_sun_moon_me_km,
@@ -334,7 +376,7 @@ def sun_earth_series(
     end_utc: str,
     step_minutes: int = 60,
     frame: str = FRAME_MOON_ME,
-    abcorr: str = "NONE",
+    abcorr: str = ABCORR_FOR_VALIDATION,
 ) -> Dict[str, Any]:
     """Compute topocentric Azimuth, Elevation, Range, and Angular Radius for Sun and Earth.
 
@@ -395,6 +437,12 @@ def sun_earth_series(
             sun_pos_moon, _ = spice.spkpos("SUN", et, frame, abcorr, "MOON")
             earth_pos_moon, _ = spice.spkpos("EARTH", et, frame, abcorr, "MOON")
         else:
+            if not get_allow_approximate_ephemeris():
+                raise RuntimeError(
+                    "SPICE kernels are required for ephemeris calculations. "
+                    "Furnish kernels/meta.tm or provide required kernels. "
+                    "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+                )
             # Deterministic analytical fallback
             from pipeline.ephemeris import (
                 compute_moon_center_to_earth_moon_me_km,
@@ -413,16 +461,16 @@ def sun_earth_series(
             # Sun
             s_az, s_el, s_range = topocentric_az_el(sun_pos_moon, site_pos, basis)
             s_radius = math.degrees(math.asin(R_SUN_KM / float(s_range)))
-            sun_results[p_idx]["az_deg"].append(round(float(s_az), 3))
-            sun_results[p_idx]["el_deg"].append(round(float(s_el), 3))
+            sun_results[p_idx]["az_deg"].append(round(float(s_az), 6))
+            sun_results[p_idx]["el_deg"].append(round(float(s_el), 6))
             sun_results[p_idx]["range_km"].append(round(float(s_range), 1))
             sun_results[p_idx]["radius_deg"].append(round(float(s_radius), 4))
 
             # Earth
             e_az, e_el, e_range = topocentric_az_el(earth_pos_moon, site_pos, basis)
             e_radius = math.degrees(math.asin(R_EARTH_KM / float(e_range)))
-            earth_results[p_idx]["az_deg"].append(round(float(e_az), 3))
-            earth_results[p_idx]["el_deg"].append(round(float(e_el), 3))
+            earth_results[p_idx]["az_deg"].append(round(float(e_az), 6))
+            earth_results[p_idx]["el_deg"].append(round(float(e_el), 6))
             earth_results[p_idx]["range_km"].append(round(float(e_range), 1))
             earth_results[p_idx]["radius_deg"].append(round(float(e_radius), 4))
 

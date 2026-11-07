@@ -20,6 +20,12 @@ dependencies = [
     "pyarrow>=14.0.0"
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "ephem>=4.2.0"
+]
+
 [tool.pytest.ini_options]
 minversion = "7.0"
 addopts = "-ra -q"

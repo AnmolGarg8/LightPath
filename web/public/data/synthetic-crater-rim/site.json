@@ -15,7 +15,7 @@
   "retrieved_on": "2026-10-29",
   "verified": false,
   "is_synthetic": true,
-  "ephemeris_source": "analytic_approximation",
+  "ephemeris_source": "spice_kernels",
   "terrain_source": "synthetic",
   "notes": "Synthetic math-generated crater rim model for ridge illumination verification.",
   "stats": {
@@ -38,43 +38,43 @@
       "longest_outage_h": 0.0
     },
     "earth": {
-      "uptime_fraction": 0.5102,
-      "total_uptime_h": 50.0,
+      "uptime_fraction": 0.4694,
+      "total_uptime_h": 46.0,
       "windows": [
         {
           "start_utc": "2026-11-01T00:00:00Z",
-          "end_utc": "2026-11-03T00:00:00Z",
-          "duration_h": 50.0
+          "end_utc": "2026-11-02T20:00:00Z",
+          "duration_h": 46.0
         }
       ],
-      "longest_window_h": 50.0,
-      "longest_outage_h": 48.0
+      "longest_window_h": 46.0,
+      "longest_outage_h": 52.0
     },
     "dte": {
-      "uptime_fraction": 0.5102,
-      "total_uptime_h": 50.0,
+      "uptime_fraction": 0.4694,
+      "total_uptime_h": 46.0,
       "windows": [
         {
           "start_utc": "2026-11-01T00:00:00Z",
-          "end_utc": "2026-11-03T00:00:00Z",
-          "duration_h": 50.0
+          "end_utc": "2026-11-02T20:00:00Z",
+          "duration_h": 46.0
         }
       ],
-      "longest_window_h": 50.0,
-      "longest_outage_h": 48.0
+      "longest_window_h": 46.0,
+      "longest_outage_h": 52.0
     },
     "joint": {
-      "uptime_fraction": 0.5102,
-      "total_uptime_h": 50.0,
+      "uptime_fraction": 0.4694,
+      "total_uptime_h": 46.0,
       "windows": [
         {
           "start_utc": "2026-11-01T00:00:00Z",
-          "end_utc": "2026-11-03T00:00:00Z",
-          "duration_h": 50.0
+          "end_utc": "2026-11-02T20:00:00Z",
+          "duration_h": 46.0
         }
       ],
-      "longest_window_h": 50.0,
-      "longest_outage_h": 48.0
+      "longest_window_h": 46.0,
+      "longest_outage_h": 52.0
     }
   },
   "sensitivities": {
@@ -82,33 +82,33 @@
       {
         "mast_height_m": 0.0,
         "sun_uptime_fraction": 1.0,
-        "earth_uptime_fraction": 0.5102,
-        "dte_uptime_fraction": 0.5102,
-        "joint_uptime_fraction": 0.5102,
+        "earth_uptime_fraction": 0.4694,
+        "dte_uptime_fraction": 0.4694,
+        "joint_uptime_fraction": 0.4694,
         "longest_darkness_h": 0.0
       },
       {
         "mast_height_m": 2.0,
         "sun_uptime_fraction": 1.0,
-        "earth_uptime_fraction": 0.5102,
-        "dte_uptime_fraction": 0.5102,
-        "joint_uptime_fraction": 0.5102,
+        "earth_uptime_fraction": 0.4694,
+        "dte_uptime_fraction": 0.4694,
+        "joint_uptime_fraction": 0.4694,
         "longest_darkness_h": 0.0
       },
       {
         "mast_height_m": 5.0,
         "sun_uptime_fraction": 1.0,
-        "earth_uptime_fraction": 0.5306,
-        "dte_uptime_fraction": 0.5306,
-        "joint_uptime_fraction": 0.5306,
+        "earth_uptime_fraction": 0.4898,
+        "dte_uptime_fraction": 0.4898,
+        "joint_uptime_fraction": 0.4898,
         "longest_darkness_h": 0.0
       },
       {
         "mast_height_m": 10.0,
         "sun_uptime_fraction": 1.0,
-        "earth_uptime_fraction": 0.5306,
-        "dte_uptime_fraction": 0.5306,
-        "joint_uptime_fraction": 0.5306,
+        "earth_uptime_fraction": 0.4898,
+        "dte_uptime_fraction": 0.4898,
+        "joint_uptime_fraction": 0.4898,
         "longest_darkness_h": 0.0
       }
     ],

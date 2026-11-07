@@ -18,42 +18,42 @@
     "longest_outage_h": 0.0
   },
   "earth": {
-    "uptime_fraction": 0.5714,
-    "total_uptime_h": 56.0,
+    "uptime_fraction": 0.5102,
+    "total_uptime_h": 50.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-03T06:00:00Z",
-        "duration_h": 56.0
+        "end_utc": "2026-11-03T00:00:00Z",
+        "duration_h": 50.0
       }
     ],
-    "longest_window_h": 56.0,
-    "longest_outage_h": 42.0
+    "longest_window_h": 50.0,
+    "longest_outage_h": 48.0
   },
   "dte": {
-    "uptime_fraction": 0.5714,
-    "total_uptime_h": 56.0,
+    "uptime_fraction": 0.5102,
+    "total_uptime_h": 50.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-03T06:00:00Z",
-        "duration_h": 56.0
+        "end_utc": "2026-11-03T00:00:00Z",
+        "duration_h": 50.0
       }
     ],
-    "longest_window_h": 56.0,
-    "longest_outage_h": 42.0
+    "longest_window_h": 50.0,
+    "longest_outage_h": 48.0
   },
   "joint": {
-    "uptime_fraction": 0.5714,
-    "total_uptime_h": 56.0,
+    "uptime_fraction": 0.5102,
+    "total_uptime_h": 50.0,
     "windows": [
       {
         "start_utc": "2026-11-01T00:00:00Z",
-        "end_utc": "2026-11-03T06:00:00Z",
-        "duration_h": 56.0
+        "end_utc": "2026-11-03T00:00:00Z",
+        "duration_h": 50.0
       }
     ],
-    "longest_window_h": 56.0,
-    "longest_outage_h": 42.0
+    "longest_window_h": 50.0,
+    "longest_outage_h": 48.0
   }
 }

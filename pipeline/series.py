@@ -7,23 +7,32 @@ Rules:
 - Window analysis for Sun, Earth, DTE, and Joint Light & Link.
 """
 
+import math
 from datetime import datetime, timedelta, timezone
 from typing import Dict, List, Tuple
 
 from pipeline.constants import (
+    ABCORR_FOR_VALIDATION,
     DEFAULT_EARTH_GROUND_STATION_MASK_DEG,
     DEFAULT_MIN_EARTH_FRAC,
     DEFAULT_MIN_SUN_FRAC,
+    FRAME_MOON_ME,
+    R_EARTH_KM,
+    R_MOON_M,
+    R_SUN_KM,
 )
 from pipeline.disc import (
     classify_visibility_status,
     compute_flat_horizon_disc_fraction,
     compute_variable_horizon_disc_fraction,
 )
-from pipeline.ephemeris import (
-    check_dsn_ground_station_visibility,
-    compute_topocentric_earth_state,
-    compute_topocentric_sun_state,
+from pipeline.dsn import check_dsn_ground_station_visibility
+from pipeline.geometry import (
+    enu_basis,
+    get_sun_earth_moon_me_km,
+    site_position_moon_me_km,
+    topocentric_az_el,
+    utc_to_et,
 )
 from pipeline.horizon import HorizonProfile
 from pipeline.stats import compute_window_statistics
@@ -102,18 +111,23 @@ def compute_series_and_stats(
     station_visible_list = []
     link_ok_list = []
 
+    basis = enu_basis(site_lat_deg, site_lon_deg)
+    site_pos_km = site_position_moon_me_km(
+        site_lat_deg, site_lon_deg, site_ground_elev_m + observer_height_m + R_MOON_M
+    )
+
     for idx, ts in enumerate(timestamps):
-        # 1. Topocentric Sun
-        sun_state = compute_topocentric_sun_state(
-            iso_utc_str=ts,
-            site_lat_deg=site_lat_deg,
-            site_lon_deg=site_lon_deg,
-            site_elev_m=site_ground_elev_m,
-            observer_height_m=observer_height_m,
+        et = float(utc_to_et(ts))
+        sun_center_xyz, earth_center_xyz = get_sun_earth_moon_me_km(
+            ts, et, frame=FRAME_MOON_ME, abcorr=ABCORR_FOR_VALIDATION
         )
-        sun_az.append(round(sun_state.az_deg, 3))
-        sun_el.append(round(sun_state.el_deg, 3))
-        sun_radius.append(round(sun_state.radius_deg, 4))
+
+        # 1. Topocentric Sun
+        s_az, s_el, s_range = topocentric_az_el(sun_center_xyz, site_pos_km, basis)
+        s_radius_deg = math.degrees(math.atan2(R_SUN_KM, s_range))
+        sun_az.append(round(float(s_az), 6))
+        sun_el.append(round(float(s_el), 6))
+        sun_radius.append(round(float(s_radius_deg), 4))
 
         # Horizon at Sun azimuth
         if use_variable_horizon_disc:
@@ -121,30 +135,25 @@ def compute_series_and_stats(
                 return horizon_profile.get_elevation_deg(az, height_m=observer_height_m)
 
             s_frac = compute_variable_horizon_disc_fraction(
-                body_az_deg=sun_state.az_deg,
-                body_el_deg=sun_state.el_deg,
-                angular_radius_deg=sun_state.radius_deg,
+                body_az_deg=s_az,
+                body_el_deg=s_el,
+                angular_radius_deg=s_radius_deg,
                 horizon_el_fn=sun_horiz_fn,
             )
         else:
-            h_sun = horizon_profile.get_elevation_deg(sun_state.az_deg, height_m=observer_height_m)
-            s_frac = float(compute_flat_horizon_disc_fraction(sun_state.el_deg - h_sun, sun_state.radius_deg))
+            h_sun = horizon_profile.get_elevation_deg(s_az, height_m=observer_height_m)
+            s_frac = float(compute_flat_horizon_disc_fraction(s_el - h_sun, s_radius_deg))
 
-        sun_frac.append(round(s_frac, 4))
+        sun_frac.append(round(float(s_frac), 4))
         sun_status.append(classify_visibility_status(s_frac, threshold=min_sun_frac))
 
         # 2. Topocentric Earth
-        earth_state = compute_topocentric_earth_state(
-            iso_utc_str=ts,
-            site_lat_deg=site_lat_deg,
-            site_lon_deg=site_lon_deg,
-            site_elev_m=site_ground_elev_m,
-            observer_height_m=observer_height_m,
-        )
-        earth_az.append(round(earth_state.az_deg, 3))
-        earth_el.append(round(earth_state.el_deg, 3))
-        earth_radius.append(round(earth_state.radius_deg, 4))
-        earth_dist.append(round(earth_state.dist_km, 1))
+        e_az, e_el, e_range = topocentric_az_el(earth_center_xyz, site_pos_km, basis)
+        e_radius_deg = math.degrees(math.atan2(R_EARTH_KM, e_range))
+        earth_az.append(round(float(e_az), 6))
+        earth_el.append(round(float(e_el), 6))
+        earth_radius.append(round(float(e_radius_deg), 4))
+        earth_dist.append(round(float(e_range), 1))
 
         # Horizon at Earth azimuth
         if use_variable_horizon_disc:
@@ -152,16 +161,16 @@ def compute_series_and_stats(
                 return horizon_profile.get_elevation_deg(az, height_m=observer_height_m)
 
             e_frac = compute_variable_horizon_disc_fraction(
-                body_az_deg=earth_state.az_deg,
-                body_el_deg=earth_state.el_deg,
-                angular_radius_deg=earth_state.radius_deg,
+                body_az_deg=e_az,
+                body_el_deg=e_el,
+                angular_radius_deg=e_radius_deg,
                 horizon_el_fn=earth_horiz_fn,
             )
         else:
-            h_earth = horizon_profile.get_elevation_deg(earth_state.az_deg, height_m=observer_height_m)
-            e_frac = float(compute_flat_horizon_disc_fraction(earth_state.el_deg - h_earth, earth_state.radius_deg))
+            h_earth = horizon_profile.get_elevation_deg(e_az, height_m=observer_height_m)
+            e_frac = float(compute_flat_horizon_disc_fraction(e_el - h_earth, e_radius_deg))
 
-        earth_frac.append(round(e_frac, 4))
+        earth_frac.append(round(float(e_frac), 4))
         earth_status.append(classify_visibility_status(e_frac, threshold=min_earth_frac))
 
         # 3. Direct-To-Earth (DTE) Ground Stations

@@ -1,0 +1,13 @@
+{
+  "query_url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=301&CENTER=coord%40399&COORD_TYPE=GEODETIC&SITE_COORD=-116.889%2C35.247%2C1.0&START_TIME=2026-11-01+00%3A00&STOP_TIME=2026-11-08+00%3A00&STEP_SIZE=1h&QUANTITIES=4&CSV_FORMAT=YES&ANG_FORMAT=DEG&ELEV_CUT=-90&REF_SYSTEM=ICRF&EXTRA_PREC=YES",
+  "http_status": 200,
+  "content_length": null,
+  "fetched_on": "2026-11-07T15:48:50.532960+00:00",
+  "target": "301 (Moon)",
+  "center": "coord@399 (-116.889,35.247,1.0)",
+  "station": "Goldstone DSS 14",
+  "period": "2026-11-01 00:00 to 2026-11-08 00:00",
+  "step_size": "1h",
+  "quantities": "4 (Apparent AZ & EL)",
+  "num_records": 169
+}

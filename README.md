@@ -134,7 +134,7 @@ LightPath enforces **Rule 1: Correctness Before Features**. The verification sui
 | **V1** | Flat sphere horizon dip | `0.005 deg` | `-0.086937 deg (max error: 0.000001 deg)` | Synthetic | **PASS** |
 | **V2** | Wall feature elevation | `0.01 deg` | `0.409510 deg (max error: 0.002960 deg)` | Synthetic | **PASS** |
 | **V2b** | Celestial disc fraction | `0.005 area fraction (0.5%)` | `0.00256 max area fraction error` | Synthetic | **PASS** |
-| **V3** | Ephemeris difference (Horizons check not yet run) | `0.05 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
+| **V3** | Ephemeris accuracy vs JPL Horizons | `0.01 deg` | `Sun El max 0.00001 deg, Earth El max 0.00004 deg (N=721)` | Real | **PASS** |
 | **V4** | Comparison with published NASA result | `±2.0% illumination` | NOT RUN (fixture absent) | Real | **NOT RUN** |
 | **V5** | Sensitivity and convergence | `0.005 deg (step), 0.01 deg (azimuth), 0.001 deg (range), monotonic (mast)` | `5m error: 0.0000 deg; all 5 convergence bounds passed` | Synthetic | **PASS** |
 | **V6** | Reproducibility | `0 bytes delta (exact byte match)` | `100% byte identical across runs (0 bytes delta)` | Synthetic | **PASS** |
@@ -147,7 +147,7 @@ LightPath enforces **Rule 1: Correctness Before Features**. The verification sui
 | **X5** | Local vertical tilt rate per kilometre | `±0.0005 deg/km` | `0.03298 deg/km (0.033 deg/km)` | Synthetic | **PASS** |
 | **X6** | Citations and claims documentation integrity | `0 undocumented citations` | `0 undocumented citations across repo` | Synthetic | **PASS** |
 
-**Data Provenance Summary**: Benchmarks V1, V2, V2b, V5, V6, V8, and X1–X6 are evaluated on deterministic synthetic terrain or analytical formulas. Benchmarks V3, V4, and V7 require real external mission/ephemeris fixtures provided by human operators and are marked NOT RUN.
+**Data Provenance Summary**: Benchmarks V1, V2, V2b, V5, V6, V8, and X1–X6 are evaluated on deterministic synthetic terrain or analytical formulas. Benchmark V3 is evaluated on real JPL Horizons queries using SPICE kernels. Benchmarks V4 and V7 require external published fixtures and are marked NOT RUN.
 
 Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md) and [`docs/CITATIONS.md`](docs/CITATIONS.md).
 

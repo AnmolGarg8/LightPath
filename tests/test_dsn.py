@@ -114,3 +114,50 @@ def test_dte_available_joint_logic():
     dte_ok_b, per_st_b = dte_available(site_series_blocked, stations, min_station_el_deg=min_el)
     # Even if Earth stations see the Moon, if site cannot see Earth, DTE must be False
     assert not np.any(dte_ok_b)
+
+
+def test_dsn_goldstone_vs_horizons_fixture():
+    """Verify DSN Moon elevation at Goldstone DSS 14 matches Horizons within 0.1 deg over 1 week."""
+    import csv
+    from pathlib import Path
+
+    import pytest
+
+    from pipeline.constants import FRAME_EARTH_IAU
+    from pipeline.geometry import are_kernels_available, are_kernels_loaded, load_kernels
+
+    root = Path(__file__).resolve().parent.parent
+    csv_p = root / "tests" / "fixtures" / "horizons_dsn_goldstone_moon.csv"
+    if not csv_p.exists():
+        pytest.skip("Fixture horizons_dsn_goldstone_moon.csv absent.")
+
+    meta = root / "kernels" / "meta.tm"
+    if not are_kernels_available(meta):
+        pytest.skip("Physical SPICE kernels absent from disk. Run scripts/fetch_kernels.py.")
+    if not are_kernels_loaded():
+        load_kernels(meta)
+
+    station = {
+        "id": "goldstone_dss14",
+        "name": "Goldstone 70m (DSS 14)",
+        "lat_deg": 35.247,
+        "lon_deg": -116.889,
+        "height_m": 1000.0,
+    }
+
+    with open(csv_p, "r", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    times = [r["utc"] for r in rows]
+    expected_els = np.array([float(r["el_deg"]) for r in rows])
+
+    # moon_elevation_at_station returns Moon center elevation in degrees
+    computed_els = moon_elevation_at_station(station, times, limb=False, earth_frame=FRAME_EARTH_IAU)
+
+    diffs = np.abs(computed_els - expected_els)
+    max_diff = float(np.max(diffs))
+    rms_diff = float(np.sqrt(np.mean(diffs**2)))
+
+    # Acceptance threshold per Task S0 Step 3: changes by less than 0.1 deg
+    assert max_diff < 0.1, f"DSN Goldstone Moon elevation error {max_diff:.4f}° exceeds 0.1° (RMS: {rms_diff:.4f}°)"
+

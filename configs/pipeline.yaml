@@ -45,7 +45,7 @@ sites:
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
-    ephemeris_source: "analytic_approximation"
+    ephemeris_source: "spice_kernels"
     terrain_source: "synthetic"
     notes: "Candidate Artemis/CLPS south-pole exploration zone on connecting ridge; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: ["clps-placeholder-shackleton"]
@@ -67,7 +67,7 @@ sites:
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
-    ephemeris_source: "analytic_approximation"
+    ephemeris_source: "spice_kernels"
     terrain_source: "synthetic"
     notes: "Candidate Artemis/CLPS south-pole exploration zone atop Malapert massif; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: ["clps-placeholder-malapert"]
@@ -89,7 +89,7 @@ sites:
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
-    ephemeris_source: "analytic_approximation"
+    ephemeris_source: "spice_kernels"
     terrain_source: "synthetic"
     notes: "Candidate Artemis/CLPS exploration site on the rim of Nobile crater; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
     mission_ids: []

@@ -27,6 +27,7 @@ import { StatsPanel } from '../components/StatsPanel';
 import { SensitivityPanel } from '../components/SensitivityPanel';
 import { LimitationsPanel } from '../components/common/LimitationsPanel';
 import { calculateDynamicStats } from '../utils/statsCalculator';
+import { DisclaimerBanner } from '../components/DisclaimerBanner';
 import { Compass, Mountain, CheckCircle2, AlertTriangle, Layers, ExternalLink } from 'lucide-react';
 
 interface SiteDetailViewProps {
@@ -230,6 +231,8 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
           </div>
         </div>
       </Card>
+
+      <DisclaimerBanner isSynthetic={siteData.is_synthetic} ephemerisSource={siteData.ephemeris_source} />
 
       {/* 1. HORIZON PANORAMA (ON TOP) */}
       <Panorama

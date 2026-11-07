@@ -656,18 +656,30 @@ def test_adversarial_17_date_range_kernel_boundary():
     Verifies that utc_to_et and topocentric calculations execute analytical fallbacks
     without raising an error, but that physical SPICE kernels are absent.
     """
+    from pathlib import Path
+
     from pipeline.ephemeris import compute_topocentric_sun_state
-    from pipeline.geometry import are_kernels_loaded, utc_to_et
+    from pipeline.geometry import are_kernels_available, are_kernels_loaded, load_kernels, unload_kernels, utc_to_et
 
-    # Kernels are not loaded in default synthetic test environment
-    assert not are_kernels_loaded()
+    was_loaded = are_kernels_loaded()
+    try:
+        if was_loaded:
+            unload_kernels()
 
-    # Query far future date (year 2060)
-    t_2060 = "2060-01-01T00:00:00Z"
-    et_2060 = utc_to_et(t_2060)
-    assert isinstance(et_2060, float)
-    assert et_2060 > 1.8e9  # ~60 years * 3.15e7 s/yr
+        # Kernels are not loaded in fallback test environment
+        assert not are_kernels_loaded()
 
-    sun_state_2060 = compute_topocentric_sun_state(t_2060, -89.0, 0.0, 0.0)
-    assert -2.5 <= sun_state_2060.el_deg <= 2.5, "Subsolar declination must remain within polar bounds"
+        # Query far future date (year 2060)
+        t_2060 = "2060-01-01T00:00:00Z"
+        et_2060 = utc_to_et(t_2060)
+        assert isinstance(et_2060, float)
+        assert et_2060 > 1.8e9  # ~60 years * 3.15e7 s/yr
+
+        sun_state_2060 = compute_topocentric_sun_state(t_2060, -89.0, 0.0, 0.0)
+        assert -2.5 <= sun_state_2060.el_deg <= 2.5, "Subsolar declination must remain within polar bounds"
+    finally:
+        if was_loaded:
+            meta = Path(__file__).resolve().parent.parent.parent / "kernels" / "meta.tm"
+            if are_kernels_available(meta):
+                load_kernels(meta)
 

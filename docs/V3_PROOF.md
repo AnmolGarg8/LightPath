@@ -293,7 +293,7 @@ Both CSPICE and Horizons compute topocentric directions via Cartesian linear alg
 
 ### Pytest Execution Command
 ```text
-pytest -v tests/test_verification.py -k test_v3_ephemeris_horizons_cross_check
+pytest -v tests/test_verification.py
 ```
 
 ### Dynamic Check Entry Recorded in `tests/results.json`
@@ -305,7 +305,7 @@ pytest -v tests/test_verification.py -k test_v3_ephemeris_horizons_cross_check
   "status": "passed",
   "data_type": "real",
   "tolerance": "0.01 deg",
-  "measured_value": "Sun (N=721): Az max 0.00050°, rms 0.00029°; El max 0.00051°, rms 0.00029° | Earth (N=721): Az max 0.00050°, rms 0.00030°; El max 0.00053°, rms 0.00029° [abcorr=LT+S, site height=0m]",
+  "measured_value": "Sun (N=721): Az max 0.00000°, rms 0.00000°; El max 0.00001°, rms 0.00001° | Earth (N=721): Az max 0.00001°, rms 0.00000°; El max 0.00004°, rms 0.00002° [abcorr=LT+S, site height=0m]",
   "expected_value": "JPL Horizons ephemeris query (DE441, topocentric MOON_ME, apparent)",
   "source_of_expected_value": "NASA JPL Horizons On-Line Ephemeris System",
   "citation": "JPL Horizons batch query; MOON_ME frame, LT+S aberration, site height 0m (R=1737.4 km)",
@@ -315,3 +315,21 @@ pytest -v tests/test_verification.py -k test_v3_ephemeris_horizons_cross_check
 ```
 
 Every sample row ($N=721$) is evaluated dynamically; no synthetic numbers or hard-coded summaries are used.
+
+---
+
+## 10. Precision Reconciliation & Decimal Analysis (Task S0 Step 0)
+
+### 1. Decimal Analysis of Fixtures and Raw Responses
+- **Raw JPL Horizons API Output:**
+  Inspecting `tests/fixtures/horizons_test_location_sun_raw.txt` and `tests/fixtures/horizons_test_location_earth_raw.txt` shows azimuth and elevation reported to **6 decimal places** (e.g., `Azi____(a-app)___Elev = 277.925206  -1.391740`).
+- **Parsed CSV Fixtures:**
+  `tests/fixtures/horizons_test_location_sun.csv` and `tests/fixtures/horizons_test_location_earth.csv` preserve these exact 6 decimal digits with zero truncation or rounding.
+
+### 2. Resolution of the $0.0005^\circ$ Discrepancy
+- **Root Cause:** Prior to Task S0 Step 0, `sun_earth_series` in `pipeline/geometry.py` invoked `round(float(val), 3)`, truncating topocentric azimuth and elevation angles to 3 decimal places ($0.001^\circ$). This introduced artificial numeric discretization / quantization noise of up to $\pm 0.0005^\circ$.
+- **Correction:** The quantization in `pipeline/geometry.py` was updated to preserve 6 decimal places (`round(float(val), 6)`), matching the precision of the raw Horizons telemetry.
+- **Result:** `scripts/baseline_report.py` and `tests/test_verification.py` now evaluate identical floating-point values and yield completely unified numbers:
+  - **Sun ($N=721$):** Az max $0.00000^\circ$ (rms $0.00000^\circ$), El max $0.00001^\circ$ (rms $0.00001^\circ$)
+  - **Earth ($N=721$):** Az max $0.00001^\circ$ (rms $0.00000^\circ$), El max $0.00004^\circ$ (rms $0.00002^\circ$)
+- Both the benchmark report and `tests/results.json` are now 100% synchronized and reproducible.
