@@ -82,7 +82,7 @@ describe('Trust & Verification Page Dynamic Binding', () => {
     }
   });
 
-  it('verifies V3, V4, and V7 are NOT RUN with no chart in live public test_results.json', async () => {
+  it('verifies V3 is PASSED, and V4 and V7 are NOT RUN in live public test_results.json', async () => {
     // Read web/public/data/test_results.json via Node fs
     const fs = await import('fs');
     const path = await import('path');
@@ -95,7 +95,7 @@ describe('Trust & Verification Page Dynamic Binding', () => {
       const v4 = parsed.checks.find((c) => c.code === 'V4' || c.id === 'V4');
       const v7 = parsed.checks.find((c) => c.code === 'V7' || c.id === 'V7');
 
-      expect(v3?.status === 'not_run' || v3?.status === 'skipped').toBe(true);
+      expect(v3?.status).toBe('passed');
       expect(v4?.status === 'not_run' || v4?.status === 'skipped').toBe(true);
       expect(v7?.status === 'not_run' || v7?.status === 'skipped').toBe(true);
 

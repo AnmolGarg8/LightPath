@@ -29,7 +29,10 @@ jobs:
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj pyarrow
+          pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj pyarrow ephem
+
+      - name: Fetch SPICE Kernels
+        run: python scripts/fetch_kernels.py
 
       - name: Install Web Dependencies
         working-directory: web

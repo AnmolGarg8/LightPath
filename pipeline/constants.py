@@ -23,6 +23,9 @@ FRAME_MOON_ME: Final[str] = "MOON_ME"
 FRAME_EARTH_ITRF93: Final[str] = "ITRF93"
 FRAME_EARTH_IAU: Final[str] = "IAU_EARTH"
 
+# Aberration correction setting for validation and apparent line-of-sight
+ABCORR_FOR_VALIDATION: Final[str] = "LT+S"
+
 LUNAR_GEOGRAPHIC_CRS: Final[str] = "+proj=longlat +R=1737400 +no_defs"
 LUNAR_SOUTH_POLE_STEREO_CRS: Final[str] = "+proj=stere +lat_0=-90 +lat_ts=-90 +lon_0=0 +R=1737400 +units=m +no_defs"
 

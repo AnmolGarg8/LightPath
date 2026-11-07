@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /pub/naif/generic_kernels/spk/planets/a_old_versions</title>
+ </head>
+ <body>
+<html lang="en">
+<!--start head-->
+<head>
+<title>Home</title>
+
+
+<script language="JavaScript">
+<!--
+function lastMod()
+{
+	var monthNames = new Array( 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec' );
+
+	var lastDate = new Date( document.lastModified );
+	year = y2kYear( lastDate );
+        if (year <= 1970)
+        {
+           lastDate = new Date();
+        }
+        year = y2kYear( lastDate );
+	month = lastDate.getMonth();
+	day = lastDate.getDate();
+
+	printDate = zeroPad(day) + " " + monthNames[ month ] + " " + year ;
+	return printDate;
+}
+
+function y2kYear( theDate )
+{
+	wrongYear = theDate.getFullYear();
+	rightYear = wrongYear % 100;
+	rightYear += (rightYear < 38) ? 2000 : 1900;
+	return rightYear;
+}
+
+function zeroPad( theNumber )
+{
+	if( theNumber < 10 )
+	{
+		theNumber = "0" + theNumber;
+	}
+	return theNumber;
+}
+
+//-->
+</script>
+
+
+
+<link rel="stylesheet" href="https://naif.jpl.nasa.gov/naif/lib/main.css" type="text/css">
+
+
+ 
+<script async type="text/javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA&subagency=JPL-naif"></script>
+</head>
+<!--end head-->
+<!--start body-->
+<body bgcolor="#000000">
+<!-- Skip navigation link -->
+<a href=#content><img src="https://naif.jpl.nasa.gov/naif/images/skip.gif alt="Skip Navigation: Avoid going through Home page links and jump straight to content" width="1" height="1" border="0"></a><br>
+<!-- End Skip navigation link -->
+
+
+<!--start header-->
+<script src="https://naif.jpl.nasa.gov/naif/pds-app-bar/pds-app-bar.js" type="text/javascript"></script>
+<link href="https://naif.jpl.nasa.gov/naif/pds-app-bar/pds-app-bar.css" type="text/css" rel="stylesheet">
+<table border="0" cellspacing="0" cellpadding="0" align="center" valign="top" bgcolor="#FFFFFF" width="750">
+<tr bgcolor="#000000">
+<td bgcolor="#000000" width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td bgcolor="#000000" width="730"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="730" height="10"></td>
+<td bgcolor="#000000" width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="730" height="10"></td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td>
+	<table cellpadding="0" cellspacing="0" border="0" align="center" width="730">
+		<tr>
+			<td>
+				<table cellpadding="0" cellspacing="0" border="0" align="center" width="730">
+					<tr>
+						<td width="379" bgcolor="#cccccc"><img src="https://naif.jpl.nasa.gov/naif/images/head_nasa.gif" alt="NASA Logo" border="0" width="271" height="63" usemap="#Map"></td>
+						<td width="200"  bgcolor="#cccccc">&nbsp;&nbsp;&nbsp;<a class="navLnkBlack" href="http://www.nasa.gov/home"><font face="Arial, Helvetica, sans-serif" size="2">+ View the NASA Portal</font></a></td>
+						<td width="151" bgcolor="#cccccc" align="center" valign="middle"><font size="2" face="arial" color="#ffffff">&nbsp;
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			
+        <td width="730"><a href=https://naif.jpl.nasa.gov/naif/pds.html><img src="https://naif.jpl.nasa.gov/naif/images/home_banner3.jpg" width="730" vspace="3" height="100" alt="NAIF" border="0"></a></td>
+		</tr>
+	</table>
+</td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="730" height="1"></td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+<!--end header-->
+
+<!--start leftmenu-->
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730">
+
+<table width="730" border="0" cellspacing="0" cellpadding="2">
+<tr>
+<td width="120" bgcolor="#6495CD" valign="top"  >
+
+ <table width="120" border="0" cellspacing="1" cellpadding="2" class="sideBar" bgcolor="#6495CD">
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/index.html" class="nav"><b>Home</b></a></td>
+ </tr>
+
+<tr>
+<td><a href="https://naif.jpl.nasa.gov/naif/announcements.html" class="nav"><b>Announcements</b></a></td>
+</tr>
+    
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/aboutspice.html" class="nav"><b>About SPICE</b></a></td>
+ </tr>
+
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/about.html" class="nav"><b>About NAIF</b></a></td>
+ </tr>
+
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/for_projects.html" class="nav"><b>For New Projects</b></a></td>
+ </tr>
+
+
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/public.html" class="nav"><b>For the Public</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/data.html" class="nav"><b>Data</b></a></td>
+ </tr>
+
+ <tr><td><a href="https://naif.jpl.nasa.gov/naif/toolkit.html" class="nav"><b>Toolkit</b></a></td>
+ </tr>
+ 
+ <tr><td><a href="https://naif.jpl.nasa.gov/naif/utilities.html" class="nav"><b>Utilities</b></a></td>
+ </tr>
+
+ <tr><td><a href="https://naif.jpl.nasa.gov/naif/webgeocalc.html" class="nav"><b>WebGeocalc</b></a></td>
+ </tr>
+
+ <tr><td><b><a href="https://naif.jpl.nasa.gov/naif/cosmographia.html" class="nav">Cosmographia</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/documentation.html" class="nav"><b>Documentation</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/tutorials.html" class="nav"><b>Tutorials</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/lessons.html" class="nav"><b>Lessons</b></a></td>
+ </tr>
+ 
+  <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/training.html" class="nav"><b>Training</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/support.html" class="nav"><b>Support</b></a></td>
+ </tr>
+   
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/bugs.html" class="nav"><b>Bugs</b></a></td>
+ </tr>
+
+ <tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/links.html" class="nav"><b>Useful Links</b></a></td>
+ </tr>
+
+ 
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/rules.html" class="nav"><b>Rules</b></a></td>
+ </tr>
+
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/credit.html" class="nav"><b>Giving Credit</b></a></td>
+ </tr>
+
+ 
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/feedback.html" class="nav"><b>Feedback</b></a></td>
+ </tr>
+
+<tr>
+ <td><a href="https://naif.jpl.nasa.gov/naif/support.html" class="nav"><b>Support</b></a></td>
+ </tr>
+
+<tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/gettinghelp.html" class="nav"><b>Getting Help</b></a></td>
+ </tr>
+
+ <tr>
+ <td  valign="top"><a href="https://naif.jpl.nasa.gov/naif/sitemap.html" class="nav"><b>Site Map </b></a></td>
+ </tr>
+</table>
+
+</td>
+<td valign="top" align="left" width="610">
+<!--end leftmenu-->
+
+<a name="content"></a>
+<!--start data_content-->
+
+<pre><img src="/icons/blank.gif" alt="Icon "> <a href="?C=N;O=D">Name</a>                                         <a href="?C=M;O=A">Last modified</a>      <a href="?C=S;O=A">Size</a>  <hr><img src="/icons/back.gif" alt="[PARENTDIR]"> <a href="/pub/naif/generic_kernels/spk/planets/">Parent Directory</a>                                                  -   
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_checksums.txt">aa_checksums.txt</a>                             2024-04-03 10:48  1.0K  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_spk_production_dates_by-alpha.txt">aa_spk_production_dates_by-alpha.txt</a>         2008-04-08 14:10  2.3K  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_spk_production_dates_by-date.txt">aa_spk_production_dates_by-date.txt</a>          2008-04-08 14:10  2.3K  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_summaries.txt">aa_summaries.txt</a>                             2024-04-03 10:48   24K  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_summaries_by_alpha.txt">aa_summaries_by_alpha.txt</a>                    2024-04-03 10:48  1.4K  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="aa_summaries_by_date.txt">aa_summaries_by_date.txt</a>                     2024-04-03 10:48  1.4K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de118.bsp">de118.bsp</a>                                    2005-11-21 15:49   57M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de125.bsp">de125.bsp</a>                                    2005-11-21 15:50   14M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de130.bsp">de130.bsp</a>                                    2005-11-21 15:50   14M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de200.bsp">de200.bsp</a>                                    2005-11-21 15:51   54M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de245_1960_1980.bsp">de245_1960_1980.bsp</a>                          1997-03-01 13:25  2.2M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de245_1990_2010.bsp">de245_1990_2010.bsp</a>                          1998-05-26 18:37  2.1M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de403.bsp">de403.bsp</a>                                    2004-09-23 13:02   12M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de403.cmt">de403.cmt</a>                                    2004-09-23 13:02  3.1K  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de403.pdf">de403.pdf</a>                                    2004-09-23 12:00  3.2M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de403_2000-2020.bsp">de403_2000-2020.bsp</a>                          2004-10-06 14:46  2.2M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de403_2000-2020.cmt">de403_2000-2020.cmt</a>                          2004-10-06 14:45  3.3K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de403s.bsp">de403s.bsp</a>                                   1996-08-30 12:58  3.2M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de403s.cmt">de403s.cmt</a>                                   1996-08-30 12:58  7.5K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de403s.xsp">de403s.xsp</a>                                   2000-08-02 14:25  7.8M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de405.bsp">de405.bsp</a>                                    2000-08-16 09:33   10M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de405.cmt">de405.cmt</a>                                    1999-10-10 16:42  3.7K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de405.ftp">de405.ftp</a>                                    2005-10-26 15:24   67M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de405.pdf">de405.pdf</a>                                    2000-08-16 12:00  926K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de405.xsp">de405.xsp</a>                                    2000-09-19 20:35   25M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de405s.bsp">de405s.bsp</a>                                   2000-08-16 09:34  1.4M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de405s.xsp">de405s.xsp</a>                                   1998-03-12 14:25  3.2M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de406s.bsp">de406s.bsp</a>                                   2002-03-03 13:08   14M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de406s.xsp">de406s.xsp</a>                                   2002-03-03 13:12   32M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de408.bsp">de408.bsp</a>                                    2005-07-07 13:08  957M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de408.cmt">de408.cmt</a>                                    2005-07-07 12:21  263   
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de408.inp">de408.inp</a>                                    2005-07-07 12:27  160   
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de410.bsp">de410.bsp</a>                                    2003-05-03 14:31   12M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de410.cmt">de410.cmt</a>                                    2003-05-03 14:30   18K  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de410.pdf">de410.pdf</a>                                    2003-05-03 12:00  6.7M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de410mini.bsp">de410mini.bsp</a>                                2003-11-18 18:26   62K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de410mini.mrg">de410mini.mrg</a>                                2003-11-18 18:26  233   
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de410s.bsp">de410s.bsp</a>                                   2003-05-03 15:20  2.4M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de410s.xsp">de410s.xsp</a>                                   2003-05-03 15:21  5.2M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de413.bsp">de413.bsp</a>                                    2004-11-18 01:43   16M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de413_memo.pdf">de413_memo.pdf</a>                               2004-11-18 01:44  522K  
+<img src="/icons/a.gif" alt="[   ]"> <a href="de413_memo.ps">de413_memo.ps</a>                                2004-11-18 01:44  324K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de414.bsp">de414.bsp</a>                                    2006-04-27 14:13   62M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de414.cmt">de414.cmt</a>                                    2006-04-27 14:13   10K  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de414iom.pdf">de414iom.pdf</a>                                 2006-04-25 16:55  1.0M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de418.bsp">de418.bsp</a>                                    2007-08-10 20:54   16M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de418.cmt">de418.cmt</a>                                    2007-08-10 20:55  1.1K  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de418_announcement.pdf">de418_announcement.pdf</a>                       2008-01-02 15:03  1.9M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de418_ephemeris_and_lunar_orientation_R1.pdf">de418_ephemeris_and_lunar_orientation_R1.pdf</a> 2008-02-08 16:30  618K  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de421.bsp">de421.bsp</a>                                    2008-04-08 14:07   16M  
+<img src="/icons/text.gif" alt="[TXT]"> <a href="de421.cmt">de421.cmt</a>                                    2008-04-08 14:07  1.4K  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de421_announcement.pdf">de421_announcement.pdf</a>                       2008-04-07 12:59  3.3M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de421_lunar_ephemeris_and_orientation.pdf">de421_lunar_ephemeris_and_orientation.pdf</a>    2008-03-20 16:32  2.2M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de423.bsp">de423.bsp</a>                                    2011-10-27 12:35   42M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de423.iom.pdf">de423.iom.pdf</a>                                2011-10-27 12:35  1.4M  
+<img src="/icons/layout.gif" alt="[   ]"> <a href="de424_iom.pdf">de424_iom.pdf</a>                                2018-03-19 15:48  1.5M  
+<img src="/icons/unknown.gif" alt="[   ]"> <a href="de721_full.bsp">de721_full.bsp</a>                               2012-12-09 10:54  145M  
+<hr></pre>
+</td>
+</tr>
+</table>
+
+
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+
+
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="730" height="5"></td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730"><img src="https://naif.jpl.nasa.gov/naif/images/pds_banner4.jpg" alt="PDS Menu" width="730" height="47" usemap="#pdsmenu" border=0></td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+
+<tr align=center> 
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td>
+          <table cellpadding="2" cellspacing="0" width="730" border="0" bgcolor="#cccccc"><tr>
+          <td valign=center align=left width=110>
+            <img height=70 src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt=""
+            width=110 border=0></td>
+          <td width=384 align=center>
+           &nbsp;<a href=https://www.nasa.gov/ target=_blank><font face="Arial, Helvetica, sans-serif" size="2">NASA</font></a> | 
+           <a href=http://www.caltech.edu/ target=_blank><font face="Arial, Helvetica, sans-serif" size="2">Caltech</font></a> | 
+           <a href=https://www.jpl.nasa.gov/copyrights.php target=_blank><font face="Arial, Helvetica, sans-serif" size="2">Privacy</a> |
+           <a href=https://www.jpl.nasa.gov/imagepolicy/ target=_blank><font face="Arial, Helvetica, sans-serif" size="2">Image Policy</a> | 
+           <a href=https://www.jpl.nasa.gov/faq.php target=_blank><font face="Arial, Helvetica, sans-serif" size="2">FAQ</a> |
+           <a href=https://www.jpl.nasa.gov/contact_JPL.php target=_blank>JPL&nbsp;Feedback</a>
+          </td>
+          
+        <td width=219 align=right>
+            <table align=right>
+            <tr>
+            <td align=left>
+             <font face="Arial, Helvetica, sans-serif" size="2">
+            o Clearance: CL#05-2438<br>
+            o Site Manager: <a href=mailto:boris.v.semenov@jpl.nasa.gov>Boris Semenov</a><br>
+            o Webmaster: Ron Baalke<br>
+            o Last Updated: <script>document.write( lastMod() );</script>
+            </font>
+            </td>
+            </tr>
+            </table>  
+           </td>
+        </tr></table>
+	</td>
+
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+<tr>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+<td width="730"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="730" height="10"></td>
+<td width="10"><img src="https://naif.jpl.nasa.gov/naif/images/spacer.gif" alt="" width="10" height="1"></td>
+</tr>
+
+
+</table>
+
+<map name="pdsmenu">
+  <area shape="rect" coords="0,0,90,46" href="http://pds.jpl.nasa.gov" title="Planetary Data System Central Node">
+  <area shape="rect" coords="90,0,200,46" href="http://pds-atmospheres.nmsu.edu/" title="Atmospheres Node">
+  <area shape="rect" coords="200,0,296,46" href="http://pds-geosciences.wustl.edu/" title="Geosciences Node">
+  <area shape="rect" coords="296,0,428,46" href="http://pds-imaging.jpl.nasa.gov/" title="Imaging Node">
+  <area shape="rect" coords="428,0,562,46" href="http://pds-ppi.igpp.ucla.edu" title="Planetary Plasma Interactions Node">
+  <area shape="rect" coords="562,0,652,46" href="http://pds-rings.seti.org" title="Ring and Moon Systems Node">
+  <area shape="rect" coords="652,0,729,46" href="http://pds-smallbodies.astro.umd.edu/" title="Small Bodies Node">
+Small Bodies">
+</map>
+
+</body></html>

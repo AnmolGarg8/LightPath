@@ -383,8 +383,8 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
       }
 
       const transit_s = m.d === 0 ? stepDtS : m.d / speed_m_s;
-      const dtSteps = m.d === 0 ? 1 : Math.max(1, Math.round(transit_s / stepDtS));
-      const nextT = curr.t + dtSteps;
+      const newG = curr.g + transit_s;
+      const nextT = startTimeIdx + Math.floor(newG / stepDtS);
 
       if (nextT >= numT) continue;
 
@@ -399,7 +399,6 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
       const earthFrac = (cube.earth_frac[nextT]?.[nyCell]?.[nxCell] ?? 0) / 100.0;
       if (earthFrac < min_earth_frac) continue;
 
-      const newG = curr.g + transit_s;
       const nextKey = `${nxCell},${nyCell},${nextT}`;
       const newDark = isDark ? currDark + transit_s : currDark;
 

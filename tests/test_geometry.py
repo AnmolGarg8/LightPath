@@ -20,6 +20,8 @@ import pytest
 
 from pipeline.constants import R_MOON_KM, R_MOON_M
 from pipeline.geometry import (
+    are_kernels_available,
+    are_kernels_loaded,
     cross_check_with_azlcpo,
     enu_basis,
     great_circle_distance_m,
@@ -151,12 +153,15 @@ def test_spice_kernel_load_and_unload():
     et = utc_to_et("2026-11-01T00:00:00Z")
     assert isinstance(et, float)
     unload_kernels()
+    if are_kernels_available(meta_path):
+        load_kernels(meta_path)
 
 
 @pytest.mark.requires_kernels
 def test_cross_check_with_azlcpo():
     meta_path = Path(__file__).parent.parent / "kernels" / "meta.tm"
-    load_kernels(meta_path)
+    if not are_kernels_loaded() and are_kernels_available(meta_path):
+        load_kernels(meta_path)
     res = cross_check_with_azlcpo(
         target="SUN",
         et=utc_to_et("2026-11-01T00:00:00Z"),
@@ -165,7 +170,6 @@ def test_cross_check_with_azlcpo():
         observer_lat_deg=-89.44,
         observer_lon_deg=137.5,
     )
-    unload_kernels()
     if res is not None:
         az, el, rng = res
         assert 0.0 <= az < 360.0
@@ -177,6 +181,7 @@ def test_cross_check_with_azlcpo():
 # 3. Sanity Bounds (Parameter Documented)
 # -----------------------------------------------------------------------------
 
+@pytest.mark.requires_kernels
 def test_sanity_bound_sub_earth_point_elevation():
     """At lat 0, lon 0, Earth elevation over 30 days must stay above 75 degrees.
 
@@ -201,6 +206,7 @@ def test_sanity_bound_sub_earth_point_elevation():
     assert max_el <= 90.0
 
 
+@pytest.mark.requires_kernels
 def test_sanity_bound_polar_sun_elevation():
     """At south pole region (-89.5 deg), Sun elevation over a full year stays within about +/- 2.5 degrees.
 
@@ -225,6 +231,7 @@ def test_sanity_bound_polar_sun_elevation():
     assert max_el <= 2.6, f"FINDING: Polar Sun elevation upper bound violated: {max_el:.2f} deg (> 2.6 deg)"
 
 
+@pytest.mark.requires_kernels
 def test_sanity_bound_polar_earth_elevation():
     """At south pole region near Shackleton (-89.44, 137.5), Earth elevation stays within about +/- 8 degrees.
 
@@ -323,6 +330,7 @@ def test_horizons_fixture_benchmark():
 # 5. Aberration Test (NONE vs LT+S)
 # -----------------------------------------------------------------------------
 
+@pytest.mark.requires_kernels
 def test_aberration_correction_effect():
     """Verify that light-time and stellar aberration corrections (LT+S) shift apparent positions as expected.
 

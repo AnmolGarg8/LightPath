@@ -1,0 +1,30 @@
+# JPL Horizons API Query Parameters for Lunar Surface Observer Ephemerides
+
+Source: https://ssd-api.jpl.nasa.gov/doc/horizons.html (API Version 1.3)
+Retrieved on: 2026-11-07
+Allowed Host: ssd-api.jpl.nasa.gov
+
+## 1. Parameters for Observer on Lunar Body Surface
+
+| Parameter | Value / Syntax | Description |
+| :--- | :--- | :--- |
+| `format` | `'json'` or `'text'` | Response encapsulation format. In JSON mode, primary ephemeris is in key `result`. |
+| `COMMAND` | `'10'` (Sun) or `'399'` (Earth) | Target body identification code. |
+| `EPHEM_TYPE` | `'OBSERVER'` | Selects topocentric observer ephemeris table. |
+| `CENTER` | `'coord@301'` | Observer located at coordinate location on Moon (NAIF ID 301). String `'coord'` tells Horizons to use `SITE_COORD` and `COORD_TYPE`. |
+| `COORD_TYPE` | `'GEODETIC'` | Coordinate representation type (`GEODETIC` or `CYLINDRICAL`). |
+| `SITE_COORD` | `'{lon},{lat},{alt_km}'` | Coordinate triplet for observer: East longitude (degrees), Latitude (degrees), Altitude above reference ellipsoid/sphere (km). E.g. `'0.0,-89.5,0.0'` |
+| `START_TIME` | `'2026-11-01 00:00'` | Ephemeris start epoch in UTC calendar format. |
+| `STOP_TIME` | `'2026-12-01 00:00'` | Ephemeris end epoch in UTC calendar format. |
+| `STEP_SIZE` | `'1 h'` (or `'60 m'`) | Time step between ephemeris records (integer + unit). |
+| `QUANTITIES` | `'4'` | Output quantities selector. Code `'4'` requests Apparent Azimuth & Elevation (`Azi_(a-app)`, `Elev_(a-app)`). |
+| `CSV_FORMAT` | `'YES'` | Emits output table as comma-separated values between `$$SOE` (start) and `$$EOE` (end). |
+| `REF_SYSTEM` | `'ICRF'` (default) | Ephemeris reference frame. |
+
+## 2. Lunar Frame and Physical Definition (Confirmed from Horizons Header)
+
+- **Center Body:** Moon (301)
+- **Reference Frame:** `MEAN_ME` (Mean Earth / Polar Axis, high precision)
+- **Reference Radius:** Sphere radius $R = 1737.4\text{ km}$ ($1,737,400\text{ m}$)
+- **Atmospheric Refraction:** `NO (AIRLESS)`
+- **Coordinate Convention:** East-longitude positive ($0^\circ \dots 360^\circ$ or $-180^\circ \dots +180^\circ$), North latitude positive, altitude in kilometres above $1737.4\text{ km}$.

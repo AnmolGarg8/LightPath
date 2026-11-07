@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 """LightPath end-to-end data processing pipeline.
 
 Rules & Non-Negotiables:
@@ -27,6 +28,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 import jsonschema
 import numpy as np
 import pyproj
@@ -37,14 +42,20 @@ import yaml
 
 from pipeline.config_schema import PipelineConfig, SiteConfig
 from pipeline.constants import (
+    ABCORR_FOR_VALIDATION,
+    FRAME_MOON_ME,
     R_EARTH_KM,
+    R_MOON_M,
     R_SUN_KM,
 )
 from pipeline.dsn import dte_available, load_dsn_stations
 from pipeline.geometry import (
+    are_kernels_loaded,
     compute_slope_horn_deg,
     enu_basis,
     get_sun_earth_moon_me_km,
+    load_kernels,
+    set_allow_approximate_ephemeris,
     site_position_moon_me_km,
     topocentric_az_el,
     utc_to_et,
@@ -269,7 +280,7 @@ def process_site_ephemeris(
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Compute topocentric ephemeris series and stats for a site at given mast height index."""
     basis = enu_basis(site.lat_deg, site.lon_deg)
-    site_xyz = site_position_moon_me_km(site.lat_deg, site.lon_deg, site.ground_elev_m)
+    site_xyz = site_position_moon_me_km(site.lat_deg, site.lon_deg, site.ground_elev_m + R_MOON_M)
 
     sun_az, sun_el, sun_rad, sun_frac, sun_status = [], [], [], [], []
     earth_az, earth_el, earth_rad, earth_frac, earth_status, earth_dist = [], [], [], [], [], []
@@ -284,8 +295,10 @@ def process_site_ephemeris(
         h_el = horizon_res.el_deg
 
     for ts in timestamps:
-        et = utc_to_et(ts)
-        sun_center_xyz, earth_center_xyz = get_sun_earth_moon_me_km(ts, et)
+        et = float(utc_to_et(ts))
+        sun_center_xyz, earth_center_xyz = get_sun_earth_moon_me_km(
+            ts, et, frame=FRAME_MOON_ME, abcorr=ABCORR_FOR_VALIDATION
+        )
 
         # Sun topocentric vector
         s_az, s_el, s_range = topocentric_az_el(sun_center_xyz, site_xyz, basis)
@@ -311,8 +324,8 @@ def process_site_ephemeris(
             n_samples=128,
         )
 
-        sun_az.append(round(float(s_az), 3))
-        sun_el.append(round(float(s_el), 3))
+        sun_az.append(round(float(s_az), 6))
+        sun_el.append(round(float(s_el), 6))
         sun_rad.append(round(float(s_radius_deg), 4))
         sun_frac.append(round(float(s_f), 4))
         sun_status.append(str(s_stat))
@@ -340,8 +353,8 @@ def process_site_ephemeris(
             n_samples=128,
         )
 
-        earth_az.append(round(float(e_az), 3))
-        earth_el.append(round(float(e_el), 3))
+        earth_az.append(round(float(e_az), 6))
+        earth_el.append(round(float(e_el), 6))
         earth_rad.append(round(float(e_radius_deg), 4))
         earth_frac.append(round(float(e_f), 4))
         earth_status.append(str(e_stat))
@@ -660,6 +673,7 @@ def run_pipeline(
     mode: Optional[str] = None,
     site_id_filter: Optional[str] = None,
     force: bool = False,
+    allow_approximate_ephemeris: bool = False,
 ) -> None:
     """Execute LightPath end-to-end data processing pipeline."""
     t_start_pipeline = time.perf_counter()
@@ -675,8 +689,30 @@ def run_pipeline(
     if mode is None:
         mode = "synthetic" if all(s.is_synthetic for s in config.sites) else "real"
 
+    set_allow_approximate_ephemeris(allow_approximate_ephemeris)
+
+    # Furnish SPICE kernels
+    meta_path = ROOT_DIR / config.kernels_meta_path
+    if meta_path.exists() and not are_kernels_loaded():
+        try:
+            load_kernels(meta_path)
+        except Exception as e:
+            print(f"Warning: Failed to load kernels from {meta_path}: {e}")
+
+    if are_kernels_loaded():
+        ephemeris_source = "spice_kernels"
+    else:
+        if not allow_approximate_ephemeris:
+            raise RuntimeError(
+                "SPICE kernels are required for ephemeris calculations. "
+                f"Meta-kernel at '{meta_path}' was not loaded or kernels are missing in kernels/. "
+                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+            )
+        ephemeris_source = "analytic_approximation"
+
     print(f"=== LightPath Pipeline Execution [Mode: {mode.upper()}] ===")
     print(f"Config: {config_path}")
+    print(f"Ephemeris Source: {ephemeris_source}")
 
     # 2. Real mode preflight check
     if mode == "real":
@@ -697,8 +733,7 @@ def run_pipeline(
         loaded_stations, _ = load_dsn_stations(dsn_path)
         stations = loaded_stations
     else:
-        from pipeline.ephemeris import DSN_STATIONS
-        stations = DSN_STATIONS
+        stations, _ = load_dsn_stations()
 
     # 5. Filter sites
     sites_to_process = [s for s in config.sites if (site_id_filter is None or s.id == site_id_filter)]
@@ -848,7 +883,7 @@ def run_pipeline(
             "retrieved_on": site.retrieved_on or "[human to supply date: YYYY-MM-DD]",
             "verified": site.verified,
             "is_synthetic": site.is_synthetic,
-            "ephemeris_source": getattr(site, "ephemeris_source", "analytic_approximation"),
+            "ephemeris_source": ephemeris_source,
             "terrain_source": getattr(site, "terrain_source", "synthetic"),
             "notes": site.notes or "",
         }
@@ -878,7 +913,8 @@ def run_pipeline(
             is_synthetic=site.is_synthetic,
             generator_info={"name": "pipeline.synthetic", "parameters": {"synthetic_feature": site.synthetic_feature or "flat"}},
         )
-        kernels_prov = build_kernel_provenance([])
+        kernel_paths = [ROOT_DIR / k["local_path"] for k in json.loads((ROOT_DIR / "kernels" / "kernels.json").read_text(encoding="utf-8"))] if (ROOT_DIR / "kernels" / "kernels.json").exists() else []
+        kernels_prov = build_kernel_provenance(kernel_paths)
 
         test_results_path = ROOT_DIR / "tests" / "results.json"
         tests_passed_count = 0
@@ -903,7 +939,7 @@ def run_pipeline(
                 "thresholds": config.thresholds.model_dump(),
                 "margins": config.margins.model_dump(),
                 "horizon_params": config.horizon_params.model_dump(),
-                "ephemeris_source": getattr(site, "ephemeris_source", "analytic_approximation"),
+                "ephemeris_source": ephemeris_source,
                 "terrain_source": getattr(site, "terrain_source", "synthetic"),
             },
             tolerances={
@@ -1066,6 +1102,11 @@ def main() -> None:
     parser.add_argument("--mode", choices=["real", "synthetic"], default=None, help="Execution mode")
     parser.add_argument("--site", default=None, help="Filter to single site ID")
     parser.add_argument("--force", action="store_true", help="Bypass cache and force recomputation")
+    parser.add_argument(
+        "--allow-approximate-ephemeris",
+        action="store_true",
+        help="Allow unverified analytic approximation when SPICE kernels are missing",
+    )
     args = parser.parse_args()
 
     cfg_path = Path(args.config)
@@ -1075,7 +1116,13 @@ def main() -> None:
         print(f"Configuration file not found: {args.config}", file=sys.stderr)
         sys.exit(1)
 
-    run_pipeline(cfg_path, mode=args.mode, site_id_filter=args.site, force=args.force)
+    run_pipeline(
+        cfg_path,
+        mode=args.mode,
+        site_id_filter=args.site,
+        force=args.force,
+        allow_approximate_ephemeris=args.allow_approximate_ephemeris,
+    )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,40 @@
+description: Nested terrain configuration for LightPath lunar south-pole horizon and
+  route analysis
+reference_sphere_radius_m: 1737400.0
+crs:
+  name: Moon (2015) South Polar Stereographic
+  proj4: +proj=stere +lat_0=-90 +lon_0=0 +k=1 +x_0=0 +y_0=0 +R=1737400 +units=m +no_defs
+  authority: IAU:30135
+layers:
+  near:
+    id: lola_20mpp_near
+    filename: LDEM_80S_20MPP_ADJ.TIF
+    url: https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF
+    resolution_m: 20.0
+    window_half_width_m: 40000.0
+    read_mode: vsicurl_windowed
+    download_full: false
+  near_err:
+    id: lola_20mpp_err
+    filename: LDEM_80S_20MPP_ADJ_ERR.TIF
+    url: https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_ERR.TIF
+    resolution_m: 20.0
+    window_half_width_m: 40000.0
+    read_mode: vsicurl_windowed
+    download_full: false
+  far:
+    id: lola_80mpp_far
+    filename: LDEM_80S_80MPP_ADJ.TIF
+    url: https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF
+    resolution_m: 80.0
+    read_mode: local_full
+    download_full: true
+  optional_5m:
+    enabled: false
+    description: 5m site products from PGDA Products 78 and 81 (disabled by default)
+sites:
+- id: test_location
+  name: TEST_LOCATION_NOT_A_MISSION_SITE
+  lat_deg: -89.5
+  lon_deg: 0.0
+  is_test_location: true

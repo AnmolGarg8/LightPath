@@ -180,11 +180,24 @@ def init_default_registry():
 init_default_registry()
 
 
+@pytest.fixture(scope="session", autouse=True)
+def auto_load_kernels_if_available():
+    """Automatically furnish SPICE kernels at session start if present on disk."""
+    from pipeline.geometry import are_kernels_available, load_kernels, unload_kernels
+    meta = root_dir / "kernels" / "meta.tm"
+    if are_kernels_available(meta) and not are_kernels_loaded():
+        load_kernels(meta)
+    yield
+    unload_kernels()
+
+
 @pytest.fixture(autouse=True)
 def check_kernels(request):
-    """Skip tests marked with requires_kernels if no SPICE kernels are currently loaded."""
+    """Skip tests marked with requires_kernels if no SPICE kernels are currently available."""
     if request.node.get_closest_marker("requires_kernels"):
-        if not are_kernels_loaded():
+        from pipeline.geometry import are_kernels_available
+        meta = root_dir / "kernels" / "meta.tm"
+        if not are_kernels_available(meta):
             pytest.skip("Requires physical SPICE kernels. Run scripts/fetch_kernels.py once manifests are filled.")
 
 

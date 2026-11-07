@@ -69,7 +69,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     const verifiedPanel = page.locator('[data-testid="what-is-verified-panel"]');
     await expect(verifiedPanel).toBeVisible();
     await expect(page.locator('[data-testid="live-count-passed"]')).toContainText('Passed');
-    await expect(page.locator('[data-testid="live-count-not-run"]')).toContainText('3 Not Run');
+    await expect(page.locator('[data-testid="live-count-not-run"]')).toContainText('2 Not Run');
     await expect(verifiedPanel).toContainText('V3');
     await expect(verifiedPanel).toContainText('V4');
     await expect(verifiedPanel).toContainText('V7');

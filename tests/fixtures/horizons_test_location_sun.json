@@ -1,0 +1,46 @@
+{
+  "site": {
+    "id": "test_location",
+    "name": "TEST_LOCATION_NOT_A_MISSION_SITE",
+    "lat_deg": -89.5,
+    "lon_deg": 0.0,
+    "alt_km": 0.0
+  },
+  "target": {
+    "name": "sun",
+    "command": "10"
+  },
+  "request": {
+    "base_url": "https://ssd.jpl.nasa.gov/api/horizons.api",
+    "parameters": {
+      "format": "json",
+      "COMMAND": "'10'",
+      "EPHEM_TYPE": "OBSERVER",
+      "CENTER": "coord@301",
+      "COORD_TYPE": "GEODETIC",
+      "SITE_COORD": "'0.0,-89.5,0.0'",
+      "START_TIME": "'2026-11-01 00:00'",
+      "STOP_TIME": "'2026-12-01 00:00'",
+      "STEP_SIZE": "'1 h'",
+      "QUANTITIES": "'4'",
+      "CSV_FORMAT": "'YES'"
+    },
+    "full_url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&EPHEM_TYPE=OBSERVER&CENTER=coord%40301&COORD_TYPE=GEODETIC&SITE_COORD=%270.0%2C-89.5%2C0.0%27&START_TIME=%272026-11-01+00%3A00%27&STOP_TIME=%272026-12-01+00%3A00%27&STEP_SIZE=%271+h%27&QUANTITIES=%274%27&CSV_FORMAT=%27YES%27"
+  },
+  "retrieval_date_utc": "2026-11-07T13:26:45.849829+00:00",
+  "horizons_metadata": {
+    "center_body": "Moon (301)",
+    "center_frame": "MEAN_ME (high precision)",
+    "center_radii_km": [
+      1737.4,
+      1737.4,
+      1737.4
+    ],
+    "atmospheric_refraction": "NO (AIRLESS)",
+    "coordinate_convention": "East-longitude positive, North latitude positive, Geodetic on spherical Moon R=1737.4 km",
+    "ephemeris_source": "JPL DE441",
+    "table_start_utc": "2026-11-01T00:00:00Z",
+    "table_end_utc": "2026-12-01T00:00:00Z",
+    "total_records": 721
+  }
+}

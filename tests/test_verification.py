@@ -218,83 +218,110 @@ def test_v2b_disc_fraction(record_verification):
 # -----------------------------------------------------------------------------
 def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_data):
     """V3 Ephemeris Cross-Check Against JPL Horizons:
-    Uses tests/fixtures/horizons_*.csv produced by a human.
+    Uses tests/fixtures/horizons_*.csv produced by a human / fetch_horizons.py.
+    Requires physical SPICE kernels loaded.
     If absent, the result is NOT RUN, never pass.
     """
-    fixtures = list(FIXTURES_DIR.glob("horizons_*.csv")) if FIXTURES_DIR.exists() else []
+    sun_csv = FIXTURES_DIR / "horizons_test_location_sun.csv"
+    earth_csv = FIXTURES_DIR / "horizons_test_location_earth.csv"
 
-    if not fixtures:
+    if not sun_csv.exists() or not earth_csv.exists():
         record_verification(
             code="V3",
             name="Ephemeris cross-check against JPL Horizons",
             status="not_run",
-            tolerance="0.05 deg",
+            tolerance="0.01 deg",
             measured_value=None,
             expected_value="JPL Horizons ephemeris query",
             source_of_expected_value="NASA JPL Horizons On-Line Ephemeris System",
             data_type="real",
-            skip_reason="NOT RUN: tests/fixtures/horizons_*.csv fixture absent. Human must provide JPL Horizons query results.",
+            skip_reason="NOT RUN: tests/fixtures/horizons_*.csv fixtures absent. Human must provide JPL Horizons query results.",
         )
-        pytest.skip("NOT RUN: tests/fixtures/horizons_*.csv fixture absent.")
+        pytest.skip("NOT RUN: tests/fixtures/horizons_*.csv fixtures absent.")
 
-    # Evaluate the primary fixture
-    csv_file = fixtures[0]
-    json_sidecar = csv_file.with_suffix(".json")
+    meta_kernel = ROOT_DIR / "kernels" / "meta.tm"
+    from pipeline.constants import ABCORR_FOR_VALIDATION
+    from pipeline.geometry import are_kernels_loaded, load_kernels
+    if meta_kernel.exists() and not are_kernels_loaded():
+        try:
+            load_kernels(meta_kernel)
+        except Exception:
+            pass
 
-    lat_deg, lon_deg = -89.54, 0.0
-    tolerance_deg = 0.05
+    if not are_kernels_loaded():
+        record_verification(
+            code="V3",
+            name="Ephemeris cross-check against JPL Horizons",
+            status="not_run",
+            tolerance="0.01 deg",
+            measured_value=None,
+            expected_value="JPL Horizons ephemeris query",
+            source_of_expected_value="NASA JPL Horizons On-Line Ephemeris System",
+            data_type="real",
+            skip_reason="NOT RUN: SPICE kernels absent or not loaded. Run scripts/fetch_kernels.py.",
+        )
+        pytest.skip("NOT RUN: SPICE kernels absent or not loaded.")
 
-    if json_sidecar.exists():
-        with open(json_sidecar, "r", encoding="utf-8") as f:
-            meta = json.load(f)
-            site_info = meta.get("site", {})
-            lat_deg = site_info.get("lat_deg", lat_deg)
-            lon_deg = site_info.get("lon_deg", lon_deg)
-            tolerance_deg = meta.get("tolerance_deg", tolerance_deg)
+    tolerance_deg = 0.01  # Tightened tolerance per Task S0c
 
-    times, hz_az, hz_el = [], [], []
-    with open(csv_file, "r", encoding="utf-8") as f:
+    # Load all Sun rows directly from CSV
+    sun_times, sun_hz_az, sun_hz_el = [], [], []
+    with open(sun_csv, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            utc_str = row.get("utc") or row.get("datetime_utc") or row.get("time")
-            times.append(utc_str.strip())
-            hz_az.append(float(row.get("az_deg") or row.get("azimuth_deg") or row.get("az")))
-            hz_el.append(float(row.get("el_deg") or row.get("elevation_deg") or row.get("el")))
+            sun_times.append(row["utc"])
+            sun_hz_az.append(float(row["az_deg"]))
+            sun_hz_el.append(float(row["el_deg"]))
 
-    # Compute production ephemeris
+    # Load all Earth rows directly from CSV
+    earth_times, earth_hz_az, earth_hz_el = [], [], []
+    with open(earth_csv, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            earth_times.append(row["utc"])
+            earth_hz_az.append(float(row["az_deg"]))
+            earth_hz_el.append(float(row["el_deg"]))
+
+    # Site coordinates: Lat -89.5, Lon 0.0, Height 0 m on sphere R = 1737.4 km (matching Horizons request alt=0.0 km)
+    lat_deg, lon_deg = -89.5, 0.0
+
+    # Compute production ephemeris using sun_earth_series with ABCORR_FOR_VALIDATION
     series = sun_earth_series(
         points=(lat_deg, lon_deg, R_MOON_M),
-        start_utc=times[0],
-        end_utc=times[-1],
+        start_utc=sun_times[0],
+        end_utc=sun_times[-1],
         step_minutes=60,
+        abcorr=ABCORR_FOR_VALIDATION,
     )
-    lp_az = np.array(series["sun"]["az_deg"])
-    lp_el = np.array(series["sun"]["el_deg"])
 
-    # Align arrays
-    n = min(len(lp_az), len(hz_az))
-    diff_el = np.abs(lp_el[:n] - np.array(hz_el[:n]))
-    diff_az = np.abs((lp_az[:n] - np.array(hz_az[:n]) + 180.0) % 360.0 - 180.0)
+    # Sun evaluations across all rows
+    lp_sun_az = np.array(series["sun"]["az_deg"])
+    lp_sun_el = np.array(series["sun"]["el_deg"])
+    n_sun = len(sun_hz_az)
+    d_az_sun = (lp_sun_az[:n_sun] - np.array(sun_hz_az) + 180.0) % 360.0 - 180.0
+    d_el_sun = lp_sun_el[:n_sun] - np.array(sun_hz_el)
+    max_az_sun = float(np.max(np.abs(d_az_sun)))
+    rms_az_sun = float(np.sqrt(np.mean(d_az_sun**2)))
+    max_el_sun = float(np.max(np.abs(d_el_sun)))
+    rms_el_sun = float(np.sqrt(np.mean(d_el_sun**2)))
 
-    max_el_diff = float(np.max(diff_el))
-    max_az_diff = float(np.max(diff_az))
-    max_total_diff = max(max_el_diff, max_az_diff)
+    # Earth evaluations across all rows
+    lp_earth_az = np.array(series["earth"]["az_deg"])
+    lp_earth_el = np.array(series["earth"]["el_deg"])
+    n_earth = len(earth_hz_az)
+    d_az_earth = (lp_earth_az[:n_earth] - np.array(earth_hz_az) + 180.0) % 360.0 - 180.0
+    d_el_earth = lp_earth_el[:n_earth] - np.array(earth_hz_el)
+    max_az_earth = float(np.max(np.abs(d_az_earth)))
+    rms_az_earth = float(np.sqrt(np.mean(d_az_earth**2)))
+    max_el_earth = float(np.max(np.abs(d_el_earth)))
+    rms_el_earth = float(np.sqrt(np.mean(d_el_earth**2)))
 
-    # Record chart data
-    chart_points = []
-    for h_idx in range(min(n, 49)):
-        if h_idx % 6 == 0:
-            chart_points.append({
-                "hour": h_idx,
-                "az_diff_deg": round(float(diff_az[h_idx]), 4),
-                "el_diff_deg": round(float(diff_el[h_idx]), 4),
-                "tolerance_deg": tolerance_deg,
-            })
-    record_chart_data("v3_ephemeris", chart_points)
+    max_overall_err = max(max_az_sun, max_el_sun, max_az_earth, max_el_earth)
 
-    assert max_total_diff <= tolerance_deg, (
-        f"V3 ephemeris difference {max_total_diff:.4f} deg exceeds tolerance {tolerance_deg} deg "
-        f"(El diff: {max_el_diff:.4f} deg, Az diff: {max_az_diff:.4f} deg)"
+    assert max_overall_err <= tolerance_deg, (
+        f"V3 ephemeris difference {max_overall_err:.6f} deg exceeds tolerance {tolerance_deg} deg "
+        f"(Sun Az max: {max_az_sun:.5f}°, El max: {max_el_sun:.5f}°; "
+        f"Earth Az max: {max_az_earth:.5f}°, El max: {max_el_earth:.5f}°)"
     )
 
     record_verification(
@@ -302,11 +329,15 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         name="Ephemeris cross-check against JPL Horizons",
         status="passed",
         tolerance=f"{tolerance_deg} deg",
-        measured_value=f"Max error: {max_total_diff:.4f} deg (Az: {max_az_diff:.4f} deg, El: {max_el_diff:.4f} deg)",
-        expected_value="JPL Horizons ephemeris query",
+        measured_value=(
+            f"Sun (N={n_sun}): Az max {max_az_sun:.5f}°, rms {rms_az_sun:.5f}°; El max {max_el_sun:.5f}°, rms {rms_el_sun:.5f}° | "
+            f"Earth (N={n_earth}): Az max {max_az_earth:.5f}°, rms {rms_az_earth:.5f}°; El max {max_el_earth:.5f}°, rms {rms_el_earth:.5f}° "
+            f"[abcorr={ABCORR_FOR_VALIDATION}, site height=0m]"
+        ),
+        expected_value="JPL Horizons ephemeris query (DE441, topocentric MOON_ME, apparent)",
         source_of_expected_value="NASA JPL Horizons On-Line Ephemeris System",
         data_type="real",
-        citation="JPL Horizons Web API batch query; topocentric MOON_ME reference frame",
+        citation=f"JPL Horizons batch query; MOON_ME frame, {ABCORR_FOR_VALIDATION} aberration, site height 0m (R=1737.4 km)",
     )
 
 

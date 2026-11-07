@@ -19,13 +19,25 @@ build/
 .npm/
 *.log
 
-# Data
+# Data and Kernels (never commit large raw data or binary kernels)
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
 kernels/*
 !kernels/.gitkeep
+!kernels/README.md
+!kernels/kernels.json
+!kernels/meta.tm
+*.bsp
+*.bpc
+*.bc
+*.tif
+*.TIF
+*.img
+*.IMG
+logs/*.tif
+logs/*.bsp
 
 # OS / IDE
 .DS_Store

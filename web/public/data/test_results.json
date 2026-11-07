@@ -2,13 +2,13 @@
   "status": "passed",
   "counts": {
     "total": 15,
-    "passed": 12,
-    "not_run": 3,
-    "skipped": 3,
+    "passed": 13,
+    "not_run": 2,
+    "skipped": 2,
     "failed": 0
   },
   "failures": [],
-  "timestamp": "2026-11-07T13:06:38.266947+00:00",
+  "timestamp": "2026-11-07T16:46:22.225888+00:00",
   "checks": [
     {
       "code": "V1",
@@ -56,15 +56,15 @@
       "code": "V3",
       "id": "V3",
       "name": "Ephemeris cross-check against JPL Horizons",
-      "status": "not_run",
+      "status": "passed",
       "data_type": "real",
-      "tolerance": "0.05 deg",
-      "measured_value": null,
-      "expected_value": "JPL Horizons ephemeris query",
+      "tolerance": "0.01 deg",
+      "measured_value": "Sun (N=721): Az max 0.00000\u00b0, rms 0.00000\u00b0; El max 0.00001\u00b0, rms 0.00001\u00b0 | Earth (N=721): Az max 0.00001\u00b0, rms 0.00000\u00b0; El max 0.00004\u00b0, rms 0.00002\u00b0 [abcorr=LT+S, site height=0m]",
+      "expected_value": "JPL Horizons ephemeris query (DE441, topocentric MOON_ME, apparent)",
       "source_of_expected_value": "NASA JPL Horizons On-Line Ephemeris System",
-      "citation": "NASA JPL Horizons On-Line Ephemeris System",
-      "skip_reason": "Skipped: NOT RUN: tests/fixtures/horizons_*.csv fixture absent.",
-      "skipped_reason": "Skipped: NOT RUN: tests/fixtures/horizons_*.csv fixture absent."
+      "citation": "JPL Horizons batch query; MOON_ME frame, LT+S aberration, site height 0m (R=1737.4 km)",
+      "skip_reason": null,
+      "skipped_reason": null
     },
     {
       "code": "V4",
