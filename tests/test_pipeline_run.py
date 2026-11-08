@@ -25,6 +25,7 @@ def test_real_mode_preflight_refusal():
     assert exc_info.value.code == 1
 
 
+@pytest.mark.requires_kernels
 def test_synthetic_pipeline_outputs_and_schemas():
     """Verify that synthetic pipeline produces all expected files and validates schemas."""
     config_path = CONFIGS_DIR / "synthetic.yaml"
@@ -87,6 +88,7 @@ def test_synthetic_pipeline_outputs_and_schemas():
         jsonschema.validate(instance=run_info_data, schema=json.load(f))
 
 
+@pytest.mark.requires_kernels
 def test_binary_visibility_cube_structure():
     """Verify compressed binary visibility cube format, magic header, and dimensions."""
     cube_bin_path = DATA_DIR / "cubes" / "synthetic-proving-ground.bin"
@@ -114,6 +116,7 @@ def test_binary_visibility_cube_structure():
     assert len(decompressed[12:]) == expected_payload
 
 
+@pytest.mark.requires_kernels
 def test_v6_determinism_byte_identical():
     """V6 Determinism: Two repeated synthetic runs must yield byte-identical data files.
 
@@ -153,6 +156,7 @@ def test_v6_determinism_byte_identical():
 
 
 
+@pytest.mark.requires_kernels
 def test_trust_results_json():
     """Verify tests/results.json format for the Trust page."""
     results_path = ROOT_DIR / "tests" / "results.json"

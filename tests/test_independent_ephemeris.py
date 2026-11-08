@@ -35,6 +35,8 @@ import spiceypy as spice
 from pipeline.constants import ABCORR_FOR_VALIDATION
 from pipeline.geometry import are_kernels_available, are_kernels_loaded, load_kernels
 
+pytestmark = pytest.mark.requires_kernels
+
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
 # Tolerance set to twice observed max (0.33439 deg * 2 = 0.66878 deg ~ 0.70 deg, <= 1.0 deg)

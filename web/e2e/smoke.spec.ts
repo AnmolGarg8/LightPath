@@ -167,6 +167,14 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
       console.log(`Navigating to header link: ${link.name}...`);
       const linkEl = page.locator(link.selector).first();
       await expect(linkEl).toBeVisible();
+
+      const isDisabled = await linkEl.getAttribute('aria-disabled');
+      if (isDisabled === 'true') {
+        console.log(`Header link ${link.name} is disabled as expected (< 2 analysed sites).`);
+        await expect(linkEl).toHaveAttribute('aria-disabled', 'true');
+        continue;
+      }
+
       await linkEl.click();
       await page.waitForTimeout(1000);
       await verifyPageState(link.name);

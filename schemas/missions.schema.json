@@ -38,9 +38,26 @@
       "planned_window_end": {
         "type": "string"
       },
+      "mission_window": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string" },
+          "start_utc": { "type": ["string", "null"] },
+          "end_utc": { "type": ["string", "null"] }
+        },
+        "required": ["description"]
+      },
+      "analysis_window": {
+        "type": "object",
+        "properties": {
+          "start_utc": { "type": "string" },
+          "end_utc": { "type": "string" }
+        },
+        "required": ["start_utc", "end_utc"]
+      },
       "status": {
         "type": "string",
-        "enum": ["planned", "en_route", "landed", "completed", "cancelled", "unverified_placeholder"]
+        "enum": ["planned", "en_route", "landed", "completed", "cancelled", "unverified_placeholder", "unverified_example", "unverified"]
       },
       "description": {
         "type": "string"
@@ -58,6 +75,12 @@
         }
       },
       "verified": {
+        "type": "boolean"
+      },
+      "is_synthetic": {
+        "type": "boolean"
+      },
+      "is_example": {
         "type": "boolean"
       },
       "source_label": {

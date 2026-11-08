@@ -198,7 +198,7 @@ def check_kernels(request):
         from pipeline.geometry import are_kernels_available
         meta = root_dir / "kernels" / "meta.tm"
         if not are_kernels_available(meta):
-            pytest.skip("Requires physical SPICE kernels. Run scripts/fetch_kernels.py once manifests are filled.")
+            pytest.skip("Requires physical SPICE kernels. Run scripts/fetch_spice_kernels.py or place NAIF kernels in kernels/.")
 
 
 @pytest.fixture
@@ -285,13 +285,13 @@ def pytest_sessionfinish(session, exitstatus):
     if os.environ.get("LIGHTPATH_MUTATION_CHECK") == "1":
         return
 
-    # Only export if verification tests were part of the run
-    executed_benchmarks = [v for v in VERIFICATION_REGISTRY.values() if v["status"] != "not_run" or "fixture absent" in str(v.get("skip_reason", ""))]
-    if not executed_benchmarks:
-        return
-
+    # Only export if the full verification suite was executed (all 15 benchmarks evaluated)
     primary_codes = ["V1", "V2", "V2b", "V3", "V4", "V5", "V6", "V7", "V8"]
     extra_codes = ["X1", "X2", "X3", "X4", "X5", "X6"]
+    executed_benchmarks = [v for v in VERIFICATION_REGISTRY.values() if v["status"] != "not_run" or "fixture absent" in str(v.get("skip_reason", ""))]
+    if len(executed_benchmarks) < 13:
+        # A partial/filtered test was run; do not overwrite full benchmark manifest
+        return
 
     checks = [VERIFICATION_REGISTRY[c] for c in primary_codes if c in VERIFICATION_REGISTRY]
     extra_checks = [VERIFICATION_REGISTRY[c] for c in extra_codes if c in VERIFICATION_REGISTRY]
@@ -327,6 +327,23 @@ def pytest_sessionfinish(session, exitstatus):
 
     results_path = root_dir / "tests" / "results.json"
     results_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Preserve existing timestamp if all verification checks, counts, and measurements match
+    if results_path.exists():
+        try:
+            with open(results_path, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+            if (
+                existing.get("status") == overall_status
+                and existing.get("counts") == results_data["counts"]
+                and existing.get("checks") == checks
+                and existing.get("extra_checks") == extra_checks
+                and existing.get("charts") == charts
+            ):
+                results_data["timestamp"] = existing.get("timestamp", results_data["timestamp"])
+        except Exception:
+            pass
+
     with open(results_path, "w", encoding="utf-8") as f:
         json.dump(results_data, f, indent=2)
 

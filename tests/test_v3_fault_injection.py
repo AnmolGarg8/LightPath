@@ -29,6 +29,8 @@ from pipeline.geometry import (
     topocentric_basis_moon_me,
 )
 
+pytestmark = pytest.mark.requires_kernels
+
 ROOT_DIR = Path(__file__).resolve().parent.parent
 FIXTURES_DIR = ROOT_DIR / "tests" / "fixtures"
 META_KERNEL = ROOT_DIR / "kernels" / "meta.tm"

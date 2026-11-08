@@ -47,6 +47,9 @@ jobs:
       - name: Python Test Suite (pytest)
         run: pytest -v
 
+      - name: Verify Committed Test Results Integrity
+        run: git diff --exit-code tests/results.json web/public/data/test_results.json
+
       - name: Web Lint (eslint)
         working-directory: web
         run: npm run lint

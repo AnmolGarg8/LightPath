@@ -113,6 +113,15 @@ export const MissionSchema = z.object({
   verified: z.boolean(),
   is_synthetic: z.boolean().optional(),
   is_example: z.boolean().optional(),
+  mission_window: z.object({
+    description: z.string(),
+    start_utc: z.string().nullable().optional(),
+    end_utc: z.string().nullable().optional(),
+  }).optional(),
+  analysis_window: z.object({
+    start_utc: z.string(),
+    end_utc: z.string(),
+  }).optional(),
 });
 
 export type Mission = z.infer<typeof MissionSchema>;

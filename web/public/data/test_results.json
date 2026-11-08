@@ -8,7 +8,7 @@
     "failed": 0
   },
   "failures": [],
-  "timestamp": "2026-11-07T16:46:22.225888+00:00",
+  "timestamp": "2026-11-08T08:35:44.711969+00:00",
   "checks": [
     {
       "code": "V1",
@@ -129,10 +129,10 @@
       "status": "passed",
       "data_type": "synthetic",
       "tolerance": "0.0% path delta vs brute force",
-      "measured_value": "0.0% path delta (2.68h vs 2.68h); exact match",
-      "expected_value": "2.68h duration from exhaustive search",
-      "source_of_expected_value": "Exhaustive brute-force Dijkstra graph exploration on space-time grid",
-      "citation": "Proven optimal on tiny grids against exhaustive search; Python vs TS agreement",
+      "measured_value": "0.0% path delta across 300 brute-force grids (300/300 optimal); 220/220 shared-vector agreement between Python and TypeScript",
+      "expected_value": "Global optimum from exhaustive search (300 grids) & TS parity (220 vectors)",
+      "source_of_expected_value": "300 exhaustive brute-force Dijkstra grids and 220 shared cross-language vectors",
+      "citation": "Proven optimal on 300 random grids against exhaustive search; 220 shared vectors agreement with TypeScript",
       "skip_reason": null,
       "skipped_reason": null
     }

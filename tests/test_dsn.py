@@ -3,6 +3,7 @@
 import math
 
 import numpy as np
+import pytest
 
 from pipeline.constants import DEFAULT_DSN_MIN_ELEVATION_DEG
 from pipeline.dsn import (
@@ -116,6 +117,7 @@ def test_dte_available_joint_logic():
     assert not np.any(dte_ok_b)
 
 
+@pytest.mark.requires_kernels
 def test_dsn_goldstone_vs_horizons_fixture():
     """Verify DSN Moon elevation at Goldstone DSS 14 matches Horizons within 0.1 deg over 1 week."""
     import csv

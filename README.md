@@ -109,6 +109,17 @@ cd web && npm run preview
 
 Open `http://localhost:4173/#/?demo=1` in your browser to launch the automated 90-second judge walkthrough.
 
+### SPICE Kernels & Offline Test Execution
+
+LightPath uses official NAIF SPICE kernels (`naif0012.tls`, `pck00010.tpc`, `moon_pa_de421_1900-2050.bpc`, `moon_080317.tf`, `de421.bsp`) for high-precision topocentric ephemerides in the `MOON_ME` frame.
+
+- **Acquiring Kernels**: Run `python scripts/fetch_spice_kernels.py` to download verified NAIF kernels from `naif.jpl.nasa.gov` with SHA-256 integrity checks.
+- **Running Without Kernels**: All kernel-dependent tests are marked `@pytest.mark.requires_kernels` (including V3 Horizons validation, V6 pipeline reproducibility, and DSN geometry). When kernels are absent, pytest automatically skips these tests with a clear message:
+  ```bash
+  # Run only kernel-independent tests (analytical closed-form benchmarks):
+  pytest -m "not requires_kernels"
+  ```
+
 ---
 
 ## 6. How to Reproduce Pipeline Results
@@ -139,7 +150,7 @@ LightPath enforces **Rule 1: Correctness Before Features**. The verification sui
 | **V5** | Sensitivity and convergence | `0.005 deg (step), 0.01 deg (azimuth), 0.001 deg (range), monotonic (mast)` | `5m error: 0.0000 deg; all 5 convergence bounds passed` | Synthetic | **PASS** |
 | **V6** | Reproducibility | `0 bytes delta (exact byte match)` | `100% byte identical across runs (0 bytes delta)` | Synthetic | **PASS** |
 | **V7** | Independent cross-check (optional) | `0.02 deg` | NOT RUN (fixture absent) | Real | **NOT RUN** |
-| **V8** | Route solver optimality | `0.0% path delta vs brute force` | `0.0% path delta (2.68h vs 2.68h); exact match` | Synthetic | **PASS** |
+| **V8** | Route solver optimality | `0.0% path delta vs brute force` | `0.0% path delta (300/300 optimal; 220/220 shared vectors)` | Synthetic | **PASS** |
 | **X1** | Python to TypeScript geodesy vectors | `0.01 deg (raster terrain) / 1e-9 deg (closed-form parity)` | `Raster error: 0.0012 deg; vector max diff: 0.00e+00 deg` | Synthetic | **PASS** |
 | **X2** | Quadrature convergence | `0.005 area fraction` | `0.00256 area fraction error at disc center` | Synthetic | **PASS** |
 | **X3** | South pole coordinate basis singularity | `±1e-12` | `Max basis error: 0.00e+00; dot products < 0.00e+00` | Synthetic | **PASS** |
