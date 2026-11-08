@@ -1385,6 +1385,9 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
                     style={{ width: '100%' }}
                   />
                 </div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>
+                  Discretisation error bound: &lt; 3.0 h (ceiling lookahead)
+                </div>
                 <button
                   type="button"
                   onClick={() => {

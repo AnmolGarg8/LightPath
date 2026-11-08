@@ -321,7 +321,13 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
     return Math.hypot((x - gx) * spacing_m, (y - gy) * spacing_m) / speed_m_s;
   };
 
-  const openHeap = new MinHeap<PQNode>((a, b) => a.f - b.f);
+  const openHeap = new MinHeap<PQNode>((a, b) => {
+    if (Math.abs(a.f - b.f) > 1e-9) return a.f - b.f;
+    if (Math.abs(a.g - b.g) > 1e-9) return a.g - b.g;
+    if (a.x !== b.x) return a.x - b.x;
+    if (a.y !== b.y) return a.y - b.y;
+    return a.t - b.t;
+  });
   openHeap.push({ f: heuristic(sx, sy), g: 0, x: sx, y: sy, t: startTimeIdx });
   const costSoFar = new Map<string, number>();
   const darkSoFar = new Map<string, number>();
@@ -352,13 +358,15 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
 
   while (openHeap.size > 0 && iterations++ < maxIterations) {
     const curr = openHeap.pop()!;
-
-    if (curr.x === gx && curr.y === gy) {
-      goalNodeKey = `${curr.x},${curr.y},${curr.t}`;
-      break;
+    const currKey = `${curr.x},${curr.y},${curr.t}`;
+    if (curr.g > (costSoFar.get(currKey) ?? curr.g) + 1e-9) {
+      continue;
     }
 
-    const currKey = `${curr.x},${curr.y},${curr.t}`;
+    if (curr.x === gx && curr.y === gy) {
+      goalNodeKey = currKey;
+      break;
+    }
     const currDark = darkSoFar.get(currKey) ?? 0;
 
     for (const m of moves) {
@@ -383,12 +391,30 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
       }
 
       const transit_s = m.d === 0 ? stepDtS : m.d / speed_m_s;
-      const dtSteps = m.d === 0 ? 1 : Math.max(1, Math.round(transit_s / stepDtS));
-      const nextT = curr.t + dtSteps;
+      const newG = curr.g + transit_s;
+      const dtRatio = Math.round((newG / stepDtS) * 1e9) / 1e9;
+      const nextT = startTimeIdx + (newG > 0 ? Math.ceil(dtRatio) : 0);
 
       if (nextT >= numT) continue;
 
-      const sunFrac = (cube.sun_frac[nextT]?.[nyCell]?.[nxCell] ?? 0) / 100.0;
+      let sunFrac: number;
+      let earthFrac: number;
+      if (effMargin > 0) {
+        let minS = 100;
+        let minE = 100;
+        for (let t = curr.t; t <= nextT; t++) {
+          const s = cube.sun_frac[t]?.[nyCell]?.[nxCell] ?? 0;
+          const e = cube.earth_frac[t]?.[nyCell]?.[nxCell] ?? 0;
+          if (s < minS) minS = s;
+          if (e < minE) minE = e;
+        }
+        sunFrac = minS / 100.0;
+        earthFrac = minE / 100.0;
+      } else {
+        sunFrac = (cube.sun_frac[nextT]?.[nyCell]?.[nxCell] ?? 0) / 100.0;
+        earthFrac = (cube.earth_frac[nextT]?.[nyCell]?.[nxCell] ?? 0) / 100.0;
+      }
+
       const isDark = (sunFrac - effMargin) < min_sun_frac;
 
       if (isDark) {
@@ -396,10 +422,8 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
         if (currDark + transit_s > dark_budget_h * 3600 + 1e-6) continue;
       }
 
-      const earthFrac = (cube.earth_frac[nextT]?.[nyCell]?.[nxCell] ?? 0) / 100.0;
       if (earthFrac < min_earth_frac) continue;
 
-      const newG = curr.g + transit_s;
       const nextKey = `${nxCell},${nyCell},${nextT}`;
       const newDark = isDark ? currDark + transit_s : currDark;
 

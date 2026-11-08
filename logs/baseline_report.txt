@@ -1,0 +1,43 @@
+================================================================================
+LIGHTPATH RECONCILED BASELINE ACCURACY REPORT: SPICE & ANALYTIC vs JPL HORIZONS (2026-11-07T15:30:32.544618+00:00)
+Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 10: Fail loud)
+Tightened Acceptance Tolerance: 0.01°
+Primary Validation Aberration Setting: LT+S
+================================================================================
+
+Furnished SPICE meta-kernel: kernels\meta.tm
+
+Site: TEST_LOCATION_NOT_A_MISSION_SITE (ID: test_location) at Lat=-89.5°, Lon=0.0° (Height=0.0m on R=1737.4km)
+--------------------------------------------------------------------------------
+Target: SUN (721 hourly samples, 2026-11-01 to 2026-12-01)
+  [SPICE abcorr=LT+S (Apparent)]: Max Az = 0.00000°, Max El = 0.00001° -> Verdict: PASS
+  [SPICE abcorr=NONE (Geometric)]: Max Az = 0.00597°, Max El = 0.00009° -> Verdict: PASS
+  [Analytic Approx (Fallback)]:     Max Az = 61.21702°, Max El = 2.59745° -> Verdict: EXCEEDS
+
+Target: EARTH (721 hourly samples, 2026-11-01 to 2026-12-01)
+  [SPICE abcorr=LT+S (Apparent)]: Max Az = 0.00001°, Max El = 0.00004° -> Verdict: PASS
+  [SPICE abcorr=NONE (Geometric)]: Max Az = 0.00021°, Max El = 0.00003° -> Verdict: PASS
+  [Analytic Approx (Fallback)]:     Max Az = 14.51264°, Max El = 1.43035° -> Verdict: EXCEEDS
+
+================================================================================
+RECONCILED ACCURACY BENCHMARK TABLE (OVER ALL 721 HOURLY SAMPLES)
+================================================================================
+| Target | Samples | Metric | SPICE (NONE) | SPICE (LT+S) | Analytic Fallback | Tolerance | Verdict (LT+S) | Verdict (NONE) |
+| :--- | :-: | :--- | :-: | :-: | :-: | :-: | :-: | :-: |
+| SUN | 721 | Azimuth Max | 0.00597° | 0.00000° | 61.21702° | 0.01° | PASS | PASS |
+| SUN | 721 | Azimuth RMS | 0.00575° | 0.00000° | 60.71921° | 0.01° | — | — |
+| SUN | 721 | Elevation Max | 0.00009° | 0.00001° | 2.59745° | 0.01° | PASS | PASS |
+| SUN | 721 | Elevation RMS | 0.00004° | 0.00001° | 1.69573° | 0.01° | — | — |
+| EARTH | 721 | Azimuth Max | 0.00021° | 0.00001° | 14.51264° | 0.01° | PASS | PASS |
+| EARTH | 721 | Azimuth RMS | 0.00019° | 0.00000° | 9.36521° | 0.01° | — | — |
+| EARTH | 721 | Elevation Max | 0.00003° | 0.00004° | 1.43035° | 0.01° | PASS | PASS |
+| EARTH | 721 | Elevation RMS | 0.00002° | 0.00002° | 0.92177° | 0.01° | — | — |
+
+--- Which Setting the Pipeline Will Use and Why ---
+1. The pipeline will use 'LT+S' (Light-Time + Stellar Aberration) for production lunar operations.
+2. Physical Justification: Optical sunlight casting shadows on lunar topography travels at speed c (1-way light-time ~499s).
+   The direction from which photons arrive on the lunar terrain is the APPARENT direction (including ~20.5 arcsec stellar aberration).
+3. Radio Communications: DTE RF link antennas must point toward the apparent position of the Earth ground stations.
+4. Horizons Reference Parity: JPL Horizons computes apparent topocentric positions under Quantity 4. Using LT+S provides exact
+   sub-arcsecond consistency (max Sun Az error 0.00000°, max Sun El error 0.00001°) with official NASA/JPL ephemeris standards.
+5. Both NONE (0.00597°) and LT+S (0.00000°) pass the tightened 0.01° tolerance, confirming mathematical robustness.

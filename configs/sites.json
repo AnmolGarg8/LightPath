@@ -16,7 +16,7 @@
     "notes": "Candidate south-pole site; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
     "verified": false,
     "is_synthetic": true,
-    "ephemeris_source": "analytic_approximation",
+    "ephemeris_source": "spice_kernels",
     "terrain_source": "synthetic"
   },
   {
@@ -35,7 +35,7 @@
     "notes": "Candidate exploration area; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
     "verified": false,
     "is_synthetic": true,
-    "ephemeris_source": "analytic_approximation",
+    "ephemeris_source": "spice_kernels",
     "terrain_source": "synthetic"
   },
   {
@@ -54,7 +54,7 @@
     "notes": "Candidate massif summit; synthetic terrain model and analytic ephemeris pending SPICE/PDS operational validation.",
     "verified": false,
     "is_synthetic": true,
-    "ephemeris_source": "analytic_approximation",
+    "ephemeris_source": "spice_kernels",
     "terrain_source": "synthetic"
   },
   {
@@ -73,7 +73,7 @@
     "notes": "Synthetic math-generated crater for algorithm verification.",
     "verified": false,
     "is_synthetic": true,
-    "ephemeris_source": "analytic_approximation",
+    "ephemeris_source": "spice_kernels",
     "terrain_source": "synthetic"
   }
 ]

@@ -13,15 +13,22 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 
 from pipeline.constants import (
+    ABCORR_FOR_VALIDATION,
     DEFAULT_MAX_TRAVERSABLE_SLOPE_DEG,
+    FRAME_MOON_ME,
+    R_EARTH_KM,
     R_MOON_M,
+    R_SUN_KM,
 )
 from pipeline.disc import compute_flat_horizon_disc_fraction
-from pipeline.ephemeris import (
-    compute_topocentric_earth_state,
-    compute_topocentric_sun_state,
+from pipeline.geometry import (
+    compute_slope_horn_deg,
+    enu_basis,
+    get_sun_earth_moon_me_km,
+    site_position_moon_me_km,
+    topocentric_az_el,
+    utc_to_et,
 )
-from pipeline.geometry import compute_slope_horn_deg
 
 
 def generate_polar_grid_coordinates(
@@ -126,40 +133,43 @@ def compute_visibility_cube(
     sun_frac_cube = np.zeros((num_t, ny, nx), dtype=np.uint8)
     earth_frac_cube = np.zeros((num_t, ny, nx), dtype=np.uint8)
 
+    # Precompute per-cell 3D positions and topocentric ENU bases
+    cell_positions = []
+    cell_bases = []
+    for r in range(ny):
+        r_pos = []
+        r_bas = []
+        for c in range(nx):
+            c_lat = float(lat_grid[r, c])
+            c_lon = float(lon_grid[r, c])
+            c_elev = float(elev_dem_m[r, c])
+            r_pos.append(site_position_moon_me_km(c_lat, c_lon, c_elev + 1.0 + R_MOON_M))
+            r_bas.append(enu_basis(c_lat, c_lon))
+        cell_positions.append(r_pos)
+        cell_bases.append(r_bas)
+
     for t_idx, ts in enumerate(timestamps):
+        et = float(utc_to_et(ts))
+        sun_center_xyz, earth_center_xyz = get_sun_earth_moon_me_km(
+            ts, et, frame=FRAME_MOON_ME, abcorr=ABCORR_FOR_VALIDATION
+        )
+
         for r in range(ny):
             for c in range(nx):
-                cell_lat = float(lat_grid[r, c])
-                cell_lon = float(lon_grid[r, c])
-                cell_elev = float(elev_dem_m[r, c])
-
-                # Local horizon angle (default: 0.0 or from precomputed array)
+                pos = cell_positions[r][c]
+                basis = cell_bases[r][c]
                 h_el = float(horizon_el_grid_deg[r, c]) if horizon_el_grid_deg is not None else 0.5
 
                 # Topocentric Sun from cell
-                sun_state = compute_topocentric_sun_state(
-                    iso_utc_str=ts,
-                    site_lat_deg=cell_lat,
-                    site_lon_deg=cell_lon,
-                    site_elev_m=cell_elev,
-                    observer_height_m=1.0,
-                )
-                s_frac = compute_flat_horizon_disc_fraction(
-                    sun_state.el_deg - h_el, sun_state.radius_deg
-                )
+                s_az, s_el, s_range = topocentric_az_el(sun_center_xyz, pos, basis)
+                s_radius_deg = math.degrees(math.atan2(R_SUN_KM, s_range))
+                s_frac = compute_flat_horizon_disc_fraction(s_el - h_el, s_radius_deg)
                 sun_frac_cube[t_idx, r, c] = int(round(float(s_frac) * 100))
 
                 # Topocentric Earth from cell
-                earth_state = compute_topocentric_earth_state(
-                    iso_utc_str=ts,
-                    site_lat_deg=cell_lat,
-                    site_lon_deg=cell_lon,
-                    site_elev_m=cell_elev,
-                    observer_height_m=1.0,
-                )
-                e_frac = compute_flat_horizon_disc_fraction(
-                    earth_state.el_deg - h_el, earth_state.radius_deg
-                )
+                e_az, e_el, e_range = topocentric_az_el(earth_center_xyz, pos, basis)
+                e_radius_deg = math.degrees(math.atan2(R_EARTH_KM, e_range))
+                e_frac = compute_flat_horizon_disc_fraction(e_el - h_el, e_radius_deg)
                 earth_frac_cube[t_idx, r, c] = int(round(float(e_frac) * 100))
 
     cube_dict = {

@@ -187,7 +187,32 @@ def main():
     parser.add_argument("--start", type=str, default="2026-11-01T00:00:00Z")
     parser.add_argument("--end", type=str, default="2026-11-15T00:00:00Z")
     parser.add_argument("--step-minutes", type=int, default=60)
+    parser.add_argument(
+        "--allow-approximate-ephemeris",
+        action="store_true",
+        help="Allow unverified analytic approximation when SPICE kernels are missing",
+    )
     args = parser.parse_args()
+
+    from pipeline.geometry import are_kernels_loaded, load_kernels, set_allow_approximate_ephemeris
+
+    set_allow_approximate_ephemeris(args.allow_approximate_ephemeris)
+
+    meta_path = ROOT_DIR / "kernels" / "meta.tm"
+    if meta_path.exists() and not are_kernels_loaded():
+        try:
+            load_kernels(meta_path)
+        except Exception:
+            pass
+
+    if not are_kernels_loaded() and not args.allow_approximate_ephemeris:
+        print(
+            "Error: SPICE kernels are required for ephemeris calculations. "
+            f"Meta-kernel at '{meta_path}' was not loaded or kernels are missing in kernels/. "
+            "To allow analytic approximation fallback, pass --allow-approximate-ephemeris.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     with open(CONFIGS_DIR / "sites.json", "r", encoding="utf-8") as f:
         sites = json.load(f)

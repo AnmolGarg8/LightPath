@@ -199,6 +199,7 @@ export const RouteEvidenceCard: React.FC<RouteEvidenceCardProps> = ({ data, onCl
               <li><strong>Earth Disc Threshold:</strong> {(data.assumptions.min_earth_frac * 100).toFixed(0)}% visible area</li>
               <li><strong>Conservative Horizon Margin:</strong> {data.assumptions.conservative_mode ? `${data.assumptions.horizon_margin_deg.toFixed(1)}° (Active)` : 'None (Nominal)'}</li>
               <li><strong>Touchdown Dispersion Radius:</strong> ±{data.assumptions.landing_dispersion_m} m (Assumption & Parameter)</li>
+              <li><strong>Max Discretisation Timing Error:</strong> &lt; 3.0 h (&lt; 1 simulation step; conservative ceiling lookahead)</li>
             </ul>
           </div>
 

@@ -15,7 +15,7 @@
       "retrieved_on": "2026-10-29",
       "verified": false,
       "is_synthetic": true,
-      "ephemeris_source": "analytic_approximation",
+      "ephemeris_source": "spice_kernels",
       "terrain_source": "synthetic",
       "notes": "Synthetic math-generated crater for algorithm testing and verification.",
       "is_demo_site": true
@@ -23,25 +23,66 @@
   ],
   "missions": [
     {
+      "id": "synthetic-proving-lander",
+      "name": "Synthetic Proving Ground Demonstration Lander",
+      "operator": "LightPath Automated Test Harness",
+      "site_id": "synthetic-proving-ground",
+      "planned_window_start": "2026-11-01T00:00:00Z",
+      "planned_window_end": "2026-11-05T00:00:00Z",
+      "mission_window": {
+        "description": "Illustrative synthetic proving ground verification test scenario",
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-05T00:00:00Z"
+      },
+      "analysis_window": {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-05T00:00:00Z"
+      },
+      "status": "unverified_example",
+      "is_example": true,
+      "description": "Deterministic synthetic proving-ground mission test scenario exercising dynamic illumination and topocentric DTE visibility calculations.",
+      "source_links": [
+        {
+          "label": "LightPath Repository",
+          "url": "https://github.com/AnmolGarg8/LightPath"
+        }
+      ],
+      "source_label": "Synthetic Test Harness (configs/synthetic.yaml)",
+      "source_url": "https://github.com/AnmolGarg8/LightPath",
+      "retrieved_on": "2026-10-29",
+      "verified": false,
+      "notes": "Example entry (not sourced). Used to demonstrate dynamic stats computation from pipeline output."
+    },
+    {
       "id": "clps-im2-prime1",
       "name": "NASA CLPS IM-2 (PRIME-1)",
       "operator": "Intuitive Machines / NASA CLPS",
       "site_id": "shackleton-connecting-ridge",
       "planned_window_start": "2026-11-01T00:00:00Z",
       "planned_window_end": "2026-11-15T00:00:00Z",
-      "status": "planned",
-      "description": "NASA Commercial Lunar Payload Services delivery carrying the Polar Resources Ice Mining Experiment-1 (PRIME-1) to Shackleton Connecting Ridge, deploying the TRIDENT drill and MSolo mass spectrometer.",
+      "mission_window": {
+        "description": "Unverified example scenario; operational launch and landing timeline pending official NASA CLPS confirmation",
+        "start_utc": null,
+        "end_utc": null
+      },
+      "analysis_window": {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z"
+      },
+      "status": "unverified_example",
+      "is_example": true,
+      "description": "Illustrative delivery example carrying the Polar Resources Ice Mining Experiment-1 (PRIME-1) to Shackleton Connecting Ridge, deploying the TRIDENT drill and MSolo mass spectrometer.",
       "source_links": [
         {
-          "label": "NASA CLPS IM-2 Mission Overview",
+          "label": "NASA CLPS Overview (General Programmatic)",
           "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
         }
       ],
-      "source_label": "NASA Commercial Lunar Payload Services (CLPS) IM-2 / PRIME-1",
+      "source_label": "NASA CLPS Programmatic Overview",
       "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
       "retrieved_on": "2026-10-29",
       "verified": false,
-      "notes": "Prime volatile extraction candidate site at Shackleton Connecting Ridge."
+      "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
     },
     {
       "id": "clps-im1-odysseus",
@@ -50,19 +91,29 @@
       "site_id": "malapert-mountain",
       "planned_window_start": "2026-11-05T00:00:00Z",
       "planned_window_end": "2026-11-20T00:00:00Z",
-      "status": "completed",
-      "description": "First commercial landing in the lunar south-polar region near Malapert Mountain, demonstrating topocentric horizon clearance and high-elevation solar line of sight.",
+      "mission_window": {
+        "description": "Unverified example scenario; historical landing telemetry pending peer-reviewed archival citation",
+        "start_utc": null,
+        "end_utc": null
+      },
+      "analysis_window": {
+        "start_utc": "2026-11-05T00:00:00Z",
+        "end_utc": "2026-11-20T00:00:00Z"
+      },
+      "status": "unverified_example",
+      "is_example": true,
+      "description": "Illustrative example near Malapert Mountain region evaluating topocentric solar horizon clearance and Earth line-of-sight.",
       "source_links": [
         {
-          "label": "NASA CLPS IM-1 Overview",
+          "label": "NASA CLPS Overview (General Programmatic)",
           "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
         }
       ],
-      "source_label": "NASA CLPS IM-1 Mission Overview",
+      "source_label": "NASA CLPS Programmatic Overview",
       "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
       "retrieved_on": "2026-10-29",
       "verified": false,
-      "notes": "Evaluating solar horizon clearance on high-elevation south polar massifs."
+      "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
     },
     {
       "id": "viper-griffin",
@@ -71,19 +122,29 @@
       "site_id": "nobile-crater-rim",
       "planned_window_start": "2026-11-01T00:00:00Z",
       "planned_window_end": "2026-11-15T00:00:00Z",
-      "status": "planned",
-      "description": "Mobile exploration traverse across Nobile Crater Rim, evaluating 4D space-time path planning through dynamic shadow corridors and permanently shadowed regions.",
+      "mission_window": {
+        "description": "Unverified example scenario; traverse schedule pending official NASA VIPER archival release",
+        "start_utc": null,
+        "end_utc": null
+      },
+      "analysis_window": {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-15T00:00:00Z"
+      },
+      "status": "unverified_example",
+      "is_example": true,
+      "description": "Illustrative mobile rover pathfinding example across Nobile Crater Rim evaluating 4D space-time navigation through moving shadow corridors.",
       "source_links": [
         {
-          "label": "NASA VIPER Mission Overview",
+          "label": "NASA VIPER Overview (General Programmatic)",
           "url": "https://www.nasa.gov/viper/"
         }
       ],
-      "source_label": "NASA VIPER Mission Overview",
+      "source_label": "NASA VIPER Programmatic Overview",
       "source_url": "https://www.nasa.gov/viper/",
       "retrieved_on": "2026-10-29",
       "verified": false,
-      "notes": "Mobile rover pathfinding benchmark along polar crater rims."
+      "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
     }
   ],
   "candidate_sites": [

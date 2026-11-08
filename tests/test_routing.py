@@ -859,3 +859,198 @@ def test_landing_dispersion_is_deterministic():
         assert p1["coord"] == p2["coord"]
         assert p1["feasible"] == p2["feasible"]
         assert p1["arrival_h"] == p2["arrival_h"]
+
+
+def test_routing_realistic_parameters_and_moving_shadow():
+    """Requirement 3:
+    Realistic parameters: 50 m cells, 0.05 m/s, 3-hour steps (10,800 s), 25x25 grid, 33 time steps (spans 96 h).
+    - 1.2 km traverse:
+        distance = 24 cells * 50 m = 1200 m = 1.2 km.
+        continuous transit duration tau = 1200 m / 0.05 m/s = 24,000 s = 6.67 h.
+        discrete time steps = ceil(24000 / 10800) = ceil(2.222...) = 3 steps.
+        arrival step index = t0 + 3 = 3.
+        Solver does NOT exhaust the 33-step horizon (only 3 steps used, 29 steps remaining).
+    - Moving shadow band and waiting:
+        Columns 10..12 are occluded by a shadow band at step t = 1, clearing at step t = 2.
+        With allow_wait=False and zero dark budget, traverse is blocked (infeasible).
+        With allow_wait=True, rover waits 1 step at x=9 until shadow clears, completing in 9.67 h.
+    """
+    import datetime
+
+    nx, ny, num_t = 25, 25, 33
+    spacing_m = 50.0
+    speed_m_s = 0.05
+    step_dt_s = 10800.0  # 3 hours = 10,800 seconds
+
+    base_time = datetime.datetime(2026, 11, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
+    timestamps = [
+        (base_time + datetime.timedelta(seconds=i * step_dt_s)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        for i in range(num_t)
+    ]
+
+    # 1. Baseline unconstrained 1.2 km traverse
+    sun_frac = np.full((num_t, ny, nx), 100, dtype=np.uint8)
+    earth_frac = np.full((num_t, ny, nx), 100, dtype=np.uint8)
+    slope_deg = np.zeros((ny, nx), dtype=np.float64)
+    traversable = np.ones((ny, nx), dtype=bool)
+
+    cube_clear = {
+        "grid": {"origin": [0.0, -89.0], "spacing_m": spacing_m, "nx": nx, "ny": ny},
+        "time_utc": timestamps,
+        "sun_frac": sun_frac.tolist(),
+        "earth_frac": earth_frac.tolist(),
+        "slope_deg": slope_deg.tolist(),
+        "traversable": traversable.tolist(),
+        "flags": [],
+    }
+
+    res_clear = plan_lunar_traverse(
+        visibility_cube=cube_clear,
+        start_coord=(0, 12),
+        end_coord=(24, 12),
+        start_time_idx=0,
+        speed_m_s=speed_m_s,
+        max_slope_deg=15.0,
+        min_sun_frac=0.50,
+        min_earth_frac=0.50,
+        allow_wait=False,
+    )
+
+    assert res_clear["feasible"] is True
+    assert res_clear["metrics"]["total_distance_m"] == 1200.0
+    # tau = 1200 / 0.05 = 24,000 s = 6.666... h => 6.67 h
+    assert abs(res_clear["metrics"]["duration_h"] - 6.67) <= 0.01
+    # Discrete step arrival is t0 + ceil(24000 / 10800) = 3
+    assert res_clear["path"][-1]["t"] == 3
+    assert len(res_clear["path"]) == 25  # start + 24 steps
+    # Horizon verification: only 3 of 33 steps used; 29 steps of horizon remain!
+    assert res_clear["path"][-1]["t"] < num_t - 20
+
+    # 2. Moving shadow band across ridge corridor:
+    # A ridge corridor along row 12 is bounded by steep slopes/obstacles at other rows.
+    # At step t = 1, a moving shadow band blocks columns 10..13 along row 12.
+    # At step t = 2, the shadow band has moved off and row 12 is fully illuminated.
+    traversable_corridor = np.zeros((ny, nx), dtype=bool)
+    traversable_corridor[12, :] = True
+
+    sun_frac_shadow = np.full((num_t, ny, nx), 100, dtype=np.uint8)
+    sun_frac_shadow[1, 12, 10:14] = 0  # blocked by shadow band at step 1 across the corridor
+
+    cube_shadow = dict(cube_clear)
+    cube_shadow["traversable"] = traversable_corridor.tolist()
+    cube_shadow["sun_frac"] = sun_frac_shadow.tolist()
+
+    # (a) Without waiting: cannot bypass moving shadow along corridor
+    res_no_wait = plan_lunar_traverse(
+        visibility_cube=cube_shadow,
+        start_coord=(0, 12),
+        end_coord=(24, 12),
+        start_time_idx=0,
+        speed_m_s=speed_m_s,
+        max_slope_deg=15.0,
+        min_sun_frac=0.50,
+        min_earth_frac=0.50,
+        dark_budget_h=0.0,
+        allow_wait=False,
+    )
+    assert res_no_wait["feasible"] is False
+
+    # (b) With waiting enabled: rover pauses at x=9 until shadow moves off at step 2, then crosses
+    res_waited = plan_lunar_traverse(
+        visibility_cube=cube_shadow,
+        start_coord=(0, 12),
+        end_coord=(24, 12),
+        start_time_idx=0,
+        speed_m_s=speed_m_s,
+        max_slope_deg=15.0,
+        min_sun_frac=0.50,
+        min_earth_frac=0.50,
+        dark_budget_h=0.0,
+        allow_wait=True,
+    )
+    assert res_waited["feasible"] is True
+    # Waiting adds 1 discrete step (10,800 s = 3.0 h): 24,000 + 10,800 = 34,800 s = 9.67 h
+    assert abs(res_waited["metrics"]["duration_h"] - 9.67) <= 0.01
+    assert res_waited["metrics"]["dark_duration_h"] == 0.0
+    # Check that a wait action occurred in the path (same x,y with t increment)
+    coords = [(p["x"], p["y"]) for p in res_waited["path"]]
+    assert len(coords) > len(set(coords)), "Path must contain a waiting waypoint at identical spatial position"
+
+
+def test_move_step_ratios_exact_substep_multistep():
+    """Requirement 4:
+    Verifies step discretisation for:
+    1. Exactly 1.0 step per move: spacing 100m, speed 0.1 m/s => tau = 1000s; step = 1000s.
+    2. Exactly 0.4 steps per move: spacing 40m, speed 0.1 m/s => tau = 400s; step = 1000s.
+    3. Exactly 3.2 steps per move: spacing 320m, speed 0.1 m/s => tau = 3200s; step = 1000s.
+    Asserts exact numerical and waypoint parity with TypeScript solver.
+    """
+    import datetime
+
+    base_time = datetime.datetime(2026, 11, 1, 0, 0, 0, tzinfo=datetime.timezone.utc)
+    step_dt_s = 1000.0
+
+    # 1. Exactly 1.0 step per move
+    ts1 = [(base_time + datetime.timedelta(seconds=i * step_dt_s)).strftime("%Y-%m-%dT%H:%M:%SZ") for i in range(6)]
+    cube1 = {
+        "grid": {"origin": [0.0, -89.0], "spacing_m": 100.0, "nx": 4, "ny": 1},
+        "time_utc": ts1,
+        "sun_frac": np.full((6, 1, 4), 100, dtype=np.uint8).tolist(),
+        "earth_frac": np.full((6, 1, 4), 100, dtype=np.uint8).tolist(),
+        "slope_deg": np.zeros((1, 4), dtype=np.float64).tolist(),
+        "traversable": np.ones((1, 4), dtype=bool).tolist(),
+        "flags": [],
+    }
+    res1 = plan_lunar_traverse(cube1, (0, 0), (3, 0), start_time_idx=0, speed_m_s=0.1, allow_wait=False)
+    assert res1["feasible"] is True
+    assert abs(res1["metrics"]["duration_h"] - 0.83) <= 0.01
+    assert res1["path"] == [
+        {"x": 0, "y": 0, "t": 0},
+        {"x": 1, "y": 0, "t": 1},
+        {"x": 2, "y": 0, "t": 2},
+        {"x": 3, "y": 0, "t": 3},
+    ]
+
+    # 2. Exactly 0.4 steps per move (sub-step accumulation)
+    ts2 = [(base_time + datetime.timedelta(seconds=i * step_dt_s)).strftime("%Y-%m-%dT%H:%M:%SZ") for i in range(6)]
+    cube2 = {
+        "grid": {"origin": [0.0, -89.0], "spacing_m": 40.0, "nx": 6, "ny": 1},
+        "time_utc": ts2,
+        "sun_frac": np.full((6, 1, 6), 100, dtype=np.uint8).tolist(),
+        "earth_frac": np.full((6, 1, 6), 100, dtype=np.uint8).tolist(),
+        "slope_deg": np.zeros((1, 6), dtype=np.float64).tolist(),
+        "traversable": np.ones((1, 6), dtype=bool).tolist(),
+        "flags": [],
+    }
+    res2 = plan_lunar_traverse(cube2, (0, 0), (5, 0), start_time_idx=0, speed_m_s=0.1, allow_wait=False)
+    assert res2["feasible"] is True
+    assert abs(res2["metrics"]["duration_h"] - 0.56) <= 0.01
+    assert res2["path"] == [
+        {"x": 0, "y": 0, "t": 0},
+        {"x": 1, "y": 0, "t": 1},
+        {"x": 2, "y": 0, "t": 1},
+        {"x": 3, "y": 0, "t": 2},
+        {"x": 4, "y": 0, "t": 2},
+        {"x": 5, "y": 0, "t": 2},
+    ]
+
+    # 3. Exactly 3.2 steps per move (multi-step jumps)
+    ts3 = [(base_time + datetime.timedelta(seconds=i * step_dt_s)).strftime("%Y-%m-%dT%H:%M:%SZ") for i in range(15)]
+    cube3 = {
+        "grid": {"origin": [0.0, -89.0], "spacing_m": 320.0, "nx": 4, "ny": 1},
+        "time_utc": ts3,
+        "sun_frac": np.full((15, 1, 4), 100, dtype=np.uint8).tolist(),
+        "earth_frac": np.full((15, 1, 4), 100, dtype=np.uint8).tolist(),
+        "slope_deg": np.zeros((1, 4), dtype=np.float64).tolist(),
+        "traversable": np.ones((1, 4), dtype=bool).tolist(),
+        "flags": [],
+    }
+    res3 = plan_lunar_traverse(cube3, (0, 0), (3, 0), start_time_idx=0, speed_m_s=0.1, allow_wait=False)
+    assert res3["feasible"] is True
+    assert abs(res3["metrics"]["duration_h"] - 2.67) <= 0.01
+    assert res3["path"] == [
+        {"x": 0, "y": 0, "t": 0},
+        {"x": 1, "y": 0, "t": 4},
+        {"x": 2, "y": 0, "t": 7},
+        {"x": 3, "y": 0, "t": 10},
+    ]

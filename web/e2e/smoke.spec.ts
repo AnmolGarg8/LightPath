@@ -69,7 +69,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     const verifiedPanel = page.locator('[data-testid="what-is-verified-panel"]');
     await expect(verifiedPanel).toBeVisible();
     await expect(page.locator('[data-testid="live-count-passed"]')).toContainText('Passed');
-    await expect(page.locator('[data-testid="live-count-not-run"]')).toContainText('3 Not Run');
+    await expect(page.locator('[data-testid="live-count-not-run"]')).toContainText('2 Not Run');
     await expect(verifiedPanel).toContainText('V3');
     await expect(verifiedPanel).toContainText('V4');
     await expect(verifiedPanel).toContainText('V7');
@@ -167,6 +167,14 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
       console.log(`Navigating to header link: ${link.name}...`);
       const linkEl = page.locator(link.selector).first();
       await expect(linkEl).toBeVisible();
+
+      const isDisabled = await linkEl.getAttribute('aria-disabled');
+      if (isDisabled === 'true') {
+        console.log(`Header link ${link.name} is disabled as expected (< 2 analysed sites).`);
+        await expect(linkEl).toHaveAttribute('aria-disabled', 'true');
+        continue;
+      }
+
       await linkEl.click();
       await page.waitForTimeout(1000);
       await verifyPageState(link.name);

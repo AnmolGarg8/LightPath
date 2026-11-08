@@ -27,7 +27,9 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
     document.documentElement.setAttribute('data-theme', nextTheme);
   };
 
-  const { demoSiteId, secondSiteId } = useSiteCatalog();
+  const { catalog, demoSiteId, secondSiteId } = useSiteCatalog();
+  const analysableSitesCount = catalog?.sites?.length ?? 0;
+  const canCompareSites = analysableSitesCount >= 2;
 
   const navLinks = [
     { href: '#/', label: 'Mission Browser' },
@@ -128,10 +130,45 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
           className="desktop-nav"
         >
           {navLinks.map((link) => {
+            const isCompare = link.label === 'Compare Sites';
+            const isDisabled = isCompare && !canCompareSites;
+            const disabledReason = `Compare Sites is disabled: requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`;
+
             const isActive =
               link.href === '#/'
                 ? currentRoute === '/' || currentRoute === ''
                 : currentRoute.startsWith(link.href.replace('#', ''));
+
+            if (isDisabled) {
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-disabled="true"
+                  title={disabledReason}
+                  onClick={(e) => e.preventDefault()}
+                  style={{
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 500,
+                    color: 'var(--text-muted)',
+                    opacity: 0.45,
+                    cursor: 'not-allowed',
+                    padding: '0.4rem 0',
+                    borderBottom: '2px solid transparent',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    textDecoration: 'none',
+                  }}
+                >
+                  {link.label}
+                  <span style={{ fontSize: '0.65rem', padding: '0.05rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(148, 163, 184, 0.2)' }}>
+                    (needs 2 sites)
+                  </span>
+                </a>
+              );
+            }
+
             return (
               <a
                 key={link.href}
@@ -188,21 +225,49 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
             gap: '0.75rem',
           }}
         >
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                fontSize: 'var(--text-sm)',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                textDecoration: 'none',
-              }}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isCompare = link.label === 'Compare Sites';
+            const isDisabled = isCompare && !canCompareSites;
+            if (isDisabled) {
+              return (
+                <span
+                  key={link.href}
+                  style={{
+                    fontSize: 'var(--text-sm)',
+                    fontWeight: 600,
+                    color: 'var(--text-muted)',
+                    opacity: 0.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.2rem 0',
+                  }}
+                  title={`Compare Sites requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`}
+                >
+                  <span>{link.label}</span>
+                  <span style={{ fontSize: '0.7rem', padding: '0.1rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(148, 163, 184, 0.2)' }}>
+                    Disabled (needs 2 sites)
+                  </span>
+                </span>
+              );
+            }
+
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  fontSize: 'var(--text-sm)',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  textDecoration: 'none',
+                }}
+              >
+                {link.label}
+              </a>
+            );
+          })}
           <button
             type="button"
             onClick={() => {

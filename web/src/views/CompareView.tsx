@@ -215,6 +215,24 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
     ctx.restore();
   }, [horizonA, horizonB]);
 
+  if (siteAId === siteBId) {
+    return (
+      <div className="container" style={{ padding: '2rem 1rem' }}>
+        <Card style={{ padding: '2rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem', color: 'var(--text-main)' }}>
+            Compare Sites Unavailable
+          </div>
+          <div style={{ color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 1.5rem auto', lineHeight: 1.5 }}>
+            Comparison requires at least two distinct analysed sites in index.json. Currently, only 1 site is available in the catalog. Multi-site comparative trade studies will activate once a second site is processed by the pipeline.
+          </div>
+          <a href="#/" className="btn btn-primary" style={{ display: 'inline-flex', padding: '0.5rem 1rem' }}>
+            ← Return to Mission Browser
+          </a>
+        </Card>
+      </div>
+    );
+  }
+
   if (error) {
     return <ValidationErrorPage error={error} onRetry={() => window.location.reload()} />;
   }

@@ -191,6 +191,9 @@ def plan_lunar_traverse(
         visited_states += 1
         f, g, cx, cy, ct = heapq.heappop(open_heap)
 
+        if g > cost_so_far.get((cx, cy, ct), g) + 1e-9:
+            continue
+
         if (cx, cy) == (gx, gy):
             goal_node = (cx, cy, ct)
             break
@@ -212,20 +215,27 @@ def plan_lunar_traverse(
                    (not traversable_grid[ny_cell, cx] or slope_grid[ny_cell, cx] > max_slope_deg):
                     continue
 
-            # Time calculation
+            # Time calculation: discretise accumulated transit time via ceiling (round-up)
             if move_dist_m == 0.0:
                 transit_s = step_dt_s
-                nt = ct + 1
             else:
                 transit_s = move_dist_m / speed_m_s
-                dt_steps = max(1, int(round(transit_s / step_dt_s)))
-                nt = ct + dt_steps
+
+            new_g = g + transit_s
+            dt_steps = math.ceil(round(new_g / step_dt_s, 9)) if new_g > 0.0 else 0
+            nt = start_time_idx + dt_steps
 
             if nt >= num_t:
                 continue  # Exceeds simulation horizon
 
-            # Dynamic lighting and link constraints at target arrival time
-            s_frac = sun_frac_cube[nt, ny_cell, nx_cell] / 100.0
+            # Dynamic lighting and link constraints: interval check in conservative mode, arrival step in nominal mode
+            if eff_margin > 0.0:
+                s_frac = min(sun_frac_cube[t, ny_cell, nx_cell] for t in range(ct, nt + 1)) / 100.0
+                e_frac = min(earth_frac_cube[t, ny_cell, nx_cell] for t in range(ct, nt + 1)) / 100.0
+            else:
+                s_frac = sun_frac_cube[nt, ny_cell, nx_cell] / 100.0
+                e_frac = earth_frac_cube[nt, ny_cell, nx_cell] / 100.0
+
             is_dark = (s_frac - eff_margin) < min_sun_frac
             current_dark_s = dark_so_far.get((cx, cy, ct), 0.0)
             if is_dark:
@@ -234,7 +244,6 @@ def plan_lunar_traverse(
                 if current_dark_s + transit_s > (dark_budget_h * 3600.0 + 1e-6):
                     continue  # Exceeds allowable darkness budget
 
-            e_frac = earth_frac_cube[nt, ny_cell, nx_cell] / 100.0
             if e_frac < min_earth_frac:
                 continue
 
@@ -461,6 +470,9 @@ def compute_departure_window_map(
             visited += 1
             f, g, cx, cy, ct = heapq.heappop(open_heap)
 
+            if g > cost_so_far.get((cx, cy, ct), g) + 1e-9:
+                continue
+
             if (cx, cy) == (gx, gy):
                 goal_node = (cx, cy, ct)
                 break
@@ -480,13 +492,15 @@ def compute_departure_window_map(
                        (not traversable_grid[ny_c, cx] or slope_grid[ny_c, cx] > max_slope_deg):
                         continue
 
+                # Time calculation: discretise accumulated transit time via ceiling (round-up)
                 if move_dist_m == 0.0:
                     transit_s = step_dt_s
-                    nt = ct + 1
                 else:
                     transit_s = move_dist_m / speed_m_s
-                    dt_steps = max(1, int(round(transit_s / step_dt_s)))
-                    nt = ct + dt_steps
+
+                new_g = g + transit_s
+                dt_steps = math.ceil(round(new_g / step_dt_s, 9)) if new_g > 0.0 else 0
+                nt = dep_t + dt_steps
 
                 if nt >= num_t:
                     continue

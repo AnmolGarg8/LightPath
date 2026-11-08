@@ -3,9 +3,10 @@ import { AlertTriangle, Info } from 'lucide-react';
 
 interface Props {
   isSynthetic: boolean;
+  ephemerisSource?: string;
 }
 
-export const DisclaimerBanner: React.FC<Props> = ({ isSynthetic }) => {
+export const DisclaimerBanner: React.FC<Props> = ({ isSynthetic, ephemerisSource }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem' }}>
       {/* Non-Negotiable Operational Disclaimer */}
@@ -29,6 +30,32 @@ export const DisclaimerBanner: React.FC<Props> = ({ isSynthetic }) => {
           flight operations and does not certify landing or traverse safety.
         </span>
       </div>
+
+      {/* Approximate Ephemeris Banner (when running with --allow-approximate-ephemeris) */}
+      {ephemerisSource === 'analytic_approximation' && (
+        <div
+          data-testid="approximate-ephemeris-banner"
+          style={{
+            background: 'rgba(234, 179, 8, 0.15)',
+            border: '1px solid rgba(234, 179, 8, 0.4)',
+            borderLeft: '4px solid #eab308',
+            padding: '0.75rem 1rem',
+            borderRadius: '0 0.5rem 0.5rem 0',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            fontSize: '0.85rem',
+            color: '#fde047',
+          }}
+        >
+          <AlertTriangle size={18} style={{ color: '#eab308', flexShrink: 0 }} />
+          <span>
+            <strong>APPROXIMATE EPHEMERIS ACTIVE:</strong> Generated with analytic fallback ephemeris
+            (<span className="mono">ephemeris_source = &quot;analytic_approximation&quot;</span>).
+            Errors may exceed tens of degrees. Physical SPICE kernels were bypassed.
+          </span>
+        </div>
+      )}
 
       {/* Synthetic / Unverified Data Banner (Rule 3) */}
       {isSynthetic && (

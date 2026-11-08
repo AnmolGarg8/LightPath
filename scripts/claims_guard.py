@@ -15,6 +15,10 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+# Ensure UTF-8 output on Windows
+if sys.stdout and hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
 # Rule mapping: (list of forbidden phrases, required condition key in data_status.json)

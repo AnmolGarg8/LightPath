@@ -11,6 +11,8 @@ import {
   DataStatus,
   TestResultsSchema,
   TestResults,
+  StatsSchema,
+  Stats,
 } from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { LimitationsPanel } from '../components/common/LimitationsPanel';
@@ -29,6 +31,7 @@ export const HomeView: React.FC = () => {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [dataStatus, setDataStatus] = useState<DataStatus | null>(null);
   const [testResults, setTestResults] = useState<TestResults | null>(null);
+  const [siteStatsMap, setSiteStatsMap] = useState<Record<string, Stats>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -48,11 +51,24 @@ export const HomeView: React.FC = () => {
       fetchJsonData('./data/data_status.json', DataStatusSchema).catch(() => null),
       fetchJsonData('./data/test_results.json', TestResultsSchema).catch(() => null),
     ])
-      .then(([idx, mList, dStatus, tResults]) => {
+      .then(async ([idx, mList, dStatus, tResults]) => {
         setIndexData(idx);
         setMissions(mList);
         if (dStatus) setDataStatus(dStatus);
         if (tResults) setTestResults(tResults);
+
+        const statsMap: Record<string, Stats> = {};
+        await Promise.all(
+          (idx.sites || []).map(async (site) => {
+            try {
+              const st = await fetchJsonData(`./data/${site.id}/stats.json`, StatsSchema);
+              statsMap[site.id] = st;
+            } catch {
+              // No stats for site yet
+            }
+          })
+        );
+        setSiteStatsMap(statsMap);
         setLoading(false);
       })
       .catch((err) => {
@@ -186,15 +202,8 @@ export const HomeView: React.FC = () => {
   // Filter missions
   const filteredMissions = useMemo(() => {
     return missions.filter((m) => {
-      // Status filter mapping:
-      // "planned" matches "planned"
-      // "active" matches "en_route"
-      // "past" matches "completed" or "landed"
-      // "unverified" matches "unverified_placeholder"
-      if (statusFilter === 'planned' && m.status !== 'planned') return false;
-      if (statusFilter === 'active' && m.status !== 'en_route') return false;
-      if (statusFilter === 'past' && m.status !== 'completed' && m.status !== 'landed') return false;
-      if (statusFilter === 'unverified' && m.status !== 'unverified_placeholder') return false;
+      // Status filter
+      if (statusFilter !== 'all' && m.status !== statusFilter) return false;
 
       // Site filter
       if (siteFilter !== 'all' && m.site_id !== siteFilter) return false;
@@ -213,56 +222,39 @@ export const HomeView: React.FC = () => {
   const secondSite = indexData?.sites.find((s) => s.id !== demoSiteId) || indexData?.sites[1];
   const secondSiteId = secondSite?.id || demoSiteId;
 
-  // Precomputed headlines based on site parameters and planned mission window
+  // Dynamic headline computed strictly from that site's stats.json if site is in index.json
   const getMissionHeadline = (m: Mission) => {
-    if (m.site_id === 'malapert-mountain') {
+    // (a) Must be in indexData.sites
+    const siteInIndex = indexData?.sites?.some((s) => s.id === m.site_id);
+    if (!siteInIndex) {
       return {
-        available: true,
-        text: 'Longest Earth outage: 0.0 h; Time with Sun and Earth contact: 337.0 h of 360.0 h (94%)',
-        longestEarthOutage: '0.0 h',
-        sunEarthContact: '337.0 h of 360.0 h (94%)',
-      };
-    } else if (m.site_id === 'shackleton-connecting-ridge') {
-      return {
-        available: true,
-        text: 'Longest Earth outage: 12.0 h; Time with Sun and Earth contact: 184.0 h of 360.0 h (51%)',
-        longestEarthOutage: '12.0 h',
-        sunEarthContact: '184.0 h of 360.0 h (51%)',
-      };
-    } else if (m.site_id === 'nobile-crater-rim') {
-      return {
-        available: true,
-        text: 'Longest Earth outage: 18.0 h; Time with Sun and Earth contact: 142.0 h of 360.0 h (39%)',
-        longestEarthOutage: '18.0 h',
-        sunEarthContact: '142.0 h of 360.0 h (39%)',
-      };
-    } else if (m.site_id === 'synthetic-crater-rim') {
-      return {
-        available: true,
-        text: 'Longest Earth outage: 0.0 h; Time with Sun and Earth contact: 78.4 h of 360.0 h (22%)',
-        longestEarthOutage: '0.0 h',
-        sunEarthContact: '78.4 h of 360.0 h (22%)',
-      };
-    } else if (m.site_id === 'synthetic-proving-ground') {
-      return {
-        available: true,
-        text: 'Longest Earth outage: 12.0 h; Time with Sun and Earth contact: 57.2 h of 360.0 h (16%)',
-        longestEarthOutage: '12.0 h',
-        sunEarthContact: '57.2 h of 360.0 h (16%)',
-      };
-    } else if (m.site_id === 'synthetic-flat-basin') {
-      return {
-        available: true,
-        text: 'Longest Earth outage: 24.0 h; Time with Sun and Earth contact: 33.6 h of 360.0 h (9%)',
-        longestEarthOutage: '24.0 h',
-        sunEarthContact: '33.6 h of 360.0 h (9%)',
+        available: false,
+        text: 'No LightPath analysis for this site yet.',
       };
     }
+
+    // (b) Numbers come from that site's stats.json for the mission's analysis_window
+    const stats = siteStatsMap[m.site_id];
+    if (!stats) {
+      return {
+        available: false,
+        text: 'No LightPath analysis for this site yet.',
+      };
+    }
+
+    const analysisStart = m.analysis_window?.start_utc || m.planned_window_start;
+    const analysisEnd = m.analysis_window?.end_utc || m.planned_window_end;
+    const totalH = (new Date(analysisEnd).getTime() - new Date(analysisStart).getTime()) / 3600000;
+    const longestOutage = `${stats.earth.longest_outage_h.toFixed(1)} h`;
+    const contactH = stats.joint.total_uptime_h.toFixed(1);
+    const contactPct = Math.round(stats.joint.uptime_fraction * 100);
+    const contactStr = `${contactH} h of ${totalH.toFixed(1)} h (${contactPct}%)`;
+
     return {
       available: true,
-      text: 'Longest Earth outage: 12.0 h; Time with Sun and Earth contact: 68.0 h of 360.0 h (19%)',
-      longestEarthOutage: '12.0 h',
-      sunEarthContact: '68.0 h of 360.0 h (19%)',
+      text: `Longest Earth outage: ${longestOutage}; Time with Sun and Earth contact: ${contactStr}`,
+      longestEarthOutage: longestOutage,
+      sunEarthContact: contactStr,
     };
   };
 
@@ -495,55 +487,47 @@ export const HomeView: React.FC = () => {
           </div>
         </div>
 
-        {/* Verification Breakdown Grid */}
+        {/* Verification Breakdown Table dynamically fed from test_results.json */}
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '0.75rem',
+            overflowX: 'auto',
             marginBottom: '1rem',
+            border: '1px solid var(--border-color)',
+            borderRadius: '8px',
           }}
         >
-          {/* Passed Benchmarks */}
-          <div
-            style={{
-              padding: '0.75rem',
-              borderRadius: '6px',
-              backgroundColor: 'rgba(15, 23, 42, 0.6)',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#22c55e', marginBottom: '0.4rem' }}>
-              Core Physics & Horizons (PASSED)
-            </div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-              • <strong>V1 Dip:</strong> -0.0869° dip vs closed-form (0.000001° max err)<br />
-              • <strong>V2 Wall:</strong> 0.4095° vs spherical formula (0.0029° err)<br />
-              • <strong>V2b Disc:</strong> Circular segment overlap (0.0025 max err)<br />
-              • <strong>V5 Convergence:</strong> 0.00015° max error vs step size<br />
-              • <strong>V6 DSN:</strong> Goldstone, Madrid, Canberra coordinates<br />
-              • <strong>V8 Routing:</strong> Space-time traversability & shadows
-            </div>
-          </div>
-
-          {/* Pending / Not Run Benchmarks */}
-          <div
-            style={{
-              padding: '0.75rem',
-              borderRadius: '6px',
-              backgroundColor: 'rgba(15, 23, 42, 0.6)',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#94a3b8', marginBottom: '0.4rem' }}>
-              Pending External Fixtures (NOT RUN)
-            </div>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-              • <strong>V3 Horizons:</strong> <span style={{ color: '#94a3b8', fontWeight: 600 }}>NOT RUN</span> (awaits fixture horizons_*.csv)<br />
-              • <strong>V4 Published Study:</strong> <span style={{ color: '#94a3b8', fontWeight: 600 }}>NOT RUN</span> (awaits published_*.json)<br />
-              • <strong>V7 Independent Ephem:</strong> <span style={{ color: '#94a3b8', fontWeight: 600 }}>NOT RUN</span> (awaits independent_*.json)
-            </div>
-          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.825rem' }}>
+            <thead>
+              <tr style={{ backgroundColor: 'rgba(15, 23, 42, 0.8)', borderBottom: '1px solid var(--border-color)', textAlign: 'left' }}>
+                <th style={{ padding: '0.6rem 0.75rem', fontWeight: 600 }}>Code</th>
+                <th style={{ padding: '0.6rem 0.75rem', fontWeight: 600 }}>Benchmark Name</th>
+                <th style={{ padding: '0.6rem 0.75rem', fontWeight: 600 }}>Status</th>
+                <th style={{ padding: '0.6rem 0.75rem', fontWeight: 600 }}>Measured Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(testResults?.checks || []).map((c) => (
+                <tr
+                  key={c.code}
+                  style={{
+                    borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                    backgroundColor: c.status === 'passed' ? 'rgba(34, 197, 94, 0.02)' : 'rgba(148, 163, 184, 0.02)',
+                  }}
+                >
+                  <td style={{ padding: '0.5rem 0.75rem', fontWeight: 700, color: 'var(--color-blue)' }}>{c.code}</td>
+                  <td style={{ padding: '0.5rem 0.75rem', fontWeight: 600 }}>{c.name}</td>
+                  <td style={{ padding: '0.5rem 0.75rem' }}>
+                    <Badge variant={c.status === 'passed' ? 'success' : 'neutral'} size="sm">
+                      {c.status === 'passed' ? 'PASS' : 'NOT RUN'}
+                    </Badge>
+                  </td>
+                  <td style={{ padding: '0.5rem 0.75rem', color: c.status === 'passed' ? 'var(--text-main)' : 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                    {c.measured_value || c.skip_reason || 'Pending external fixture'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {/* Footer Link to Trust Page */}
@@ -583,10 +567,10 @@ export const HomeView: React.FC = () => {
           <div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0 0 0.25rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Rocket size={22} style={{ color: 'var(--color-blue)' }} />
-              <span>Commercial Lunar Deliveries (CLPS Mission Browser)</span>
+              <span>Commercial Lunar Deliveries (Example entries (not sourced))</span>
             </h2>
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Explore planned, active, and completed lunar south-polar missions with computed illumination and DTE contact windows.
+              Explore example south-polar mission delivery scenarios. Operational dates and milestones are unverified example parameters for demonstration only.
             </div>
           </div>
 
@@ -610,11 +594,8 @@ export const HomeView: React.FC = () => {
                   cursor: 'pointer',
                 }}
               >
-                <option value="all">All Statuses</option>
-                <option value="planned">Planned</option>
-                <option value="active">Active (En Route)</option>
-                <option value="past">Past (Completed)</option>
-                <option value="unverified">Unverified</option>
+                <option value="all">All Entries</option>
+                <option value="unverified_example">Example entries (not sourced)</option>
               </select>
             </div>
 
@@ -680,22 +661,13 @@ export const HomeView: React.FC = () => {
                   <div>
                     {/* Top Badges */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                      <Badge
-                        variant={m.status === 'en_route' ? 'info' : m.status === 'completed' ? 'neutral' : 'warning'}
-                        size="sm"
-                      >
-                        {m.status.toUpperCase()}
+                      <Badge variant="warning" size="sm" icon={<AlertTriangle size={12} />}>
+                        Example entry (not sourced)
                       </Badge>
 
-                      {m.verified ? (
-                        <Badge variant="success" size="sm" icon={<CheckCircle2 size={12} />}>
-                          Verified
-                        </Badge>
-                      ) : (
-                        <Badge variant="warning" size="sm" icon={<AlertTriangle size={12} />}>
-                          Unverified
-                        </Badge>
-                      )}
+                      <Badge variant="neutral" size="sm">
+                        Unverified
+                      </Badge>
                     </div>
 
                     {/* Mission Name & Operator */}
@@ -704,7 +676,7 @@ export const HomeView: React.FC = () => {
                       Operator: <strong>{m.operator}</strong>
                     </div>
 
-                    {/* Planned Window */}
+                    {/* Analysis Window */}
                     <div
                       style={{
                         display: 'flex',
@@ -717,7 +689,7 @@ export const HomeView: React.FC = () => {
                     >
                       <Calendar size={14} />
                       <span>
-                        Window: {m.planned_window_start.slice(0, 10)} to {m.planned_window_end.slice(0, 10)}
+                        Analysis Window: {m.analysis_window ? `${m.analysis_window.start_utc.slice(0, 10)} to ${m.analysis_window.end_utc.slice(0, 10)}` : `${m.planned_window_start.slice(0, 10)} to ${m.planned_window_end.slice(0, 10)} (illustrative)`}
                       </span>
                     </div>
 
@@ -725,8 +697,8 @@ export const HomeView: React.FC = () => {
                     <div
                       style={{
                         padding: '0.5rem 0.75rem',
-                        background: 'rgba(56, 189, 248, 0.08)',
-                        borderLeft: '3px solid var(--color-blue)',
+                        background: headline.available ? 'rgba(56, 189, 248, 0.08)' : 'rgba(148, 163, 184, 0.08)',
+                        borderLeft: headline.available ? '3px solid var(--color-blue)' : '3px solid var(--border-color)',
                         borderRadius: 'var(--radius-xs)',
                         fontSize: '0.8rem',
                         lineHeight: 1.4,
@@ -734,7 +706,9 @@ export const HomeView: React.FC = () => {
                         color: 'var(--text-main)',
                       }}
                     >
-                      <strong style={{ display: 'block', marginBottom: '0.25rem', color: '#38bdf8' }}>Mission Window Headline:</strong>
+                      <strong style={{ display: 'block', marginBottom: '0.25rem', color: headline.available ? '#38bdf8' : 'var(--text-muted)' }}>
+                        Mission Window Headline:
+                      </strong>
                       {headline.available ? (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                           <div data-testid="mission-headline-outage">
@@ -747,7 +721,9 @@ export const HomeView: React.FC = () => {
                           </div>
                         </div>
                       ) : (
-                        <div>{headline.text}</div>
+                        <div data-testid="mission-headline-unavailable" style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                          {headline.text}
+                        </div>
                       )}
                     </div>
 

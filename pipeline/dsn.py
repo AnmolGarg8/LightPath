@@ -18,17 +18,21 @@ import spiceypy as spice
 import yaml
 
 from pipeline.constants import (
+    ABCORR_FOR_VALIDATION,
     DEFAULT_DSN_MIN_ELEVATION_DEG,
     DEFAULT_MIN_EARTH_FRAC,
     FRAME_EARTH_IAU,
-    FRAME_EARTH_ITRF93,
     R_MOON_KM,
 )
 from pipeline.ephemeris import (
     greenwich_mean_sidereal_time_deg,
     utc_iso_to_julian_date,
 )
-from pipeline.geometry import are_kernels_loaded, utc_to_et
+from pipeline.geometry import (
+    are_kernels_loaded,
+    get_allow_approximate_ephemeris,
+    utc_to_et,
+)
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_DSN_CONFIG_PATH = ROOT_DIR / "configs" / "dsn_stations.yaml"
@@ -153,7 +157,7 @@ def moon_elevation_at_station(
     utc_times: Sequence[str],
     limb: bool = False,
     min_elevation_deg: Optional[float] = None,
-    earth_frame: str = FRAME_EARTH_ITRF93,
+    earth_frame: str = FRAME_EARTH_IAU,
 ) -> np.ndarray:
     """Calculate the topocentric elevation of the Moon above a DSN ground station horizon.
 
@@ -189,10 +193,10 @@ def moon_elevation_at_station(
                 # Try requested frame, fallback to IAU_EARTH if ITRF93 not in kernel
                 frame_to_use = earth_frame
                 try:
-                    moon_pos_earth, _ = spice.spkpos("MOON", et, frame_to_use, "LT+S", "EARTH")
+                    moon_pos_earth, _ = spice.spkpos("MOON", et, frame_to_use, ABCORR_FOR_VALIDATION, "EARTH")
                 except Exception:
                     frame_to_use = FRAME_EARTH_IAU
-                    moon_pos_earth, _ = spice.spkpos("MOON", et, frame_to_use, "LT+S", "EARTH")
+                    moon_pos_earth, _ = spice.spkpos("MOON", et, frame_to_use, ABCORR_FOR_VALIDATION, "EARTH")
 
                 v_topo = moon_pos_earth - r_st
                 dist_km = float(np.linalg.norm(v_topo))
@@ -213,6 +217,13 @@ def moon_elevation_at_station(
                 continue
             except Exception:
                 pass
+
+        if not get_allow_approximate_ephemeris():
+            raise RuntimeError(
+                "SPICE kernels are required for DSN ground station calculations. "
+                "Furnish kernels/meta.tm or provide required kernels. "
+                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+            )
 
         # Analytical fallback via GMST
         jd = utc_iso_to_julian_date(ts)
@@ -302,3 +313,30 @@ def dte_available(
     dte_active = site_sees_earth & any_station_sees_moon
 
     return dte_active, per_station_flags
+
+
+def check_dsn_ground_station_visibility(
+    iso_utc_str: str,
+    station_mask_el_deg: float = DEFAULT_DSN_MIN_ELEVATION_DEG,
+    earth_frame: str = FRAME_EARTH_IAU,
+) -> Tuple[List[str], List[bool]]:
+    """Determine which DSN Earth stations have line-of-sight to the Moon.
+
+    Uses SPICE in IAU_EARTH frame with ABCORR_FOR_VALIDATION when kernels are loaded.
+    Uses analytical GMST fallback only if explicitly permitted.
+    """
+    stations, _ = load_dsn_stations()
+    station_names = [str(st.get("name", st.get("id", ""))) for st in stations]
+    station_visible: List[bool] = []
+
+    for st in stations:
+        mask = float(st.get("min_elevation_deg", station_mask_el_deg))
+        els = moon_elevation_at_station(
+            st,
+            [iso_utc_str],
+            limb=False,
+            earth_frame=earth_frame,
+        )
+        station_visible.append(bool(els[0] >= mask))
+
+    return station_names, station_visible

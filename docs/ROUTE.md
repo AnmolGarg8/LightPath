@@ -29,13 +29,36 @@ From state $(x, y, t)$, the rover may execute:
    $$d = \begin{cases} s_{\text{grid}} & \text{orthogonal} \\ s_{\text{grid}}\sqrt{2} & \text{diagonal} \end{cases}$$
    Transit duration:
    $$\tau = \frac{d}{v_{\text{rover}}}$$
-   Discrete time step increment:
-   $$\Delta t = \max\left(1, \operatorname{round}\left(\frac{\tau}{\Delta t_{\text{step}}}\right)\right)$$
-   Next state: $(x + \Delta x, y + \Delta y, t + \Delta t)$.
+   Accumulated transit duration from departure at $t_0$:
+   $$g_{\text{new}} = g + \tau$$
 
 2. **Wait in Place (if enabled)**:
-   $$(\Delta x, \Delta y) = (0, 0), \quad \Delta t = 1, \quad \tau = \Delta t_{\text{step}}$$
-   Next state: $(x, y, t + 1)$.
+   $$(\Delta x, \Delta y) = (0, 0), \quad \tau = \Delta t_{\text{step}}, \quad g_{\text{new}} = g + \Delta t_{\text{step}}$$
+
+### Time Discretisation & Lookahead Epoch Formulation
+
+In both the Python reference solver (`pipeline.routing`) and the client-side TypeScript solver (`web/src/workers/routeWorker.ts`), time is discretised **identically** by tracking continuous accumulated transit duration $g$ from departure index $t_0$, and mapping to the discrete time step index $t$ using **round-up (ceiling)**:
+
+$$t = \begin{cases} t_0 & \text{if } g_{\text{new}} = 0 \\ t_0 + \left\lceil \operatorname{round}\left(\frac{g_{\text{new}}}{\Delta t_{\text{step}}}, 9\right) \right\rceil & \text{if } g_{\text{new}} > 0 \end{cases}$$
+
+Next state is $(x + \Delta x, y + \Delta y, t)$.
+
+#### Rationale for Round-Up (Ceiling) Discretisation
+1. **Conservative Lookahead Safety (Anti-Shadow Clipping):**
+   Environmental fields (solar illumination fraction and Earth line-of-sight visibility) are sampled at discrete raster cube timestamps $T[t] = T[t_0] + t \cdot \Delta t_{\text{step}}$. When a rover transits over continuous interval $(g - \tau, g]$, using `floor` would evaluate environmental safety at $t_0 + \lfloor g / \Delta t_{\text{step}} \rfloor$ (the backward/start epoch), falsely assuming the terrain remains illuminated even if a moving shadow band encroaches before arrival. Using `ceiling` evaluates environmental validity at the forward bounding epoch $t = t_0 + \lceil g / \Delta t_{\text{step}} \rceil$, guaranteeing that the rover only commits to entering a cell if that cell is safe and illuminated upon arrival.
+2. **Prevention of Step-Horizon Exhaustion on Sub-Step Moves:**
+   At typical lunar rover exploration parameters ($s_{\text{grid}} = 50\text{ m}$, $v = 0.05\text{ m/s}$, $\Delta t_{\text{step}} = 3\text{ hours} = 10,800\text{ s}$), each cell transition takes $\tau = 1,000\text{ s} \approx 0.0926$ time steps. If a solver increments $t$ by at least 1 discrete step per move (as an uncoupled step model would), moving 33 grid cells ($1.65\text{ km}$, $\approx 9.16\text{ h}$) would artificially advance $t$ by 33 steps ($99\text{ hours}$), prematurely exhausting the entire simulation horizon! By accumulating continuous transit time $g$ and taking the ceiling, a $1.2\text{ km}$ traverse ($24,000\text{ s} = 6.67\text{ h}$) consumes exactly $\lceil 24,000 / 10,800 \rceil = 3$ discrete steps, leaving 30 steps of simulation horizon available.
+3. **Exact Waiting Semantics:**
+   A wait action has $\tau = \Delta t_{\text{step}}$. Because $g_{\text{new}} = g + \Delta t_{\text{step}}$, the ratio $g_{\text{new}} / \Delta t_{\text{step}} = g / \Delta t_{\text{step}} + 1.0$. Thus $\lceil g_{\text{new}} / \Delta t_{\text{step}} \rceil = \lceil g / \Delta t_{\text{step}} \rceil + 1$, advancing the discrete time index by exactly 1 step without drift.
+4. **Floating-Point Guard:**
+   Before applying ceiling, the ratio is rounded to 9 decimal places (`math.ceil(round(new_g / step_dt_s, 9))` in Python; `Math.ceil(Math.round((newG / stepDtS) * 1e9) / 1e9)` in TypeScript) to prevent IEEE 754 precision noise (e.g. $10800.000000000002 / 10800 \to 1.0000000000000002$) from erroneously pushing a 1.0-step transition into step 2.
+
+#### Discretisation Timing Error Bound
+The difference between the discrete evaluation epoch $t \cdot \Delta t_{\text{step}}$ and true continuous transit time $g$ is:
+$$\Delta \tau_{\text{error}} = \left\lceil \frac{g}{\Delta t_{\text{step}}} \right\rceil \Delta t_{\text{step}} - g$$
+Because $0 \le \lceil u \rceil - u < 1$ for all real $u$, the timing error satisfies the strict analytical bound:
+$$0 \le \Delta \tau_{\text{error}} < \Delta t_{\text{step}}$$
+For the default simulation parameter ($\Delta t_{\text{step}} = 3.0\text{ hours} = 10,800\text{ s}$), the maximum timing discretisation error is strictly less than 1 time step ($< 3.0\text{ hours}$). It is always non-negative, representing a conservative forward buffer against advancing shadows.
 
 ### Diagonal Corner-Cutting Prevention
 To ensure physical plausibility, diagonal transitions through the apex of two impassable obstacles are strictly forbidden:

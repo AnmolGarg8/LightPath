@@ -1,40 +1,87 @@
 [
   {
-    "id": "lola_south_pole_ldem_80s_120m",
-    "name": "TODO_LOLA_SOUTH_POLE_120M_PLACEHOLDER",
-    "description": "LRO LOLA South Pole Elevation Model 80S to 90S (120m/pixel polar stereographic). Human operator: fill verified NASA PGDA/PDS URL.",
-    "source": "NASA GSFC Planetary Geodesy Data Archive / PDS Geosciences Node",
-    "licence": "Public Domain (NASA open data)",
-    "url": "TODO_FILL_OFFICIAL_PDS_OR_PGDA_URL_E_G_HTTPS_PGDA_GSFC_NASA_GOV",
-    "sha256": "TODO_FILL_OFFICIAL_SHA256_CHECKSUM",
-    "local_path": "data/raw/LDEM_80S_120M.IMG",
-    "format": "PDS_IMG",
-    "supports_http_range": false,
-    "size_mb": 1100.0,
-    "bounds": {
-      "min_lat_deg": -90.0,
-      "max_lat_deg": -80.0,
-      "min_lon_deg": -180.0,
-      "max_lon_deg": 180.0
-    }
+    "file": "data/raw/LDEM_80S_80MPP_ADJ.TIF",
+    "description": "LOLA South Pole DEM (80\u00b0S to 90\u00b0S, 80 m/pixel, co-registered and adjusted), far layer full raster",
+    "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF",
+    "sha256": "82030dcbdd7c4bb0c7d858e9b4b293b9f2cda5a543ba31ec0f42784bd6beee5a",
+    "size_bytes": 189158392,
+    "format": "GeoTIFF",
+    "projection": "South Polar Stereographic (IAU:30135, sphere R=1737400 m)",
+    "bounds": [
+      -304000.0,
+      -304000.0,
+      304000.0,
+      304000.0
+    ],
+    "pixel_size_m": [
+      80.0,
+      80.0
+    ],
+    "rows": 7600,
+    "cols": 7600,
+    "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
+    "data_doi": "10.60903/gsfcpgda-lola-spole"
   },
   {
-    "id": "lola_south_pole_cog_placeholder",
-    "name": "TODO_CLOUD_OPTIMIZED_GEOTIFF_SOUTH_POLE_PLACEHOLDER",
-    "description": "Cloud-Optimized GeoTIFF (COG) for windowed HTTP range reads. Human operator: fill verified URL.",
-    "source": "USGS Astrogeology / Planetary Computer / NASA PDS",
-    "licence": "Public Domain (NASA open data)",
-    "url": "TODO_FILL_OFFICIAL_COG_URL_IF_AVAILABLE",
-    "sha256": "TODO_FILL_OFFICIAL_SHA256_CHECKSUM",
-    "local_path": "data/raw/lola_south_pole_cog.tif",
-    "format": "COG",
-    "supports_http_range": true,
-    "size_mb": 2400.0,
-    "bounds": {
-      "min_lat_deg": -90.0,
-      "max_lat_deg": -85.0,
-      "min_lon_deg": -180.0,
-      "max_lon_deg": 180.0
-    }
+    "file": "data/raw/near_test_location.tif",
+    "description": "LOLA South Pole DEM (20 m/pixel, co-registered and adjusted), near layer cropped window (80 km x 80 km) for test location",
+    "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF",
+    "parent_file": "LDEM_80S_20MPP_ADJ.TIF",
+    "site_id": "test_location",
+    "crop_window": {
+      "col_off": 13200,
+      "row_off": 12442,
+      "width": 4000,
+      "height": 4000
+    },
+    "sha256": "ca7159a5c3be561f3606f46fa852d0df6968d4ef691efbfcf014d02b8a6d56df",
+    "size_bytes": 54989936,
+    "format": "GeoTIFF",
+    "projection": "South Polar Stereographic (IAU:30135, sphere R=1737400 m)",
+    "bounds": [
+      -40000.0,
+      -24840.0,
+      40000.0,
+      55160.0
+    ],
+    "pixel_size_m": [
+      20.0,
+      20.0
+    ],
+    "rows": 4000,
+    "cols": 4000,
+    "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
+    "data_doi": "10.60903/gsfcpgda-lola-spole"
+  },
+  {
+    "file": "data/raw/err_test_location.tif",
+    "description": "LOLA South Pole surface height error raster (20 m/pixel, 1-sigma uncertainty), near layer cropped window (80 km x 80 km) for test location",
+    "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_ERR.TIF",
+    "parent_file": "LDEM_80S_20MPP_ADJ_ERR.TIF",
+    "site_id": "test_location",
+    "crop_window": {
+      "col_off": 13200,
+      "row_off": 12442,
+      "width": 4000,
+      "height": 4000
+    },
+    "sha256": "8ccdd1ba0763f0462781afd511bd8c108634a2f3ad33ed46436f02dbbaa2174e",
+    "size_bytes": 54319151,
+    "format": "GeoTIFF",
+    "projection": "South Polar Stereographic (IAU:30135, sphere R=1737400 m)",
+    "bounds": [
+      -40000.0,
+      -24840.0,
+      40000.0,
+      55160.0
+    ],
+    "pixel_size_m": [
+      20.0,
+      20.0
+    ],
+    "rows": 4000,
+    "cols": 4000,
+    "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
+    "data_doi": "10.60903/gsfcpgda-lola-spole"
   }
 ]
