@@ -1025,11 +1025,23 @@ def run_pipeline(
         "has_horizons_fixture": has_horizons_fixture,
         "has_peer_reviewed_benchmark": has_peer_reviewed,
     }
-    (ROOT_DIR / "data").mkdir(exist_ok=True)
-    with open(ROOT_DIR / "data" / "data_status.json", "w", encoding="utf-8") as f:
-        json.dump(data_status, f, indent=2)
     with open(out_base / "data_status.json", "w", encoding="utf-8") as f:
         json.dump(data_status, f, indent=2)
+
+    # Only update root data/data_status.json if this is a production run writing to web/public/data
+    if out_base.resolve() == (ROOT_DIR / "web" / "public" / "data").resolve():
+        index_file = out_base / "index.json"
+        if index_file.exists():
+            try:
+                with open(index_file, "r", encoding="utf-8") as f_idx:
+                    idx_doc = json.load(f_idx)
+                if any(s.get("terrain_source") == "lola_dem" and not s.get("is_synthetic", True) for s in idx_doc.get("sites", [])):
+                    data_status["has_lola_dem"] = True
+            except Exception:
+                pass
+        (ROOT_DIR / "data").mkdir(exist_ok=True)
+        with open(ROOT_DIR / "data" / "data_status.json", "w", encoding="utf-8") as f:
+            json.dump(data_status, f, indent=2)
 
     # 7. Export test results
     test_results_path = ROOT_DIR / "tests" / "results.json"
