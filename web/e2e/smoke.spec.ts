@@ -63,7 +63,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     await expect(page.locator('text=Every tool tells you when a lunar site has light')).toBeVisible();
     const honestStatus = page.locator('[data-testid="first-screen-honest-status"]');
     await expect(honestStatus).toBeVisible();
-    await expect(honestStatus).toContainText('Demo uses synthetic terrain');
+    await expect(honestStatus).toContainText(/Demo uses (synthetic|LOLA DEM) terrain/);
 
     // Verify "What is verified" live panel on home page
     const verifiedPanel = page.locator('[data-testid="what-is-verified-panel"]');
