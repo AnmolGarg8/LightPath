@@ -117,6 +117,17 @@ def main():
 
     log("\nAll 5 proposed kernels confirmed in official NAIF listings. Proceeding with download...\n")
 
+    # Load existing kernels.json if present to preserve existing retrieved_on timestamps
+    existing_records = {}
+    kernels_json_path = KERNELS_DIR / "kernels.json"
+    if kernels_json_path.exists():
+        try:
+            with open(kernels_json_path, "r", encoding="utf-8") as f:
+                for item in json.load(f):
+                    existing_records[item["name"]] = item
+        except Exception:
+            pass
+
     # 2. Download kernels
     kernel_records = []
     for k in PROPOSED_KERNELS:
@@ -125,7 +136,12 @@ def main():
         size_bytes = download_file(k["url"], dest_path, log)
         sha = compute_sha256(dest_path)
         log(f"  SHA-256: {sha}")
-        retrieval_date = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+        existing = existing_records.get(k["name"], {})
+        if existing and existing.get("sha256") == sha and existing.get("size_bytes") == size_bytes:
+            retrieval_date = existing.get("retrieved_on")
+        else:
+            retrieval_date = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
         kernel_records.append({
             "name": k["name"],
@@ -138,10 +154,14 @@ def main():
             "verified": False  # per Rule 2, requires human verification
         })
 
-    # 3. Write kernels/kernels.json
+    # 3. Write kernels/kernels.json (only if changed, always with LF newline)
     kernels_json_path = KERNELS_DIR / "kernels.json"
-    kernels_json_path.write_text(json.dumps(kernel_records, indent=2), encoding="utf-8")
-    log(f"\nWrote manifest with real checksums to {kernels_json_path.relative_to(ROOT)}")
+    new_content = json.dumps(kernel_records, indent=2) + "\n"
+    if not kernels_json_path.exists() or kernels_json_path.read_text(encoding="utf-8") != new_content:
+        kernels_json_path.write_text(new_content, encoding="utf-8", newline="\n")
+        log(f"\nWrote manifest with real checksums to {kernels_json_path.relative_to(ROOT)}")
+    else:
+        log(f"\nManifest {kernels_json_path.relative_to(ROOT)} is up to date (no changes needed).")
 
     # 4. Regenerate kernels/meta.tm via scripts/make_meta_kernel.py
     log("\nRegenerating kernels/meta.tm via scripts/make_meta_kernel.py...")
