@@ -124,6 +124,7 @@ def test_provenance_rejects_checksum_mismatch(tmp_path):
         validate_provenance_files_exist(prov_corrupted, root=tmp_path)
 
 
+@pytest.mark.requires_kernels
 def test_committed_provenance_files_exist_and_hashes_match():
     """Verify that every provenance.json in web/public/data references only existing files with exact SHA-256."""
     data_dir = ROOT_DIR / "web" / "public" / "data"
