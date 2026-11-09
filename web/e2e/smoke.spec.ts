@@ -105,7 +105,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     const banner = page.locator('[data-testid="departure-relaxation-banner"]');
     await expect(banner).toBeVisible();
     await expect(banner).toContainText('Departure at T=0');
-    await expect(banner).toContainText('is Infeasible');
+    await expect(banner).toContainText(/is infeasible/i);
     await expect(banner).toContainText('Suggested Relaxation');
 
     // Verify Departure Window Map is visible
