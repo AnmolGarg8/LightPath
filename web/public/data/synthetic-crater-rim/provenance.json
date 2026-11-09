@@ -1,20 +1,14 @@
 {
   "datasets": [
     {
-      "name": "dem_crater_fine.tif",
-      "version": "1.0",
-      "source_url": "data/processed/synthetic/dem_crater_fine.tif",
-      "file_path": "data/processed/synthetic/dem_crater_fine.tif",
-      "size_bytes": 5776301,
-      "sha256": "09b4733262640666955b0c737bfe5c2f1197fdc84291ce67e03e4c0d969cd153"
-    },
-    {
-      "name": "dem_crater_medium.tif",
-      "version": "1.0",
-      "source_url": "data/processed/synthetic/dem_crater_medium.tif",
-      "file_path": "data/processed/synthetic/dem_crater_medium.tif",
-      "size_bytes": 7858701,
-      "sha256": "583d11907da62225dd5d4d9a26e42c55396e2456906d19d17315a903aa2de45f"
+      "name": "none (synthetic)",
+      "version": "none (synthetic)",
+      "source_url": "none (synthetic)",
+      "generator": "pipeline.synthetic",
+      "parameters": {
+        "synthetic_feature": "crater"
+      },
+      "code_version": "0.1.0"
     }
   ],
   "kernels": [

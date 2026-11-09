@@ -81,10 +81,10 @@ def build_dataset_provenance(
 ) -> List[Dict[str, Any]]:
     """Build dataset provenance only from files that actually exist.
 
-    If no real file exists on disk, returns an honest 'none (synthetic)' record.
+    If no real file exists on disk or if terrain is synthetic, returns an honest 'none (synthetic)' record.
     """
     records: List[Dict[str, Any]] = []
-    if layer_paths:
+    if not is_synthetic and layer_paths:
         for p in layer_paths:
             path_obj = Path(p)
             if not path_obj.is_absolute():

@@ -8,6 +8,7 @@ from pathlib import Path
 
 import jsonschema
 import pytest
+import yaml
 
 from pipeline.run import compute_file_sha256, run_pipeline
 
@@ -127,7 +128,7 @@ def test_binary_visibility_cube_structure():
 
 
 @pytest.mark.requires_kernels
-def test_v6_determinism_byte_identical():
+def test_v6_determinism_byte_identical(tmp_path):
     """V6 Determinism: Two repeated synthetic runs must yield byte-identical data files.
 
     Strict separation requirement: All simulation data files (horizon, series, stats,
@@ -135,27 +136,42 @@ def test_v6_determinism_byte_identical():
     Only run_info.json carries execution-time metadata.
     """
     config_path = CONFIGS_DIR / "synthetic.yaml"
+    with open(config_path, "r", encoding="utf-8") as f:
+        cfg_data = yaml.safe_load(f)
+
+    run1_dir = tmp_path / "run1"
+    run2_dir = tmp_path / "run2"
+
+    cfg_data["output_dir"] = str(run1_dir)
+    tmp_cfg1 = tmp_path / "synthetic_run1.yaml"
+    with open(tmp_cfg1, "w", encoding="utf-8") as f:
+        yaml.dump(cfg_data, f)
+
+    cfg_data["output_dir"] = str(run2_dir)
+    tmp_cfg2 = tmp_path / "synthetic_run2.yaml"
+    with open(tmp_cfg2, "w", encoding="utf-8") as f:
+        yaml.dump(cfg_data, f)
 
     # Run 1 (forced recompute)
-    run_pipeline(config_path, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
+    run_pipeline(tmp_cfg1, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
 
     # Collect hashes
     hashes_run1 = {}
-    for root, _, files in os.walk(DATA_DIR):
+    for root, _, files in os.walk(run1_dir):
         for file in files:
             p = Path(root) / file
-            rel = str(p.relative_to(DATA_DIR)).replace("\\", "/")
+            rel = str(p.relative_to(run1_dir)).replace("\\", "/")
             if not rel.endswith("run_info.json") and not rel.endswith(".cache_key"):
                 hashes_run1[rel] = compute_file_sha256(p)
 
     # Run 2 (forced recompute)
-    run_pipeline(config_path, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
+    run_pipeline(tmp_cfg2, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
 
     hashes_run2 = {}
-    for root, _, files in os.walk(DATA_DIR):
+    for root, _, files in os.walk(run2_dir):
         for file in files:
             p = Path(root) / file
-            rel = str(p.relative_to(DATA_DIR)).replace("\\", "/")
+            rel = str(p.relative_to(run2_dir)).replace("\\", "/")
             if not rel.endswith("run_info.json") and not rel.endswith(".cache_key"):
                 hashes_run2[rel] = compute_file_sha256(p)
 
