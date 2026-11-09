@@ -7,6 +7,7 @@ If TypeScript and Python disagree on any vector, the build fails.
 
 import json
 import math
+import os
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -116,15 +117,19 @@ def test_generate_and_verify_vectors():
     vector_dip_2m = next(v for v in data["dip_vectors"] if v["observer_height_m"] == 2.0)
     assert math.isclose(vector_dip_2m["expected_dip_deg"], -0.086937, abs_tol=1e-4)
 
-    # Save to tests/vectors.json
-    VECTORS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(VECTORS_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    # Save to tests/vectors.json and web fixtures only if requested or missing
+    if not VECTORS_FILE.exists() or not (WEB_FIXTURES_DIR / "vectors.json").exists() or os.environ.get("LIGHTPATH_UPDATE_RESULTS") == "1":
+        VECTORS_FILE.parent.mkdir(parents=True, exist_ok=True)
+        with open(VECTORS_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
 
-    # Also save to web fixtures directory for Vitest consumption
-    WEB_FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
-    with open(WEB_FIXTURES_DIR / "vectors.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+        WEB_FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
+        with open(WEB_FIXTURES_DIR / "vectors.json", "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+    else:
+        with open(VECTORS_FILE, "r", encoding="utf-8") as f:
+            existing = json.load(f)
+        assert len(existing.get("elevation_vectors", [])) == len(data["elevation_vectors"])
 
     assert VECTORS_FILE.exists()
     assert (WEB_FIXTURES_DIR / "vectors.json").exists()

@@ -207,8 +207,6 @@ def test_provenance_schema():
             "disc_quadrature_tol": 1e-4
         },
         "tests_summary": {
-            "tests_passed": 24,
-            "tests_total": 24,
             "last_verified_utc": "2026-10-29T12:00:00Z"
         }
     }

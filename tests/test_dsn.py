@@ -26,6 +26,7 @@ def test_load_dsn_stations():
         assert st.get("verified") is False  # Confirms Rule 2 placeholder status
 
 
+@pytest.mark.requires_kernels
 def test_synthetic_stations_sub_moon_vs_antipodal():
     """Synthetic station geometry test:
 
@@ -79,6 +80,7 @@ def test_synthetic_stations_sub_moon_vs_antipodal():
     assert el_anti < -70.0
 
 
+@pytest.mark.requires_kernels
 def test_moon_elevation_limb_offset():
     """Verify that limb=True lowers the apparent elevation by the lunar angular radius."""
     station = {"id": "test_st", "name": "Test Station", "lat_deg": 35.0, "lon_deg": -116.0}
@@ -92,6 +94,7 @@ def test_moon_elevation_limb_offset():
     assert 0.24 <= diff <= 0.28
 
 
+@pytest.mark.requires_kernels
 def test_dte_available_joint_logic():
     """Verify dte_available satisfies logical AND of site visibility and ground station visibility."""
     times = [f"2026-11-01T{h:02d}:00:00Z" for h in range(4)]

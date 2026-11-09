@@ -28,11 +28,22 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "web" / "public" / "data"
 
 
-def test_data_export_execution():
-    """Verify export_all_datasets produces a complete catalog with 14 files."""
-    catalog = export_all_datasets()
-    assert catalog["total_files"] == 14
-    assert len(catalog["files"]) == 14
+def test_data_export_execution(tmp_path):
+    """Verify export_all_datasets produces a complete catalog without modifying tracked files."""
+    import shutil
+
+    web_tmp = tmp_path / "web"
+    proc_tmp = tmp_path / "proc"
+    web_tmp.mkdir(parents=True)
+    proc_tmp.mkdir(parents=True)
+
+    # Copy site folder and index.json to temporary test directory
+    shutil.copytree(DATA_DIR / "synthetic-proving-ground", web_tmp / "synthetic-proving-ground")
+    shutil.copy(DATA_DIR / "index.json", web_tmp / "index.json")
+
+    catalog = export_all_datasets(processed_dir=proc_tmp, web_public_dir=web_tmp)
+    assert catalog["total_files"] == 4
+    assert len(catalog["files"]) == 4
     assert catalog["license_data"] == "CC-BY-4.0"
     assert catalog["license_code"] == "MIT"
 

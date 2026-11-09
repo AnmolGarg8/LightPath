@@ -130,7 +130,7 @@ def export_site_windows(
 
 
 def write_csv(dest_path: Path, rows: List[Dict[str, Any]]) -> None:
-    """Write rows to RFC 4180 compliant CSV."""
+    """Write rows to RFC 4180 compliant CSV with explicit LF line endings."""
     dest_path.parent.mkdir(parents=True, exist_ok=True)
     fieldnames = [
         "site_id",
@@ -147,7 +147,7 @@ def write_csv(dest_path: Path, rows: List[Dict[str, Any]]) -> None:
         "provenance_hash",
     ]
     with open(dest_path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -186,19 +186,21 @@ def export_all_datasets(
     processed_dir: Path = Path("data/processed"),
     web_public_dir: Path = Path("web/public/data"),
 ) -> Dict[str, Any]:
-    """Execute complete export across all sites, syncing processed and web directories."""
+    """Execute complete export across analysed sites, syncing processed and web directories."""
     all_rows: List[Dict[str, Any]] = []
     catalog_files: List[Dict[str, Any]] = []
 
-    # 1. Discover all site folders
-    sites = [
-        "synthetic-proving-ground",
-        "synthetic-flat-basin",
-        "synthetic-crater-rim",
-        "shackleton-connecting-ridge",
-        "malapert-mountain",
-        "nobile-crater-rim",
-    ]
+    # 1. Discover analysed sites from index.json, falling back to synthetic-proving-ground
+    index_file = web_public_dir / "index.json"
+    if index_file.exists():
+        try:
+            with open(index_file, "r", encoding="utf-8") as f:
+                idx_data = json.load(f)
+            sites = [s["id"] for s in idx_data.get("sites", [])]
+        except Exception:
+            sites = ["synthetic-proving-ground"]
+    else:
+        sites = ["synthetic-proving-ground"]
 
     for site_id in sites:
         site_proc_dir = web_public_dir / site_id
@@ -264,6 +266,9 @@ def export_all_datasets(
     web_all_csv = web_public_dir / "all_sites_windows.csv"
     web_all_parquet = web_public_dir / "all_sites_windows.parquet"
 
+    num_sites = len({r["site_id"] for r in all_rows})
+    site_desc_count = f"{num_sites} lunar site" if num_sites == 1 else f"{num_sites} lunar sites"
+
     # Prepend consolidated files to catalog
     consolidated_entries = [
         {
@@ -275,7 +280,7 @@ def export_all_datasets(
             "sha256": file_sha256(web_all_parquet),
             "rows": len(all_rows),
             "license": "CC-BY-4.0",
-            "description": "Consolidated visibility windows across all 6 lunar sites (Parquet format with embedded metadata).",
+            "description": f"Consolidated visibility windows across {site_desc_count} (Parquet format with embedded metadata).",
         },
         {
             "site_id": "all-sites",
@@ -286,7 +291,7 @@ def export_all_datasets(
             "sha256": file_sha256(web_all_csv),
             "rows": len(all_rows),
             "license": "CC-BY-4.0",
-            "description": "Consolidated visibility windows across all 6 lunar sites (standard RFC 4180 CSV).",
+            "description": f"Consolidated visibility windows across {site_desc_count} (standard RFC 4180 CSV).",
         },
     ]
 
@@ -306,8 +311,9 @@ def export_all_datasets(
     }
 
     catalog_path = web_public_dir / "data_catalog.json"
-    with open(catalog_path, "w", encoding="utf-8") as f:
+    with open(catalog_path, "w", newline="\n", encoding="utf-8") as f:
         json.dump(catalog, f, indent=2)
+        f.write("\n")
 
     return catalog
 

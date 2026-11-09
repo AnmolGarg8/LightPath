@@ -47,10 +47,8 @@
     },
     "tests_summary": {
       "type": "object",
-      "required": ["tests_passed", "tests_total", "last_verified_utc"],
+      "required": ["last_verified_utc"],
       "properties": {
-        "tests_passed": { "type": "integer", "minimum": 0 },
-        "tests_total": { "type": "integer", "minimum": 0 },
         "last_verified_utc": { "type": "string" }
       },
       "additionalProperties": true

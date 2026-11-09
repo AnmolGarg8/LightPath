@@ -146,32 +146,48 @@ def build_kernel_provenance(kernel_paths: Optional[List[Path]] = None) -> List[D
 
 
 def validate_provenance_files_exist(prov: Dict[str, Any], root: Optional[Path] = None) -> None:
-    """Validation test: fails if any provenance entry names a file that does not exist on disk."""
+    """Validation test: fails if any provenance entry names a file that does not exist or has a mismatched checksum."""
     base_dir = root or ROOT_DIR
 
     for d in prov.get("datasets", []):
         name = d.get("name", "")
         file_path = d.get("file_path")
+        p = None
         if file_path:
             p = base_dir / file_path if not Path(file_path).is_absolute() else Path(file_path)
-            if not p.exists():
+            if not p.exists() or not p.is_file():
                 raise FileNotFoundError(f"Provenance dataset entry names non-existent file_path: {file_path}")
         elif name != "none (synthetic)" and name.endswith((".tif", ".tiff", ".img", ".dem")):
             p = base_dir / name if not Path(name).is_absolute() else Path(name)
-            if not p.exists():
+            if not p.exists() or not p.is_file():
                 raise FileNotFoundError(f"Provenance dataset entry names non-existent file: {name}")
+
+        if p and p.exists() and p.is_file():
+            expected_hash = d.get("sha256") or d.get("checksum")
+            if expected_hash and expected_hash != "none (synthetic)":
+                actual_hash = compute_file_sha256(p)
+                if actual_hash.lower() != expected_hash.lower():
+                    raise ValueError(f"Provenance dataset checksum mismatch for '{p}': expected {expected_hash}, calculated {actual_hash}")
 
     for k in prov.get("kernels", []):
         name = k.get("name", "")
         file_path = k.get("file_path")
+        p = None
         if file_path:
             p = base_dir / file_path if not Path(file_path).is_absolute() else Path(file_path)
-            if not p.exists():
+            if not p.exists() or not p.is_file():
                 raise FileNotFoundError(f"Provenance kernel entry names non-existent file_path: {file_path}")
         elif name != "none (synthetic)" and name.endswith((".bsp", ".tls", ".tpc", ".bpc", ".tf")):
             p = base_dir / name if not Path(name).is_absolute() else Path(name)
-            if not p.exists():
+            if not p.exists() or not p.is_file():
                 raise FileNotFoundError(f"Provenance kernel entry names non-existent file: {name}")
+
+        if p and p.exists() and p.is_file():
+            expected_hash = k.get("checksum") or k.get("sha256")
+            if expected_hash and expected_hash != "none (synthetic)":
+                actual_hash = compute_file_sha256(p)
+                if actual_hash.lower() != expected_hash.lower():
+                    raise ValueError(f"Provenance kernel checksum mismatch for '{p}': expected {expected_hash}, calculated {actual_hash}")
 
 
 def create_provenance_record(
@@ -188,7 +204,7 @@ def create_provenance_record(
         kernels: List of kernel/ephemeris records {name, checksum}.
         parameters: Deterministic simulation parameters.
         tolerances: Numerical integration tolerances.
-        tests_summary: Test verification summary {tests_passed, tests_total, last_verified_utc}.
+        tests_summary: Test verification summary {last_verified_utc}.
 
     Returns:
         Dict matching provenance schema.
@@ -216,27 +232,19 @@ def create_provenance_record(
 
     if not tests_summary:
         results_file = ROOT_DIR / "tests" / "results.json"
+        last_ver_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         if results_file.exists():
             try:
                 with open(results_file, "r", encoding="utf-8") as f:
                     res_data = json.load(f)
-                tests_summary = {
-                    "tests_passed": res_data.get("counts", {}).get("passed", 0),
-                    "tests_total": res_data.get("counts", {}).get("total", 0),
-                    "last_verified_utc": res_data.get("timestamp", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")),
-                }
+                last_ver_utc = res_data.get("timestamp", last_ver_utc)
             except Exception:
-                tests_summary = {
-                    "tests_passed": 0,
-                    "tests_total": 0,
-                    "last_verified_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                }
-        else:
-            tests_summary = {
-                "tests_passed": 0,
-                "tests_total": 0,
-                "last_verified_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            }
+                pass
+        tests_summary = {
+            "last_verified_utc": last_ver_utc,
+        }
+    else:
+        tests_summary = {k: v for k, v in tests_summary.items() if k not in ("tests_passed", "tests_total")}
 
     prov_record = {
         "datasets": datasets,

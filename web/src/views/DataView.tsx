@@ -227,13 +227,11 @@ export const DataView: React.FC = () => {
               }}
             >
               <option value="ALL">All Datasets ({catalog.files.length})</option>
-              <option value="all-sites">Consolidated (All Sites)</option>
-              <option value="shackleton-connecting-ridge">Shackleton Connecting Ridge</option>
-              <option value="malapert-mountain">Malapert Mountain</option>
-              <option value="nobile-crater-rim">Nobile Crater Rim</option>
-              <option value="synthetic-proving-ground">Synthetic Proving Ground</option>
-              <option value="synthetic-flat-basin">Synthetic Flat Basin</option>
-              <option value="synthetic-crater-rim">Synthetic Crater Rim</option>
+              {Array.from(new Set(catalog.files.map((f) => f.site_id))).map((sid) => (
+                <option key={sid} value={sid}>
+                  {sid === 'all-sites' ? 'Consolidated (All Sites)' : sid}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -432,7 +430,7 @@ export const DataView: React.FC = () => {
                 <td style={{ padding: '0.65rem 0.5rem', fontFamily: 'monospace', fontWeight: 600 }}>site_id</td>
                 <td style={{ padding: '0.65rem 0.5rem' }}>string</td>
                 <td style={{ padding: '0.65rem 0.5rem' }}>Alphanumeric slug</td>
-                <td style={{ padding: '0.65rem 0.5rem' }}>Site or region identifier (e.g. <code>shackleton-connecting-ridge</code>)</td>
+                <td style={{ padding: '0.65rem 0.5rem' }}>Site or region identifier (e.g. <code>synthetic-proving-ground</code>)</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <td style={{ padding: '0.65rem 0.5rem', fontFamily: 'monospace', fontWeight: 600 }}>target</td>

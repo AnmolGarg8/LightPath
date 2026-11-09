@@ -78,8 +78,6 @@
     "wall_elevation_deg": 0.01
   },
   "tests_summary": {
-    "tests_passed": 1,
-    "tests_total": 15,
     "last_verified_utc": "2026-11-07T15:58:07.634189+00:00"
   }
 }

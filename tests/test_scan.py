@@ -10,6 +10,7 @@ Complies with docs/PROJECT_RULES.md:
 import math
 
 import numpy as np
+import pytest
 
 from pipeline.cube import compute_visibility_cube
 from pipeline.scan import (
@@ -17,6 +18,8 @@ from pipeline.scan import (
     compute_scan_summary,
     generate_scan_sentence,
 )
+
+pytestmark = pytest.mark.requires_kernels
 
 
 def test_one_cell_scan_equals_main_result():

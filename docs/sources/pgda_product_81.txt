@@ -1,35 +1,35 @@
-<!DOCTYPE html><html><head><title>PGDA - South Pole LOLA DEM Mosaic</title><meta name="description" content="South Pole LOLA DEM Mosaic"><meta name="keywords" content="Moon,topography,LOLA"><meta name="author" content="Michael Kenneth Barker"><meta http-equiv="Content-type" content="text/html; charset=utf-8"><meta http-equiv="Content-Language" content="en-us"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="google-site-verification" content="I-ztB4vbSwp-cGZxueCvt4N7BCsjv_bUkA3HSDwicgU"><meta name="keywords" content="PGDA, planetary, planetary geodynamics, Geology, Geophysics, Geochemistry, Laboratory, NASA, Planetary Geology, Planetary Geophysics, Planetary Geochemistry"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><link rel="icon" type="image/png" href="/images/fav.ico"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/utilities/pushy-master/css/pushy.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/utilities/font-awesome-4.6.3/css/font-awesome.min.css"><script src="/utilities/jquery/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/common.js"></script><script language="javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA"></script><link rel="stylesheet" href="/css/navbar.css"><link rel="stylesheet" href="/css/slider2.css"></head><body><header class="navbar-wrapper pgda-header"><div class="container"><div class="pgda-header-floater"><a href="http://www.nasa.gov"><image src="/images/nasa-logo.png" alt="NASA Logo" class="header-nasa-logo"></image></a></div><div class="pgda-header-floater"><a href="/"><h1 class="pgda-header-h1"> <span class="nasa-txt">NASA’s </span>Planetary Geology, Geophysics and Geochemistry Laboratory</h1></a><a href="http://www.nasa.gov/goddard"><h2 class="pgda-header-h2">Goddard Space Flight Center</h2></a></div><div class="pull-right"><button class="menu-btn-container menu-btn"><span class="pgda-header-menu-button"> <i class="fa fa-bars">&nbsp;</i><span class="menu-txt">MENU</span></span></button></div></div></header><nav class="pushy pushy-right"><button class="menu-btn close-button"><i class="fa fa-times fa-2x"></i></button><ul><li class="pushy-link"><a href="/">Home</a></li><li class="pushy-link"><a href="/search">Search</a></li><li class="pushy-link"><a href="/products">Products</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=home.main&amp;navOrgCode=698">The Lab</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=people.staffList&amp;navOrgCode=698">The People</a></li></ul></nav><div class="site-overlay"></div><div class="carousel carouselsub slide"><div class="carousel-inner"><div class="item active"><div style="background: url('/images/page_thumbnails/120621121252LOLA_5mpp_87S_hillshade.jpg') center center / cover no-repeat; height:100%;"></div><div class="pgda-header-grad"></div></div></div></div><div class="pgda-main-content-area"><div class="container"><div class="row"><div class="col-xs-12 col-md-9"><h2>South Pole LOLA DEM Mosaic</h2><h4></h4><span style="margin-top: 2px">Michael Kenneth Barker</span><br><p><br>This product was constructed from 97 individual 20x20 km fields with 2 km overlaps.
-Each field was processed with the same method as the individual regions previously created see <a href="https://pgda.gsfc.nasa.gov/products/78">here</a>) and as described in Barker et al. (2021).
-The fields were then individually aligned to the original DEM with a rigid 3-D translation
-and blended together with a cosine taper weight in the overlap regions.
-The counts (ldec) and slope (ldsm) maps of the individual fields were blended in the same way.
-Hence, non-integer counts exist in the overlap regions of the final mosaicked product (solid white lines in figure).
-<br>
-Due to the track adjustment, cleaning, and tile blending procedures, this 87-90 deg mosaic product has a typical RMS residual of 30-55 cm with the individual fields (from <a href="https://pgda.gsfc.nasa.gov/products/78">here</a>).
-
-<br><br><br>
-<a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ContextMap_87S.png"><img width="33%" src="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ContextMap_87S.jpg"></a>
-
-<br>
-
-<h2>Data</h2>
-<br>
-<br>5 m/pix GeoTiffs with south polar stereographic X/Y coords in meters, MOON_ME reference frame of ephemeris DE421.
-<br>
-<br>X/Y coords follow the Generic Mapping Tools 'pixel-registered' convention (i.e., they are the centers of the pixels).
-<br>
-<br><b>ldem_87s_5mpp</b>: 3.3GB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldem_87s_5mpp.tif">GeoTIFF</a> of surface height Z (meters) with interpolation fillin
-g empty pix
-<br><b>ldem_87s_5mpp_hillshade</b>: 820MB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldem_87s_5mpp_hillshade.tif">GeoTIFF</a> hillshade of ldem
-<br><b>ldsm_87s_5mpp</b>: 4.9GB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldsm_87s_5mpp.tif">GeoTIFF</a> of surface slope (degrees)
-<br><b>ldec_87s_5mpp</b>: 140MB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldec_87s_5mpp.tif">GeoTIFF</a> of the number of LOLA returns in each pixel (count map
-)
-
-
-<br><br>
-<br><br>
-<b>Please cite the following reference when using any of these products:
-<br>
-<br>Barker et al., 2021, "Improved LOLA Elevation Maps for South Pole Landing Sites: Error Estimates and Their Impact on Illumination Conditions",
-Planetary &amp; Space Science, Volume 203, 1 September 2021, 105119, https://doi.org/10.1016/j.pss.2020.105119
+<!DOCTYPE html><html><head><title>PGDA - South Pole LOLA DEM Mosaic</title><meta name="description" content="South Pole LOLA DEM Mosaic"><meta name="keywords" content="Moon,topography,LOLA"><meta name="author" content="Michael Kenneth Barker"><meta http-equiv="Content-type" content="text/html; charset=utf-8"><meta http-equiv="Content-Language" content="en-us"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="google-site-verification" content="I-ztB4vbSwp-cGZxueCvt4N7BCsjv_bUkA3HSDwicgU"><meta name="keywords" content="PGDA, planetary, planetary geodynamics, Geology, Geophysics, Geochemistry, Laboratory, NASA, Planetary Geology, Planetary Geophysics, Planetary Geochemistry"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><link rel="icon" type="image/png" href="/images/fav.ico"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/utilities/pushy-master/css/pushy.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/utilities/font-awesome-4.6.3/css/font-awesome.min.css"><script src="/utilities/jquery/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/common.js"></script><script language="javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA"></script><link rel="stylesheet" href="/css/navbar.css"><link rel="stylesheet" href="/css/slider2.css"></head><body><header class="navbar-wrapper pgda-header"><div class="container"><div class="pgda-header-floater"><a href="http://www.nasa.gov"><image src="/images/nasa-logo.png" alt="NASA Logo" class="header-nasa-logo"></image></a></div><div class="pgda-header-floater"><a href="/"><h1 class="pgda-header-h1"> <span class="nasa-txt">NASA’s </span>Planetary Geology, Geophysics and Geochemistry Laboratory</h1></a><a href="http://www.nasa.gov/goddard"><h2 class="pgda-header-h2">Goddard Space Flight Center</h2></a></div><div class="pull-right"><button class="menu-btn-container menu-btn"><span class="pgda-header-menu-button"> <i class="fa fa-bars">&nbsp;</i><span class="menu-txt">MENU</span></span></button></div></div></header><nav class="pushy pushy-right"><button class="menu-btn close-button"><i class="fa fa-times fa-2x"></i></button><ul><li class="pushy-link"><a href="/">Home</a></li><li class="pushy-link"><a href="/search">Search</a></li><li class="pushy-link"><a href="/products">Products</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=home.main&amp;navOrgCode=698">The Lab</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=people.staffList&amp;navOrgCode=698">The People</a></li></ul></nav><div class="site-overlay"></div><div class="carousel carouselsub slide"><div class="carousel-inner"><div class="item active"><div style="background: url('/images/page_thumbnails/120621121252LOLA_5mpp_87S_hillshade.jpg') center center / cover no-repeat; height:100%;"></div><div class="pgda-header-grad"></div></div></div></div><div class="pgda-main-content-area"><div class="container"><div class="row"><div class="col-xs-12 col-md-9"><h2>South Pole LOLA DEM Mosaic</h2><h4></h4><span style="margin-top: 2px">Michael Kenneth Barker</span><br><p><br>This product was constructed from 97 individual 20x20 km fields with 2 km overlaps.
+Each field was processed with the same method as the individual regions previously created see <a href="https://pgda.gsfc.nasa.gov/products/78">here</a>) and as described in Barker et al. (2021).
+The fields were then individually aligned to the original DEM with a rigid 3-D translation
+and blended together with a cosine taper weight in the overlap regions.
+The counts (ldec) and slope (ldsm) maps of the individual fields were blended in the same way.
+Hence, non-integer counts exist in the overlap regions of the final mosaicked product (solid white lines in figure).
+<br>
+Due to the track adjustment, cleaning, and tile blending procedures, this 87-90 deg mosaic product has a typical RMS residual of 30-55 cm with the individual fields (from <a href="https://pgda.gsfc.nasa.gov/products/78">here</a>).
+
+<br><br><br>
+<a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ContextMap_87S.png"><img width="33%" src="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ContextMap_87S.jpg"></a>
+
+<br>
+
+<h2>Data</h2>
+<br>
+<br>5 m/pix GeoTiffs with south polar stereographic X/Y coords in meters, MOON_ME reference frame of ephemeris DE421.
+<br>
+<br>X/Y coords follow the Generic Mapping Tools 'pixel-registered' convention (i.e., they are the centers of the pixels).
+<br>
+<br><b>ldem_87s_5mpp</b>: 3.3GB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldem_87s_5mpp.tif">GeoTIFF</a> of surface height Z (meters) with interpolation fillin
+g empty pix
+<br><b>ldem_87s_5mpp_hillshade</b>: 820MB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldem_87s_5mpp_hillshade.tif">GeoTIFF</a> hillshade of ldem
+<br><b>ldsm_87s_5mpp</b>: 4.9GB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldsm_87s_5mpp.tif">GeoTIFF</a> of surface slope (degrees)
+<br><b>ldec_87s_5mpp</b>: 140MB <a href="https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/87S/ldec_87s_5mpp.tif">GeoTIFF</a> of the number of LOLA returns in each pixel (count map
+)
+
+
+<br><br>
+<br><br>
+<b>Please cite the following reference when using any of these products:
+<br>
+<br>Barker et al., 2021, "Improved LOLA Elevation Maps for South Pole Landing Sites: Error Estimates and Their Impact on Illumination Conditions",
+Planetary &amp; Space Science, Volume 203, 1 September 2021, 105119, https://doi.org/10.1016/j.pss.2020.105119
 </b><!--v-html--><!--v-html--></p></div><div class="col-xs-12 col-md-3"><h2>Product Keywords</h2></div><div class="col-xs-12 col-md-3"><a href="/search?quicksearchcat=77"><span class="label label-default">Moon</span></a><a href="/search?quicksearchcat=89"><span class="label label-default">topography</span></a><a href="/search?quicksearchcat=141"><span class="label label-default">LOLA</span></a></div><!--.col-xs-12.col-md-3h2 Product Keywords--></div></div></div><footer><div class="container"><div class="pgda-footer"><img src="/images/nasa-logo.png" alt="NASA Logo" class="pgda-footer-floater footer-logo"><img src="/images/nasa-goddard-logo.png" alt="NASA Goddard Logo" class="pgda-footer-floater footer-goddard-logo"><div class="pgda-footer-right"><div class="pgda-footer-group"><p> <a href="http://www.nasa.gov/about/highlights/HP_Privacy.html">Privacy Policy and Important Notices</a></p><p><a href="http://www.nasa.gov/multimedia/guidelines/index.html">Reproduction Guidelines</a></p></div><div class="pgda-footer-group"><p>NASA Official: <a href="http://science.gsfc.nasa.gov/sed/bio/erwan.m.mazarico">Erwan Mazarico</a></p><p>Curator: <a href="http://science.gsfc.nasa.gov/sed/bio/erwan.m.mazarico">Erwan Mazarico</a></p><p>Web Master: <a href="http://science.gsfc.nasa.gov/sed/bio/benjamin.e.pelletier">Benjamin Pelletier</a></p></div></div></div></div></footer><script src="/utilities/pushy-master/js/pushy.min.js"></script></body></html>

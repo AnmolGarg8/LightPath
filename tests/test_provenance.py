@@ -104,3 +104,35 @@ def test_provenance_rejects_nonexistent_files():
     prov_synthetic = create_provenance_record()
     validate_provenance_files_exist(prov_synthetic)
 
+
+def test_provenance_rejects_checksum_mismatch(tmp_path):
+    """Verify that validate_provenance_files_exist fails if an existing file has a corrupted checksum."""
+    fake_kernel = tmp_path / "fake_kernel.tls"
+    fake_kernel.write_text("KPL/FK\nFAKE", encoding="utf-8")
+
+    prov_corrupted = {
+        "datasets": [],
+        "kernels": [
+            {
+                "name": fake_kernel.name,
+                "file_path": str(fake_kernel),
+                "checksum": "0000000000000000000000000000000000000000000000000000000000000000",
+            }
+        ],
+    }
+    with pytest.raises(ValueError, match="checksum mismatch"):
+        validate_provenance_files_exist(prov_corrupted, root=tmp_path)
+
+
+def test_committed_provenance_files_exist_and_hashes_match():
+    """Verify that every provenance.json in web/public/data references only existing files with exact SHA-256."""
+    data_dir = ROOT_DIR / "web" / "public" / "data"
+    prov_files = list(data_dir.rglob("provenance.json"))
+    assert len(prov_files) > 0, "No provenance.json files found"
+
+    for pf in prov_files:
+        with open(pf, "r", encoding="utf-8") as f:
+            prov = json.load(f)
+        validate_provenance_files_exist(prov, root=ROOT_DIR)
+
+

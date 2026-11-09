@@ -1,189 +1,189 @@
-<!DOCTYPE html><html><head><title>PGDA - A New View of the Lunar South Pole from LOLA</title><meta name="description" content="A New View of the Lunar South Pole from LOLA"><meta name="keywords" content="Moon,LOLA,topography"><meta name="author" content="Michael Kenneth Barker"><meta http-equiv="Content-type" content="text/html; charset=utf-8"><meta http-equiv="Content-Language" content="en-us"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="google-site-verification" content="I-ztB4vbSwp-cGZxueCvt4N7BCsjv_bUkA3HSDwicgU"><meta name="keywords" content="PGDA, planetary, planetary geodynamics, Geology, Geophysics, Geochemistry, Laboratory, NASA, Planetary Geology, Planetary Geophysics, Planetary Geochemistry"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><link rel="icon" type="image/png" href="/images/fav.ico"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/utilities/pushy-master/css/pushy.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/utilities/font-awesome-4.6.3/css/font-awesome.min.css"><script src="/utilities/jquery/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/common.js"></script><script language="javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA"></script><link rel="stylesheet" href="/css/navbar.css"><link rel="stylesheet" href="/css/slider2.css"></head><body><header class="navbar-wrapper pgda-header"><div class="container"><div class="pgda-header-floater"><a href="http://www.nasa.gov"><image src="/images/nasa-logo.png" alt="NASA Logo" class="header-nasa-logo"></image></a></div><div class="pgda-header-floater"><a href="/"><h1 class="pgda-header-h1"> <span class="nasa-txt">NASA’s </span>Planetary Geology, Geophysics and Geochemistry Laboratory</h1></a><a href="http://www.nasa.gov/goddard"><h2 class="pgda-header-h2">Goddard Space Flight Center</h2></a></div><div class="pull-right"><button class="menu-btn-container menu-btn"><span class="pgda-header-menu-button"> <i class="fa fa-bars">&nbsp;</i><span class="menu-txt">MENU</span></span></button></div></div></header><nav class="pushy pushy-right"><button class="menu-btn close-button"><i class="fa fa-times fa-2x"></i></button><ul><li class="pushy-link"><a href="/">Home</a></li><li class="pushy-link"><a href="/search">Search</a></li><li class="pushy-link"><a href="/products">Products</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=home.main&amp;navOrgCode=698">The Lab</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=people.staffList&amp;navOrgCode=698">The People</a></li></ul></nav><div class="site-overlay"></div><div class="carousel carouselsub slide"><div class="carousel-inner"><div class="item active"><div style="background: url('/images/page_thumbnails/030525040304SpoleSplash.jpg') center center / cover no-repeat; height:100%;"></div><div class="pgda-header-grad"></div></div></div></div><div class="pgda-main-content-area"><div class="container"><div class="row"><div class="col-xs-12 col-md-9"><h2>A New View of the Lunar South Pole from LOLA</h2><h4></h4><span style="margin-top: 2px">Michael Kenneth Barker</span><br><p><h3><u>Large-Area DEMs</u></h3>
-
-<div><br></div>All TIF files are cloud-optimized GeoTiffs (<a href="https://www.cogeo.org/" target="_blank">COG</a>s) with south polar stereographic X/Y coordinates in meters and in the MOON_ME reference frame of the JPL DE421 ephemeris.<div><br></div><div>Filename format: PREFIX_LAT_PIX_STEMS.TIF</div><div><br></div><div>where PREFIX gives the data type (LDEM, LDEC, LDSM, LDRM, or LPSR), LAT gives the latitude limit (80S, 83S, 75S or&nbsp;</div><div>60S), PIX gives the pixel scale in meters per pixel (e.g., 10MPP, 20MPP, 30MPP, 40MPP, 60MPP, etc.), and STEMS&nbsp;</div><div>is an additional identifier (e.g., ADJ, ADJ_ERR, ADJ_HILL, ADJ_EFFRES, ADJ_ROUGH_100M, etc.).</div><div><br></div>
-
-<div>For example, these are the filenames for the 20 meters/pixel DEM products which cover 80 - 90 deg South:</div><div><br></div>
-<div>LDEC_80S_20MPP_ADJ.TIF - LOLA Digital Elevation Counts (LDEC, number of LOLA spots per pixel)</div>
-<div>LDEM_80S_20MPP_ADJ.TIF - LOLA Digital Elevation Model (LDEM) giving surface height (in meters)</div>
-<div>LDEM_80S_20MPP_ADJ_EFFRES.TIF - LDEM effective resolution (in meters)</div>
-<div>LDEM_80S_20MPP_ADJ_ERR.TIF - LDEM surface height error (in meters)</div>
-<div>LDEM_80S_20MPP_ADJ_HILL.TIF - LDEM hillshade (45 deg altitude, 45 deg azimuth)</div>
-<div>LDSM_80S_20MPP_ADJ.TIF - LOLA Digital Slope Map (LDSM, in degrees)</div>
-<div>LDSM_80S_20MPP_ADJ_ERR.TIF - LDSM slope error (in degrees)</div>
-<div><br></div><div></div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_240MPP_ADJ.TIF" target="_blank">LDEC_60S_240MPP_ADJ.TIF</a> - 131M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF" target="_blank">LDEM_60S_240MPP_ADJ.TIF</a> - 210M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_240MPP_ADJ_EFFRES.TIF</a> - 248M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_240MPP_ADJ_ERR.TIF</a> - 255M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_240MPP_ADJ_HILL.TIF</a> - 93M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_240MPP_ADJ.TIF" target="_blank">LDSM_60S_240MPP_ADJ.TIF</a> - 247M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_240MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_240MPP_ADJ_ERR.TIF</a> - 248M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_120MPP_ADJ.TIF" target="_blank">LDEC_60S_120MPP_ADJ.TIF</a> - 463M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ.TIF" target="_blank">LDEM_60S_120MPP_ADJ.TIF</a> - 785M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_120MPP_ADJ_EFFRES.TIF</a> - 1000M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_120MPP_ADJ_ERR.TIF</a> - 1016M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_120MPP_ADJ_HILL.TIF</a> - 354M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_120MPP_ADJ.TIF" target="_blank">LDSM_60S_120MPP_ADJ.TIF</a> - 972M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_120MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_120MPP_ADJ_ERR.TIF</a> - 1001M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_60MPP_ADJ.TIF" target="_blank">LDEC_60S_60MPP_ADJ.TIF</a> - 1.5G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ.TIF" target="_blank">LDEM_60S_60MPP_ADJ.TIF</a> - 2.9G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_60MPP_ADJ_EFFRES.TIF</a> - 3.9G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_60MPP_ADJ_ERR.TIF</a> - 4.0G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_60MPP_ADJ_HILL.TIF</a> - 1.4G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_60MPP_ADJ.TIF" target="_blank">LDSM_60S_60MPP_ADJ.TIF</a> - 3.8G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_60MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_60MPP_ADJ_ERR.TIF</a> - 3.9G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_75S_30MPP_ADJ.TIF" target="_blank">LDEC_75S_30MPP_ADJ.TIF</a> - 489M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ.TIF" target="_blank">LDEM_75S_30MPP_ADJ.TIF</a> - 2.7G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_75S_30MPP_ADJ_EFFRES.TIF</a> - 3.8G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_ERR.TIF" target="_blank">LDEM_75S_30MPP_ADJ_ERR.TIF</a> - 3.8G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_HILL.TIF" target="_blank">LDEM_75S_30MPP_ADJ_HILL.TIF</a> - 1.3G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_75S_30MPP_ADJ.TIF" target="_blank">LDSM_75S_30MPP_ADJ.TIF</a> - 3.6G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_75S_30MPP_ADJ_ERR.TIF" target="_blank">LDSM_75S_30MPP_ADJ_ERR.TIF</a> - 3.7G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_80MPP_ADJ.TIF" target="_blank">LDEC_80S_80MPP_ADJ.TIF</a> - 111M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF" target="_blank">LDEM_80S_80MPP_ADJ.TIF</a> - 181M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_80MPP_ADJ_EFFRES.TIF</a> - 239M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_80MPP_ADJ_ERR.TIF</a> - 244M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_80MPP_ADJ_HILL.TIF</a> - 85M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_80MPP_ADJ.TIF" target="_blank">LDSM_80S_80MPP_ADJ.TIF</a> - 231M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_80MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_80MPP_ADJ_ERR.TIF</a> - 239M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_40MPP_ADJ.TIF" target="_blank">LDEC_80S_40MPP_ADJ.TIF</a> - 369M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ.TIF" target="_blank">LDEM_80S_40MPP_ADJ.TIF</a> - 685M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_40MPP_ADJ_EFFRES.TIF</a> - 955M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_40MPP_ADJ_ERR.TIF</a> - 964M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_40MPP_ADJ_HILL.TIF</a> - 330M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_40MPP_ADJ.TIF" target="_blank">LDSM_80S_40MPP_ADJ.TIF</a> - 912M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_40MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_40MPP_ADJ_ERR.TIF</a> - 944M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_20MPP_ADJ.TIF" target="_blank">LDEC_80S_20MPP_ADJ.TIF</a> - 1.3G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF" target="_blank">LDEM_80S_20MPP_ADJ.TIF</a> - 2.6G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_20MPP_ADJ_EFFRES.TIF</a> - 3.8G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_20MPP_ADJ_ERR.TIF</a> - 3.7G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_20MPP_ADJ_HILL.TIF</a> - 1.3G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_20MPP_ADJ.TIF" target="_blank">LDSM_80S_20MPP_ADJ.TIF</a> - 3.6G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_20MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_20MPP_ADJ_ERR.TIF</a> - 3.7G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_83S_10MPP_ADJ.TIF" target="_blank">LDEC_83S_10MPP_ADJ.TIF</a> - 415M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ.TIF" target="_blank">LDEM_83S_10MPP_ADJ.TIF</a> - 4.8G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_83S_10MPP_ADJ_EFFRES.TIF</a> - 7.5G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_ERR.TIF" target="_blank">LDEM_83S_10MPP_ADJ_ERR.TIF</a> - 7.5G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_HILL.TIF" target="_blank">LDEM_83S_10MPP_ADJ_HILL.TIF</a> - 2.5G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_83S_10MPP_ADJ.TIF" target="_blank">LDSM_83S_10MPP_ADJ.TIF</a> - 7.1G</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_83S_10MPP_ADJ_ERR.TIF" target="_blank">LDSM_83S_10MPP_ADJ_ERR.TIF</a> - 7.0G</div>
-
-
-<div><br></div><h3><u>Roughness products</u></h3>
-
-<div><br></div>
-
-<div>LDRM_80S_*MPP_ADJ_ROUGH_*M.TIF - LOLA Digital Roughness Map (LDRM, in meters). This is&nbsp;</div><div>the spread of height residuals of individual LOLA spots around a plane fit to the LDEM within a circular window whose&nbsp;</div><div>diameter is equal to a baseline of *M meters.</div>
-
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_100M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_200M.TIF</a> - 1.4M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_400M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_800M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_1600M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_100M.TIF</a> - 616M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_200M.TIF</a> - 600M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_400M.TIF</a> - 603M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_800M.TIF</a> - 593M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_1600M.TIF</a> - 584M</div>
-
-<br>
-<div>LDRM_80S_*MPP_ADJ_SLP_*M.TIF - The corresponding slope (in degrees) of the plane fit for a baseline of *M meters.</div><div></div><div></div><div></div><div></div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_100M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_200M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_400M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_800M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_1600M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_100M.TIF</a> - 591M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_200M.TIF</a> - 582M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_400M.TIF</a> - 563M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_800M.TIF</a> - 542M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_1600M.TIF</a> - 523M</div>
-
-<br>
-<div>LDRM_80S_*MPP_ADJ_ROUGH_RGB.TIF - Color-composite RGB image of multi-baseline roughness for baselines of 50 - 1000 m. Note that the 50-m baseline roughness is taken from the LOLA single-shot roughness product (<a href="http://imbrium.mit.edu/DATA/LOLA_GDR/POLAR/IMG" target="_blank">LDRM_40S_1000M_NN.IMG</a>) already archived on the PDS.</div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_RGB.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_RGB.TIF</a> - 2.2M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_RGB.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_RGB.TIF</a> - 924M</div>
-
-<br>
-<div>LDRM_80S_*MPP_ADJ_RMSD_*M.TIF - RMS height deviation (in meters) between a central point and&nbsp;</div><div>surrounding annulus with diameter equal to the baseline of *M meters.</div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_100M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_200M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_400M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_800M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_1600M.TIF</a> - 1.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_100M.TIF</a> - 588M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_200M.TIF</a> - 577M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_400M.TIF</a> - 559M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_800M.TIF</a> - 536M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_1600M.TIF</a> - 509M</div>
-
-<br>
-<div>LDRM_80S_*MPP_ADJ_H.TIF - Hurst exponent.</div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_H.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_H.TIF</a> - 1.4M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_H.TIF" target="_blank">LDRM_80S_50MPP_ADJ_H.TIF</a> - 552M</div>
-
-<br>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_CLASS.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_CLASS.TIF</a> - 438K - K-means class based on the multi-baseline roughness spectrum.</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_AVGROUGH.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_AVGROUGH.TIF</a> - 1.7M - Average standardized roughness (sigma) over all baselines.</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SPSLP.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SPSLP.TIF</a> - 1.7M - Roughness spectral slope (sigma/km) over all baselines.</div>
-
-
-<div><br></div><h3><u>Permanently Shadowed Region (PSR) products</u></h3>
-
-<div></div>
-<div>All PSRs (N=506349):</div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.TIF" target="_blank">LPSR_80S_20MPP_ADJ.TIF</a> - 148M - PSR map</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.CSV" target="_blank">LPSR_80S_20MPP_ADJ.CSV</a> - 209M - Comma-separated value table</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.DBF" target="_blank">LPSR_80S_20MPP_ADJ.DBF</a> - 117M - Attribute database</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.PRJ" target="_blank">LPSR_80S_20MPP_ADJ.PRJ</a> - 368 - Projection</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.SHP" target="_blank">LPSR_80S_20MPP_ADJ.SHP</a> - 154M - Shapefile</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.SHX" target="_blank">LPSR_80S_20MPP_ADJ.SHX</a> - 3.9M - Shape index</div><div></div><div></div>
-
-
-<div></div><div></div><div></div><div></div><div></div><div><br></div><div>Only PSRs with area &gt; 1 km<sup>2</sup>&nbsp;(N=1531):</div><div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.CSV" target="_blank">LPSR_80S_20MPP_ADJ_1km2.CSV</a>&nbsp;- 28M - Comma-separated value table</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.DBF" target="_blank">LPSR_80S_20MPP_ADJ_1km2.DBF</a>&nbsp;- 360K - Attribute database</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.PRJ" target="_blank">LPSR_80S_20MPP_ADJ_1km2.PRJ</a>&nbsp;- 368 - Projection</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.SHP" target="_blank">LPSR_80S_20MPP_ADJ_1km2.SHP</a>&nbsp;- 20M - Shapefile</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.SHX" target="_blank">LPSR_80S_20MPP_ADJ_1km2.SHX</a>&nbsp;- 12K - Shape index</div></div><div></div><h3><u>Narrow Angle Camera (NAC) images and simulated images</u></h3>
-
-<div>M*_20MPP_MODEL.TIF - Simulated image using the 20MPP LDEM (units of W/m^2).</div>
-<div>M*E_20MPP.TIF - 20MPP NAC image map-projected onto the 20MPP LDEM (units of I/F).</div>
-
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614_20MPP_MODEL.TIF" target="_blank">M1188426614_20MPP_MODEL.TIF</a> - 30M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614LE_20MPP.TIF" target="_blank">M1188426614LE_20MPP.TIF</a> - 1.4M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614RE_20MPP.TIF" target="_blank">M1188426614RE_20MPP.TIF</a> - 1.4M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938_20MPP_MODEL.TIF" target="_blank">M1311409938_20MPP_MODEL.TIF</a> - 69M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938LE_20MPP.TIF" target="_blank">M1311409938LE_20MPP.TIF</a> - 2.9M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938RE_20MPP.TIF" target="_blank">M1311409938RE_20MPP.TIF</a> - 2.9M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500_20MPP_MODEL.TIF" target="_blank">M1312308500_20MPP_MODEL.TIF</a> - 85M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500LE_20MPP.TIF" target="_blank">M1312308500LE_20MPP.TIF</a> - 3.1M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500RE_20MPP.TIF" target="_blank">M1312308500RE_20MPP.TIF</a> - 3.1M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343_20MPP_MODEL.TIF" target="_blank">M139356343_20MPP_MODEL.TIF</a> - 73M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343LE_20MPP.TIF" target="_blank">M139356343LE_20MPP.TIF</a> - 2.1M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343RE_20MPP.TIF" target="_blank">M139356343RE_20MPP.TIF</a> - 2.1M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686_20MPP_MODEL.TIF" target="_blank">M139729686_20MPP_MODEL.TIF</a> - 35M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686LE_20MPP.TIF" target="_blank">M139729686LE_20MPP.TIF</a> - 2.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686RE_20MPP.TIF" target="_blank">M139729686RE_20MPP.TIF</a> - 2.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517_20MPP_MODEL.TIF" target="_blank">M151364517_20MPP_MODEL.TIF</a> - 64M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517LE_20MPP.TIF" target="_blank">M151364517LE_20MPP.TIF</a> - 2.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517RE_20MPP.TIF" target="_blank">M151364517RE_20MPP.TIF</a> - 2.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551_20MPP_MODEL.TIF" target="_blank">M154940551_20MPP_MODEL.TIF</a> - 76M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551LE_20MPP.TIF" target="_blank">M154940551LE_20MPP.TIF</a> - 1.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551RE_20MPP.TIF" target="_blank">M154940551RE_20MPP.TIF</a> - 1.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056_20MPP_MODEL.TIF" target="_blank">M155368056_20MPP_MODEL.TIF</a> - 68M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056LE_20MPP.TIF" target="_blank">M155368056LE_20MPP.TIF</a> - 2.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056RE_20MPP.TIF" target="_blank">M155368056RE_20MPP.TIF</a> - 2.3M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222_20MPP_MODEL.TIF" target="_blank">M184288222_20MPP_MODEL.TIF</a> - 62M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222LE_20MPP.TIF" target="_blank">M184288222LE_20MPP.TIF</a> - 2.5M</div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222RE_20MPP.TIF" target="_blank">M184288222RE_20MPP.TIF</a> - 2.5M</div>
-
-
-<div><br></div><h3><u>Point clouds of individual spots</u></h3>
-File format is binary double precision, 4 columns: X,Y,Z,ID where X,Y are the stereographic coordinates (in meters), Z is the surface height (in meters) and ID is the LOLA RDR ID.
-
-<br><br>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_ADJ.XYZI" target="_blank">LDEM_80S_ADJ.XYZI</a> - 13G - For products with 20MPP or LDRM in the filename.</div><div></div>
-<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_ADJ.XYZI" target="_blank">LDEM_60S_ADJ.XYZI</a> - 48G - For all other products.</div><div><br></div><div><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><u>Data Usage Policy</u></h3><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><span style="font-size: 14px;">Please cite this paper when using these products:</span></h3><h3><span style="font-size: 14px;">Barker et al., 2023 Planet. Sci. J., 4, 183. </span><span style="font-size: 14px; font-family: inherit;"><a href="https://doi.org/10.3847/PSJ/acf3e1" target="_blank">https://doi.org/10.3847/PSJ/acf3e1</a></span></h3><h5 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);">Paper DOI:&nbsp;<a href="https://doi.org/10.3847/PSJ/acf3e1" target="_blank" style="font-family: inherit; background-color: rgb(255, 255, 255); color: rgb(35, 82, 124); text-decoration-line: underline; outline: 0px;">10.3847/PSJ/acf3e1</a></h5><h5 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);">Data DOI: <a href="https://doi.org/10.60903/gsfcpgda-lola-spole" target="_blank">10.60903/gsfcpgda-lola-spole</a></h5><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><span style="font-size: 14px;"></span></h3></div><div></div><div></div><div></div><div></div><div></div>
-
+<!DOCTYPE html><html><head><title>PGDA - A New View of the Lunar South Pole from LOLA</title><meta name="description" content="A New View of the Lunar South Pole from LOLA"><meta name="keywords" content="Moon,LOLA,topography"><meta name="author" content="Michael Kenneth Barker"><meta http-equiv="Content-type" content="text/html; charset=utf-8"><meta http-equiv="Content-Language" content="en-us"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="google-site-verification" content="I-ztB4vbSwp-cGZxueCvt4N7BCsjv_bUkA3HSDwicgU"><meta name="keywords" content="PGDA, planetary, planetary geodynamics, Geology, Geophysics, Geochemistry, Laboratory, NASA, Planetary Geology, Planetary Geophysics, Planetary Geochemistry"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><link rel="icon" type="image/png" href="/images/fav.ico"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/utilities/pushy-master/css/pushy.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/utilities/font-awesome-4.6.3/css/font-awesome.min.css"><script src="/utilities/jquery/jquery.min.js"></script><script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/common.js"></script><script language="javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=NASA"></script><link rel="stylesheet" href="/css/navbar.css"><link rel="stylesheet" href="/css/slider2.css"></head><body><header class="navbar-wrapper pgda-header"><div class="container"><div class="pgda-header-floater"><a href="http://www.nasa.gov"><image src="/images/nasa-logo.png" alt="NASA Logo" class="header-nasa-logo"></image></a></div><div class="pgda-header-floater"><a href="/"><h1 class="pgda-header-h1"> <span class="nasa-txt">NASA’s </span>Planetary Geology, Geophysics and Geochemistry Laboratory</h1></a><a href="http://www.nasa.gov/goddard"><h2 class="pgda-header-h2">Goddard Space Flight Center</h2></a></div><div class="pull-right"><button class="menu-btn-container menu-btn"><span class="pgda-header-menu-button"> <i class="fa fa-bars">&nbsp;</i><span class="menu-txt">MENU</span></span></button></div></div></header><nav class="pushy pushy-right"><button class="menu-btn close-button"><i class="fa fa-times fa-2x"></i></button><ul><li class="pushy-link"><a href="/">Home</a></li><li class="pushy-link"><a href="/search">Search</a></li><li class="pushy-link"><a href="/products">Products</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=home.main&amp;navOrgCode=698">The Lab</a></li><li class="pushy-link"><a href="http://science.gsfc.nasa.gov/sed/index.cfm?fuseAction=people.staffList&amp;navOrgCode=698">The People</a></li></ul></nav><div class="site-overlay"></div><div class="carousel carouselsub slide"><div class="carousel-inner"><div class="item active"><div style="background: url('/images/page_thumbnails/030525040304SpoleSplash.jpg') center center / cover no-repeat; height:100%;"></div><div class="pgda-header-grad"></div></div></div></div><div class="pgda-main-content-area"><div class="container"><div class="row"><div class="col-xs-12 col-md-9"><h2>A New View of the Lunar South Pole from LOLA</h2><h4></h4><span style="margin-top: 2px">Michael Kenneth Barker</span><br><p><h3><u>Large-Area DEMs</u></h3>
+
+<div><br></div>All TIF files are cloud-optimized GeoTiffs (<a href="https://www.cogeo.org/" target="_blank">COG</a>s) with south polar stereographic X/Y coordinates in meters and in the MOON_ME reference frame of the JPL DE421 ephemeris.<div><br></div><div>Filename format: PREFIX_LAT_PIX_STEMS.TIF</div><div><br></div><div>where PREFIX gives the data type (LDEM, LDEC, LDSM, LDRM, or LPSR), LAT gives the latitude limit (80S, 83S, 75S or&nbsp;</div><div>60S), PIX gives the pixel scale in meters per pixel (e.g., 10MPP, 20MPP, 30MPP, 40MPP, 60MPP, etc.), and STEMS&nbsp;</div><div>is an additional identifier (e.g., ADJ, ADJ_ERR, ADJ_HILL, ADJ_EFFRES, ADJ_ROUGH_100M, etc.).</div><div><br></div>
+
+<div>For example, these are the filenames for the 20 meters/pixel DEM products which cover 80 - 90 deg South:</div><div><br></div>
+<div>LDEC_80S_20MPP_ADJ.TIF - LOLA Digital Elevation Counts (LDEC, number of LOLA spots per pixel)</div>
+<div>LDEM_80S_20MPP_ADJ.TIF - LOLA Digital Elevation Model (LDEM) giving surface height (in meters)</div>
+<div>LDEM_80S_20MPP_ADJ_EFFRES.TIF - LDEM effective resolution (in meters)</div>
+<div>LDEM_80S_20MPP_ADJ_ERR.TIF - LDEM surface height error (in meters)</div>
+<div>LDEM_80S_20MPP_ADJ_HILL.TIF - LDEM hillshade (45 deg altitude, 45 deg azimuth)</div>
+<div>LDSM_80S_20MPP_ADJ.TIF - LOLA Digital Slope Map (LDSM, in degrees)</div>
+<div>LDSM_80S_20MPP_ADJ_ERR.TIF - LDSM slope error (in degrees)</div>
+<div><br></div><div></div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_240MPP_ADJ.TIF" target="_blank">LDEC_60S_240MPP_ADJ.TIF</a> - 131M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ.TIF" target="_blank">LDEM_60S_240MPP_ADJ.TIF</a> - 210M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_240MPP_ADJ_EFFRES.TIF</a> - 248M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_240MPP_ADJ_ERR.TIF</a> - 255M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_240MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_240MPP_ADJ_HILL.TIF</a> - 93M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_240MPP_ADJ.TIF" target="_blank">LDSM_60S_240MPP_ADJ.TIF</a> - 247M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_240MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_240MPP_ADJ_ERR.TIF</a> - 248M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_120MPP_ADJ.TIF" target="_blank">LDEC_60S_120MPP_ADJ.TIF</a> - 463M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ.TIF" target="_blank">LDEM_60S_120MPP_ADJ.TIF</a> - 785M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_120MPP_ADJ_EFFRES.TIF</a> - 1000M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_120MPP_ADJ_ERR.TIF</a> - 1016M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_120MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_120MPP_ADJ_HILL.TIF</a> - 354M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_120MPP_ADJ.TIF" target="_blank">LDSM_60S_120MPP_ADJ.TIF</a> - 972M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_120MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_120MPP_ADJ_ERR.TIF</a> - 1001M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_60S_60MPP_ADJ.TIF" target="_blank">LDEC_60S_60MPP_ADJ.TIF</a> - 1.5G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ.TIF" target="_blank">LDEM_60S_60MPP_ADJ.TIF</a> - 2.9G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_60S_60MPP_ADJ_EFFRES.TIF</a> - 3.9G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_ERR.TIF" target="_blank">LDEM_60S_60MPP_ADJ_ERR.TIF</a> - 4.0G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_60MPP_ADJ_HILL.TIF" target="_blank">LDEM_60S_60MPP_ADJ_HILL.TIF</a> - 1.4G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_60MPP_ADJ.TIF" target="_blank">LDSM_60S_60MPP_ADJ.TIF</a> - 3.8G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_60S_60MPP_ADJ_ERR.TIF" target="_blank">LDSM_60S_60MPP_ADJ_ERR.TIF</a> - 3.9G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_75S_30MPP_ADJ.TIF" target="_blank">LDEC_75S_30MPP_ADJ.TIF</a> - 489M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ.TIF" target="_blank">LDEM_75S_30MPP_ADJ.TIF</a> - 2.7G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_75S_30MPP_ADJ_EFFRES.TIF</a> - 3.8G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_ERR.TIF" target="_blank">LDEM_75S_30MPP_ADJ_ERR.TIF</a> - 3.8G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_75S_30MPP_ADJ_HILL.TIF" target="_blank">LDEM_75S_30MPP_ADJ_HILL.TIF</a> - 1.3G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_75S_30MPP_ADJ.TIF" target="_blank">LDSM_75S_30MPP_ADJ.TIF</a> - 3.6G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_75S_30MPP_ADJ_ERR.TIF" target="_blank">LDSM_75S_30MPP_ADJ_ERR.TIF</a> - 3.7G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_80MPP_ADJ.TIF" target="_blank">LDEC_80S_80MPP_ADJ.TIF</a> - 111M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ.TIF" target="_blank">LDEM_80S_80MPP_ADJ.TIF</a> - 181M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_80MPP_ADJ_EFFRES.TIF</a> - 239M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_80MPP_ADJ_ERR.TIF</a> - 244M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_80MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_80MPP_ADJ_HILL.TIF</a> - 85M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_80MPP_ADJ.TIF" target="_blank">LDSM_80S_80MPP_ADJ.TIF</a> - 231M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_80MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_80MPP_ADJ_ERR.TIF</a> - 239M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_40MPP_ADJ.TIF" target="_blank">LDEC_80S_40MPP_ADJ.TIF</a> - 369M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ.TIF" target="_blank">LDEM_80S_40MPP_ADJ.TIF</a> - 685M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_40MPP_ADJ_EFFRES.TIF</a> - 955M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_40MPP_ADJ_ERR.TIF</a> - 964M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_40MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_40MPP_ADJ_HILL.TIF</a> - 330M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_40MPP_ADJ.TIF" target="_blank">LDSM_80S_40MPP_ADJ.TIF</a> - 912M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_40MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_40MPP_ADJ_ERR.TIF</a> - 944M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_80S_20MPP_ADJ.TIF" target="_blank">LDEC_80S_20MPP_ADJ.TIF</a> - 1.3G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF" target="_blank">LDEM_80S_20MPP_ADJ.TIF</a> - 2.6G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_80S_20MPP_ADJ_EFFRES.TIF</a> - 3.8G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_ERR.TIF" target="_blank">LDEM_80S_20MPP_ADJ_ERR.TIF</a> - 3.7G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_HILL.TIF" target="_blank">LDEM_80S_20MPP_ADJ_HILL.TIF</a> - 1.3G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_20MPP_ADJ.TIF" target="_blank">LDSM_80S_20MPP_ADJ.TIF</a> - 3.6G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_80S_20MPP_ADJ_ERR.TIF" target="_blank">LDSM_80S_20MPP_ADJ_ERR.TIF</a> - 3.7G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEC_83S_10MPP_ADJ.TIF" target="_blank">LDEC_83S_10MPP_ADJ.TIF</a> - 415M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ.TIF" target="_blank">LDEM_83S_10MPP_ADJ.TIF</a> - 4.8G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_EFFRES.TIF" target="_blank">LDEM_83S_10MPP_ADJ_EFFRES.TIF</a> - 7.5G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_ERR.TIF" target="_blank">LDEM_83S_10MPP_ADJ_ERR.TIF</a> - 7.5G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_83S_10MPP_ADJ_HILL.TIF" target="_blank">LDEM_83S_10MPP_ADJ_HILL.TIF</a> - 2.5G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_83S_10MPP_ADJ.TIF" target="_blank">LDSM_83S_10MPP_ADJ.TIF</a> - 7.1G</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDSM_83S_10MPP_ADJ_ERR.TIF" target="_blank">LDSM_83S_10MPP_ADJ_ERR.TIF</a> - 7.0G</div>
+
+
+<div><br></div><h3><u>Roughness products</u></h3>
+
+<div><br></div>
+
+<div>LDRM_80S_*MPP_ADJ_ROUGH_*M.TIF - LOLA Digital Roughness Map (LDRM, in meters). This is&nbsp;</div><div>the spread of height residuals of individual LOLA spots around a plane fit to the LDEM within a circular window whose&nbsp;</div><div>diameter is equal to a baseline of *M meters.</div>
+
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_100M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_200M.TIF</a> - 1.4M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_400M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_800M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_1600M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_100M.TIF</a> - 616M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_200M.TIF</a> - 600M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_400M.TIF</a> - 603M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_800M.TIF</a> - 593M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_1600M.TIF</a> - 584M</div>
+
+<br>
+<div>LDRM_80S_*MPP_ADJ_SLP_*M.TIF - The corresponding slope (in degrees) of the plane fit for a baseline of *M meters.</div><div></div><div></div><div></div><div></div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_100M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_200M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_400M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_800M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SLP_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SLP_1600M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_100M.TIF</a> - 591M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_200M.TIF</a> - 582M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_400M.TIF</a> - 563M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_800M.TIF</a> - 542M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_SLP_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_SLP_1600M.TIF</a> - 523M</div>
+
+<br>
+<div>LDRM_80S_*MPP_ADJ_ROUGH_RGB.TIF - Color-composite RGB image of multi-baseline roughness for baselines of 50 - 1000 m. Note that the 50-m baseline roughness is taken from the LOLA single-shot roughness product (<a href="http://imbrium.mit.edu/DATA/LOLA_GDR/POLAR/IMG" target="_blank">LDRM_40S_1000M_NN.IMG</a>) already archived on the PDS.</div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_ROUGH_RGB.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_ROUGH_RGB.TIF</a> - 2.2M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_ROUGH_RGB.TIF" target="_blank">LDRM_80S_50MPP_ADJ_ROUGH_RGB.TIF</a> - 924M</div>
+
+<br>
+<div>LDRM_80S_*MPP_ADJ_RMSD_*M.TIF - RMS height deviation (in meters) between a central point and&nbsp;</div><div>surrounding annulus with diameter equal to the baseline of *M meters.</div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_100M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_100M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_200M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_200M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_400M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_400M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_800M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_800M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_RMSD_1600M.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_RMSD_1600M.TIF</a> - 1.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_100M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_100M.TIF</a> - 588M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_200M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_200M.TIF</a> - 577M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_400M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_400M.TIF</a> - 559M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_800M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_800M.TIF</a> - 536M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_RMSD_1600M.TIF" target="_blank">LDRM_80S_50MPP_ADJ_RMSD_1600M.TIF</a> - 509M</div>
+
+<br>
+<div>LDRM_80S_*MPP_ADJ_H.TIF - Hurst exponent.</div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_H.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_H.TIF</a> - 1.4M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_50MPP_ADJ_H.TIF" target="_blank">LDRM_80S_50MPP_ADJ_H.TIF</a> - 552M</div>
+
+<br>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_CLASS.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_CLASS.TIF</a> - 438K - K-means class based on the multi-baseline roughness spectrum.</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_AVGROUGH.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_AVGROUGH.TIF</a> - 1.7M - Average standardized roughness (sigma) over all baselines.</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDRM_80S_1000MPP_ADJ_SPSLP.TIF" target="_blank">LDRM_80S_1000MPP_ADJ_SPSLP.TIF</a> - 1.7M - Roughness spectral slope (sigma/km) over all baselines.</div>
+
+
+<div><br></div><h3><u>Permanently Shadowed Region (PSR) products</u></h3>
+
+<div></div>
+<div>All PSRs (N=506349):</div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.TIF" target="_blank">LPSR_80S_20MPP_ADJ.TIF</a> - 148M - PSR map</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.CSV" target="_blank">LPSR_80S_20MPP_ADJ.CSV</a> - 209M - Comma-separated value table</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.DBF" target="_blank">LPSR_80S_20MPP_ADJ.DBF</a> - 117M - Attribute database</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.PRJ" target="_blank">LPSR_80S_20MPP_ADJ.PRJ</a> - 368 - Projection</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.SHP" target="_blank">LPSR_80S_20MPP_ADJ.SHP</a> - 154M - Shapefile</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ.SHX" target="_blank">LPSR_80S_20MPP_ADJ.SHX</a> - 3.9M - Shape index</div><div></div><div></div>
+
+
+<div></div><div></div><div></div><div></div><div></div><div><br></div><div>Only PSRs with area &gt; 1 km<sup>2</sup>&nbsp;(N=1531):</div><div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.CSV" target="_blank">LPSR_80S_20MPP_ADJ_1km2.CSV</a>&nbsp;- 28M - Comma-separated value table</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.DBF" target="_blank">LPSR_80S_20MPP_ADJ_1km2.DBF</a>&nbsp;- 360K - Attribute database</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.PRJ" target="_blank">LPSR_80S_20MPP_ADJ_1km2.PRJ</a>&nbsp;- 368 - Projection</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.SHP" target="_blank">LPSR_80S_20MPP_ADJ_1km2.SHP</a>&nbsp;- 20M - Shapefile</div><div></div><div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LPSR_80S_20MPP_ADJ_1km2.SHX" target="_blank">LPSR_80S_20MPP_ADJ_1km2.SHX</a>&nbsp;- 12K - Shape index</div></div><div></div><h3><u>Narrow Angle Camera (NAC) images and simulated images</u></h3>
+
+<div>M*_20MPP_MODEL.TIF - Simulated image using the 20MPP LDEM (units of W/m^2).</div>
+<div>M*E_20MPP.TIF - 20MPP NAC image map-projected onto the 20MPP LDEM (units of I/F).</div>
+
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614_20MPP_MODEL.TIF" target="_blank">M1188426614_20MPP_MODEL.TIF</a> - 30M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614LE_20MPP.TIF" target="_blank">M1188426614LE_20MPP.TIF</a> - 1.4M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1188426614RE_20MPP.TIF" target="_blank">M1188426614RE_20MPP.TIF</a> - 1.4M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938_20MPP_MODEL.TIF" target="_blank">M1311409938_20MPP_MODEL.TIF</a> - 69M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938LE_20MPP.TIF" target="_blank">M1311409938LE_20MPP.TIF</a> - 2.9M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1311409938RE_20MPP.TIF" target="_blank">M1311409938RE_20MPP.TIF</a> - 2.9M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500_20MPP_MODEL.TIF" target="_blank">M1312308500_20MPP_MODEL.TIF</a> - 85M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500LE_20MPP.TIF" target="_blank">M1312308500LE_20MPP.TIF</a> - 3.1M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M1312308500RE_20MPP.TIF" target="_blank">M1312308500RE_20MPP.TIF</a> - 3.1M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343_20MPP_MODEL.TIF" target="_blank">M139356343_20MPP_MODEL.TIF</a> - 73M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343LE_20MPP.TIF" target="_blank">M139356343LE_20MPP.TIF</a> - 2.1M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139356343RE_20MPP.TIF" target="_blank">M139356343RE_20MPP.TIF</a> - 2.1M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686_20MPP_MODEL.TIF" target="_blank">M139729686_20MPP_MODEL.TIF</a> - 35M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686LE_20MPP.TIF" target="_blank">M139729686LE_20MPP.TIF</a> - 2.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M139729686RE_20MPP.TIF" target="_blank">M139729686RE_20MPP.TIF</a> - 2.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517_20MPP_MODEL.TIF" target="_blank">M151364517_20MPP_MODEL.TIF</a> - 64M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517LE_20MPP.TIF" target="_blank">M151364517LE_20MPP.TIF</a> - 2.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M151364517RE_20MPP.TIF" target="_blank">M151364517RE_20MPP.TIF</a> - 2.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551_20MPP_MODEL.TIF" target="_blank">M154940551_20MPP_MODEL.TIF</a> - 76M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551LE_20MPP.TIF" target="_blank">M154940551LE_20MPP.TIF</a> - 1.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M154940551RE_20MPP.TIF" target="_blank">M154940551RE_20MPP.TIF</a> - 1.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056_20MPP_MODEL.TIF" target="_blank">M155368056_20MPP_MODEL.TIF</a> - 68M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056LE_20MPP.TIF" target="_blank">M155368056LE_20MPP.TIF</a> - 2.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M155368056RE_20MPP.TIF" target="_blank">M155368056RE_20MPP.TIF</a> - 2.3M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222_20MPP_MODEL.TIF" target="_blank">M184288222_20MPP_MODEL.TIF</a> - 62M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222LE_20MPP.TIF" target="_blank">M184288222LE_20MPP.TIF</a> - 2.5M</div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/M184288222RE_20MPP.TIF" target="_blank">M184288222RE_20MPP.TIF</a> - 2.5M</div>
+
+
+<div><br></div><h3><u>Point clouds of individual spots</u></h3>
+File format is binary double precision, 4 columns: X,Y,Z,ID where X,Y are the stereographic coordinates (in meters), Z is the surface height (in meters) and ID is the LOLA RDR ID.
+
+<br><br>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_ADJ.XYZI" target="_blank">LDEM_80S_ADJ.XYZI</a> - 13G - For products with 20MPP or LDRM in the filename.</div><div></div>
+<div><a href="https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_60S_ADJ.XYZI" target="_blank">LDEM_60S_ADJ.XYZI</a> - 48G - For all other products.</div><div><br></div><div><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><u>Data Usage Policy</u></h3><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><span style="font-size: 14px;">Please cite this paper when using these products:</span></h3><h3><span style="font-size: 14px;">Barker et al., 2023 Planet. Sci. J., 4, 183. </span><span style="font-size: 14px; font-family: inherit;"><a href="https://doi.org/10.3847/PSJ/acf3e1" target="_blank">https://doi.org/10.3847/PSJ/acf3e1</a></span></h3><h5 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);">Paper DOI:&nbsp;<a href="https://doi.org/10.3847/PSJ/acf3e1" target="_blank" style="font-family: inherit; background-color: rgb(255, 255, 255); color: rgb(35, 82, 124); text-decoration-line: underline; outline: 0px;">10.3847/PSJ/acf3e1</a></h5><h5 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);">Data DOI: <a href="https://doi.org/10.60903/gsfcpgda-lola-spole" target="_blank">10.60903/gsfcpgda-lola-spole</a></h5><h3 style="font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; color: rgb(0, 0, 0);"><span style="font-size: 14px;"></span></h3></div><div></div><div></div><div></div><div></div><div></div>
+
 <!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--><!--v-html--></p></div><div class="col-xs-12 col-md-3"><h2>Product Keywords</h2></div><div class="col-xs-12 col-md-3"><a href="/search?quicksearchcat=77"><span class="label label-default">Moon</span></a><a href="/search?quicksearchcat=141"><span class="label label-default">LOLA</span></a><a href="/search?quicksearchcat=89"><span class="label label-default">topography</span></a></div><!--.col-xs-12.col-md-3h2 Product Keywords--></div></div></div><footer><div class="container"><div class="pgda-footer"><img src="/images/nasa-logo.png" alt="NASA Logo" class="pgda-footer-floater footer-logo"><img src="/images/nasa-goddard-logo.png" alt="NASA Goddard Logo" class="pgda-footer-floater footer-goddard-logo"><div class="pgda-footer-right"><div class="pgda-footer-group"><p> <a href="http://www.nasa.gov/about/highlights/HP_Privacy.html">Privacy Policy and Important Notices</a></p><p><a href="http://www.nasa.gov/multimedia/guidelines/index.html">Reproduction Guidelines</a></p></div><div class="pgda-footer-group"><p>NASA Official: <a href="http://science.gsfc.nasa.gov/sed/bio/erwan.m.mazarico">Erwan Mazarico</a></p><p>Curator: <a href="http://science.gsfc.nasa.gov/sed/bio/erwan.m.mazarico">Erwan Mazarico</a></p><p>Web Master: <a href="http://science.gsfc.nasa.gov/sed/bio/benjamin.e.pelletier">Benjamin Pelletier</a></p></div></div></div></div></footer><script src="/utilities/pushy-master/js/pushy.min.js"></script></body></html>

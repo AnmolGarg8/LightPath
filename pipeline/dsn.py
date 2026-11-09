@@ -14,7 +14,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
-import spiceypy as spice
+
+try:
+    import spiceypy as spice
+except Exception:
+    spice = None
 import yaml
 
 from pipeline.constants import (

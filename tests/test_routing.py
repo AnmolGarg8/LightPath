@@ -56,6 +56,7 @@ def test_polar_grid_coordinates():
     assert abs(lat_grid[1, 1] - (-89.5)) < 1e-5
 
 
+@pytest.mark.requires_kernels
 def test_plan_traverse_feasible(sample_cube):
     with open(SCHEMAS_DIR / "route_result.schema.json", "r", encoding="utf-8") as f:
         route_schema = json.load(f)
@@ -83,6 +84,7 @@ def test_plan_traverse_feasible(sample_cube):
     assert result["metrics"]["duration_h"] > 0.0
 
 
+@pytest.mark.requires_kernels
 def test_plan_traverse_infeasible_barrier(sample_cube):
     with open(SCHEMAS_DIR / "route_result.schema.json", "r", encoding="utf-8") as f:
         route_schema = json.load(f)
@@ -109,6 +111,7 @@ def test_plan_traverse_infeasible_barrier(sample_cube):
     assert "No feasible path found" in result["explanation"]
 
 
+@pytest.mark.requires_kernels
 def test_plan_traverse_infeasible_shadow(sample_cube):
     # Plunge destination into zero illumination
     sample_cube_shadow = dict(sample_cube)
@@ -688,6 +691,7 @@ def test_mission_plan_csv_and_ics_exports():
     assert "Geometric Sun and Earth visibility only; no power or link budget." in ics_text
 
 
+@pytest.mark.requires_kernels
 def test_conservative_route_zero_margin_equals_nominal(sample_cube):
     """Test that with zero margin (horizon_margin_deg=0.0), conservative route equals nominal route."""
     start = (1, 1)

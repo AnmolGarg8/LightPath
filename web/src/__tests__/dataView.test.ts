@@ -15,8 +15,8 @@ describe('Reusable Open Data & Downloads Suite (/data)', () => {
     const validated = validatePayload(DataCatalogSchema, raw, 'data_catalog.json');
 
     expect(validated.version).toBe('1.0.0');
-    expect(validated.total_files).toBe(14);
-    expect(validated.files.length).toBe(14);
+    expect(validated.total_files).toBe(4);
+    expect(validated.files.length).toBe(4);
     expect(validated.license_data).toBe('CC-BY-4.0');
     expect(validated.license_code).toBe('MIT');
 
@@ -75,7 +75,7 @@ describe('Reusable Open Data & Downloads Suite (/data)', () => {
     expect(cffContent).toContain('10.5281/zenodo.XXXXXXX');
   });
 
-  it('verifies all 14 physical export files exist in public directory with matching sizes', () => {
+  it('verifies all physical export files exist in public directory with matching sizes', () => {
     const raw = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
     const validated = validatePayload(DataCatalogSchema, raw, 'data_catalog.json');
 

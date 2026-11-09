@@ -103,7 +103,7 @@ def validate_file_integrity(catalog: Dict[str, Any]) -> None:
         if actual_hash != entry["sha256"]:
             raise ValueError(f"SHA-256 mismatch for {entry['filename']}: expected {entry['sha256']}, got {actual_hash}")
 
-    print("      OK: All 14 files exist with matching sizes and SHA-256 digests.")
+    print(f"      OK: All {len(catalog['files'])} files exist with matching sizes and SHA-256 digests.")
 
 
 def validate_parquet_schema_and_metadata(catalog: Dict[str, Any]) -> None:
@@ -176,14 +176,7 @@ def validate_csv_structure(catalog: Dict[str, Any]) -> None:
 
 def validate_duration_conservation_against_series(catalog: Dict[str, Any]) -> None:
     print("[5/5] Validating window duration conservation against series.json and stats.json...")
-    sites = [
-        "synthetic-proving-ground",
-        "synthetic-flat-basin",
-        "synthetic-crater-rim",
-        "shackleton-connecting-ridge",
-        "malapert-mountain",
-        "nobile-crater-rim",
-    ]
+    sites = sorted(list({e["site_id"] for e in catalog["files"] if e["site_id"] != "all-sites"}))
 
     for site_id in sites:
         site_dir = DATA_DIR / site_id

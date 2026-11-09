@@ -6,7 +6,7 @@ import { ArrowRightLeft, Upload } from 'lucide-react';
 
 export const DEFAULT_PRESET_A: Scenario = {
   version: 'v1',
-  site_id: 'shackleton-connecting-ridge',
+  site_id: 'synthetic-proving-ground',
   start_date: '2026-11-01',
   end_date: '2026-11-08',
   min_sun_frac: 0.5,
@@ -25,7 +25,7 @@ export const DEFAULT_PRESET_A: Scenario = {
 
 export const DEFAULT_PRESET_B: Scenario = {
   version: 'v1',
-  site_id: 'shackleton-connecting-ridge',
+  site_id: 'synthetic-proving-ground',
   start_date: '2026-11-01',
   end_date: '2026-11-08',
   min_sun_frac: 0.5,

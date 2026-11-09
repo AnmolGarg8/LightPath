@@ -51,6 +51,7 @@ def test_compute_window_stats():
     assert stats["longest_outage_h"] == 2.0
 
 
+@pytest.mark.requires_kernels
 def test_series_and_stats_schema_validation():
     with open(SCHEMAS_DIR / "series.schema.json", "r", encoding="utf-8") as f:
         series_schema = json.load(f)

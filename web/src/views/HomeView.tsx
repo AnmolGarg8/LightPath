@@ -224,6 +224,13 @@ export const HomeView: React.FC = () => {
 
   // Dynamic headline computed strictly from that site's stats.json if site is in index.json
   const getMissionHeadline = (m: Mission) => {
+    if (!m.site_id) {
+      return {
+        available: false,
+        text: 'No LightPath analysis for this site yet.',
+      };
+    }
+
     // (a) Must be in indexData.sites
     const siteInIndex = indexData?.sites?.some((s) => s.id === m.site_id);
     if (!siteInIndex) {

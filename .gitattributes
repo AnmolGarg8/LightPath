@@ -1,0 +1,17 @@
+# LightPath Git Attributes
+# Force LF line endings for all text files across all operating systems
+* text=auto eol=lf
+
+# Explicit binary files
+*.bin binary
+*.tif binary
+*.tiff binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.parquet binary
+*.bsp binary
+*.bpc binary
+*.gz binary
+*.zip binary

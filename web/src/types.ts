@@ -168,9 +168,9 @@ export interface Provenance {
   parameters: Record<string, unknown>;
   tolerances: Record<string, number>;
   tests_summary: {
-    tests_passed: number;
-    tests_total: number;
     last_verified_utc: string;
+    tests_passed?: number;
+    tests_total?: number;
     [key: string]: unknown;
   };
 }

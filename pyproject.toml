@@ -28,7 +28,7 @@ dev = [
 
 [tool.pytest.ini_options]
 minversion = "7.0"
-addopts = "-ra -q"
+addopts = "-ra -q -p no:schemathesis"
 testpaths = ["tests"]
 pythonpath = ["."]
 markers = [

@@ -31,9 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib spiceypy rasterio pyproj pyarrow ephem
 
-      - name: Fetch SPICE Kernels
-        run: python scripts/fetch_kernels.py
-
       - name: Install Web Dependencies
         working-directory: web
         run: npm install
@@ -44,12 +41,6 @@ jobs:
       - name: Claims Guard (Scientific Claims Audit)
         run: python scripts/claims_guard.py
 
-      - name: Python Test Suite (pytest)
-        run: pytest -v
-
-      - name: Verify Committed Test Results Integrity
-        run: git diff --exit-code tests/results.json web/public/data/test_results.json
-
       - name: Web Lint (eslint)
         working-directory: web
         run: npm run lint
@@ -57,6 +48,23 @@ jobs:
       - name: Web Unit Tests (vitest)
         working-directory: web
         run: npm test
+
+      - name: Verify Data Catalog Integrity
+        run: python scripts/check_catalog.py
+
+      - name: Verify Terrain Truthfulness
+        run: python scripts/check_terrain_truthfulness.py
+
+      - name: Fetch SPICE Kernels
+        run: python scripts/fetch_kernels.py
+
+      - name: Python Test Suite (pytest)
+        run: pytest -v
+
+      - name: Verify Committed Test Results & Tracked Files Integrity
+        run: |
+          git diff --exit-code tests/results.json web/public/data/test_results.json
+          git diff --exit-code
 
       - name: Web Static Build (tsc + vite)
         working-directory: web
@@ -77,3 +85,28 @@ jobs:
           name: e2e-screenshots
           path: web/e2e-screenshots/
           if-no-files-found: ignore
+
+  kernel_free_test:
+    name: Kernel-Optional Test Suite (Checkout without SPICE kernels)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python Dependencies (without kernels)
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-cov jsonschema numpy scipy pydantic pyyaml matplotlib rasterio pyproj pyarrow ephem
+
+      - name: Run Kernel-Free Pytest Suite
+        run: pytest -m "not requires_kernels and not network" -v
+
+      - name: Verify Tests Did Not Modify Tracked Files
+        run: git diff --exit-code

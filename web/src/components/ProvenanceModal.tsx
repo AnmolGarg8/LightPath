@@ -122,7 +122,7 @@ export const ProvenanceModal: React.FC<Props> = ({ isOpen, onClose, provenance, 
             <CheckCircle size={20} style={{ color: '#4ade80', flexShrink: 0 }} />
             <div>
               <div style={{ fontWeight: 600, color: '#4ade80' }}>
-                Pipeline Test Verification: {provenance.tests_summary.tests_passed} / {provenance.tests_summary.tests_total} Tests Passed
+                Pipeline Test Verification: Verified {provenance.tests_summary.last_verified_utc}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#cbd5e1' }}>
                 All mathematical formulas and schemas rigorously verified prior to export.

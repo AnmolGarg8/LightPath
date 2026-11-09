@@ -458,7 +458,7 @@ def test_v5_sensitivity_and_convergence(record_verification, record_chart_data):
 # V6: Reproducibility
 # -----------------------------------------------------------------------------
 @pytest.mark.requires_kernels
-def test_v6_reproducibility(record_verification):
+def test_v6_reproducibility(record_verification, tmp_path):
     meta_kernel = ROOT_DIR / "kernels" / "meta.tm"
     from pipeline.geometry import are_kernels_available
     if not are_kernels_available(meta_kernel):
@@ -475,30 +475,45 @@ def test_v6_reproducibility(record_verification):
         )
         pytest.skip("NOT RUN: SPICE kernels absent from disk.")
     """V6 Reproducibility:
-    Synthetic pipeline run twice, deterministic outputs byte-identical.
+    Synthetic pipeline run twice in isolated directories, deterministic outputs byte-identical.
     """
+    import yaml
     cfg_path = ROOT_DIR / "configs" / "synthetic.yaml"
-    data_dir = ROOT_DIR / "web" / "public" / "data"
+    with open(cfg_path, "r", encoding="utf-8") as f:
+        cfg_dict = yaml.safe_load(f)
+
+    tmp_out1 = tmp_path / "run1"
+    tmp_out2 = tmp_path / "run2"
+
+    cfg_dict["output_dir"] = str(tmp_out1.relative_to(ROOT_DIR)) if tmp_out1.is_relative_to(ROOT_DIR) else str(tmp_out1)
+    cfg1 = tmp_path / "cfg1.yaml"
+    with open(cfg1, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg_dict, f)
+
+    cfg_dict["output_dir"] = str(tmp_out2.relative_to(ROOT_DIR)) if tmp_out2.is_relative_to(ROOT_DIR) else str(tmp_out2)
+    cfg2 = tmp_path / "cfg2.yaml"
+    with open(cfg2, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg_dict, f)
 
     import os
 
-    def collect_hashes():
+    def collect_hashes(target_dir: Path):
         hashes = {}
-        for root, _, files in os.walk(data_dir):
+        for root, _, files in os.walk(target_dir):
             for file in files:
                 p = Path(root) / file
-                rel = str(p.relative_to(data_dir)).replace("\\", "/")
+                rel = str(p.relative_to(target_dir)).replace("\\", "/")
                 if not rel.endswith("run_info.json") and not rel.endswith(".cache_key") and not rel.endswith("test_results.json"):
                     hashes[rel] = hashlib.sha256(p.read_bytes()).hexdigest()
         return hashes
 
-    # Run 1 (forced recompute)
-    run_pipeline(cfg_path, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
-    h1 = collect_hashes()
+    # Run 1 (forced recompute into isolated dir 1)
+    run_pipeline(cfg1, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
+    h1 = collect_hashes(tmp_out1)
 
-    # Run 2 (forced recompute)
-    run_pipeline(cfg_path, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
-    h2 = collect_hashes()
+    # Run 2 (forced recompute into isolated dir 2)
+    run_pipeline(cfg2, mode="synthetic", site_id_filter="synthetic-proving-ground", force=True)
+    h2 = collect_hashes(tmp_out2)
 
     assert h1 == h2, "Non-deterministic pipeline outputs detected between consecutive runs"
     assert len(h1) >= 5, "Expected at least 5 pipeline artifacts"

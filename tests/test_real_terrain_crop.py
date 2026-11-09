@@ -107,6 +107,8 @@ def test_crop_nodata_fraction(site):
 
 @pytest.mark.real_data
 @pytest.mark.network
+@pytest.mark.real_data
+@pytest.mark.network
 @pytest.mark.parametrize("site", SITES, ids=[s["id"] for s in SITES])
 def test_random_25_pixels_identical_to_remote(site):
     """Test 1: Pick 25 random pixels inside each cropped window; read the same coordinates

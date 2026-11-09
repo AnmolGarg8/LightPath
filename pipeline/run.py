@@ -37,7 +37,11 @@ import numpy as np
 import pyproj
 import rasterio
 import scipy
-import spiceypy
+
+try:
+    import spiceypy
+except Exception:
+    spiceypy = None
 import yaml
 
 from pipeline.config_schema import PipelineConfig, SiteConfig
@@ -138,7 +142,7 @@ def get_software_versions() -> Dict[str, str]:
         "scipy": scipy.__version__,
         "rasterio": rasterio.__version__,
         "pyproj": pyproj.__version__,
-        "spiceypy": spiceypy.__version__,
+        "spiceypy": getattr(spiceypy, "__version__", "unknown") if spiceypy is not None else "unavailable",
     }
 
 
@@ -689,6 +693,10 @@ def run_pipeline(
     if mode is None:
         mode = "synthetic" if all(s.is_synthetic for s in config.sites) else "real"
 
+    # Real mode preflight check (verify real LOLA DEM files before initializing compute resources)
+    if mode == "real":
+        preflight_check_real_mode(config)
+
     set_allow_approximate_ephemeris(allow_approximate_ephemeris)
 
     # Furnish SPICE kernels
@@ -713,10 +721,6 @@ def run_pipeline(
     print(f"=== LightPath Pipeline Execution [Mode: {mode.upper()}] ===")
     print(f"Config: {config_path}")
     print(f"Ephemeris Source: {ephemeris_source}")
-
-    # 2. Real mode preflight check
-    if mode == "real":
-        preflight_check_real_mode(config)
 
     # 3. Setup directories
     out_base = ROOT_DIR / config.output_dir
@@ -917,15 +921,11 @@ def run_pipeline(
         kernels_prov = build_kernel_provenance(kernel_paths)
 
         test_results_path = ROOT_DIR / "tests" / "results.json"
-        tests_passed_count = 0
-        tests_total_count = 0
         last_ver_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         if test_results_path.exists():
             try:
                 with open(test_results_path, "r", encoding="utf-8") as tf:
                     tr_doc = json.load(tf)
-                tests_passed_count = tr_doc.get("counts", {}).get("passed", 0)
-                tests_total_count = tr_doc.get("counts", {}).get("total", 0)
                 last_ver_utc = tr_doc.get("timestamp", last_ver_utc)
             except Exception:
                 pass
@@ -947,8 +947,6 @@ def run_pipeline(
                 "wall_elevation_deg": 0.01,
             },
             tests_summary={
-                "tests_passed": tests_passed_count,
-                "tests_total": tests_total_count,
                 "last_verified_utc": last_ver_utc,
             },
         )

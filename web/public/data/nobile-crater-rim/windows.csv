@@ -1,5 +1,0 @@
-site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,ephemeris_source,terrain_source,provenance_hash
-nobile-crater-rim,sun,0,2026-11-06T14:00:00Z,2026-11-15T00:00:00Z,203.0,50.0,2.0,False,analytic_approximation,synthetic,fcb68102
-nobile-crater-rim,earth,0,2026-11-01T00:00:00Z,2026-11-15T00:00:00Z,337.0,50.0,2.0,False,analytic_approximation,synthetic,fcb68102
-nobile-crater-rim,dte,0,2026-11-01T00:00:00Z,2026-11-15T00:00:00Z,337.0,10.0,2.0,False,analytic_approximation,synthetic,fcb68102
-nobile-crater-rim,joint,0,2026-11-06T14:00:00Z,2026-11-15T00:00:00Z,203.0,50.0,2.0,False,analytic_approximation,synthetic,fcb68102

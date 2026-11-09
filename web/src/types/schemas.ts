@@ -95,7 +95,7 @@ export const MissionSchema = z.object({
   id: z.string(),
   name: z.string(),
   operator: z.string(),
-  site_id: z.string(),
+  site_id: z.string().nullable().optional(),
   planned_window_start: z.string(),
   planned_window_end: z.string(),
   status: z.string(),
@@ -262,10 +262,8 @@ export const ProvenanceSchema = z.object({
   parameters: z.record(z.string(), z.unknown()),
   tolerances: z.record(z.string(), z.number()),
   tests_summary: z.object({
-    tests_passed: z.number().int().min(0),
-    tests_total: z.number().int().min(0),
     last_verified_utc: z.string(),
-  }),
+  }).passthrough(),
 });
 
 export type Provenance = z.infer<typeof ProvenanceSchema>;

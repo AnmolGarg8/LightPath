@@ -23,7 +23,7 @@ import numpy as np
 try:
     import spiceypy as spice
     HAS_SPICE = True
-except ImportError:
+except Exception:
     spice = None
     HAS_SPICE = False
 

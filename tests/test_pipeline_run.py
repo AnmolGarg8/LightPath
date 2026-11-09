@@ -26,14 +26,24 @@ def test_real_mode_preflight_refusal():
 
 
 @pytest.mark.requires_kernels
-def test_synthetic_pipeline_outputs_and_schemas():
-    """Verify that synthetic pipeline produces all expected files and validates schemas."""
+def test_synthetic_pipeline_outputs_and_schemas(tmp_path):
+    """Verify that synthetic pipeline produces all expected files and validates schemas in an isolated dir."""
+    import yaml
     config_path = CONFIGS_DIR / "synthetic.yaml"
-    # Ensure outputs exist
-    run_pipeline(config_path, mode="synthetic", site_id_filter="synthetic-proving-ground")
+    with open(config_path, "r", encoding="utf-8") as f:
+        cfg_dict = yaml.safe_load(f)
+
+    target_dir = tmp_path / "web_public_data"
+    cfg_dict["output_dir"] = str(target_dir.relative_to(ROOT_DIR)) if target_dir.is_relative_to(ROOT_DIR) else str(target_dir)
+    tmp_cfg = tmp_path / "synthetic_run.yaml"
+    with open(tmp_cfg, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg_dict, f)
+
+    # Ensure outputs are generated in temporary directory
+    run_pipeline(tmp_cfg, mode="synthetic", site_id_filter="synthetic-proving-ground")
 
     # 1. Check index.json
-    index_path = DATA_DIR / "index.json"
+    index_path = target_dir / "index.json"
     assert index_path.exists()
     with open(index_path, "r", encoding="utf-8") as f:
         index_data = json.load(f)
@@ -42,7 +52,7 @@ def test_synthetic_pipeline_outputs_and_schemas():
     assert index_data["is_synthetic"] is True
 
     # 2. Check site full data (sites/synthetic-proving-ground.json)
-    site_path = DATA_DIR / "sites" / "synthetic-proving-ground.json"
+    site_path = target_dir / "sites" / "synthetic-proving-ground.json"
     assert site_path.exists()
     with open(site_path, "r", encoding="utf-8") as f:
         site_data = json.load(f)
@@ -54,7 +64,7 @@ def test_synthetic_pipeline_outputs_and_schemas():
     assert len(site_data["sensitivities"]["mast_height"]) > 0
 
     # 3. Check cube header (cubes/synthetic-proving-ground.json)
-    cube_hdr_path = DATA_DIR / "cubes" / "synthetic-proving-ground.json"
+    cube_hdr_path = target_dir / "cubes" / "synthetic-proving-ground.json"
     assert cube_hdr_path.exists()
     with open(cube_hdr_path, "r", encoding="utf-8") as f:
         cube_hdr = json.load(f)
@@ -63,7 +73,7 @@ def test_synthetic_pipeline_outputs_and_schemas():
     assert "cell_cap_explanation" in cube_hdr
 
     # 4. Check manifest.json
-    manifest_path = DATA_DIR / "manifest.json"
+    manifest_path = target_dir / "manifest.json"
     assert manifest_path.exists()
     with open(manifest_path, "r", encoding="utf-8") as f:
         manifest_data = json.load(f)
@@ -73,14 +83,14 @@ def test_synthetic_pipeline_outputs_and_schemas():
     assert len(manifest_data["files"]) > 0
 
     # 5. Check provenance.json and run_info.json
-    prov_path = DATA_DIR / "synthetic-proving-ground" / "provenance.json"
+    prov_path = target_dir / "synthetic-proving-ground" / "provenance.json"
     assert prov_path.exists()
     with open(prov_path, "r", encoding="utf-8") as f:
         prov_data = json.load(f)
     with open(SCHEMAS_DIR / "provenance.schema.json", "r", encoding="utf-8") as f:
         jsonschema.validate(instance=prov_data, schema=json.load(f))
 
-    run_info_path = DATA_DIR / "synthetic-proving-ground" / "run_info.json"
+    run_info_path = target_dir / "synthetic-proving-ground" / "run_info.json"
     assert run_info_path.exists()
     with open(run_info_path, "r", encoding="utf-8") as f:
         run_info_data = json.load(f)

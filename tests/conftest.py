@@ -325,7 +325,17 @@ def pytest_sessionfinish(session, exitstatus):
         "charts": charts,
     }
 
-    results_path = root_dir / "tests" / "results.json"
+    import tempfile
+    update_results = os.environ.get("LIGHTPATH_UPDATE_RESULTS") == "1"
+
+    if update_results:
+        results_path = root_dir / "tests" / "results.json"
+        web_data_path = root_dir / "web" / "public" / "data" / "test_results.json"
+    else:
+        tmp_dir = Path(tempfile.gettempdir())
+        results_path = tmp_dir / "lightpath_test_results.json"
+        web_data_path = tmp_dir / "lightpath_web_test_results.json"
+
     results_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Preserve existing timestamp if all verification checks, counts, and measurements match
@@ -347,7 +357,6 @@ def pytest_sessionfinish(session, exitstatus):
     with open(results_path, "w", encoding="utf-8") as f:
         json.dump(results_data, f, indent=2)
 
-    web_data_path = root_dir / "web" / "public" / "data" / "test_results.json"
-    if web_data_path.parent.exists():
+    if update_results and web_data_path.parent.exists():
         with open(web_data_path, "w", encoding="utf-8") as f:
             json.dump(results_data, f, indent=2)
