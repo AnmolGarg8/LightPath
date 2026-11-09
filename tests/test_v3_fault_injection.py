@@ -13,7 +13,11 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import spiceypy as spice
+
+try:
+    import spiceypy as spice
+except Exception:
+    spice = None
 
 from pipeline.constants import (
     ABCORR_FOR_VALIDATION,

@@ -30,7 +30,11 @@ from pathlib import Path
 import ephem
 import numpy as np
 import pytest
-import spiceypy as spice
+
+try:
+    import spiceypy as spice
+except Exception:
+    spice = None
 
 from pipeline.constants import ABCORR_FOR_VALIDATION
 from pipeline.geometry import are_kernels_available, are_kernels_loaded, load_kernels
