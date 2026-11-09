@@ -2,7 +2,9 @@
   {
     "id": "synthetic-proving-ground",
     "name": "Synthetic Proving Ground (SYNTHETIC EXAMPLE)",
-    "mission_ids": [],
+    "mission_ids": [
+      "synthetic-proving-lander"
+    ],
     "lat_deg": -89.9,
     "lon_deg": 0.0,
     "ground_elev_m": 0.0,
@@ -18,5 +20,26 @@
     "terrain_source": "synthetic",
     "notes": "Synthetic math-generated crater for algorithm testing and verification.",
     "is_demo_site": true
+  },
+  {
+    "id": "test-location",
+    "name": "Real terrain test location (not a mission site)",
+    "mission_ids": [],
+    "lat_deg": -89.5,
+    "lon_deg": 0.0,
+    "ground_elev_m": -722.0,
+    "source_links": [
+      "https://pgda.gsfc.nasa.gov/products/78",
+      "https://doi.org/10.3847/PSJ/acf3e1"
+    ],
+    "source_label": "NASA GSFC Planetary Geodesy Data Archive / LOLA 20mpp & 80mpp (Barker et al. 2023)",
+    "source_url": "https://pgda.gsfc.nasa.gov/products/78",
+    "retrieved_on": "2026-11-07",
+    "verified": false,
+    "is_synthetic": false,
+    "ephemeris_source": "spice_kernels",
+    "terrain_source": "lola_dem",
+    "notes": "Real terrain test location (-89.5 deg N, 0.0 deg E) computed with LOLA near (20 m) and far (80 m) nested layers and SPICE DE421 kernels.",
+    "is_demo_site": false
   }
 ]

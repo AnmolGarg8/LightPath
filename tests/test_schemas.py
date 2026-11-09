@@ -217,7 +217,7 @@ def test_configs_sites_validation():
     schema = load_schema("site")
     with open(SCHEMAS_DIR.parent / "configs" / "sites.json", "r", encoding="utf-8") as f:
         sites = json.load(f)
-    assert len(sites) >= 4
+    assert len(sites) >= 2
     for site in sites:
         validate(instance=site, schema=schema)
 

@@ -61,11 +61,11 @@
       "max_slope_deg": 15.0
     },
     "margins": {
-      "horizon_margin_deg": 0.1
+      "horizon_margin_deg": 0.03
     },
     "horizon_params": {
-      "az_step_deg": 5.0,
-      "max_range_m": 25000.0,
+      "az_step_deg": 1.0,
+      "max_range_m": 50000.0,
       "step_m": 50.0
     },
     "ephemeris_source": "spice_kernels",

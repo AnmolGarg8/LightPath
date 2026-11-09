@@ -30,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
   const { catalog, demoSiteId, secondSiteId } = useSiteCatalog();
   const analysableSitesCount = catalog?.sites?.length ?? 0;
   const canCompareSites = analysableSitesCount >= 2;
+  const hasSourcedBacktest = false; // No sourced backtest case exists in production until docs/BACKTEST_CASE.md is supplied (Rule 2)
 
   const navLinks = [
     { href: '#/', label: 'Mission Browser' },
@@ -131,8 +132,22 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
         >
           {navLinks.map((link) => {
             const isCompare = link.label === 'Compare Sites';
-            const isDisabled = isCompare && !canCompareSites;
-            const disabledReason = `Compare Sites is disabled: requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`;
+            const isCompareDisabled = isCompare && !canCompareSites;
+            const isReplay = link.label === 'Mission Replay';
+            const isReplayDisabled = isReplay && !hasSourcedBacktest;
+            const isDisabled = isCompareDisabled || isReplayDisabled;
+
+            const disabledReason = isCompareDisabled
+              ? `Compare Sites is disabled: requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`
+              : isReplayDisabled
+              ? 'Mission Replay is disabled: no verified historical mission telemetry backtest case is available (Rule 2)'
+              : '';
+
+            const disabledBadgeText = isCompareDisabled
+              ? '(needs 2 sites)'
+              : isReplayDisabled
+              ? '(no sourced case)'
+              : '';
 
             const isActive =
               link.href === '#/'
@@ -163,7 +178,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
                 >
                   {link.label}
                   <span style={{ fontSize: '0.65rem', padding: '0.05rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(148, 163, 184, 0.2)' }}>
-                    (needs 2 sites)
+                    {disabledBadgeText}
                   </span>
                 </a>
               );
@@ -227,7 +242,23 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
         >
           {navLinks.map((link) => {
             const isCompare = link.label === 'Compare Sites';
-            const isDisabled = isCompare && !canCompareSites;
+            const isCompareDisabled = isCompare && !canCompareSites;
+            const isReplay = link.label === 'Mission Replay';
+            const isReplayDisabled = isReplay && !hasSourcedBacktest;
+            const isDisabled = isCompareDisabled || isReplayDisabled;
+
+            const disabledReason = isCompareDisabled
+              ? `Compare Sites requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`
+              : isReplayDisabled
+              ? 'Mission Replay is disabled: no verified historical mission telemetry backtest case is available (Rule 2)'
+              : '';
+
+            const disabledBadgeText = isCompareDisabled
+              ? 'Disabled (needs 2 sites)'
+              : isReplayDisabled
+              ? 'Disabled (no sourced case)'
+              : '';
+
             if (isDisabled) {
               return (
                 <span
@@ -241,12 +272,13 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '0.2rem 0',
+                    cursor: 'not-allowed',
                   }}
-                  title={`Compare Sites requires at least 2 analysed sites (currently ${analysableSitesCount} available in index.json)`}
+                  title={disabledReason}
                 >
                   <span>{link.label}</span>
                   <span style={{ fontSize: '0.7rem', padding: '0.1rem 0.3rem', borderRadius: '4px', backgroundColor: 'rgba(148, 163, 184, 0.2)' }}>
-                    Disabled (needs 2 sites)
+                    {disabledBadgeText}
                   </span>
                 </span>
               );

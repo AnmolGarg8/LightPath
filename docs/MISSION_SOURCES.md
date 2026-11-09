@@ -39,35 +39,35 @@ This document serves as the primary citation register for lunar missions referen
 - **Primary Citations**: Internal algorithm test harness fixture (`configs/synthetic.yaml`).
 - **Verification Status**: `UNSOURCED EXAMPLE` (synthetic test scenario).
 
-### 2. CLPS IM-2 (PRIME-1)
-- **Mission ID**: `clps-im2-prime1`
-- **Mission Name**: NASA CLPS IM-2 (PRIME-1)
-- **Operator**: Intuitive Machines / NASA CLPS
-- **Candidate Site**: Shackleton Connecting Ridge
+### 2. Example lander A
+- **Mission ID**: `example-lander-a`
+- **Mission Name**: Example lander A
+- **Operator**: Example Operator A
+- **Candidate Site**: Unassigned / Candidate Site A
 - **Target Coordinates**: 89.78°S, 128.80°E
-- **Mission Window**: Unverified example scenario (operational date pending official NASA CLPS launch confirmation).
+- **Mission Window**: Unverified example scenario (operational timeline pending confirmation).
 - **Analysis Window**: 2026-11-01T00:00:00Z to 2026-11-15T00:00:00Z (14-day lunar daylight analysis span).
-- **Primary Citations**: [PENDING CITATION] NASA CLPS delivery task order / payload description.
-- **Verification Status**: `UNSOURCED EXAMPLE` (dates and operational status are illustrative).
+- **Primary Citations**: [PENDING CITATION] Example manifest entry (`data/missions.json`).
+- **Verification Status**: `UNSOURCED EXAMPLE` (illustrative scenario).
 
-### 3. CLPS IM-1 (Odysseus / Nova-C)
-- **Mission ID**: `clps-im1-odysseus`
-- **Mission Name**: NASA CLPS IM-1 (Odysseus / Nova-C)
-- **Operator**: Intuitive Machines / NASA CLPS
-- **Candidate Site**: Malapert Mountain region
+### 3. Example lander B
+- **Mission ID**: `example-lander-b`
+- **Mission Name**: Example lander B
+- **Operator**: Example Operator B
+- **Candidate Site**: Unassigned / Candidate Site B
 - **Target Coordinates**: 80.13°S, 1.44°E
 - **Mission Window**: Unverified example scenario.
 - **Analysis Window**: 2026-11-05T00:00:00Z to 2026-11-20T00:00:00Z.
-- **Primary Citations**: [PENDING CITATION] Official landing telemetry / trajectory report.
-- **Verification Status**: `UNSOURCED EXAMPLE` (dates and operational status are illustrative).
+- **Primary Citations**: [PENDING CITATION] Example manifest entry (`data/missions.json`).
+- **Verification Status**: `UNSOURCED EXAMPLE` (illustrative scenario).
 
-### 4. VIPER Polar Traverse / Griffin
-- **Mission ID**: `viper-griffin`
-- **Mission Name**: VIPER Polar Traverse / Griffin
-- **Operator**: Astrobotic / NASA CLPS
-- **Candidate Site**: Nobile Crater Rim
+### 4. Example lander C
+- **Mission ID**: `example-lander-c`
+- **Mission Name**: Example lander C
+- **Operator**: Example Operator C
+- **Candidate Site**: Unassigned / Candidate Site C
 - **Target Coordinates**: 85.20°S, 31.00°E
 - **Mission Window**: Unverified example scenario.
 - **Analysis Window**: 2026-11-01T00:00:00Z to 2026-11-15T00:00:00Z.
-- **Primary Citations**: [PENDING CITATION] NASA VIPER traverse documentation.
-- **Verification Status**: `UNSOURCED EXAMPLE` (dates and operational status are illustrative).
+- **Primary Citations**: [PENDING CITATION] Example manifest entry (`data/missions.json`).
+- **Verification Status**: `UNSOURCED EXAMPLE` (illustrative scenario).

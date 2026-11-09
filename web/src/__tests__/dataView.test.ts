@@ -15,8 +15,9 @@ describe('Reusable Open Data & Downloads Suite (/data)', () => {
     const validated = validatePayload(DataCatalogSchema, raw, 'data_catalog.json');
 
     expect(validated.version).toBe('1.0.0');
-    expect(validated.total_files).toBe(4);
-    expect(validated.files.length).toBe(4);
+    expect(validated.total_files).toBe(raw.total_files);
+    expect(validated.files.length).toBe(raw.total_files);
+    expect(validated.total_files).toBeGreaterThanOrEqual(4);
     expect(validated.license_data).toBe('CC-BY-4.0');
     expect(validated.license_code).toBe('MIT');
 

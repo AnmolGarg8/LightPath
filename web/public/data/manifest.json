@@ -2,13 +2,13 @@
   "files": [
     {
       "path": "all_sites_windows.csv",
-      "size_bytes": 646,
-      "sha256": "3fe8e9fe5876573facd8fb482579da51c5430d3bed13da403ebb0c321151d1b5"
+      "size_bytes": 1105,
+      "sha256": "2654c8b97b9f3f775fa8bb4e0c39db2299882740a83d3fd19ec0a152c99a3e27"
     },
     {
       "path": "all_sites_windows.parquet",
-      "size_bytes": 4701,
-      "sha256": "5c6bdc0b229c48bb89319b6b46b8af6a04da44ba3968259a5cafbd13181b202c"
+      "size_bytes": 4757,
+      "sha256": "983c0da762d485b2b7cb1fbe4ac16898e8369e9fa10ba21e9169a1e002592762"
     },
     {
       "path": "cubes/synthetic-crater-rim.bin",
@@ -37,33 +37,43 @@
     },
     {
       "path": "cubes/synthetic-proving-ground.json",
-      "size_bytes": 560600,
-      "sha256": "13eea8751eb5f610d9ed24c13faecbbe8a5b8766851cf6a914247f1d88d62e02"
+      "size_bytes": 606693,
+      "sha256": "b40b86343cb70444e38c450d47a8e69b5cabeae52e09366e3df13588d239d600"
+    },
+    {
+      "path": "cubes/test-location.bin",
+      "size_bytes": 7232,
+      "sha256": "a8dff40dfbbe9d2eda2c1fdd192eb6c1908efa147d89619bb1606e3fb0dcee81"
+    },
+    {
+      "path": "cubes/test-location.json",
+      "size_bytes": 559331,
+      "sha256": "64c17ef09589b289389a878ef6f007b72056005098d62ecaf046b489ba0f50c0"
     },
     {
       "path": "data_catalog.json",
-      "size_bytes": 2219,
-      "sha256": "ac06099fb17e4c4bd670af1ec9f6c1be7120d0299931fd9571a963acf6954790"
+      "size_bytes": 3136,
+      "sha256": "ce0ae1c412be0e5c06ae71d81f43c20fcd84f0047572d5ce9743bd64b0b86526"
     },
     {
       "path": "data_status.json",
-      "size_bytes": 128,
-      "sha256": "e46c5ed1e9b22e18b5ff8f234b165c499b922db49ba37ddb255e2d09b5b3afde"
+      "size_bytes": 132,
+      "sha256": "bebc8a26effaaf69b17735372291b0e6de896d4cfb348c1ef17a75776ca76e96"
     },
     {
       "path": "index.json",
-      "size_bytes": 7245,
-      "sha256": "4c3f7c2670a122511d03c91a829f87824c533f926382e9b506af645a31f5d8d0"
+      "size_bytes": 6844,
+      "sha256": "f6f1ab650ada9aa703f84dc00996439f79550dc872f476b562a92aa76e0165da"
     },
     {
       "path": "missions.json",
-      "size_bytes": 5148,
-      "sha256": "3f7d7038ca6333b4d10806813ec1d09bbc23577a16832059bc31a95c4bb7feac"
+      "size_bytes": 4686,
+      "sha256": "0680e82258df81d2901ee538abfc2a4432a56d9f377f8ed56f6539ba5a5d2294"
     },
     {
       "path": "sites.json",
-      "size_bytes": 693,
-      "sha256": "570665e99d52413f64817860824d5c774fabb13ff16bdb1dad8c21f344348fd1"
+      "size_bytes": 1592,
+      "sha256": "3d7738ef0a125f2bce0a568fd4d308110f26b9c2834c65888a5bb8c96f9a0070"
     },
     {
       "path": "sites/synthetic-crater-rim.json",
@@ -77,8 +87,13 @@
     },
     {
       "path": "sites/synthetic-proving-ground.json",
-      "size_bytes": 3446,
-      "sha256": "7e005c1bfdc0c8228bb08d2dc189374bf5572ac1f310674edc5ffe25fb74fd0d"
+      "size_bytes": 3613,
+      "sha256": "66fbe314e19cfa60bcc75e0a852bef27bd30277390a0b161643c19b78703e48e"
+    },
+    {
+      "path": "sites/test-location.json",
+      "size_bytes": 3618,
+      "sha256": "f6e94b0bc114941969d887f02325672410271fddcda991f39049a75a963c238b"
     },
     {
       "path": "synthetic-crater-rim/horizon.json",
@@ -172,13 +187,13 @@
     },
     {
       "path": "synthetic-proving-ground/horizon.json",
-      "size_bytes": 11524,
-      "sha256": "2c043fe2fb8ac07d2bf9271f8b53ba7ed81ad1580d81502dc9ab690da1e938b1"
+      "size_bytes": 59494,
+      "sha256": "bfa5375c05ca2533f9401abe86962911885a9836c2445843ac0e49bb126df4f3"
     },
     {
       "path": "synthetic-proving-ground/provenance.json",
-      "size_bytes": 2186,
-      "sha256": "06aa30476d7096f1f808ff4fa3cf98123d56f18550e7a0c2f4f331f9a1160867"
+      "size_bytes": 2269,
+      "sha256": "fcdc0bb297af20f1345d3472551bfcfe5bc05fc145d55f8b5d66f25b28739566"
     },
     {
       "path": "synthetic-proving-ground/route_result.json",
@@ -187,42 +202,82 @@
     },
     {
       "path": "synthetic-proving-ground/series.json",
-      "size_bytes": 14243,
-      "sha256": "b5f9708abcca65be7e61398d92b7723aa88c952fa874b345e94a1ec5e33d64bc"
+      "size_bytes": 15177,
+      "sha256": "bd89934eaa136b47bc6a0f4ca5bbdbe943eb8840642870f975c207eb648f2f05"
     },
     {
       "path": "synthetic-proving-ground/site.json",
-      "size_bytes": 3446,
-      "sha256": "7e005c1bfdc0c8228bb08d2dc189374bf5572ac1f310674edc5ffe25fb74fd0d"
+      "size_bytes": 3613,
+      "sha256": "66fbe314e19cfa60bcc75e0a852bef27bd30277390a0b161643c19b78703e48e"
     },
     {
       "path": "synthetic-proving-ground/stats.json",
-      "size_bytes": 1268,
-      "sha256": "d1943b8ad40be5e5de7ee255bd6cb10c0a118ff6a0d3a57e4d5d0f73b0e164ee"
+      "size_bytes": 1326,
+      "sha256": "0e3051d7d4b6f751ace5069a9cac95c160f6696992b6425cbfa7537ed0623ced"
     },
     {
       "path": "synthetic-proving-ground/visibility_cube.json",
-      "size_bytes": 560600,
-      "sha256": "13eea8751eb5f610d9ed24c13faecbbe8a5b8766851cf6a914247f1d88d62e02"
+      "size_bytes": 606693,
+      "sha256": "b40b86343cb70444e38c450d47a8e69b5cabeae52e09366e3df13588d239d600"
     },
     {
       "path": "synthetic-proving-ground/windows.csv",
       "size_bytes": 646,
-      "sha256": "3fe8e9fe5876573facd8fb482579da51c5430d3bed13da403ebb0c321151d1b5"
+      "sha256": "c576aaa710327f332fc7e807d9953b36907390ec2ccc155e67b00adc3f68ea92"
     },
     {
       "path": "synthetic-proving-ground/windows.parquet",
       "size_bytes": 4701,
-      "sha256": "5c6bdc0b229c48bb89319b6b46b8af6a04da44ba3968259a5cafbd13181b202c"
+      "sha256": "e04a0e6b304c66f9e973a0e88359b58f3d0939a66e12d759e1db7c4ada9c79ec"
+    },
+    {
+      "path": "test-location/horizon.json",
+      "size_bytes": 55641,
+      "sha256": "aa1d91ffd45fdcfdccf9e6b1bb98426f4f00dab521bedbb894856dbd69dbca90"
+    },
+    {
+      "path": "test-location/provenance.json",
+      "size_bytes": 2609,
+      "sha256": "48e3f88847bf2c8a68803a25816c708e41b8afdd47bf952d2dba1dab1136e244"
+    },
+    {
+      "path": "test-location/series.json",
+      "size_bytes": 15198,
+      "sha256": "97748561088e6293bc7f7e7e1ec8ad15a1599c859834450a6d0afcfd4a878942"
+    },
+    {
+      "path": "test-location/site.json",
+      "size_bytes": 3618,
+      "sha256": "f6e94b0bc114941969d887f02325672410271fddcda991f39049a75a963c238b"
+    },
+    {
+      "path": "test-location/stats.json",
+      "size_bytes": 1328,
+      "sha256": "1c3a96665ec7f99608a86fc7408e3ba22d81f6dfb8f82323a65e9eb0a87b45ff"
+    },
+    {
+      "path": "test-location/visibility_cube.json",
+      "size_bytes": 559331,
+      "sha256": "64c17ef09589b289389a878ef6f007b72056005098d62ecaf046b489ba0f50c0"
+    },
+    {
+      "path": "test-location/windows.csv",
+      "size_bytes": 602,
+      "sha256": "ef5869c3b4b927e19eebdad326ae7be95782d0ea6881c20b19fbfcbbf46896af"
+    },
+    {
+      "path": "test-location/windows.parquet",
+      "size_bytes": 4640,
+      "sha256": "c328854e2560249250aca2ecbf0362d396a975ee0d2e2627e6a26233a29bb1a1"
     },
     {
       "path": "test_results.json",
-      "size_bytes": 11136,
-      "sha256": "55b89be28e50c59e3aaea64c655f2849a863443affbc7b961f96fc19df62cc5f"
+      "size_bytes": 11433,
+      "sha256": "adc37a12c091bcd40fe1e34350958abb28375b1246eaa97069aab299525bfbc3"
     }
   ],
   "run_configuration": {
-    "mode": "synthetic",
+    "mode": "real",
     "date_range": {
       "start_utc": "2026-11-01T00:00:00Z",
       "end_utc": "2026-11-05T00:00:00Z"
@@ -241,11 +296,11 @@
       "max_slope_deg": 15.0
     },
     "margins": {
-      "horizon_margin_deg": 0.1
+      "horizon_margin_deg": 0.03
     },
     "horizon_params": {
-      "az_step_deg": 5.0,
-      "max_range_m": 25000.0,
+      "az_step_deg": 1.0,
+      "max_range_m": 50000.0,
       "step_m": 50.0
     },
     "route_planning": {
@@ -260,7 +315,7 @@
     "start_utc": "2026-11-01T00:00:00Z",
     "end_utc": "2026-11-05T00:00:00Z"
   },
-  "timestamp": "2026-11-01T00:00:00Z",
-  "code_commit": "3d7c93c5302e43884b8c77a2b12c14acd42efd88",
+  "timestamp": "2026-11-09T07:59:49.489488+00:00",
+  "code_commit": "22db937e3254db8291ce40790d36d55fc8683bf6",
   "is_synthetic": true
 }

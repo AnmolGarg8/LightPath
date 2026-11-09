@@ -1,15 +1,13 @@
 # LightPath Real Pipeline Configuration
 # Governed by docs/PROJECT_RULES.md
-# Real entries are marked verified: false until official kernels and PDS products are loaded.
-
 kernels_meta_path: kernels/meta.tm
 dsn_config_path: configs/dsn_stations.yaml
 
 date_range:
   start_utc: "2026-11-01T00:00:00Z"
-  end_utc: "2026-11-15T00:00:00Z"
+  end_utc: "2026-11-05T00:00:00Z"
 
-step_minutes: 60
+step_minutes: 120
 mast_heights_m: [0.0, 2.0, 5.0, 10.0]
 
 thresholds:
@@ -19,84 +17,72 @@ thresholds:
   max_slope_deg: 15.0
 
 margins:
-  horizon_margin_deg: 0.10
+  horizon_margin_deg: 0.03
 
 horizon_params:
   az_step_deg: 1.0
   max_range_m: 50000.0
-  step_m: 25.0
+  step_m: 50.0
 
 route_planning:
-  half_width_m: 1000.0
+  half_width_m: 600.0
   spacing_m: 50.0
-  step_minutes: 120
+  step_minutes: 180
   max_cells: 4000
 
 output_dir: web/public/data
 
 sites:
-  - id: shackleton-connecting-ridge
-    name: "Shackleton Connecting Ridge (Candidate Site)"
-    lat_deg: -89.78
-    lon_deg: 128.80
-    ground_elev_m: 1100.0
-    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
-    source_url: "https://pgda.gsfc.nasa.gov/products/78"
+  - id: synthetic-proving-ground
+    name: "Synthetic Proving Ground (SYNTHETIC EXAMPLE)"
+    lat_deg: -89.90
+    lon_deg: 0.00
+    ground_elev_m: 0.0
+    source_label: "Synthetic Crater Proving Ground Model (pipeline/synthetic.py)"
+    source_url: "https://github.com/AnmolGarg8/LightPath"
     retrieved_on: "2026-10-29"
     verified: false
     is_synthetic: true
     ephemeris_source: "spice_kernels"
     terrain_source: "synthetic"
-    notes: "Candidate Artemis/CLPS south-pole exploration zone on connecting ridge; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
-    mission_ids: ["clps-placeholder-shackleton"]
+    notes: "Synthetic math-generated crater for algorithm testing and verification."
+    mission_ids: ["synthetic-proving-lander"]
+    synthetic_feature: crater
     source_links:
-      - "https://pgda.gsfc.nasa.gov/products/78"
+      - "synthetic://pipeline.synthetic/crater"
     terrain_layers:
       - name: "fine"
-        path: "data/raw/lola_shackleton_20m.tif"
-        max_range_m: 10000.0
-        pixel_size_m: 20.0
+        path: "data/processed/synthetic/dem_crater_fine.tif"
+        max_range_m: 5000.0
+        pixel_size_m: 10.0
+      - name: "medium"
+        path: "data/processed/synthetic/dem_crater_medium.tif"
+        max_range_m: 30000.0
+        pixel_size_m: 50.0
 
-  - id: malapert-mountain
-    name: "Malapert Mountain (Candidate Site)"
-    lat_deg: -86.04
-    lon_deg: 2.70
-    ground_elev_m: 5000.0
-    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
+  - id: test-location
+    name: "Real terrain test location (not a mission site)"
+    lat_deg: -89.50
+    lon_deg: 0.00
+    ground_elev_m: -722.0
+    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA 20mpp & 80mpp (Barker et al. 2023)"
     source_url: "https://pgda.gsfc.nasa.gov/products/78"
-    retrieved_on: "2026-10-29"
+    retrieved_on: "2026-11-07"
     verified: false
-    is_synthetic: true
+    is_synthetic: false
     ephemeris_source: "spice_kernels"
-    terrain_source: "synthetic"
-    notes: "Candidate Artemis/CLPS south-pole exploration zone atop Malapert massif; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
-    mission_ids: ["clps-placeholder-malapert"]
-    source_links:
-      - "https://pgda.gsfc.nasa.gov/products/78"
-    terrain_layers:
-      - name: "fine"
-        path: "data/raw/lola_malapert_20m.tif"
-        max_range_m: 10000.0
-        pixel_size_m: 20.0
-
-  - id: nobile-crater-rim
-    name: "Nobile Crater Rim (Candidate Site)"
-    lat_deg: -85.20
-    lon_deg: 35.80
-    ground_elev_m: 200.0
-    source_label: "NASA GSFC Planetary Geodesy Data Archive / LOLA South Pole 80S-90S"
-    source_url: "https://pgda.gsfc.nasa.gov/products/78"
-    retrieved_on: "2026-10-29"
-    verified: false
-    is_synthetic: true
-    ephemeris_source: "spice_kernels"
-    terrain_source: "synthetic"
-    notes: "Candidate Artemis/CLPS exploration site on the rim of Nobile crater; synthetic terrain model and approximate analytic ephemeris pending SPICE/PDS operational validation."
+    terrain_source: "lola_dem"
+    notes: "Real terrain test location (-89.5 deg N, 0.0 deg E) computed with LOLA near (20 m) and far (80 m) nested layers and SPICE DE421 kernels."
     mission_ids: []
     source_links:
       - "https://pgda.gsfc.nasa.gov/products/78"
+      - "https://doi.org/10.3847/PSJ/acf3e1"
     terrain_layers:
-      - name: "fine"
-        path: "data/raw/lola_nobile_20m.tif"
-        max_range_m: 10000.0
+      - name: "near"
+        path: "data/raw/near_test_location.tif"
+        max_range_m: 30000.0
         pixel_size_m: 20.0
+      - name: "far"
+        path: "data/raw/LDEM_80S_80MPP_ADJ.TIF"
+        max_range_m: 100000.0
+        pixel_size_m: 80.0

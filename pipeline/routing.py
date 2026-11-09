@@ -151,7 +151,7 @@ def plan_lunar_traverse(
         return _create_infeasible_result(
             mode=mode,
             params=params_dict,
-            explanation=f"Start location ({sx}, {sy}) slope ({slope_grid[sy, sx]:.1f} deg) exceeds max limit {max_slope_deg} deg.",
+            explanation=f"slope barrier: No feasible path found. Start location ({sx}, {sy}) slope ({slope_grid[sy, sx]:.1f} deg) exceeds max limit {max_slope_deg} deg.",
         )
 
     start_sun_frac = sun_frac_cube[start_time_idx, sy, sx] / 100.0
@@ -160,7 +160,65 @@ def plan_lunar_traverse(
         return _create_infeasible_result(
             mode=mode,
             params=params_dict,
-            explanation=f"Start location ({sx}, {sy}) has insufficient solar fraction at departure time {timestamps[start_time_idx]}{margin_note}.",
+            explanation=f"start in shadow: Start location ({sx}, {sy}) in shadow at departure ({start_sun_frac*100:.0f}% < {min_sun_frac*100:.0f}%{margin_note}).",
+        )
+
+    # Check goal cell conditions
+    if not traversable_grid[gy, gx] or slope_grid[gy, gx] > max_slope_deg:
+        return _create_infeasible_result(
+            mode=mode,
+            params=params_dict,
+            explanation=f"slope barrier: No feasible path found. Destination ({gx}, {gy}) slope ({slope_grid[gy, gx]:.1f} deg) exceeds max limit {max_slope_deg} deg.",
+        )
+
+    # Check static 2D traversability corridor
+    visited_2d = {(sx, sy)}
+    q_2d = [(sx, sy)]
+    has_2d_corridor = False
+    while q_2d:
+        cx, cy = q_2d.pop(0)
+        if (cx, cy) == (gx, gy):
+            has_2d_corridor = True
+            break
+        for dx, dy in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,1),(1,-1),(-1,-1)]:
+            nx_c, ny_c = cx + dx, cy + dy
+            if 0 <= nx_c < nx and 0 <= ny_c < ny and (nx_c, ny_c) not in visited_2d:
+                if traversable_grid[ny_c, nx_c] and slope_grid[ny_c, nx_c] <= max_slope_deg:
+                    if dx != 0 and dy != 0:
+                        if not (traversable_grid[cy, nx_c] and slope_grid[cy, nx_c] <= max_slope_deg and
+                                traversable_grid[ny_c, cx] and slope_grid[ny_c, cx] <= max_slope_deg):
+                            continue
+                    visited_2d.add((nx_c, ny_c))
+                    q_2d.append((nx_c, ny_c))
+    if not has_2d_corridor:
+        return _create_infeasible_result(
+            mode=mode,
+            params=params_dict,
+            explanation=f"slope barrier: No feasible path found from ({sx}, {sy}) to ({gx}, {gy}). Terrain slopes exceed {max_slope_deg} deg preventing any continuous traversable corridor.",
+        )
+
+    # Deadline check
+    min_dist_m = math.hypot((gx - sx) * spacing_m, (gy - sy) * spacing_m)
+    min_transit_s = min_dist_m / speed_m_s
+    remaining_time_s = (num_t - 1 - start_time_idx) * step_dt_s
+    if min_transit_s > remaining_time_s + 1e-6:
+        return _create_infeasible_result(
+            mode=mode,
+            params=params_dict,
+            explanation=f"deadline: Remaining time window ({remaining_time_s/3600:.1f} h) is shorter than minimum geometric transit time ({min_transit_s/3600:.1f} h).",
+        )
+
+    # Goal illumination check
+    min_steps = math.ceil(round(min_transit_s / step_dt_s, 9))
+    goal_ever_sunlit = any(
+        (sun_frac_cube[t, gy, gx] / 100.0) >= min_sun_frac
+        for t in range(start_time_idx + min_steps, num_t)
+    )
+    if not goal_ever_sunlit:
+        return _create_infeasible_result(
+            mode=mode,
+            params=params_dict,
+            explanation=f"goal in shadow: Destination ({gx}, {gy}) remains in shadow for all reachable arrival times in the window.",
         )
 
     # Space-time A* Priority Queue: (priority, g_time_s, x, y, t_idx)
@@ -263,8 +321,8 @@ def plan_lunar_traverse(
             mode=mode,
             params=params_dict,
             explanation=(
-                f"No feasible path found from ({sx}, {sy}) to ({gx}, {gy}) starting at {timestamps[start_time_idx]}. "
-                f"Terrain slopes exceed {max_slope_deg} deg or moving shadows block the corridor."
+                f"corridor shadow: Moving lunar shadows obstruct the corridor from ({sx}, {sy}) to ({gx}, {gy}); "
+                f"required transit in darkness exceeds allowable dark budget of {dark_budget_h} h."
             ),
         )
 
@@ -426,6 +484,26 @@ def compute_departure_window_map(
     if allow_wait:
         moves.append((0, 0, 0.0))
 
+    # Pre-check static 2D traversability corridor between start and goal
+    visited_2d_dep = {(sx, sy)}
+    q_2d_dep = [(sx, sy)]
+    has_2d_corridor_dep = False
+    while q_2d_dep:
+        cx_c, cy_c = q_2d_dep.pop(0)
+        if (cx_c, cy_c) == (gx, gy):
+            has_2d_corridor_dep = True
+            break
+        for dx, dy in [(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,1),(1,-1),(-1,-1)]:
+            ncx, ncy = cx_c + dx, cy_c + dy
+            if 0 <= ncx < nx and 0 <= ncy < ny and (ncx, ncy) not in visited_2d_dep:
+                if traversable_grid[ncy, ncx] and slope_grid[ncy, ncx] <= max_slope_deg:
+                    if dx != 0 and dy != 0:
+                        if not (traversable_grid[cy_c, ncx] and slope_grid[cy_c, ncx] <= max_slope_deg and
+                                traversable_grid[ncy, cx_c] and slope_grid[ncy, cx_c] <= max_slope_deg):
+                            continue
+                    visited_2d_dep.add((ncx, ncy))
+                    q_2d_dep.append((ncx, ncy))
+
     # Fast single departure solve using pre-extracted arrays
     def _solve_departure(dep_t: int) -> Dict[str, Any]:
         dep_utc = timestamps[dep_t]
@@ -440,7 +518,7 @@ def compute_departure_window_map(
                 "arrival_utc": None,
                 "duration_h": 0.0,
                 "dark_duration_h": 0.0,
-                "infeasible_reason": f"Start slope ({slope_grid[sy, sx]:.1f} deg) exceeds max limit {max_slope_deg} deg",
+                "infeasible_reason": f"slope barrier: Start slope ({slope_grid[sy, sx]:.1f} deg) exceeds max limit {max_slope_deg} deg",
                 "path": [],
             }
 
@@ -454,7 +532,71 @@ def compute_departure_window_map(
                 "arrival_utc": None,
                 "duration_h": 0.0,
                 "dark_duration_h": 0.0,
-                "infeasible_reason": f"Start location in shadow ({sun_frac_cube[dep_t, sy, sx]}% sunlit < {min_sun_frac*100:.0f}%)",
+                "infeasible_reason": f"start in shadow: Start location in shadow ({sun_frac_cube[dep_t, sy, sx]}% sunlit < {min_sun_frac*100:.0f}%)",
+                "path": [],
+            }
+
+        # Destination slope validation
+        if not traversable_grid[gy, gx] or slope_grid[gy, gx] > max_slope_deg:
+            return {
+                "departure_idx": dep_t,
+                "departure_utc": dep_utc,
+                "feasible": False,
+                "arrival_idx": None,
+                "arrival_utc": None,
+                "duration_h": 0.0,
+                "dark_duration_h": 0.0,
+                "infeasible_reason": f"slope barrier: Destination slope ({slope_grid[gy, gx]:.1f} deg) exceeds max limit {max_slope_deg} deg",
+                "path": [],
+            }
+
+        # 2D terrain corridor validation
+        if not has_2d_corridor_dep:
+            return {
+                "departure_idx": dep_t,
+                "departure_utc": dep_utc,
+                "feasible": False,
+                "arrival_idx": None,
+                "arrival_utc": None,
+                "duration_h": 0.0,
+                "dark_duration_h": 0.0,
+                "infeasible_reason": f"slope barrier: Terrain slopes exceed {max_slope_deg} deg preventing any continuous traversable corridor",
+                "path": [],
+            }
+
+        # Deadline validation
+        min_dist_m = math.hypot((gx - sx) * spacing_m, (gy - sy) * spacing_m)
+        min_transit_s = min_dist_m / speed_m_s
+        remaining_time_s = (num_t - 1 - dep_t) * step_dt_s
+        if min_transit_s > remaining_time_s + 1e-6:
+            return {
+                "departure_idx": dep_t,
+                "departure_utc": dep_utc,
+                "feasible": False,
+                "arrival_idx": None,
+                "arrival_utc": None,
+                "duration_h": 0.0,
+                "dark_duration_h": 0.0,
+                "infeasible_reason": f"deadline: Remaining time window ({remaining_time_s/3600:.1f} h) is shorter than minimum geometric transit time ({min_transit_s/3600:.1f} h)",
+                "path": [],
+            }
+
+        # Goal illumination validation
+        min_steps = math.ceil(round(min_transit_s / step_dt_s, 9))
+        goal_ever_sunlit = any(
+            (sun_frac_cube[t, gy, gx] / 100.0) >= min_sun_frac
+            for t in range(dep_t + min_steps, num_t)
+        )
+        if not goal_ever_sunlit:
+            return {
+                "departure_idx": dep_t,
+                "departure_utc": dep_utc,
+                "feasible": False,
+                "arrival_idx": None,
+                "arrival_utc": None,
+                "duration_h": 0.0,
+                "dark_duration_h": 0.0,
+                "infeasible_reason": f"goal in shadow: Destination ({gx}, {gy}) remains in shadow for all reachable arrival times in the window",
                 "path": [],
             }
 
@@ -538,7 +680,7 @@ def compute_departure_window_map(
                 "arrival_utc": None,
                 "duration_h": 0.0,
                 "dark_duration_h": 0.0,
-                "infeasible_reason": "Moving shadow or steep slopes block traverse corridor before reaching target",
+                "infeasible_reason": f"corridor shadow: Moving lunar shadow obstructs corridor; darkness along traverse exceeds allowable dark budget ({dark_budget_h} h)",
                 "path": [],
             }
 

@@ -18,11 +18,18 @@ SCHEMAS_DIR = ROOT_DIR / "schemas"
 DATA_DIR = ROOT_DIR / "web" / "public" / "data"
 
 
-def test_real_mode_preflight_refusal():
+def test_real_mode_preflight_refusal(tmp_path):
     """Verify that mode 'real' cleanly refuses to run when kernels or DEMs are missing."""
     config_path = CONFIGS_DIR / "pipeline.yaml"
+    with open(config_path, "r", encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    cfg["sites"][0]["terrain_layers"] = [{"name": "missing", "path": "data/raw/nonexistent_dem.tif", "pixel_size_m": 20.0, "max_range_m": 10000.0}]
+    bad_cfg = tmp_path / "bad_pipeline.yaml"
+    with open(bad_cfg, "w", encoding="utf-8") as f:
+        yaml.safe_dump(cfg, f)
+
     with pytest.raises(SystemExit) as exc_info:
-        run_pipeline(config_path, mode="real")
+        run_pipeline(bad_cfg, mode="real")
     assert exc_info.value.code == 1
 
 

@@ -1,0 +1,5 @@
+site_id,target,window_id,start_utc,end_utc,duration_h,threshold_pct,mast_height_m,is_synthetic,ephemeris_source,terrain_source,provenance_hash
+test-location,sun,0,2026-11-01T00:00:00Z,2026-11-01T08:00:00Z,10.0,50.0,2.0,False,spice_kernels,lola_dem,48e3f888
+test-location,earth,0,2026-11-01T00:00:00Z,2026-11-01T14:00:00Z,16.0,50.0,2.0,False,spice_kernels,lola_dem,48e3f888
+test-location,dte,0,2026-11-01T00:00:00Z,2026-11-01T14:00:00Z,16.0,6.0,2.0,False,spice_kernels,lola_dem,48e3f888
+test-location,joint,0,2026-11-01T00:00:00Z,2026-11-01T08:00:00Z,10.0,50.0,2.0,False,spice_kernels,lola_dem,48e3f888

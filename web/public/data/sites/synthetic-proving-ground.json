@@ -1,7 +1,9 @@
 {
   "id": "synthetic-proving-ground",
   "name": "Synthetic Proving Ground (SYNTHETIC EXAMPLE)",
-  "mission_ids": [],
+  "mission_ids": [
+    "synthetic-proving-lander"
+  ],
   "lat_deg": -89.9,
   "lon_deg": 0.0,
   "ground_elev_m": 0.0,

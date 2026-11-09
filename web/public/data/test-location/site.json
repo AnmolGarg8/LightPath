@@ -1,0 +1,129 @@
+{
+  "id": "test-location",
+  "name": "Real terrain test location (not a mission site)",
+  "mission_ids": [],
+  "lat_deg": -89.5,
+  "lon_deg": 0.0,
+  "ground_elev_m": -722.0,
+  "source_links": [
+    "https://pgda.gsfc.nasa.gov/products/78",
+    "https://doi.org/10.3847/PSJ/acf3e1"
+  ],
+  "source_label": "NASA GSFC Planetary Geodesy Data Archive / LOLA 20mpp & 80mpp (Barker et al. 2023)",
+  "source_url": "https://pgda.gsfc.nasa.gov/products/78",
+  "retrieved_on": "2026-11-07",
+  "verified": false,
+  "is_synthetic": false,
+  "ephemeris_source": "spice_kernels",
+  "terrain_source": "lola_dem",
+  "notes": "Real terrain test location (-89.5 deg N, 0.0 deg E) computed with LOLA near (20 m) and far (80 m) nested layers and SPICE DE421 kernels.",
+  "stats": {
+    "thresholds": {
+      "min_sun_frac": 0.5,
+      "min_earth_frac": 0.5,
+      "ground_station_mask_deg": 6.0
+    },
+    "sun": {
+      "uptime_fraction": 0.102,
+      "total_uptime_h": 10.0,
+      "windows": [
+        {
+          "start_utc": "2026-11-01T00:00:00Z",
+          "end_utc": "2026-11-01T08:00:00Z",
+          "duration_h": 10.0
+        }
+      ],
+      "longest_window_h": 10.0,
+      "longest_outage_h": 88.0
+    },
+    "earth": {
+      "uptime_fraction": 0.1633,
+      "total_uptime_h": 16.0,
+      "windows": [
+        {
+          "start_utc": "2026-11-01T00:00:00Z",
+          "end_utc": "2026-11-01T14:00:00Z",
+          "duration_h": 16.0
+        }
+      ],
+      "longest_window_h": 16.0,
+      "longest_outage_h": 82.0
+    },
+    "dte": {
+      "uptime_fraction": 0.1633,
+      "total_uptime_h": 16.0,
+      "windows": [
+        {
+          "start_utc": "2026-11-01T00:00:00Z",
+          "end_utc": "2026-11-01T14:00:00Z",
+          "duration_h": 16.0
+        }
+      ],
+      "longest_window_h": 16.0,
+      "longest_outage_h": 82.0
+    },
+    "joint": {
+      "uptime_fraction": 0.102,
+      "total_uptime_h": 10.0,
+      "windows": [
+        {
+          "start_utc": "2026-11-01T00:00:00Z",
+          "end_utc": "2026-11-01T08:00:00Z",
+          "duration_h": 10.0
+        }
+      ],
+      "longest_window_h": 10.0,
+      "longest_outage_h": 88.0
+    }
+  },
+  "sensitivities": {
+    "mast_height": [
+      {
+        "mast_height_m": 0.0,
+        "sun_uptime_fraction": 0.102,
+        "earth_uptime_fraction": 0.0408,
+        "dte_uptime_fraction": 0.0408,
+        "joint_uptime_fraction": 0.0408,
+        "longest_darkness_h": 88.0
+      },
+      {
+        "mast_height_m": 2.0,
+        "sun_uptime_fraction": 0.102,
+        "earth_uptime_fraction": 0.1633,
+        "dte_uptime_fraction": 0.1633,
+        "joint_uptime_fraction": 0.102,
+        "longest_darkness_h": 88.0
+      },
+      {
+        "mast_height_m": 5.0,
+        "sun_uptime_fraction": 0.102,
+        "earth_uptime_fraction": 0.3061,
+        "dte_uptime_fraction": 0.3061,
+        "joint_uptime_fraction": 0.102,
+        "longest_darkness_h": 88.0
+      },
+      {
+        "mast_height_m": 10.0,
+        "sun_uptime_fraction": 0.102,
+        "earth_uptime_fraction": 0.3673,
+        "dte_uptime_fraction": 0.3673,
+        "joint_uptime_fraction": 0.102,
+        "longest_darkness_h": 88.0
+      }
+    ],
+    "resolution": {
+      "available": true,
+      "reason": "Evaluated across 2 configured terrain resolution layers.",
+      "comparison": [
+        {
+          "layer_name": "near",
+          "max_range_m": 30000.0
+        },
+        {
+          "layer_name": "far",
+          "max_range_m": 100000.0
+        }
+      ]
+    }
+  }
+}

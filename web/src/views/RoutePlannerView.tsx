@@ -37,6 +37,7 @@ import {
   importScenarioJson,
   isHashTooLong,
 } from '../utils/scenarioCodec';
+import { generateScenarioStory } from '../utils/scenarioStory';
 
 interface RoutePlannerViewProps {
   siteId: string;
@@ -816,6 +817,21 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       )
     : null;
 
+  const scenarioStory = cube
+    ? generateScenarioStory({
+        departureMap,
+        activeRoute,
+        selectedDepIdx,
+        startPoint,
+        endPoint,
+        speedMs,
+        maxSlopeDeg,
+        darkBudgetH,
+        timeStep,
+        cube,
+      })
+    : null;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       <div>
@@ -1081,13 +1097,11 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         <strong style={{ color: activeRoute?.feasible ? '#22c55e' : '#f87171' }}>
           Scenario Story:
         </strong>{' '}
-        {activeRoute?.feasible
-          ? `Leaving at T=${selectedDepIdx} (${departureMap?.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || ''}Z) works! The illuminated corridor remains open and the rover safely reaches Destination B in ${activeRoute.metrics?.duration_h ?? traverseDurationH} h without exceeding darkness or slope limits.`
-          : `Leaving now (T=${selectedDepIdx}) is blocked by a moving lunar crater shadow across the traverse corridor. Leaving at the suggested time (${departureMap?.earliest_feasible_utc?.slice(11, 19) || 'Step ' + departureMap?.earliest_feasible_idx}Z) works!`}
+        {scenarioStory?.caption}
       </div>
 
       {/* Departure Feasibility & Suggested Relaxation Banner */}
-      {departureMap && !departureMap.departures[selectedDepIdx]?.feasible && departureMap.earliest_feasible_idx !== null && (
+      {departureMap && !departureMap.departures[selectedDepIdx]?.feasible && scenarioStory?.relaxationBanner && (
         <div
           data-testid="departure-relaxation-banner"
           style={{
@@ -1103,28 +1117,28 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f87171', fontWeight: 700, fontSize: '0.95rem' }}>
             <span>⚠️</span>
-            <span>
-              Departure at T={selectedDepIdx} ({departureMap.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || '00:00:00'}Z) is Infeasible: {departureMap.departures[selectedDepIdx]?.infeasible_reason || 'Moving shadows obstruct the corridor.'}
-            </span>
+            <span>{scenarioStory.relaxationBanner.infeasibleSentence}</span>
           </div>
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
-            💡 <strong>Suggested Relaxation:</strong> Wait until <strong>{departureMap.earliest_feasible_utc}</strong> (Step {departureMap.earliest_feasible_idx}) for the illuminated corridor to open. Alternatively, increase speed or relax slope limits.
+            {scenarioStory.relaxationBanner.suggestedRelaxationSentence}
           </div>
-          <div style={{ marginTop: '0.25rem' }}>
-            <button
-              className="btn btn-sm btn-primary"
-              data-testid="apply-relaxation-btn"
-              onClick={() => handleSelectDeparture(departureMap.earliest_feasible_idx!)}
-              style={{
-                fontSize: '0.85rem',
-                padding: '0.4rem 0.85rem',
-                borderRadius: '6px',
-                fontWeight: 600,
-              }}
-            >
-              Apply Suggested Relaxation: Depart at Step {departureMap.earliest_feasible_idx} ({departureMap.earliest_feasible_utc?.slice(11, 19)}Z) →
-            </button>
-          </div>
+          {departureMap.earliest_feasible_idx !== null && (
+            <div style={{ marginTop: '0.25rem' }}>
+              <button
+                className="btn btn-sm btn-primary"
+                data-testid="apply-relaxation-btn"
+                onClick={() => handleSelectDeparture(departureMap.earliest_feasible_idx!)}
+                style={{
+                  fontSize: '0.85rem',
+                  padding: '0.4rem 0.85rem',
+                  borderRadius: '6px',
+                  fontWeight: 600,
+                }}
+              >
+                {scenarioStory.relaxationBanner.buttonLabel}
+              </button>
+            </div>
+          )}
         </div>
       )}
 
@@ -1227,9 +1241,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
           </div>
 
           <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: 'var(--text-primary)', margin: '0 0 0.75rem 0' }}>
-            {activeRoute?.feasible
-              ? `The planned traverse from Point A [${startPoint.join(', ')}] to Point B [${endPoint.join(', ')}] is feasible. The rover travels a ground distance of ${activeRoute.metrics?.total_distance_m ?? traverseDistM} meters in ${activeRoute.metrics?.duration_h ?? traverseDurationH} hours at a speed of ${speedMs} m/s (${(speedMs * 3600).toFixed(0)} m/h). During this window, the rover encounters ${(activeRoute.metrics?.dark_exposure_h ?? 0).toFixed(1)} hours of darkness, which does not exceed the allowable limit of ${darkBudgetH} hours. The maximum terrain slope traversed is ${(activeRoute.metrics?.max_slope_deg ?? 0).toFixed(1)}°, staying safely below the vehicle limit of ${maxSlopeDeg}°. Destination solar illumination at arrival is ${cube.getSunFrac(timeStep, endPoint[1], endPoint[0])}%.`
-              : `The planned traverse from Point A [${startPoint.join(', ')}] to Point B [${endPoint.join(', ')}] is infeasible: leaving at Step ${selectedDepIdx} (${departureMap?.departures[selectedDepIdx]?.departure_utc?.slice(11, 19) || '00:00:00'}Z) is blocked by ${departureMap?.departures[selectedDepIdx]?.infeasible_reason || 'a moving lunar shadow across the traverse corridor'}. The route would experience ${(activeRoute?.metrics?.dark_exposure_h ?? 2.5).toFixed(1)} hours in continuous darkness (exceeding the allowable ${darkBudgetH} h limit) or requires navigating slopes up to ${(activeRoute?.metrics?.max_slope_deg ?? 18.2).toFixed(1)}° (exceeding the ${maxSlopeDeg}° threshold). Suggested relaxation: depart at ${departureMap?.earliest_feasible_utc || 'Step ' + departureMap?.earliest_feasible_idx} when solar illumination opens a clear traversable corridor.`}
+            {scenarioStory?.explanation}
           </p>
 
           <div

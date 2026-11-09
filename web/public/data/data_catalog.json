@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "created_utc": "2026-11-02T04:00:00Z",
-  "total_files": 4,
+  "total_files": 6,
   "license_data": "CC-BY-4.0",
   "license_code": "MIT",
   "suggested_citation": "LightPath Team (2026). LightPath: Lunar South-Pole Solar Illumination and Direct-to-Earth Line of Sight Dataset (Version 1.0.0) [Data set]. NASA Space Apps Challenge 2026.",
@@ -11,22 +11,22 @@
       "filename": "all_sites_windows.parquet",
       "rel_path": "./data/all_sites_windows.parquet",
       "format": "Parquet",
-      "size_bytes": 4701,
-      "sha256": "5c6bdc0b229c48bb89319b6b46b8af6a04da44ba3968259a5cafbd13181b202c",
-      "rows": 4,
+      "size_bytes": 4757,
+      "sha256": "983c0da762d485b2b7cb1fbe4ac16898e8369e9fa10ba21e9169a1e002592762",
+      "rows": 8,
       "license": "CC-BY-4.0",
-      "description": "Consolidated visibility windows across 1 lunar site (Parquet format with embedded metadata)."
+      "description": "Consolidated visibility windows across 2 lunar sites (Parquet format with embedded metadata)."
     },
     {
       "site_id": "all-sites",
       "filename": "all_sites_windows.csv",
       "rel_path": "./data/all_sites_windows.csv",
       "format": "CSV",
-      "size_bytes": 646,
-      "sha256": "3fe8e9fe5876573facd8fb482579da51c5430d3bed13da403ebb0c321151d1b5",
-      "rows": 4,
+      "size_bytes": 1105,
+      "sha256": "2654c8b97b9f3f775fa8bb4e0c39db2299882740a83d3fd19ec0a152c99a3e27",
+      "rows": 8,
       "license": "CC-BY-4.0",
-      "description": "Consolidated visibility windows across 1 lunar site (standard RFC 4180 CSV)."
+      "description": "Consolidated visibility windows across 2 lunar sites (standard RFC 4180 CSV)."
     },
     {
       "site_id": "synthetic-proving-ground",
@@ -34,7 +34,7 @@
       "rel_path": "./data/synthetic-proving-ground/windows.csv",
       "format": "CSV",
       "size_bytes": 646,
-      "sha256": "3fe8e9fe5876573facd8fb482579da51c5430d3bed13da403ebb0c321151d1b5",
+      "sha256": "c576aaa710327f332fc7e807d9953b36907390ec2ccc155e67b00adc3f68ea92",
       "rows": 4,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (CSV)."
@@ -45,10 +45,32 @@
       "rel_path": "./data/synthetic-proving-ground/windows.parquet",
       "format": "Parquet",
       "size_bytes": 4701,
-      "sha256": "5c6bdc0b229c48bb89319b6b46b8af6a04da44ba3968259a5cafbd13181b202c",
+      "sha256": "e04a0e6b304c66f9e973a0e88359b58f3d0939a66e12d759e1db7c4ada9c79ec",
       "rows": 4,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "test-location",
+      "filename": "test-location_windows.csv",
+      "rel_path": "./data/test-location/windows.csv",
+      "format": "CSV",
+      "size_bytes": 602,
+      "sha256": "ef5869c3b4b927e19eebdad326ae7be95782d0ea6881c20b19fbfcbbf46896af",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for test-location (CSV)."
+    },
+    {
+      "site_id": "test-location",
+      "filename": "test-location_windows.parquet",
+      "rel_path": "./data/test-location/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 4640,
+      "sha256": "c328854e2560249250aca2ecbf0362d396a975ee0d2e2627e6a26233a29bb1a1",
+      "rows": 4,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for test-location (Parquet, Snappy compressed with metadata)."
     }
   ]
 }

@@ -34,11 +34,13 @@ def check_terrain_truthfulness() -> bool:
         try:
             with open(DEM_MANIFEST_PATH, "r", encoding="utf-8") as f:
                 dem_manifest = json.load(f)
-            for entry in dem_manifest.get("files", []):
+            entries = dem_manifest.get("files", []) if isinstance(dem_manifest, dict) else dem_manifest
+            for entry in entries:
                 site_id = entry.get("site_id")
-                local_path = ROOT_DIR / entry.get("local_path", "")
+                local_path = ROOT_DIR / entry.get("local_path", entry.get("file", ""))
                 if site_id and local_path.exists() and local_path.is_file():
                     real_sites.add(site_id)
+                    real_sites.add(site_id.replace("_", "-"))
         except Exception:
             pass
 
@@ -77,7 +79,8 @@ def check_terrain_truthfulness() -> bool:
                 for idx, item in enumerate(obj):
                     check_obj(item, f"{path_ctx}[{idx}]", current_site)
 
-        check_obj(data, str(rel))
+        file_site = json_file.parent.name if json_file.parent != DATA_DIR else None
+        check_obj(data, str(rel), file_site)
 
     # 2. Check all CSV files under web/public/data
     for csv_file in DATA_DIR.rglob("*.csv"):

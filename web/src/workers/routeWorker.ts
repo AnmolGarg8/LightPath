@@ -228,6 +228,53 @@ if (typeof self !== 'undefined') {
   };
 }
 
+function has2DTraversablePath(
+  cube: VisibilityCube,
+  sx: number,
+  sy: number,
+  gx: number,
+  gy: number,
+  maxSlopeDeg: number
+): boolean {
+  if (sx === gx && sy === gy) return true;
+  const nx = cube.grid.nx;
+  const ny = cube.grid.ny;
+  const visited = new Uint8Array(nx * ny);
+  const queue = [sx, sy];
+  visited[sy * nx + sx] = 1;
+  let head = 0;
+  while (head < queue.length) {
+    const cx = queue[head++];
+    const cy = queue[head++];
+    if (cx === gx && cy === gy) return true;
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        if (dx === 0 && dy === 0) continue;
+        const ncx = cx + dx;
+        const ncy = cy + dy;
+        if (ncx < 0 || ncx >= nx || ncy < 0 || ncy >= ny) continue;
+        const idx = ncy * nx + ncx;
+        if (visited[idx]) continue;
+        const traversable = cube.traversable[ncy]?.[ncx] ?? false;
+        const slope = cube.slope_deg[ncy]?.[ncx] ?? 90;
+        if (!traversable || slope > maxSlopeDeg) continue;
+        if (dx !== 0 && dy !== 0) {
+          const c1Traversable = cube.traversable[cy]?.[ncx] ?? false;
+          const c1Slope = cube.slope_deg[cy]?.[ncx] ?? 90;
+          const c2Traversable = cube.traversable[ncy]?.[cx] ?? false;
+          const c2Slope = cube.slope_deg[ncy]?.[cx] ?? 90;
+          if (!c1Traversable || c1Slope > maxSlopeDeg || !c2Traversable || c2Slope > maxSlopeDeg) {
+            continue;
+          }
+        }
+        visited[idx] = 1;
+        queue.push(ncx, ncy);
+      }
+    }
+  }
+  return false;
+}
+
 export function solveTraverse(params: RouteWorkerPayload): RouteResult {
   const {
     cube,
@@ -295,7 +342,7 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
   const startTraversable = cube.traversable[sy]?.[sx] ?? false;
   const startSlope = cube.slope_deg[sy]?.[sx] ?? 90;
   if (!startTraversable || startSlope > max_slope_deg) {
-    return createInfeasibleResult(baseParams, `Start location (${sx}, ${sy}) slope (${startSlope}°) exceeds max limit ${max_slope_deg}°.`);
+    return createInfeasibleResult(baseParams, `slope barrier: start location (${sx}, ${sy}) slope (${startSlope}°) exceeds max limit ${max_slope_deg}°.`);
   }
 
   const conservative = params.conservative ?? false;
@@ -305,7 +352,19 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
   const startSunFrac = (cube.sun_frac[startTimeIdx]?.[sy]?.[sx] ?? 0) / 100.0;
   if ((startSunFrac - effMargin) < min_sun_frac) {
     const marginNote = effMargin > 0 ? ` (marginal under ${effMargin.toFixed(2)}° horizon margin)` : '';
-    return createInfeasibleResult(baseParams, `Start location (${sx}, ${sy}) in shadow at departure (${(startSunFrac * 100).toFixed(0)}% < ${(min_sun_frac * 100).toFixed(0)}%${marginNote}).`);
+    return createInfeasibleResult(baseParams, `start in shadow: start location (${sx}, ${sy}) in shadow at departure (${(startSunFrac * 100).toFixed(0)}% < ${(min_sun_frac * 100).toFixed(0)}%${marginNote}).`);
+  }
+
+  // Goal cell slope and traversability check
+  const goalTraversable = cube.traversable[gy]?.[gx] ?? false;
+  const goalSlope = cube.slope_deg[gy]?.[gx] ?? 90;
+  if (!goalTraversable || goalSlope > max_slope_deg) {
+    return createInfeasibleResult(baseParams, `slope barrier: destination (${gx}, ${gy}) slope (${goalSlope}°) exceeds max limit ${max_slope_deg}°.`);
+  }
+
+  // 2D terrain traversability corridor check (independent of time)
+  if (!has2DTraversablePath(cube, sx, sy, gx, gy, max_slope_deg)) {
+    return createInfeasibleResult(baseParams, `slope barrier: terrain slopes exceed ${max_slope_deg}° preventing any traversable corridor from (${sx}, ${sy}) to (${gx}, ${gy}).`);
   }
 
   // Time step duration
@@ -315,6 +374,33 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
     const t1 = new Date(cube.time_utc[1]).getTime();
     const diffS = Math.abs(t1 - t0) / 1000;
     if (diffS > 0) stepDtS = diffS;
+  }
+
+  // Deadline check (remaining time horizon vs minimum geometric transit time)
+  const minDistM = Math.hypot((gx - sx) * spacing_m, (gy - sy) * spacing_m);
+  const minTransitS = minDistM / speed_m_s;
+  const remainingTimeS = (numT - 1 - startTimeIdx) * stepDtS;
+  if (minTransitS > remainingTimeS + 1e-6) {
+    return createInfeasibleResult(
+      baseParams,
+      `deadline: remaining time window (${(remainingTimeS / 3600).toFixed(1)} h) is shorter than minimum geometric transit time (${(minTransitS / 3600).toFixed(1)} h).`
+    );
+  }
+
+  // Goal illumination check (is the destination sunlit during any reachable arrival time?)
+  const minTransitSteps = Math.ceil(Math.round((minTransitS / stepDtS) * 1e9) / 1e9);
+  let goalEverSunlit = false;
+  for (let t = startTimeIdx + minTransitSteps; t < numT; t++) {
+    if (((cube.sun_frac[t]?.[gy]?.[gx] ?? 0) / 100.0) >= min_sun_frac) {
+      goalEverSunlit = true;
+      break;
+    }
+  }
+  if (!goalEverSunlit) {
+    return createInfeasibleResult(
+      baseParams,
+      `goal in shadow: destination (${gx}, ${gy}) remains in shadow for all reachable arrival times in the window.`
+    );
   }
 
   const heuristic = (x: number, y: number) => {
@@ -440,7 +526,7 @@ export function solveTraverse(params: RouteWorkerPayload): RouteResult {
   if (!goalNodeKey) {
     return createInfeasibleResult(
       baseParams,
-      `No feasible path found from (${sx}, ${sy}) to (${gx}, ${gy}) starting at ${cube.time_utc[startTimeIdx]}. Moving shadow or slope constraints block the corridor.`
+      `corridor shadow: moving lunar shadows obstruct the corridor from (${sx}, ${sy}) to (${gx}, ${gy}); required transit in darkness exceeds allowable dark budget of ${dark_budget_h} h.`
     );
   }
 

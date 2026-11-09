@@ -156,7 +156,24 @@ def validate_provenance_files_exist(prov: Dict[str, Any], root: Optional[Path] =
         if file_path:
             p = base_dir / file_path if not Path(file_path).is_absolute() else Path(file_path)
             if not p.exists() or not p.is_file():
-                raise FileNotFoundError(f"Provenance dataset entry names non-existent file_path: {file_path}")
+                # In environments where large raw data files are not checked in (e.g. CI),
+                # cross-check against data/dem_manifest.json
+                dem_manifest_path = base_dir / "data" / "dem_manifest.json"
+                is_valid_manifest_entry = False
+                if file_path.startswith("data/raw/") and dem_manifest_path.exists():
+                    try:
+                        with open(dem_manifest_path, "r", encoding="utf-8") as f:
+                            m = json.load(f)
+                        m_entries = m if isinstance(m, list) else m.get("files", [])
+                        expected_hash = d.get("sha256") or d.get("checksum")
+                        for entry in m_entries:
+                            if entry.get("file") == file_path and entry.get("sha256") == expected_hash:
+                                is_valid_manifest_entry = True
+                                break
+                    except Exception:
+                        pass
+                if not is_valid_manifest_entry:
+                    raise FileNotFoundError(f"Provenance dataset entry names non-existent file_path: {file_path}")
         elif name != "none (synthetic)" and name.endswith((".tif", ".tiff", ".img", ".dem")):
             p = base_dir / name if not Path(name).is_absolute() else Path(name)
             if not p.exists() or not p.is_file():

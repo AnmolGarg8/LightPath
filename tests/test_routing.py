@@ -1058,3 +1058,69 @@ def test_move_step_ratios_exact_substep_multistep():
         {"x": 2, "y": 0, "t": 7},
         {"x": 3, "y": 0, "t": 10},
     ]
+
+
+def test_infeasible_cause_categories_diagnosis():
+    """Verify that Python routing accurately classifies all 5 cause categories:
+    1. start in shadow
+    2. goal in shadow
+    3. corridor shadow
+    4. slope barrier
+    5. deadline
+    """
+    ts = [f"2026-11-01T{h:02d}:00:00Z" for h in range(6)]
+    num_t = len(ts)
+
+    def make_cube():
+        return {
+            "grid": {"origin": [0.0, -89.0], "spacing_m": 50.0, "nx": 5, "ny": 5},
+            "time_utc": ts,
+            "sun_frac": np.full((num_t, 5, 5), 100, dtype=np.uint8).tolist(),
+            "earth_frac": np.full((num_t, 5, 5), 100, dtype=np.uint8).tolist(),
+            "slope_deg": np.full((5, 5), 2.0, dtype=np.float64).tolist(),
+            "traversable": np.ones((5, 5), dtype=bool).tolist(),
+            "flags": [],
+        }
+
+    # 1. start in shadow
+    cube1 = make_cube()
+    sun1 = np.array(cube1["sun_frac"])
+    sun1[0, 0, 0] = 0
+    cube1["sun_frac"] = sun1.tolist()
+    res1 = plan_lunar_traverse(cube1, (0, 0), (4, 0), start_time_idx=0)
+    assert res1["feasible"] is False
+    assert "start in shadow" in res1["explanation"]
+
+    # 2. goal in shadow
+    cube2 = make_cube()
+    sun2 = np.array(cube2["sun_frac"])
+    sun2[:, 0, 4] = 0
+    cube2["sun_frac"] = sun2.tolist()
+    res2 = plan_lunar_traverse(cube2, (0, 0), (4, 0), start_time_idx=0, speed_m_s=0.1)
+    assert res2["feasible"] is False
+    assert "goal in shadow" in res2["explanation"]
+
+    # 3. corridor shadow
+    cube3 = make_cube()
+    sun3 = np.array(cube3["sun_frac"])
+    sun3[:, :, 2] = 0
+    cube3["sun_frac"] = sun3.tolist()
+    res3 = plan_lunar_traverse(cube3, (0, 0), (4, 0), start_time_idx=0, speed_m_s=0.1, dark_budget_h=0.0)
+    assert res3["feasible"] is False
+    assert "corridor shadow" in res3["explanation"]
+
+    # 4. slope barrier
+    cube4 = make_cube()
+    slope4 = np.array(cube4["slope_deg"])
+    slope4[:, 2] = 45.0
+    cube4["slope_deg"] = slope4.tolist()
+    res4 = plan_lunar_traverse(cube4, (0, 0), (4, 0), start_time_idx=0, max_slope_deg=15.0)
+    assert res4["feasible"] is False
+    assert "slope barrier" in res4["explanation"]
+
+    # 5. deadline
+    cube5 = make_cube()
+    res5 = plan_lunar_traverse(cube5, (0, 0), (4, 0), start_time_idx=4, speed_m_s=0.005)
+    assert res5["feasible"] is False
+    assert "deadline" in res5["explanation"]
+

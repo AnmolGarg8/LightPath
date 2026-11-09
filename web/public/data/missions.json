@@ -31,14 +31,14 @@
     "notes": "Example entry (not sourced). Used to demonstrate dynamic stats computation from pipeline output."
   },
   {
-    "id": "clps-im2-prime1",
-    "name": "NASA CLPS IM-2 (PRIME-1)",
-    "operator": "Intuitive Machines / NASA CLPS",
-    "site_id": "shackleton-connecting-ridge",
+    "id": "example-lander-a",
+    "name": "Example lander A",
+    "operator": "Example Operator A",
+    "site_id": null,
     "planned_window_start": "2026-11-01T00:00:00Z",
     "planned_window_end": "2026-11-15T00:00:00Z",
     "mission_window": {
-      "description": "Unverified example scenario; operational launch and landing timeline pending official NASA CLPS confirmation",
+      "description": "Unverified example scenario; operational launch and landing timeline pending official confirmation",
       "start_utc": null,
       "end_utc": null
     },
@@ -48,24 +48,24 @@
     },
     "status": "unverified_example",
     "is_example": true,
-    "description": "Illustrative delivery example carrying the Polar Resources Ice Mining Experiment-1 (PRIME-1) to Shackleton Connecting Ridge, deploying the TRIDENT drill and MSolo mass spectrometer.",
+    "description": "Illustrative delivery example demonstrating solar and communications window calculations.",
     "source_links": [
       {
-        "label": "NASA CLPS Overview (General Programmatic)",
-        "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        "label": "LightPath Repository",
+        "url": "https://github.com/AnmolGarg8/LightPath"
       }
     ],
-    "source_label": "NASA CLPS Programmatic Overview",
-    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "source_label": "LightPath Example Manifest",
+    "source_url": "https://github.com/AnmolGarg8/LightPath",
     "retrieved_on": "2026-10-29",
     "verified": false,
-    "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
+    "notes": "Example entry (not sourced). Generic scenario without real mission telemetry."
   },
   {
-    "id": "clps-im1-odysseus",
-    "name": "NASA CLPS IM-1 (Odysseus / Nova-C)",
-    "operator": "Intuitive Machines / NASA CLPS",
-    "site_id": "malapert-mountain",
+    "id": "example-lander-b",
+    "name": "Example lander B",
+    "operator": "Example Operator B",
+    "site_id": null,
     "planned_window_start": "2026-11-05T00:00:00Z",
     "planned_window_end": "2026-11-20T00:00:00Z",
     "mission_window": {
@@ -79,28 +79,28 @@
     },
     "status": "unverified_example",
     "is_example": true,
-    "description": "Illustrative example near Malapert Mountain region evaluating topocentric solar horizon clearance and Earth line-of-sight.",
+    "description": "Illustrative delivery example demonstrating topocentric solar horizon clearance and Earth line-of-sight.",
     "source_links": [
       {
-        "label": "NASA CLPS Overview (General Programmatic)",
-        "url": "https://www.nasa.gov/commercial-lunar-payload-services/"
+        "label": "LightPath Repository",
+        "url": "https://github.com/AnmolGarg8/LightPath"
       }
     ],
-    "source_label": "NASA CLPS Programmatic Overview",
-    "source_url": "https://www.nasa.gov/commercial-lunar-payload-services/",
+    "source_label": "LightPath Example Manifest",
+    "source_url": "https://github.com/AnmolGarg8/LightPath",
     "retrieved_on": "2026-10-29",
     "verified": false,
-    "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
+    "notes": "Example entry (not sourced). Generic scenario without real mission telemetry."
   },
   {
-    "id": "viper-griffin",
-    "name": "VIPER Polar Traverse / Griffin",
-    "operator": "Astrobotic / NASA CLPS",
-    "site_id": "nobile-crater-rim",
+    "id": "example-lander-c",
+    "name": "Example lander C",
+    "operator": "Example Operator C",
+    "site_id": null,
     "planned_window_start": "2026-11-01T00:00:00Z",
     "planned_window_end": "2026-11-15T00:00:00Z",
     "mission_window": {
-      "description": "Unverified example scenario; traverse schedule pending official NASA VIPER archival release",
+      "description": "Unverified example scenario; traverse schedule pending official archival release",
       "start_utc": null,
       "end_utc": null
     },
@@ -110,17 +110,17 @@
     },
     "status": "unverified_example",
     "is_example": true,
-    "description": "Illustrative mobile rover pathfinding example across Nobile Crater Rim evaluating 4D space-time navigation through moving shadow corridors.",
+    "description": "Illustrative mobile rover pathfinding example demonstrating 4D space-time navigation through moving shadow corridors.",
     "source_links": [
       {
-        "label": "NASA VIPER Overview (General Programmatic)",
-        "url": "https://www.nasa.gov/viper/"
+        "label": "LightPath Repository",
+        "url": "https://github.com/AnmolGarg8/LightPath"
       }
     ],
-    "source_label": "NASA VIPER Programmatic Overview",
-    "source_url": "https://www.nasa.gov/viper/",
+    "source_label": "LightPath Example Manifest",
+    "source_url": "https://github.com/AnmolGarg8/LightPath",
     "retrieved_on": "2026-10-29",
     "verified": false,
-    "notes": "Example entry (not sourced). Operational dates and mission status are unverified example parameters."
+    "notes": "Example entry (not sourced). Generic scenario without real mission telemetry."
   }
 ]

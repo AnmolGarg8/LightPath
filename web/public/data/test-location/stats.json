@@ -1,0 +1,59 @@
+{
+  "thresholds": {
+    "min_sun_frac": 0.5,
+    "min_earth_frac": 0.5,
+    "ground_station_mask_deg": 6.0
+  },
+  "sun": {
+    "uptime_fraction": 0.102,
+    "total_uptime_h": 10.0,
+    "windows": [
+      {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-01T08:00:00Z",
+        "duration_h": 10.0
+      }
+    ],
+    "longest_window_h": 10.0,
+    "longest_outage_h": 88.0
+  },
+  "earth": {
+    "uptime_fraction": 0.1633,
+    "total_uptime_h": 16.0,
+    "windows": [
+      {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-01T14:00:00Z",
+        "duration_h": 16.0
+      }
+    ],
+    "longest_window_h": 16.0,
+    "longest_outage_h": 82.0
+  },
+  "dte": {
+    "uptime_fraction": 0.1633,
+    "total_uptime_h": 16.0,
+    "windows": [
+      {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-01T14:00:00Z",
+        "duration_h": 16.0
+      }
+    ],
+    "longest_window_h": 16.0,
+    "longest_outage_h": 82.0
+  },
+  "joint": {
+    "uptime_fraction": 0.102,
+    "total_uptime_h": 10.0,
+    "windows": [
+      {
+        "start_utc": "2026-11-01T00:00:00Z",
+        "end_utc": "2026-11-01T08:00:00Z",
+        "duration_h": 10.0
+      }
+    ],
+    "longest_window_h": 10.0,
+    "longest_outage_h": 88.0
+  }
+}
