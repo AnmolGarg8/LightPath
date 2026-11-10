@@ -286,32 +286,37 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
     # Site coordinates: Lat -89.5, Lon 0.0, Height 0 m on sphere R = 1737.4 km (matching Horizons request alt=0.0 km)
     lat_deg, lon_deg = -89.5, 0.0
 
-    # Compute production ephemeris using sun_earth_series with ABCORR_FOR_VALIDATION
+    # Compute production ephemeris using sun_earth_series at 30-minute step with ABCORR_FOR_VALIDATION
     series = sun_earth_series(
         points=(lat_deg, lon_deg, R_MOON_M),
         start_utc=sun_times[0],
         end_utc=sun_times[-1],
-        step_minutes=60,
+        step_minutes=30,
         abcorr=ABCORR_FOR_VALIDATION,
     )
 
-    # Sun evaluations across all rows
-    lp_sun_az = np.array(series["sun"]["az_deg"])
-    lp_sun_el = np.array(series["sun"]["el_deg"])
+    # Map fixture hours to matching series timestamps at 30-minute steps
+    time_to_idx = {ts: idx for idx, ts in enumerate(series["time_utc"])}
+    sun_indices = [time_to_idx[t] for t in sun_times]
+    earth_indices = [time_to_idx[t] for t in earth_times]
+
+    # Sun evaluations across all matching hourly fixture rows
+    lp_sun_az = np.array(series["sun"]["az_deg"])[sun_indices]
+    lp_sun_el = np.array(series["sun"]["el_deg"])[sun_indices]
     n_sun = len(sun_hz_az)
-    d_az_sun = (lp_sun_az[:n_sun] - np.array(sun_hz_az) + 180.0) % 360.0 - 180.0
-    d_el_sun = lp_sun_el[:n_sun] - np.array(sun_hz_el)
+    d_az_sun = (lp_sun_az - np.array(sun_hz_az) + 180.0) % 360.0 - 180.0
+    d_el_sun = lp_sun_el - np.array(sun_hz_el)
     max_az_sun = float(np.max(np.abs(d_az_sun)))
     rms_az_sun = float(np.sqrt(np.mean(d_az_sun**2)))
     max_el_sun = float(np.max(np.abs(d_el_sun)))
     rms_el_sun = float(np.sqrt(np.mean(d_el_sun**2)))
 
-    # Earth evaluations across all rows
-    lp_earth_az = np.array(series["earth"]["az_deg"])
-    lp_earth_el = np.array(series["earth"]["el_deg"])
+    # Earth evaluations across all matching hourly fixture rows
+    lp_earth_az = np.array(series["earth"]["az_deg"])[earth_indices]
+    lp_earth_el = np.array(series["earth"]["el_deg"])[earth_indices]
     n_earth = len(earth_hz_az)
-    d_az_earth = (lp_earth_az[:n_earth] - np.array(earth_hz_az) + 180.0) % 360.0 - 180.0
-    d_el_earth = lp_earth_el[:n_earth] - np.array(earth_hz_el)
+    d_az_earth = (lp_earth_az - np.array(earth_hz_az) + 180.0) % 360.0 - 180.0
+    d_el_earth = lp_earth_el - np.array(earth_hz_el)
     max_az_earth = float(np.max(np.abs(d_az_earth)))
     rms_az_earth = float(np.sqrt(np.mean(d_az_earth**2)))
     max_el_earth = float(np.max(np.abs(d_el_earth)))

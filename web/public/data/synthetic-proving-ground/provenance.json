@@ -47,7 +47,7 @@
     "r_moon_m": 1737400.0,
     "coordinate_frame": "MOON_ME",
     "elevation_formula": "exact_spherical_curvature",
-    "step_minutes": 120,
+    "step_minutes": 30,
     "mast_heights_m": [
       0.0,
       2.0,

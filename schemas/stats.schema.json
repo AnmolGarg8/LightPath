@@ -45,11 +45,13 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["start_utc", "end_utc", "duration_h"],
+            "required": ["start_utc", "end_utc", "duration_h", "truncated_at_start", "truncated_at_end"],
             "properties": {
               "start_utc": { "type": "string" },
               "end_utc": { "type": "string" },
-              "duration_h": { "type": "number", "minimum": 0.0 }
+              "duration_h": { "type": "number", "minimum": 0.0 },
+              "truncated_at_start": { "type": "boolean" },
+              "truncated_at_end": { "type": "boolean" }
             },
             "additionalProperties": false
           }

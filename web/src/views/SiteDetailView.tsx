@@ -109,7 +109,7 @@ export const SiteDetailView: React.FC<SiteDetailViewProps> = ({ siteId }) => {
                 </Badge>
               ) : (
                 <Badge variant="info" size="sm">
-                  CLPS Candidate Site
+                  Test location, not a mission site
                 </Badge>
               )}
               <Badge variant="neutral" size="sm">

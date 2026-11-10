@@ -7,8 +7,8 @@ export interface DemoStep {
 }
 
 export function getDemoSteps(
-  demoSiteId: string = 'synthetic-proving-ground',
-  secondSiteId: string = 'synthetic-flat-basin'
+  demoSiteId: string = 'test-location',
+  secondSiteId: string = 'synthetic-proving-ground'
 ): DemoStep[] {
   return [
     {
@@ -21,7 +21,7 @@ export function getDemoSteps(
     {
       id: 2,
       title: '2. 360° Topocentric Horizon Skyline',
-      caption: `Synthetic terrain at ${demoSiteId}. The Sun (0.53°) and Earth (1.90°) discs are rendered at physical scale, clipped in real time by the local horizon profile.`,
+      caption: `Topocentric horizon skyline at ${demoSiteId} (-89.5° N, 0.0° E). The Sun (0.53°) and Earth (1.90°) discs are rendered at physical scale, clipped in real time by the local horizon profile.`,
       route: `#/site/${demoSiteId}`,
       durationSeconds: 11,
     },

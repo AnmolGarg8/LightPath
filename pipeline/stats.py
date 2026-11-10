@@ -15,6 +15,21 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Sequence
 
 
+def _to_dt(ts: str) -> datetime:
+    """Parse ISO 8601 UTC timestamp."""
+    return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
+def _calc_dur_h(start_ts: str, end_ts: str, steps: int, step_h: float) -> float:
+    """Calculate duration in hours as end minus start."""
+    try:
+        t0 = _to_dt(start_ts)
+        t1 = _to_dt(end_ts)
+        return round(abs((t1 - t0).total_seconds()) / 3600.0, 2)
+    except Exception:
+        return round(steps * step_h, 2)
+
+
 def _parse_step_hours(timestamps: Sequence[str]) -> float:
     """Calculate the step duration in hours from ISO 8601 timestamps."""
     if len(timestamps) < 2:
@@ -33,6 +48,10 @@ def compute_window_statistics(
 ) -> Dict[str, Any]:
     """Analyze uptime, downtime, contiguous windows, and longest outage from boolean states.
 
+    Every window is defined as [start, end) with end equal to the first sample time
+    at which the condition fails (or the end of the analysis range), so duration equals
+    end minus start.
+
     Args:
         is_active_list: Boolean array indicating condition met at each timestep.
         timestamps: ISO UTC strings corresponding to timesteps.
@@ -43,7 +62,7 @@ def compute_window_statistics(
             - 'uptime_fraction': float in [0.0, 1.0]
             - 'pct_time_above': float in [0.0, 100.0]
             - 'total_uptime_h': float
-            - 'windows': list of {'start_utc', 'end_utc', 'duration_h'}
+            - 'windows': list of {'start_utc', 'end_utc', 'duration_h', 'truncated_at_start', 'truncated_at_end'}
             - 'window_count': int
             - 'longest_window_h': float
             - 'longest_outage_h': float
@@ -63,11 +82,6 @@ def compute_window_statistics(
     if step_h is None:
         step_h = _parse_step_hours(timestamps)
 
-    active_count = sum(1 for a in is_active_list if a)
-    total_uptime_h = round(active_count * step_h, 2)
-    uptime_fraction = round(active_count / total_steps, 4) if total_steps > 0 else 0.0
-    pct_time_above = round(uptime_fraction * 100.0, 2)
-
     windows: List[Dict[str, Any]] = []
     longest_window_h = 0.0
     longest_outage_h = 0.0
@@ -80,14 +94,16 @@ def compute_window_statistics(
             current_state = active
             start_idx = i
         elif active != current_state:
-            # Segment completed
-            seg_len = i - start_idx
-            dur_h = round(seg_len * step_h, 2)
+            # Segment completed: [start_idx, i)
+            # End is the first sample time at which the condition fails / switches state
+            dur_h = _calc_dur_h(timestamps[start_idx], timestamps[i], i - start_idx, step_h)
             if current_state:
                 windows.append({
                     "start_utc": timestamps[start_idx],
-                    "end_utc": timestamps[i - 1],
+                    "end_utc": timestamps[i],
                     "duration_h": dur_h,
+                    "truncated_at_start": (start_idx == 0),
+                    "truncated_at_end": False,
                 })
                 longest_window_h = max(longest_window_h, dur_h)
             else:
@@ -96,19 +112,27 @@ def compute_window_statistics(
             current_state = active
             start_idx = i
 
-    # Final segment
+    # Final segment: reaches end of analysis range [start_idx, total_steps - 1]
     if current_state is not None:
-        seg_len = total_steps - start_idx
-        dur_h = round(seg_len * step_h, 2)
+        # Window end is the end of the analysis range: timestamps[-1]
+        steps_final = max(0, total_steps - 1 - start_idx)
+        dur_h = _calc_dur_h(timestamps[start_idx], timestamps[-1], steps_final, step_h)
         if current_state:
             windows.append({
                 "start_utc": timestamps[start_idx],
                 "end_utc": timestamps[-1],
                 "duration_h": dur_h,
+                "truncated_at_start": (start_idx == 0),
+                "truncated_at_end": True,
             })
             longest_window_h = max(longest_window_h, dur_h)
         else:
             longest_outage_h = max(longest_outage_h, dur_h)
+
+    total_uptime_h = round(sum(w["duration_h"] for w in windows), 2)
+    total_range_h = _calc_dur_h(timestamps[0], timestamps[-1], total_steps - 1, step_h) if total_steps > 1 else 0.0
+    uptime_fraction = round(total_uptime_h / total_range_h, 4) if total_range_h > 0 else 0.0
+    pct_time_above = round(uptime_fraction * 100.0, 2)
 
     return {
         "uptime_fraction": uptime_fraction,

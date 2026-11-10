@@ -31,22 +31,22 @@ def test_compute_window_stats():
     step_h = 1.0
 
     # Pattern: [T, T, T, F, F, T, T, F, T, T]
-    # Active windows:
-    # 1. 0 to 2 (3 hours)
-    # 2. 5 to 6 (2 hours)
-    # 3. 8 to 9 (2 hours)
-    # Outages:
-    # 1. 3 to 4 (2 hours)
-    # 2. 7 to 7 (1 hour)
+    # Active windows [start, end):
+    # 1. [0, 3): duration 3 hours, start ts[0], end ts[3]
+    # 2. [5, 7): duration 2 hours, start ts[5], end ts[7]
+    # 3. [8, 9]: duration 1 hour, start ts[8], end ts[9]
+    # Total active uptime: 3.0 + 2.0 + 1.0 = 6.0 h over 9.0 h range (0.6667)
     pattern = [True, True, True, False, False, True, True, False, True, True]
     stats = compute_window_stats(pattern, ts, step_h)
 
-    assert stats["uptime_fraction"] == 0.7  # 7 / 10
-    assert stats["total_uptime_h"] == 7.0
+    assert stats["uptime_fraction"] == 0.6667
+    assert stats["total_uptime_h"] == 6.0
     assert len(stats["windows"]) == 3
     assert stats["windows"][0]["duration_h"] == 3.0
     assert stats["windows"][0]["start_utc"] == ts[0]
-    assert stats["windows"][0]["end_utc"] == ts[2]
+    assert stats["windows"][0]["end_utc"] == ts[3]
+    assert stats["windows"][0]["truncated_at_start"] is True
+    assert stats["windows"][0]["truncated_at_end"] is False
     assert stats["longest_window_h"] == 3.0
     assert stats["longest_outage_h"] == 2.0
 

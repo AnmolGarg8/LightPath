@@ -16,7 +16,7 @@ describe('First Screen & Demo Polish Acceptance Tests', () => {
   it('contains one primary "Try the demo" action button leading to prepared route scenario', () => {
     const html = renderToString(React.createElement(HomeView));
     expect(html).toContain('data-testid="try-the-demo-btn"');
-    expect(html).toContain('href="#/route/synthetic-proving-ground"');
+    expect(html).toContain('href="#/route/test-location"');
     expect(html).toContain('Try the demo');
     expect(html).toContain('Prepared scenario: rover traverse under moving South Pole crater shadows');
   });

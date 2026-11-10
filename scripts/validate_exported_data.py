@@ -18,7 +18,7 @@ import csv
 import hashlib
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
@@ -36,6 +36,8 @@ EXPECTED_COLUMNS = [
     "start_utc",
     "end_utc",
     "duration_h",
+    "truncated_at_start",
+    "truncated_at_end",
     "threshold_pct",
     "mast_height_m",
     "is_synthetic",
@@ -170,6 +172,16 @@ def validate_csv_structure(catalog: Dict[str, Any]) -> None:
                     raise ValueError(f"{entry['filename']} invalid non-positive duration: {dur}")
                 if r["is_synthetic"] not in ("True", "False", "true", "false"):
                     raise ValueError(f"{entry['filename']} invalid boolean is_synthetic: {r['is_synthetic']}")
+                if r["truncated_at_start"] not in ("True", "False", "true", "false"):
+                    raise ValueError(f"{entry['filename']} invalid boolean truncated_at_start: {r['truncated_at_start']}")
+                if r["truncated_at_end"] not in ("True", "False", "true", "false"):
+                    raise ValueError(f"{entry['filename']} invalid boolean truncated_at_end: {r['truncated_at_end']}")
+
+                t_start = datetime.fromisoformat(r["start_utc"].replace("Z", "+00:00"))
+                t_end = datetime.fromisoformat(r["end_utc"].replace("Z", "+00:00"))
+                expected_dur = round((t_end - t_start).total_seconds() / 3600.0, 2)
+                if abs(dur - expected_dur) > 1e-4:
+                    raise ValueError(f"{entry['filename']} row duration {dur} != end - start ({expected_dur})")
 
     print(f"      OK: All {len(csv_entries)} CSV files have valid headers, types, and constraints.")
 
@@ -181,21 +193,11 @@ def validate_duration_conservation_against_series(catalog: Dict[str, Any]) -> No
     for site_id in sites:
         site_dir = DATA_DIR / site_id
         stats_file = site_dir / "stats.json"
-        series_file = site_dir / "series.json"
         csv_file = site_dir / "windows.csv"
         parquet_file = site_dir / "windows.parquet"
 
         with open(stats_file, "r", encoding="utf-8") as f:
             stats = json.load(f)
-
-        with open(series_file, "r", encoding="utf-8") as f:
-            series = json.load(f)
-
-        # Parse step size from timestamps
-        t = series["time_utc"]
-        t0 = datetime.fromisoformat(t[0].replace("Z", "+00:00")).astimezone(timezone.utc)
-        t1 = datetime.fromisoformat(t[1].replace("Z", "+00:00")).astimezone(timezone.utc)
-        step_h = abs((t1 - t0).total_seconds()) / 3600.0
 
         # Load exported rows from CSV and Parquet
         with open(csv_file, "r", encoding="utf-8") as f:
@@ -212,29 +214,22 @@ def validate_duration_conservation_against_series(catalog: Dict[str, Any]) -> No
             cat_stats = stats.get(target, {})
             expected_uptime = float(cat_stats.get("total_uptime_h", 0.0))
 
-            # Recompute active steps from raw series
-            if target == "sun":
-                thresh = stats["thresholds"]["min_sun_frac"]
-                active_steps = sum(1 for f_val in series["sun"]["frac"] if f_val >= thresh)
-            elif target == "earth":
-                thresh = stats["thresholds"]["min_earth_frac"]
-                active_steps = sum(1 for f_val in series["earth"]["frac"] if f_val >= thresh)
-            elif target == "dte":
-                active_steps = sum(1 for ok in series["dte"]["link_ok"] if ok)
-            elif target == "joint":
-                thresh_sun = stats["thresholds"]["min_sun_frac"]
-                active_steps = sum(
-                    1
-                    for s_frac, d_ok in zip(series["sun"]["frac"], series["dte"]["link_ok"])
-                    if s_frac >= thresh_sun and d_ok
-                )
-            else:
-                active_steps = 0
+            # Validate each window's duration equals end minus start
+            windows = cat_stats.get("windows", [])
+            for win in windows:
+                t_s = datetime.fromisoformat(win["start_utc"].replace("Z", "+00:00"))
+                t_e = datetime.fromisoformat(win["end_utc"].replace("Z", "+00:00"))
+                calc_dur = round((t_e - t_s).total_seconds() / 3600.0, 2)
+                if abs(float(win["duration_h"]) - calc_dur) > 1e-4:
+                    raise ValueError(
+                        f"[{site_id}:{target}] window duration {win['duration_h']} != end - start {calc_dur}"
+                    )
 
-            series_uptime = round(active_steps * step_h, 2)
-            if abs(series_uptime - expected_uptime) > 1e-4:
+            # Sum of window durations in stats.json
+            win_sum = round(sum(float(w["duration_h"]) for w in windows), 2)
+            if abs(win_sum - expected_uptime) > 1e-4:
                 raise ValueError(
-                    f"[{site_id}:{target}] series.json active time ({series_uptime} h) does not match stats.json uptime ({expected_uptime} h)"
+                    f"[{site_id}:{target}] stats.json windows sum ({win_sum} h) != total_uptime_h ({expected_uptime} h)"
                 )
 
             # Sum duration_h in CSV

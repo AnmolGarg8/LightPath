@@ -32,23 +32,23 @@
     },
     {
       "path": "cubes/synthetic-proving-ground.bin",
-      "size_bytes": 265,
-      "sha256": "5b1530635fd3ebb8a55f444ba3548a578ed911ad97c24f76a7010389c75c712b"
+      "size_bytes": 5078,
+      "sha256": "e1c5ce9862076296cd37eaf04d5bfb724ab112985cb7107bedd7bd6c14d2068e"
     },
     {
       "path": "cubes/synthetic-proving-ground.json",
-      "size_bytes": 606693,
-      "sha256": "b40b86343cb70444e38c450d47a8e69b5cabeae52e09366e3df13588d239d600"
+      "size_bytes": 25703804,
+      "sha256": "18c7366101ea4b505094c54464d28137cccb6a539391f9da6fe84cc016a56a82"
     },
     {
       "path": "cubes/test-location.bin",
-      "size_bytes": 7232,
-      "sha256": "a8dff40dfbbe9d2eda2c1fdd192eb6c1908efa147d89619bb1606e3fb0dcee81"
+      "size_bytes": 133870,
+      "sha256": "1a2240e2f9e3423af81046b9d5f83fb3f18aa1e754f8df766bdd0f0ac1a5b0ac"
     },
     {
       "path": "cubes/test-location.json",
-      "size_bytes": 559331,
-      "sha256": "64c17ef09589b289389a878ef6f007b72056005098d62ecaf046b489ba0f50c0"
+      "size_bytes": 24166095,
+      "sha256": "2a81e2d80b203551bdb3c8605cf225f9422b73378a57519fd83c44d98df5542b"
     },
     {
       "path": "data_catalog.json",
@@ -62,8 +62,8 @@
     },
     {
       "path": "index.json",
-      "size_bytes": 6844,
-      "sha256": "f6f1ab650ada9aa703f84dc00996439f79550dc872f476b562a92aa76e0165da"
+      "size_bytes": 6845,
+      "sha256": "7862160b7f9b76a404a46b739f6b820124df82871647279f50f14329b1287976"
     },
     {
       "path": "missions.json",
@@ -72,8 +72,8 @@
     },
     {
       "path": "sites.json",
-      "size_bytes": 1592,
-      "sha256": "3d7738ef0a125f2bce0a568fd4d308110f26b9c2834c65888a5bb8c96f9a0070"
+      "size_bytes": 1593,
+      "sha256": "7a3e4b86eeb361694130e33d4ecabb2bbc1a29e31b5a27f3580baa0b41fa1e70"
     },
     {
       "path": "sites/synthetic-crater-rim.json",
@@ -87,13 +87,13 @@
     },
     {
       "path": "sites/synthetic-proving-ground.json",
-      "size_bytes": 3613,
-      "sha256": "66fbe314e19cfa60bcc75e0a852bef27bd30277390a0b161643c19b78703e48e"
+      "size_bytes": 4636,
+      "sha256": "c6ad65c1c020c412724fec4d442cd7ff51d974c1790bea42d2e89abc1ad7f547"
     },
     {
       "path": "sites/test-location.json",
-      "size_bytes": 3618,
-      "sha256": "f6e94b0bc114941969d887f02325672410271fddcda991f39049a75a963c238b"
+      "size_bytes": 4875,
+      "sha256": "15206e83e1d7d30b126fcd20ca63c52621df3349c643ec2b7e7bfd93128bced3"
     },
     {
       "path": "synthetic-crater-rim/horizon.json",
@@ -192,8 +192,8 @@
     },
     {
       "path": "synthetic-proving-ground/provenance.json",
-      "size_bytes": 2269,
-      "sha256": "fcdc0bb297af20f1345d3472551bfcfe5bc05fc145d55f8b5d66f25b28739566"
+      "size_bytes": 2268,
+      "sha256": "4d03941ef77707799299e1cd5c6481d25d877f991f6f2130e5e9b3661a3bb85e"
     },
     {
       "path": "synthetic-proving-ground/route_result.json",
@@ -202,23 +202,23 @@
     },
     {
       "path": "synthetic-proving-ground/series.json",
-      "size_bytes": 15177,
-      "sha256": "bd89934eaa136b47bc6a0f4ca5bbdbe943eb8840642870f975c207eb648f2f05"
+      "size_bytes": 431340,
+      "sha256": "7a0780ca93fedb9c3165aefb0309378537dfcc4e18f70bbbca2ddd28c5576d11"
     },
     {
       "path": "synthetic-proving-ground/site.json",
-      "size_bytes": 3613,
-      "sha256": "66fbe314e19cfa60bcc75e0a852bef27bd30277390a0b161643c19b78703e48e"
+      "size_bytes": 4636,
+      "sha256": "c6ad65c1c020c412724fec4d442cd7ff51d974c1790bea42d2e89abc1ad7f547"
     },
     {
       "path": "synthetic-proving-ground/stats.json",
-      "size_bytes": 1326,
-      "sha256": "0e3051d7d4b6f751ace5069a9cac95c160f6696992b6425cbfa7537ed0623ced"
+      "size_bytes": 2265,
+      "sha256": "de070431c7db58d5c163cafe7ddd546921d54b310b83f67973d3a2814c898c46"
     },
     {
       "path": "synthetic-proving-ground/visibility_cube.json",
-      "size_bytes": 606693,
-      "sha256": "b40b86343cb70444e38c450d47a8e69b5cabeae52e09366e3df13588d239d600"
+      "size_bytes": 25703804,
+      "sha256": "18c7366101ea4b505094c54464d28137cccb6a539391f9da6fe84cc016a56a82"
     },
     {
       "path": "synthetic-proving-ground/windows.csv",
@@ -232,33 +232,33 @@
     },
     {
       "path": "test-location/horizon.json",
-      "size_bytes": 55641,
-      "sha256": "aa1d91ffd45fdcfdccf9e6b1bb98426f4f00dab521bedbb894856dbd69dbca90"
+      "size_bytes": 55649,
+      "sha256": "fd20b3191394693ed0324ae63b97a30dfc3cfd6802b0eb6582298c2d3907ef90"
     },
     {
       "path": "test-location/provenance.json",
-      "size_bytes": 2609,
-      "sha256": "48e3f88847bf2c8a68803a25816c708e41b8afdd47bf952d2dba1dab1136e244"
+      "size_bytes": 2608,
+      "sha256": "9be97a7b7b9d9583a6fcc0972ae97401757cec47297ea681609ae259bc854d6f"
     },
     {
       "path": "test-location/series.json",
-      "size_bytes": 15198,
-      "sha256": "97748561088e6293bc7f7e7e1ec8ad15a1599c859834450a6d0afcfd4a878942"
+      "size_bytes": 431585,
+      "sha256": "3aad4499fe9a312c138e180fde2dad0ef47165d44026681e8810358fcd412b95"
     },
     {
       "path": "test-location/site.json",
-      "size_bytes": 3618,
-      "sha256": "f6e94b0bc114941969d887f02325672410271fddcda991f39049a75a963c238b"
+      "size_bytes": 4875,
+      "sha256": "15206e83e1d7d30b126fcd20ca63c52621df3349c643ec2b7e7bfd93128bced3"
     },
     {
       "path": "test-location/stats.json",
-      "size_bytes": 1328,
-      "sha256": "1c3a96665ec7f99608a86fc7408e3ba22d81f6dfb8f82323a65e9eb0a87b45ff"
+      "size_bytes": 2478,
+      "sha256": "b1b4676530b91011d614ebdcd1fc560bc438263ed03796a5452e7abfcf5e39a2"
     },
     {
       "path": "test-location/visibility_cube.json",
-      "size_bytes": 559331,
-      "sha256": "64c17ef09589b289389a878ef6f007b72056005098d62ecaf046b489ba0f50c0"
+      "size_bytes": 24166095,
+      "sha256": "2a81e2d80b203551bdb3c8605cf225f9422b73378a57519fd83c44d98df5542b"
     },
     {
       "path": "test-location/windows.csv",
@@ -280,9 +280,9 @@
     "mode": "real",
     "date_range": {
       "start_utc": "2026-11-01T00:00:00Z",
-      "end_utc": "2026-11-05T00:00:00Z"
+      "end_utc": "2026-12-01T00:00:00Z"
     },
-    "step_minutes": 120,
+    "step_minutes": 30,
     "mast_heights_m": [
       0.0,
       2.0,
@@ -307,15 +307,15 @@
       "half_width_m": 600.0,
       "spacing_m": 50.0,
       "date_range": null,
-      "step_minutes": 180,
+      "step_minutes": 30,
       "max_cells": 4000
     }
   },
   "date_range": {
     "start_utc": "2026-11-01T00:00:00Z",
-    "end_utc": "2026-11-05T00:00:00Z"
+    "end_utc": "2026-12-01T00:00:00Z"
   },
-  "timestamp": "2026-11-09T07:59:49.489488+00:00",
-  "code_commit": "22db937e3254db8291ce40790d36d55fc8683bf6",
+  "timestamp": "2026-11-10T04:50:06.460541+00:00",
+  "code_commit": "163362281b3be64733bb0fb3f826ee8b05069164",
   "is_synthetic": true
 }

@@ -887,6 +887,7 @@ def run_pipeline(
             "retrieved_on": site.retrieved_on or "[human to supply date: YYYY-MM-DD]",
             "verified": site.verified,
             "is_synthetic": site.is_synthetic,
+            "is_demo_site": getattr(site, "is_demo_site", False),
             "ephemeris_source": ephemeris_source,
             "terrain_source": getattr(site, "terrain_source", "synthetic"),
             "notes": site.notes or "",

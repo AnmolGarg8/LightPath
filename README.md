@@ -145,7 +145,7 @@ LightPath enforces **Rule 1: Correctness Before Features**. The verification sui
 | **V1** | Flat sphere horizon dip | `0.005 deg` | `-0.086937 deg (max error: 0.000001 deg)` | Synthetic | **PASS** |
 | **V2** | Wall feature elevation | `0.01 deg` | `0.409510 deg (max error: 0.002960 deg)` | Synthetic | **PASS** |
 | **V2b** | Celestial disc fraction | `0.005 area fraction (0.5%)` | `0.00256 max area fraction error` | Synthetic | **PASS** |
-| **V3** | Ephemeris accuracy vs JPL Horizons | `0.01 deg` | `Sun El max 0.00001 deg, Earth El max 0.00004 deg (N=721)` | Real | **PASS** |
+| **V3** | Ephemeris cross-check against JPL Horizons | `0.01 deg` | `Sun El max 0.00001 deg, Earth El max 0.00004 deg (N=721)` | Real | **PASS** |
 | **V4** | Comparison with published NASA result | `±2.0% illumination` | NOT RUN (fixture absent) | Real | **NOT RUN** |
 | **V5** | Sensitivity and convergence | `0.005 deg (step), 0.01 deg (azimuth), 0.001 deg (range), monotonic (mast)` | `5m error: 0.0000 deg; all 5 convergence bounds passed` | Synthetic | **PASS** |
 | **V6** | Reproducibility | `0 bytes delta (exact byte match)` | `100% byte identical across runs (0 bytes delta)` | Synthetic | **PASS** |

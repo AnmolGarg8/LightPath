@@ -11,9 +11,9 @@
       "filename": "all_sites_windows.parquet",
       "rel_path": "./data/all_sites_windows.parquet",
       "format": "Parquet",
-      "size_bytes": 4757,
-      "sha256": "983c0da762d485b2b7cb1fbe4ac16898e8369e9fa10ba21e9169a1e002592762",
-      "rows": 8,
+      "size_bytes": 5305,
+      "sha256": "5ccfebfbefb11353e75c4907799f99563120286da2d1bbc3c57774bd00bbb4fc",
+      "rows": 15,
       "license": "CC-BY-4.0",
       "description": "Consolidated visibility windows across 2 lunar sites (Parquet format with embedded metadata)."
     },
@@ -22,42 +22,20 @@
       "filename": "all_sites_windows.csv",
       "rel_path": "./data/all_sites_windows.csv",
       "format": "CSV",
-      "size_bytes": 1105,
-      "sha256": "2654c8b97b9f3f775fa8bb4e0c39db2299882740a83d3fd19ec0a152c99a3e27",
-      "rows": 8,
+      "size_bytes": 2154,
+      "sha256": "aa7342b556e6a1c3006ee175eb5b2540be8c95a4d6806be816463f5f81a633a9",
+      "rows": 15,
       "license": "CC-BY-4.0",
       "description": "Consolidated visibility windows across 2 lunar sites (standard RFC 4180 CSV)."
-    },
-    {
-      "site_id": "synthetic-proving-ground",
-      "filename": "synthetic-proving-ground_windows.csv",
-      "rel_path": "./data/synthetic-proving-ground/windows.csv",
-      "format": "CSV",
-      "size_bytes": 646,
-      "sha256": "c576aaa710327f332fc7e807d9953b36907390ec2ccc155e67b00adc3f68ea92",
-      "rows": 4,
-      "license": "CC-BY-4.0",
-      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (CSV)."
-    },
-    {
-      "site_id": "synthetic-proving-ground",
-      "filename": "synthetic-proving-ground_windows.parquet",
-      "rel_path": "./data/synthetic-proving-ground/windows.parquet",
-      "format": "Parquet",
-      "size_bytes": 4701,
-      "sha256": "e04a0e6b304c66f9e973a0e88359b58f3d0939a66e12d759e1db7c4ada9c79ec",
-      "rows": 4,
-      "license": "CC-BY-4.0",
-      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (Parquet, Snappy compressed with metadata)."
     },
     {
       "site_id": "test-location",
       "filename": "test-location_windows.csv",
       "rel_path": "./data/test-location/windows.csv",
       "format": "CSV",
-      "size_bytes": 602,
-      "sha256": "ef5869c3b4b927e19eebdad326ae7be95782d0ea6881c20b19fbfcbbf46896af",
-      "rows": 4,
+      "size_bytes": 1190,
+      "sha256": "41b90a2f6d6286f235b4e529b699a4bab03ac7d075bc07d67025a0a4e52e63b9",
+      "rows": 8,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for test-location (CSV)."
     },
@@ -66,11 +44,33 @@
       "filename": "test-location_windows.parquet",
       "rel_path": "./data/test-location/windows.parquet",
       "format": "Parquet",
-      "size_bytes": 4640,
-      "sha256": "c328854e2560249250aca2ecbf0362d396a975ee0d2e2627e6a26233a29bb1a1",
-      "rows": 4,
+      "size_bytes": 5159,
+      "sha256": "0714643756b136b1dace1ea27275bf73a0e3a102aaa8dbb0785d95c4dfc5dae0",
+      "rows": 8,
       "license": "CC-BY-4.0",
       "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for test-location (Parquet, Snappy compressed with metadata)."
+    },
+    {
+      "site_id": "synthetic-proving-ground",
+      "filename": "synthetic-proving-ground_windows.csv",
+      "rel_path": "./data/synthetic-proving-ground/windows.csv",
+      "format": "CSV",
+      "size_bytes": 1143,
+      "sha256": "4b0598d413bd4b43142446c128473221a9aa51ba8df9357ef94acaeddf275a10",
+      "rows": 7,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (CSV)."
+    },
+    {
+      "site_id": "synthetic-proving-ground",
+      "filename": "synthetic-proving-ground_windows.parquet",
+      "rel_path": "./data/synthetic-proving-ground/windows.parquet",
+      "format": "Parquet",
+      "size_bytes": 5189,
+      "sha256": "a3141e3fbd806a0329f8507c59d7166ff951e1e0aae19760648091e2db5843c2",
+      "rows": 7,
+      "license": "CC-BY-4.0",
+      "description": "Contiguous Sun, Earth, DTE, and Joint visibility windows for synthetic-proving-ground (Parquet, Snappy compressed with metadata)."
     }
   ]
 }

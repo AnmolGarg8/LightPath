@@ -15,6 +15,8 @@ export const CategoryStatsSchema = z.object({
       start_utc: z.string(),
       end_utc: z.string(),
       duration_h: z.number().min(0.0),
+      truncated_at_start: z.boolean().optional(),
+      truncated_at_end: z.boolean().optional(),
     })
   ),
   longest_window_h: z.number().min(0.0),

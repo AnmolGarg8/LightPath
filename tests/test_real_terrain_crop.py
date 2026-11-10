@@ -107,8 +107,6 @@ def test_crop_nodata_fraction(site):
 
 @pytest.mark.real_data
 @pytest.mark.network
-@pytest.mark.real_data
-@pytest.mark.network
 @pytest.mark.parametrize("site", SITES, ids=[s["id"] for s in SITES])
 def test_random_25_pixels_identical_to_remote(site):
     """Test 1: Pick 25 random pixels inside each cropped window; read the same coordinates
@@ -120,8 +118,26 @@ def test_random_25_pixels_identical_to_remote(site):
     if not near_path.exists():
         pytest.skip(f"Crop {near_path.name} not present.")
 
+    import os
+    if os.environ.get("RUN_NETWORK_TESTS") != "1":
+        pytest.skip("Set RUN_NETWORK_TESTS=1 to run remote vsicurl pixel comparison.")
+
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
+
+    # Check network reachability to remote server before launching vsicurl
+    import urllib.request
+    try:
+        req = urllib.request.Request(
+            cfg["layers"]["near"]["url"],
+            headers={"User-Agent": "Mozilla/5.0"},
+            method="HEAD",
+        )
+        with urllib.request.urlopen(req, timeout=5.0):
+            pass
+    except Exception as exc:
+        pytest.skip(f"Remote NASA PGDA server unreachable ({exc}); skipping live remote comparison.")
+
     remote_url = f"/vsicurl/{cfg['layers']['near']['url']}"
 
     rng = np.random.default_rng(seed=42)

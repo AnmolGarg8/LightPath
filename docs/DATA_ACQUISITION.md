@@ -69,7 +69,10 @@ This document records the provenance, download commands, verification checksums,
 - **Crop Window Extent:** 80 km × 80 km (half-width 40 km)
 - **Window Offsets in Remote 20mpp Raster:** `col_off=13200`, `row_off=12442`, `width=4000`, `height=4000`
 - **Elevation Range:** $[-4,251.30\text{ m}, +1,959.42\text{ m}]$
-- **Elevation at Test Site:** $-720.33\text{ m}$
+- **Elevation at Test Site (`site.ground_elev_m`):**
+  - **Continuous Bilinear Interpolation (Standardized):** $-721.96\text{ m}$ (relative to $R = 1,737,400.0\text{ m}$ sphere), evaluated by `DEMWindow.sample_lat_lon` (`sample_bilinear`) across the 4 enclosing grid pixels at projected coordinate $(X = 0.0\text{ m}, Y = 15,161.77\text{ m})$.
+  - **Discrete Nearest-Neighbour Pixel Center:** $-720.33\text{ m}$ (at grid cell row 1999, col 2000 of `near_test_location.tif`, 20 m/pixel resolution).
+  - **System-Wide Agreement:** `site.ground_elev_m` is standardized to $-721.96\text{ m}$ across `configs/pipeline.yaml`, `configs/sites.json`, `site.json`, the S0 data log, and all UI displays.
 - **Margin to Boundary:** $40.00\text{ km}$ (exceeds $\ge 10\text{ km}$ requirement)
 - **No-data Fraction:** $0.0000\%$ (exceeds $< 1.0\%$ requirement)
 - **Direct Remote Verification:** 25 randomly sampled pixels matched `/vsicurl/` remote reads to within $10^{-5}\text{ m}$.

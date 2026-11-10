@@ -74,4 +74,37 @@ describe('Threshold Handling & Dynamic Statistics', () => {
     expect(sunEvents[1].type).toBe('sunset');
     expect(sunEvents[1].index).toBe(4);
   });
+
+  it('defines windows as [start, end) where duration equals end minus start with truncation flags', () => {
+    const statsHalf = calculateDynamicStats(dummySeries, 0.50);
+    // At 50%, indices 2 and 3 are active (08:00 and 12:00); index 4 (16:00) fails the condition
+    expect(statsHalf.sun.windows.length).toBe(1);
+    const win = statsHalf.sun.windows[0];
+    expect(win.start_utc).toBe('2026-11-01T08:00:00Z');
+    expect(win.end_utc).toBe('2026-11-01T16:00:00Z');
+    const diffH = (new Date(win.end_utc).getTime() - new Date(win.start_utc).getTime()) / (1000 * 3600);
+    expect(win.duration_h).toBe(diffH);
+    expect(win.duration_h).toBe(8.0);
+    expect(win.truncated_at_start).toBe(false);
+    expect(win.truncated_at_end).toBe(false);
+
+    // Test a series active through the end of the analysis range
+    const activeAtEndSeries: Series = {
+      ...dummySeries,
+      sun: {
+        ...dummySeries.sun,
+        frac: [0.0, 0.0, 0.0, 0.8, 0.8, 0.8], // indices 3, 4, 5
+      },
+    };
+    const statsEnd = calculateDynamicStats(activeAtEndSeries, 0.50);
+    expect(statsEnd.sun.windows.length).toBe(1);
+    const endWin = statsEnd.sun.windows[0];
+    expect(endWin.start_utc).toBe('2026-11-01T12:00:00Z');
+    expect(endWin.end_utc).toBe('2026-11-01T20:00:00Z');
+    const endDiffH = (new Date(endWin.end_utc).getTime() - new Date(endWin.start_utc).getTime()) / (1000 * 3600);
+    expect(endWin.duration_h).toBe(endDiffH);
+    expect(endWin.duration_h).toBe(8.0);
+    expect(endWin.truncated_at_start).toBe(false);
+    expect(endWin.truncated_at_end).toBe(true);
+  });
 });

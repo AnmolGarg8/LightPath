@@ -13,6 +13,8 @@ export interface WindowEntry {
   start_utc: string;
   end_utc: string;
   duration_h: number;
+  truncated_at_start?: boolean;
+  truncated_at_end?: boolean;
 }
 
 export interface DynamicCategoryStats {
@@ -100,11 +102,13 @@ function computeCategoryWindows(
       winStartIdx = i;
     } else if (!val && inWindow) {
       inWindow = false;
-      const duration = (i - winStartIdx) * stepH;
+      const duration = (new Date(timeUtc[i]).getTime() - new Date(timeUtc[winStartIdx]).getTime()) / (1000 * 3600);
       windows.push({
         start_utc: timeUtc[winStartIdx],
-        end_utc: timeUtc[i - 1],
+        end_utc: timeUtc[i],
         duration_h: Number(duration.toFixed(2)),
+        truncated_at_start: winStartIdx === 0,
+        truncated_at_end: false,
       });
     }
 
@@ -119,7 +123,7 @@ function computeCategoryWindows(
         longestOutageSteps = steps;
         longestOutageWindow = {
           start_utc: timeUtc[outageStartIdx],
-          end_utc: timeUtc[i - 1],
+          end_utc: timeUtc[i],
         };
       }
     }
@@ -127,17 +131,19 @@ function computeCategoryWindows(
 
   // Handle open window at end
   if (inWindow) {
-    const duration = (n - winStartIdx) * stepH;
+    const duration = (new Date(timeUtc[n - 1]).getTime() - new Date(timeUtc[winStartIdx]).getTime()) / (1000 * 3600);
     windows.push({
       start_utc: timeUtc[winStartIdx],
       end_utc: timeUtc[n - 1],
       duration_h: Number(duration.toFixed(2)),
+      truncated_at_start: winStartIdx === 0,
+      truncated_at_end: true,
     });
   }
 
   // Handle open outage at end
   if (inOutage) {
-    const steps = n - outageStartIdx;
+    const steps = Math.max(0, n - 1 - outageStartIdx);
     if (steps > longestOutageSteps) {
       longestOutageSteps = steps;
       longestOutageWindow = {

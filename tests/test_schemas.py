@@ -106,28 +106,28 @@ def test_stats_schema():
         "sun": {
             "uptime_fraction": 0.75,
             "total_uptime_h": 180.0,
-            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-08T12:00:00Z", "duration_h": 180.0}],
+            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-08T12:00:00Z", "duration_h": 180.0, "truncated_at_start": True, "truncated_at_end": False}],
             "longest_window_h": 180.0,
             "longest_outage_h": 60.0
         },
         "earth": {
             "uptime_fraction": 0.9,
             "total_uptime_h": 216.0,
-            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-10T00:00:00Z", "duration_h": 216.0}],
+            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-10T00:00:00Z", "duration_h": 216.0, "truncated_at_start": True, "truncated_at_end": False}],
             "longest_window_h": 216.0,
             "longest_outage_h": 24.0
         },
         "dte": {
             "uptime_fraction": 0.85,
             "total_uptime_h": 204.0,
-            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-09T12:00:00Z", "duration_h": 204.0}],
+            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-09T12:00:00Z", "duration_h": 204.0, "truncated_at_start": True, "truncated_at_end": False}],
             "longest_window_h": 204.0,
             "longest_outage_h": 36.0
         },
         "joint": {
             "uptime_fraction": 0.70,
             "total_uptime_h": 168.0,
-            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-08T00:00:00Z", "duration_h": 168.0}],
+            "windows": [{"start_utc": "2026-11-01T00:00:00Z", "end_utc": "2026-11-08T00:00:00Z", "duration_h": 168.0, "truncated_at_start": True, "truncated_at_end": False}],
             "longest_window_h": 168.0,
             "longest_outage_h": 72.0
         }

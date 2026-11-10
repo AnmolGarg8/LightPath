@@ -33,7 +33,7 @@ In accordance with Task S0 of the data acquisition protocol, verified real LOLA 
 - **File Size:** 54,989,936 bytes (52.44 MB)
 - **SHA-256 Checksum:** `ca7159a5c3be561f3606f46fa852d0df6968d4ef691efbfcf014d02b8a6d56df`
 - **Elevation Range:** $-4,251.30\text{ m}$ to $+1,959.42\text{ m}$ (mean $-706.05\text{ m}$)
-- **Elevation at Site:** $-720.33\text{ m}$
+- **Elevation at Site (`site.ground_elev_m`):** $-721.96\text{ m}$ (continuous bilinear interpolation from 20 mpp DEM `near_test_location.tif` at $X=0.0\text{ m}, Y=15,161.77\text{ m}$; discrete nearest pixel center $-720.33\text{ m}$)
 - **Margin to Boundary:** $40.00\text{ km}$ (required $\ge 10\text{ km}$)
 - **No-data Fraction:** $0.0000\%$
 - **Sample Consistency:** 25 randomly sampled pixels matched remote `/vsicurl/` reads to within $10^{-5}\text{ m}$.

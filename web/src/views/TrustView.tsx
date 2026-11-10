@@ -196,10 +196,10 @@ export const TrustView: React.FC = () => {
                       {c.tolerance || 'Exact'}
                     </td>
                     <td style={{ padding: '0.7rem 0.5rem', fontFamily: 'monospace', fontWeight: 700, color: c.status === 'passed' ? 'var(--accent-primary)' : 'var(--text-secondary)' }}>
-                      {c.measured_value || 'Pending Fixture'}
+                      {c.measured_value || (c.code === 'V4' ? 'NOT RUN (see docs/V4_HOW_TO.md)' : 'Pending Fixture')}
                     </td>
                     <td style={{ padding: '0.7rem 0.5rem', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                      {c.citation || c.skipped_reason}
+                      {c.citation || c.skipped_reason || (c.code === 'V4' ? 'Fixture tests/fixtures/published_*.json absent; human operator must supply external baseline (see docs/V4_HOW_TO.md)' : '')}
                     </td>
                   </tr>
                 ))}
@@ -353,7 +353,7 @@ export const TrustView: React.FC = () => {
           <Card style={{ padding: '1.25rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0 }}>
-                V4: Published NASA Horizon Baseline
+                V4: Comparison with published NASA result
               </h3>
               <Badge variant="neutral">NOT RUN</Badge>
             </div>
@@ -361,12 +361,12 @@ export const TrustView: React.FC = () => {
               <div style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
                 NOT RUN
               </div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '340px', lineHeight: 1.4 }}>
-                No chart drawn. External published NASA baseline pending human verification per Project Rule 2.
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', maxWidth: '380px', lineHeight: 1.4 }}>
+                Fixture tests/fixtures/published_*.json absent; human operator must supply external baseline (see docs/V4_HOW_TO.md).
               </div>
             </div>
             <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.4rem' }}>
-              Citation: [CITATION NEEDED: human to confirm; see docs/CITATIONS.md]
+              Instructions: Supply published NASA reference, site, period, reported values, and tolerance per docs/V4_HOW_TO.md.
             </div>
           </Card>
         </div>

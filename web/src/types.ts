@@ -60,6 +60,8 @@ export interface CategoryStats {
     start_utc: string;
     end_utc: string;
     duration_h: number;
+    truncated_at_start?: boolean;
+    truncated_at_end?: boolean;
   }>;
   longest_window_h: number;
   longest_outage_h: number;

@@ -45,8 +45,10 @@ def test_window_detection_hand_made_series():
     assert res_all_t["window_count"] == 1
     assert res_all_t["windows"][0]["start_utc"] == ts[0]
     assert res_all_t["windows"][0]["end_utc"] == ts[4]
-    assert res_all_t["windows"][0]["duration_h"] == 5.0
-    assert res_all_t["longest_window_h"] == 5.0
+    assert res_all_t["windows"][0]["duration_h"] == 4.0
+    assert res_all_t["windows"][0]["truncated_at_start"] is True
+    assert res_all_t["windows"][0]["truncated_at_end"] is True
+    assert res_all_t["longest_window_h"] == 4.0
     assert res_all_t["longest_outage_h"] == 0.0
 
     # 3. All false series (fully inactive)
@@ -56,16 +58,18 @@ def test_window_detection_hand_made_series():
     assert res_all_f["window_count"] == 0
     assert len(res_all_f["windows"]) == 0
     assert res_all_f["longest_window_h"] == 0.0
-    assert res_all_f["longest_outage_h"] == 5.0
+    assert res_all_f["longest_outage_h"] == 4.0
 
     # 4. Starts visible: [T, T, F, F, F]
     starts_vis = [True, True, False, False, False]
     res_starts = compute_window_statistics(starts_vis, ts[:5], step_h=step_h)
     assert res_starts["window_count"] == 1
     assert res_starts["windows"][0]["start_utc"] == ts[0]
-    assert res_starts["windows"][0]["end_utc"] == ts[1]
+    assert res_starts["windows"][0]["end_utc"] == ts[2]
     assert res_starts["windows"][0]["duration_h"] == 2.0
-    assert res_starts["longest_outage_h"] == 3.0
+    assert res_starts["windows"][0]["truncated_at_start"] is True
+    assert res_starts["windows"][0]["truncated_at_end"] is False
+    assert res_starts["longest_outage_h"] == 2.0
 
     # 5. Ends visible: [F, F, F, T, T]
     ends_vis = [False, False, False, True, True]
@@ -73,7 +77,9 @@ def test_window_detection_hand_made_series():
     assert res_ends["window_count"] == 1
     assert res_ends["windows"][0]["start_utc"] == ts[3]
     assert res_ends["windows"][0]["end_utc"] == ts[4]
-    assert res_ends["windows"][0]["duration_h"] == 2.0
+    assert res_ends["windows"][0]["duration_h"] == 1.0
+    assert res_ends["windows"][0]["truncated_at_start"] is False
+    assert res_ends["windows"][0]["truncated_at_end"] is True
     assert res_ends["longest_outage_h"] == 3.0
 
     # 6. Single-sample window: [F, T, F, F, F]
@@ -81,18 +87,35 @@ def test_window_detection_hand_made_series():
     res_single = compute_window_statistics(single_win, ts[:5], step_h=step_h)
     assert res_single["window_count"] == 1
     assert res_single["windows"][0]["start_utc"] == ts[1]
-    assert res_single["windows"][0]["end_utc"] == ts[1]
+    assert res_single["windows"][0]["end_utc"] == ts[2]
     assert res_single["windows"][0]["duration_h"] == 1.0
+    assert res_single["windows"][0]["truncated_at_start"] is False
+    assert res_single["windows"][0]["truncated_at_end"] is False
     assert res_single["longest_window_h"] == 1.0
-    assert res_single["longest_outage_h"] == 3.0
+    assert res_single["longest_outage_h"] == 2.0
 
     # 7. Adjacent windows separated by outages: [T, T, F, T, T, T, F, T]
     adj_series = [True, True, False, True, True, True, False, True]
     res_adj = compute_window_statistics(adj_series, ts[:8], step_h=step_h)
     assert res_adj["window_count"] == 3
     assert res_adj["windows"][0]["duration_h"] == 2.0
+    assert res_adj["windows"][0]["start_utc"] == ts[0]
+    assert res_adj["windows"][0]["end_utc"] == ts[2]
+    assert res_adj["windows"][0]["truncated_at_start"] is True
+    assert res_adj["windows"][0]["truncated_at_end"] is False
+
     assert res_adj["windows"][1]["duration_h"] == 3.0
-    assert res_adj["windows"][2]["duration_h"] == 1.0
+    assert res_adj["windows"][1]["start_utc"] == ts[3]
+    assert res_adj["windows"][1]["end_utc"] == ts[6]
+    assert res_adj["windows"][1]["truncated_at_start"] is False
+    assert res_adj["windows"][1]["truncated_at_end"] is False
+
+    assert res_adj["windows"][2]["duration_h"] == 0.0
+    assert res_adj["windows"][2]["start_utc"] == ts[7]
+    assert res_adj["windows"][2]["end_utc"] == ts[7]
+    assert res_adj["windows"][2]["truncated_at_start"] is False
+    assert res_adj["windows"][2]["truncated_at_end"] is True
+
     assert res_adj["longest_window_h"] == 3.0
     assert res_adj["longest_outage_h"] == 1.0
 
@@ -163,7 +186,7 @@ def test_event_detection_hand_made_series():
 
 def test_darkness_spells():
     ts = [f"2026-11-01T{h:02d}:00:00Z" for h in range(6)]
-    # Solar fraction: [T, F, F, T, F, F] -> darkness spells at [1..2] (2h) and [4..5] (2h)
+    # Solar fraction: [T, F, F, T, F, F] -> darkness spells at [1..3) (2h) and [4..5) (1h, truncated at end of range)
     sun_frac = [0.8, 0.1, 0.2, 0.9, 0.0, 0.1]
     series = {
         "time_utc": ts,
@@ -172,8 +195,43 @@ def test_darkness_spells():
 
     darkness = compute_darkness_spells(series, min_sun_frac=0.5)
     assert darkness["longest_darkness_h"] == 2.0
-    assert darkness["total_darkness_h"] == 4.0
+    assert darkness["total_darkness_h"] == 3.0
     assert darkness["spell_count"] == 2
+    assert darkness["darkness_spells"][0]["start_utc"] == ts[1]
+    assert darkness["darkness_spells"][0]["end_utc"] == ts[3]
+    assert darkness["darkness_spells"][0]["duration_h"] == 2.0
+    assert darkness["darkness_spells"][0]["truncated_at_start"] is False
+    assert darkness["darkness_spells"][0]["truncated_at_end"] is False
+
+    assert darkness["darkness_spells"][1]["start_utc"] == ts[4]
+    assert darkness["darkness_spells"][1]["end_utc"] == ts[5]
+    assert darkness["darkness_spells"][1]["duration_h"] == 1.0
+    assert darkness["darkness_spells"][1]["truncated_at_start"] is False
+    assert darkness["darkness_spells"][1]["truncated_at_end"] is True
+
+
+def test_window_duration_agreement_rule():
+    """Verify that every window duration strictly equals end_utc minus start_utc,
+
+    and that the sum of durations strictly equals total_uptime_h.
+    """
+    from datetime import datetime, timezone
+
+    ts = [f"2026-11-01T{h:02d}:00:00Z" for h in range(24)]
+    # Arbitrary pattern
+    active = [True if (h % 5 in (0, 1, 2)) else False for h in range(24)]
+    res = compute_window_statistics(active, ts, step_h=1.0)
+
+    for w in res["windows"]:
+        t0 = datetime.fromisoformat(w["start_utc"].replace("Z", "+00:00")).astimezone(timezone.utc)
+        t1 = datetime.fromisoformat(w["end_utc"].replace("Z", "+00:00")).astimezone(timezone.utc)
+        diff_h = round((t1 - t0).total_seconds() / 3600.0, 2)
+        assert w["duration_h"] == diff_h, f"Window duration {w['duration_h']} != {diff_h}"
+        assert isinstance(w["truncated_at_start"], bool)
+        assert isinstance(w["truncated_at_end"], bool)
+
+    win_sum = round(sum(w["duration_h"] for w in res["windows"]), 2)
+    assert res["total_uptime_h"] == win_sum
 
 
 def test_summarize_schema_compliance():

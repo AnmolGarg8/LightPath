@@ -295,17 +295,17 @@ def test_adversarial_07_boundary_thresholds():
     assert compute_flat_horizon_disc_fraction(e_deg=-1.0, r_deg=0.5) == 0.0
     assert np.isclose(compute_flat_horizon_disc_fraction(e_deg=0.0, r_deg=0.5), 0.5)
 
-    # Window statistics with all-true and all-false at extreme thresholds
+    # Window statistics with all-true and all-false at extreme thresholds: [start, end) duration equals end - start
     ts = ["2026-11-01T00:00:00Z", "2026-11-01T01:00:00Z", "2026-11-01T02:00:00Z"]
     w_all = compute_window_statistics([True, True, True], ts)
     assert w_all["pct_time_above"] == 100.0
-    assert w_all["longest_window_h"] == 3.0
+    assert w_all["longest_window_h"] == 2.0
     assert w_all["longest_outage_h"] == 0.0
 
     w_none = compute_window_statistics([False, False, False], ts)
     assert w_none["pct_time_above"] == 0.0
     assert w_none["longest_window_h"] == 0.0
-    assert w_none["longest_outage_h"] == 3.0
+    assert w_none["longest_outage_h"] == 2.0
 
 
 # =============================================================================

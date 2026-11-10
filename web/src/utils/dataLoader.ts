@@ -154,9 +154,9 @@ export function useSiteCatalog(): {
   }, []);
 
   const demoSite = catalog?.sites.find((s) => s.is_demo_site) || catalog?.sites[0];
-  const demoSiteId = demoSite?.id || 'synthetic-proving-ground';
+  const demoSiteId = demoSite?.id || 'test-location';
   const secondSite = catalog?.sites.find((s) => s.id !== demoSiteId) || catalog?.sites[1];
-  const secondSiteId = secondSite?.id || demoSiteId;
+  const secondSiteId = secondSite?.id || 'synthetic-proving-ground';
 
   return { catalog, demoSiteId, secondSiteId, loading };
 }

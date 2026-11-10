@@ -218,9 +218,9 @@ export const HomeView: React.FC = () => {
 
   // Single source of truth demo targets from index.json
   const demoSite = indexData?.sites.find((s) => s.is_demo_site) || indexData?.sites[0];
-  const demoSiteId = demoSite?.id || 'synthetic-proving-ground';
+  const demoSiteId = demoSite?.id || 'test-location';
   const secondSite = indexData?.sites.find((s) => s.id !== demoSiteId) || indexData?.sites[1];
-  const secondSiteId = secondSite?.id || demoSiteId;
+  const secondSiteId = secondSite?.id || 'synthetic-proving-ground';
 
   // Dynamic headline computed strictly from that site's stats.json if site is in index.json
   const getMissionHeadline = (m: Mission) => {
