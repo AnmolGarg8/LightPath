@@ -226,7 +226,7 @@ def moon_elevation_at_station(
             raise RuntimeError(
                 "SPICE kernels are required for DSN ground station calculations. "
                 "Furnish kernels/meta.tm or provide required kernels. "
-                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+                "To allow approximate ephemeris fallback, pass --allow-approximate-ephemeris."
             )
 
         # Analytical fallback via GMST

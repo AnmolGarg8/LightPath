@@ -389,9 +389,9 @@ export const HomeView: React.FC = () => {
                 ? `Demo uses ${dataStatus.has_lola_dem ? 'LOLA DEM terrain' : 'synthetic terrain'}; ${
                     dataStatus.has_spice_kernels
                       ? 'geometry from SPICE kernels'
-                      : 'approximate analytic ephemeris (SPICE kernels pending)'
+                      : 'approximate ephemeris'
                   }`
-                : 'Demo uses synthetic terrain; approximate analytic ephemeris (SPICE kernels pending)'}
+                : 'Demo uses synthetic terrain; approximate ephemeris'}
             </div>
           </div>
         </div>
@@ -866,7 +866,7 @@ export const HomeView: React.FC = () => {
                     </Badge>
                   )}
                   <Badge variant={site.is_synthetic ? 'neutral' : 'info'} size="sm">
-                    {site.is_synthetic ? 'BENCHMARK' : 'CLPS CANDIDATE'}
+                    {site.is_synthetic ? 'BENCHMARK' : (!site.is_mission_site || site.id === 'test-location') ? 'TEST LOCATION' : 'EXPLORATION SITE'}
                   </Badge>
                   <Badge variant="neutral" size="sm">
                     {site.terrain_source === 'lola_dem' ? 'LOLA DEM' : 'Synthetic DEM'}

@@ -19,7 +19,7 @@ thresholds:
   max_slope_deg: 15.0
 
 margins:
-  horizon_margin_deg: 0.10
+  horizon_margin_deg: 0.03
 
 horizon_params:
   az_step_deg: 5.0

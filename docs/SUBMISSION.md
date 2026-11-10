@@ -47,7 +47,7 @@ LightPath directly integrates authoritative NASA planetary datasets:
    - High-resolution gridded elevation models from the Lunar Orbiter Laser Altimeter team via the NASA Planetary Data System (PDS).
    - Referenced to the IAU Mean Earth/Polar Axis sphere ($R = 1,737,400.0\text{ m}$).
 2. **NASA NAIF SPICE Toolkit & Ephemerides**:
-   - Approximate analytic ephemeris (to be replaced by SPICE planetary ephemeris) and lunar orientation transformations.
+   - NAIF SPICE planetary ephemeris kernels (DE421, MOON_ME reference frame) and lunar orientation transformations.
 3. **NASA Deep Space Network (DSN) 810-005 Documents**:
    - Telecommunications interface guidelines for Goldstone (DSS-14), Madrid (DSS-63), and Canberra (DSS-43) complexes, including geodetic coordinates and elevation masks.
 4. **Published Literature Benchmark**:

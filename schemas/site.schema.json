@@ -65,6 +65,9 @@
     "is_demo_site": {
       "type": "boolean"
     },
+    "is_mission_site": {
+      "type": "boolean"
+    },
     "ephemeris_source": {
       "type": "string",
       "enum": ["analytic_approximation", "spice_kernels"]

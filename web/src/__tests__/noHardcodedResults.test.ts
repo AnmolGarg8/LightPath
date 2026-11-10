@@ -60,4 +60,37 @@ describe('No typed-in scientific results in web/src', () => {
       `Found hardcoded scientific results in web/src:\n${violations.join('\n')}\nRule: All headline results must be dynamically computed from site stats.json.`
     ).toEqual([]);
   });
+
+  it('ensures no source file under web/src contains forbidden stale claims', () => {
+    const files = getFiles(srcDir);
+    const forbiddenPhrases = [
+      ['approximate', 'analytic', 'ephemeris'].join(' '),
+      ['to', 'be', 'replaced', 'by', 'SPICE'].join(' '),
+      ['analytic', 'approximation'].join(' '),
+      ['SPICE', 'kernels', 'pending'].join(' '),
+      ['Proven', 'optimal'].join(' '),
+      ['CLPS', 'Candidate'].join(' '),
+      ['NASA', 'CLPS', 'Provider'].join(' '),
+      ['CLPS', 'Target', 'Assessment'].join(' '),
+      ['lunar', 'nodal', 'period'].join(' '),
+    ];
+
+    const violations: string[] = [];
+
+    for (const file of files) {
+      const content = fs.readFileSync(file, 'utf-8');
+      const relPath = path.relative(srcDir, file).replace(/\\/g, '/');
+
+      for (const phrase of forbiddenPhrases) {
+        if (content.toLowerCase().includes(phrase.toLowerCase())) {
+          violations.push(`${relPath}: contains forbidden stale claim "${phrase}"`);
+        }
+      }
+    }
+
+    expect(
+      violations,
+      `Found forbidden stale claims in web/src:\n${violations.join('\n')}\nRule: Statements must reflect real SPICE/LOLA pipeline state.`
+    ).toEqual([]);
+  });
 });

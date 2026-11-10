@@ -143,7 +143,7 @@ def get_sun_earth_moon_me_km(
             raise RuntimeError(
                 "SPICE kernels are required for ephemeris calculations. "
                 "Furnish kernels/meta.tm or provide required kernels. "
-                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+                "To allow approximate ephemeris fallback, pass --allow-approximate-ephemeris."
             )
         from pipeline.ephemeris import (
             compute_moon_center_to_earth_moon_me_km,
@@ -441,7 +441,7 @@ def sun_earth_series(
                 raise RuntimeError(
                     "SPICE kernels are required for ephemeris calculations. "
                     "Furnish kernels/meta.tm or provide required kernels. "
-                    "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+                    "To allow approximate ephemeris fallback, pass --allow-approximate-ephemeris."
                 )
             # Deterministic analytical fallback
             from pipeline.ephemeris import (

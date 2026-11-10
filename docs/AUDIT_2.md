@@ -95,7 +95,7 @@ Every entry in `docs/CITATIONS.md` was checked for existence, completeness, and 
 12. **NASA SPICE Ephemeris Kernels**:
     - *Source*: Acton, C. H. (1996), *Planetary and Space Science*, 44(1), pp. 65–70.
     - *Verification*: Real. Manifest entries marked `verified: false`.
-13. **CLPS Candidate Landing Sites**:
+13. **Lunar Exploration Example Sites**:
     - *Source*: NASA NTRS 20210018596.
     - *Verification*: Real reference; coordinates in `data/missions.json` remain marked `verified: false`.
 14. **Challenge Track Name**:

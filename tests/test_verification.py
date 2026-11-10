@@ -746,7 +746,7 @@ def test_v8_route_solver_optimality(record_verification):
         expected_value=f"Global optimum from exhaustive search ({num_grids} grids) & TS parity ({matched_vectors} vectors)",
         source_of_expected_value=f"{num_grids} exhaustive brute-force Dijkstra grids and {matched_vectors} shared cross-language vectors",
         data_type="synthetic",
-        citation="Proven optimal on 300 random grids against exhaustive search; 220 shared vectors agreement with TypeScript",
+        citation=f"matches exhaustive search on {num_grids} random instances under the stated discretisation",
     )
 
 

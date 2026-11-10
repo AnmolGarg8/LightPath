@@ -11,7 +11,7 @@ This file documents ambiguities, unverified parameters, required datasets, and d
 
 ### 2. CLPS South Pole Landing Sites & Target Elevations
 - **Status**: Verified canonical locations + explicit unverified placeholders
-- **Question**: What are the official CLPS candidate coordinates for active missions (e.g. VIPER/Griffin at Nobile Rim, Intuitive Machines IM-2 at Shackleton Connecting Ridge, Firefly Blue Ghost 2, etc.)?
+- **Question**: What are the official polar landing site coordinates for active missions (e.g. VIPER/Griffin at Nobile Rim, Intuitive Machines IM-2 at Shackleton Connecting Ridge, Firefly Blue Ghost 2, etc.)?
 - **Current Safest Assumption**: Standard published coordinates from NASA CLPS releases and LROC/LOLA science team papers are used. Any test or unverified sites will strictly have `verified: false` and `is_synthetic: true` to prevent presenting unverified or synthetic data as real.
 
 ### 3. Ephemeris Kernels vs. Analytical Topocentric Ephemeris

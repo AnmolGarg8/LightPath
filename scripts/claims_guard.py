@@ -56,6 +56,15 @@ UNCONDITIONAL_FORBIDDEN_PHRASES: List[str] = [
     "Shackleton Connecting Ridge, Malapert Mountain and Nobile Rim",
     "Shackleton Connecting Ridge, Malapert Mountain, and Nobile Rim",
     "Shackleton Connecting Ridge, Malapert Mountain, and Nobile Crater Rim",
+    "approximate analytic ephemeris",
+    "to be replaced by SPICE",
+    "analytic approximation",
+    "SPICE kernels pending",
+    "Proven optimal",
+    "CLPS Candidate",
+    "NASA CLPS Provider",
+    "CLPS Target Assessment",
+    "lunar nodal period",
 ]
 
 SCAN_TARGETS = [

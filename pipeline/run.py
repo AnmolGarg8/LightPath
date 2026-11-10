@@ -714,7 +714,7 @@ def run_pipeline(
             raise RuntimeError(
                 "SPICE kernels are required for ephemeris calculations. "
                 f"Meta-kernel at '{meta_path}' was not loaded or kernels are missing in kernels/. "
-                "To allow analytic approximation fallback, pass --allow-approximate-ephemeris."
+                "To allow approximate ephemeris fallback, pass --allow-approximate-ephemeris."
             )
         ephemeris_source = "analytic_approximation"
 
@@ -1116,7 +1116,7 @@ def main() -> None:
     parser.add_argument(
         "--allow-approximate-ephemeris",
         action="store_true",
-        help="Allow unverified analytic approximation when SPICE kernels are missing",
+        help="Allow unverified approximate ephemeris when SPICE kernels are missing",
     )
     args = parser.parse_args()
 

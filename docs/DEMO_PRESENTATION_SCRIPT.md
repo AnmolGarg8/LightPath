@@ -68,7 +68,7 @@ LightPath is an open-source, deterministic web platform that solves this challen
 > *Every existing tool can tell you when a stationary site has light. **LightPath is the only tool that tells you whether you can still get to your scientific objective before that light disappears.**"*
 
 ### [0:35 – 1:15] The Platform: Physically Exact Real-Time Horizons
-> *"Let's look at LightPath in action. Running entirely in the browser without any runtime servers, LightPath loads candidate landing site synthetic terrain models and approximate analytic ephemerides (to be replaced by SPICE) on the Moon Mean Earth coordinate datum.*  
+> *"Let's look at LightPath in action. Running entirely in the browser without any runtime servers, LightPath loads exploration terrain models and SPICE planetary ephemerides on the Moon Mean Earth coordinate datum.*  
 > *Notice our 360° Horizon Panorama: we don't treat the Sun and Earth as dimensionless dots. We render their true physical angular discs—the Sun at zero-point-five-three degrees, and the Earth four times wider at one-point-nine degrees. As we scrub our time slider, watch the solar disc get physically sliced and occulted by the crater rim.*  
 > *With our Observer Mast tool, an engineer can slide the rover mast from two meters to five meters and watch the horizon depress in real time, immediately recovering ninety hours of lost sunlight.*  
 > *Below, our multi-lane timeline correlates solar illumination with Earth line-of-sight across NASA's Deep Space Network stations in Goldstone, Madrid, and Canberra."*

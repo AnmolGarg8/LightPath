@@ -315,12 +315,16 @@ def summarize(
             "longest_outage_h": stats["longest_outage_h"],
         }
 
+    res_thresholds = {
+        "min_sun_frac": min_sun,
+        "min_earth_frac": min_earth,
+        "ground_station_mask_deg": mask_deg,
+    }
+    if "margin_deg" in thresholds:
+        res_thresholds["margin_deg"] = float(thresholds["margin_deg"])
+
     return {
-        "thresholds": {
-            "min_sun_frac": min_sun,
-            "min_earth_frac": min_earth,
-            "ground_station_mask_deg": mask_deg,
-        },
+        "thresholds": res_thresholds,
         "sun": _to_contract_category(compute_window_statistics(sun_active, timestamps, step_h)),
         "earth": _to_contract_category(compute_window_statistics(earth_active, timestamps, step_h)),
         "dte": _to_contract_category(compute_window_statistics(dte_active, timestamps, step_h)),

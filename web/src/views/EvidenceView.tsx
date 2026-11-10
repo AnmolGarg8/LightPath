@@ -265,7 +265,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #0f172a', paddingBottom: '12px', marginBottom: '14px' }}>
           <div>
             <div style={{ fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em', color: '#64748b', textTransform: 'uppercase' }}>
-              NASA SPACE APPS CHALLENGE 2026 • CLPS LUNAR MISSION BROWSER
+              NASA SPACE APPS CHALLENGE 2026 • LUNAR MISSION & SITE EXPLORER
             </div>
             <h1 style={{ fontSize: '20px', fontWeight: 800, margin: '2px 0 4px 0', color: '#0f172a' }}>
               LightPath Scientific Evidence Card: {site.name}
@@ -273,20 +273,29 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
             <div style={{ display: 'flex', gap: '12px', color: '#475569', fontSize: '10px' }}>
               <span>Site ID: <strong>{site.id}</strong></span>
               <span>•</span>
-              <span>Mission: <strong>{matchingMission ? matchingMission.name : 'CLPS Target Assessment'}</strong></span>
-              <span>•</span>
-              <span>Operator: <strong>{matchingMission ? matchingMission.operator : 'NASA CLPS Provider'}</strong></span>
-              <span>•</span>
+              {site.is_mission_site ? (
+                <>
+                  <span>Mission: <strong>{matchingMission?.verified ? matchingMission.name : 'Unverified example entry'}</strong></span>
+                  <span>•</span>
+                  <span>Operator: <strong>{matchingMission?.verified ? matchingMission.operator : 'Unverified example entry'}</strong></span>
+                  <span>•</span>
+                </>
+              ) : (
+                <>
+                  <span>Status: <strong>Test location, not a mission site</strong></span>
+                  <span>•</span>
+                </>
+              )}
               <span>Terrain: <strong>{site.terrain_source === 'lola_dem' ? 'LOLA DEM' : 'Synthetic'}</strong></span>
               <span>•</span>
-              <span>Ephemeris: <strong>{site.ephemeris_source === 'spice_kernels' ? 'SPICE Kernels' : 'Analytic Approx'}</strong></span>
+              <span>Ephemeris: <strong>{site.ephemeris_source === 'spice_kernels' ? 'SPICE Kernels' : 'Approximate Ephemeris'}</strong></span>
             </div>
           </div>
 
           <div style={{ textAlign: 'right' }}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '2px 8px', borderRadius: '4px', backgroundColor: site.verified ? '#dcfce7' : '#fef3c7', color: site.verified ? '#15803d' : '#b45309', fontWeight: 700, fontSize: '10px' }}>
               <ShieldCheck size={12} />
-              {site.verified ? 'VERIFIED METRICS' : site.is_synthetic ? 'BENCHMARK METRICS' : 'CLPS CANDIDATE METRICS'}
+              {site.verified ? 'VERIFIED METRICS' : site.is_synthetic ? 'BENCHMARK METRICS' : !site.is_mission_site ? 'TEST LOCATION (NOT A MISSION SITE)' : 'EXAMPLE SITE METRICS'}
             </div>
             <div style={{ fontSize: '9px', color: '#64748b', marginTop: '4px', fontFamily: 'monospace' }}>
               Provenance Hash: {shortProvenanceHash}
@@ -399,10 +408,10 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px', fontSize: '10px' }}>
             <div>
               <p style={{ margin: '0 0 4px 0', color: '#334155' }}>
-                <strong>Margin Definition:</strong> A safety margin of <strong>±0.10°</strong> elevation is applied to the horizon skyline to classify status. Robust visible requires disc fraction ≥ 50% with horizon raised by margin; robust blocked occurs when lower than 50% with horizon lowered.
+                <strong>Margin Definition:</strong> A safety margin of <strong>±0.03°</strong> elevation is applied to the horizon skyline to classify status. Robust visible requires disc fraction ≥ 50% with horizon raised by margin; robust blocked occurs when lower than 50% with horizon lowered.
               </p>
               <p style={{ margin: 0, color: '#64748b', fontSize: '9px' }}>
-                Derived from vertical DEM error (~1.0m) divided by terrain distance (~10km), plus 0.1° topocentric local-up tilt over 3km traverses.
+                Derived from NASA LDEM error map 95th percentile vertical error (0.468 m) evaluated at 1,000 m range (0.027°), plus local-up tilt allowance (0.003°), yielding 0.03°.
               </p>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -435,24 +444,29 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
               {provenance.datasets && provenance.datasets.length > 0 ? (
                 provenance.datasets.map((d, i) => (
                   <div key={i} style={{ color: '#334155' }}>
-                    • {d.name} ({d.version})
+                    • {d.name} {d.size_bytes ? `(${(d.size_bytes / 1024).toFixed(0)} KB)` : `(${d.version})`}
+                    {d.sha256 ? <div style={{ fontSize: '8px', color: '#64748b', fontFamily: 'monospace' }}>SHA: {d.sha256.slice(0, 10)}…</div> : null}
                   </div>
                 ))
               ) : (
-                <div style={{ color: '#64748b' }}>{site.is_synthetic ? 'Synthetic Benchmark DEM' : 'Synthetic terrain model (PDS DEM pending)'}</div>
+                <div style={{ color: '#64748b' }}>{site.is_synthetic ? 'Synthetic Benchmark DEM' : 'No terrain files registered'}</div>
               )}
             </div>
 
             <div>
-              <strong style={{ display: 'block', color: '#0f172a', marginBottom: '2px' }}>Ephemeris Source:</strong>
+              <strong style={{ display: 'block', color: '#0f172a', marginBottom: '2px' }}>Ephemeris Source & Kernels:</strong>
+              <div style={{ color: '#334155', marginBottom: '2px' }}>
+                Source: {provenance.parameters?.ephemeris_source === 'spice_kernels' ? 'NAIF SPICE Kernels' : (provenance.parameters?.ephemeris_source ? String(provenance.parameters.ephemeris_source) : 'SPICE Kernels')}
+              </div>
               {provenance.kernels && provenance.kernels.length > 0 ? (
                 provenance.kernels.map((k, i) => (
                   <div key={i} style={{ color: '#334155', fontFamily: 'monospace' }}>
-                    • {k.name}
+                    • {k.name} {k.size_bytes ? `(${(k.size_bytes / 1024).toFixed(0)} KB)` : ''}
+                    {k.checksum ? <div style={{ fontSize: '8px', color: '#64748b' }}>SHA: {k.checksum.slice(0, 10)}…</div> : null}
                   </div>
                 ))
               ) : (
-                <div style={{ color: '#64748b' }}>none (analytic approximation, to be replaced by SPICE)</div>
+                <div style={{ color: '#64748b' }}>No SPICE kernels loaded</div>
               )}
             </div>
 

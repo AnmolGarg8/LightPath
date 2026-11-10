@@ -151,10 +151,24 @@ PROJCS["Moon (2015) - Sphere / Ocentric / South Polar",GEOGCS["Moon (2015) - Sph
 
 ---
 
-## 3. Near-Window Surface Height Error Statistics
+## 3. Near-Window Surface Height Error Statistics and Angular Margin Derivation
 
 Measured directly from `LDEM_80S_20MPP_ADJ_ERR.TIF` across the cropped near-layer windows:
 
-| Site ID | Site Name | Window Extent | Median Z Error (m) | 95th Percentile Z Error (m) | Recommended Angular Margin (deg) |
-| :--- | :--- | :--- | :-: | :-: | :-: |
-| `test_location` | TEST_LOCATION_NOT_A_MISSION_SITE | 80 km x 80 km | 0.191 | 0.468 | 0.027° |
+| Site ID | Site Name | Window Extent | Median Z Error (m) | 95th Percentile Z Error (m) | Range Evaluated (m) | DEM Angular Error | Local-Up Tilt Allowance | Combined Margin (`margin_deg`) |
+| :--- | :--- | :--- | :-: | :-: | :-: | :-: | :-: | :-: |
+| `test_location` | TEST_LOCATION_NOT_A_MISSION_SITE | 80 km x 80 km | 0.191 | 0.468 | 1,000 | 0.027° | 0.003° | **0.03°** |
+
+### Horizon Margin Derivation (0.03°)
+
+The operational horizon safety margin $\delta_{\text{margin}} = 0.03^\circ$ is derived systematically from three components:
+1. **Vertical DEM Error Percentile:** The 95th percentile vertical height uncertainty from the NASA LOLA adjusted error map (`LDEM_80S_20MPP_ADJ_ERR.TIF`) over the 80 km × 80 km polar crop is **0.468 m** (median 0.191 m).
+2. **Range Evaluated:** At a characteristic obstacle distance $R = 1,000\text{ m}$, the angular elevation uncertainty is:
+   $$\theta_{\text{DEM}} = \arctan\left(\frac{0.468\text{ m}}{1000\text{ m}}\right) \times \frac{180^\circ}{\pi} \approx 0.0268^\circ \approx 0.027^\circ$$
+3. **Local-Up Tilt Allowance:** Over a 100 m cell displacement on the lunar radius $R_{\text{Moon}} = 1,737.4\text{ km}$, topocentric surface normal curvature tilt contributes:
+   $$\theta_{\text{tilt}} = \frac{100\text{ m}}{1,737,400\text{ m}} \times \frac{180^\circ}{\pi} \approx 0.0033^\circ \approx 0.003^\circ$$
+
+**Total Operational Margin:**
+$$\delta_{\text{margin}} = \theta_{\text{DEM}} + \theta_{\text{tilt}} = 0.027^\circ + 0.003^\circ = \mathbf{0.03^\circ}$$
+
+This unified margin of **0.03°** is applied across `configs/pipeline.yaml`, `provenance.json`, `stats.json`, the Evidence Card, and the Trust page.

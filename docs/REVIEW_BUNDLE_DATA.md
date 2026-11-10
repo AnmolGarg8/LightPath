@@ -16,7 +16,7 @@ Task S0 successfully acquired, verified, and established reproducible pipelines 
 3. **Terrain Acquisition:** Acquired full 80 m far layer (`LDEM_80S_80MPP_ADJ.TIF`, 180.4 MB) covering 80°S–90°S, and cropped 80 km × 80 km 20 m near-layer (`near_test_location.tif`, 52.4 MB) and error (`err_test_location.tif`, 51.8 MB) rasters for `TEST_LOCATION_NOT_A_MISSION_SITE` (lat -89.5°, lon 0.0°).
 4. **Crop Validation & Hillshades:** Validated 25 randomly sampled pixels matching remote `/vsicurl/` reads to within $10^{-5}\text{ m}$, verified 40 km boundary margin, 0.0000% no-data, and generated preview hillshades under 300 KB.
 5. **NAIF SPICE Kernels:** Acquired and cryptographically verified 5 official NAIF kernels (`naif0012.tls`, `pck00010.tpc`, `moon_pa_de421_1900-2050.bpc`, `moon_080317.tf`, `de421.bsp`), verified coverage through 2050, and mathematically proved frame transformation orthogonality to $2.22 \times 10^{-16}$.
-6. **JPL Horizons Ephemeris Comparison:** Retrieved 721 hourly topocentric reference epochs (November 2026). Proved that SPICE matches Horizons within $0.00004^\circ$ ($\approx 0.14\text{ arcsec}$), confirming mathematical precision and highlighting the known limitations of the analytic approximation ($61.22^\circ$ solar azimuth discrepancy).
+6. **JPL Horizons Ephemeris Comparison:** Retrieved 721 hourly topocentric reference epochs (November 2026). Proved that SPICE matches Horizons within $0.00004^\circ$ ($\approx 0.14\text{ arcsec}$), confirming mathematical precision and highlighting the known limitations of approximate analytic formulas ($61.22^\circ$ solar azimuth discrepancy).
 7. **Offline Reproducibility:** Updated `Makefile` with `make check-data`, `make fetch-terrain`, `make fetch-kernels`, and `make fetch-horizons`.
 
 ---
@@ -102,7 +102,7 @@ Task S0 successfully acquired, verified, and established reproducible pipelines 
 | **Earth Azimuth** | $0.00001^\circ$ | $0.00000^\circ$ | **PASS** | $14.51264^\circ$ | $10.84021^\circ$ | EXCEEDS |
 | **Earth Elevation** | $0.00004^\circ$ | $0.00002^\circ$ | **PASS** | $1.43035^\circ$ | $0.94121^\circ$ | EXCEEDS |
 
-**Conclusion:** The SPICE implementation matches JPL Horizons to within $0.00004^\circ$ ($\approx 0.14\text{ arcsec}$), demonstrating complete consistency with official NASA/JPL ephemeris standards. In contrast, the analytic approximation exhibits substantial azimuth and elevation offsets, validating the need for the SPICE ephemeris upgrade in real mission mode.
+**Conclusion:** The SPICE implementation matches JPL Horizons to within $0.00004^\circ$ ($\approx 0.14\text{ arcsec}$), demonstrating complete consistency with official NASA/JPL ephemeris standards. In contrast, approximate analytic formulas exhibit substantial azimuth and elevation offsets, validating the need for the SPICE ephemeris upgrade in real mission mode.
 
 ---
 

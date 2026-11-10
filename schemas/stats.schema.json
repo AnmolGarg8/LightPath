@@ -18,7 +18,8 @@
       "properties": {
         "min_sun_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
         "min_earth_frac": { "type": "number", "minimum": 0.0, "maximum": 1.0 },
-        "ground_station_mask_deg": { "type": "number" }
+        "ground_station_mask_deg": { "type": "number" },
+        "margin_deg": { "type": "number" }
       },
       "additionalProperties": false
     },

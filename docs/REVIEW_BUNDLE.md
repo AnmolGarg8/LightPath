@@ -581,7 +581,7 @@ dist/assets/index-C6VHUflR.js                230.08 kB │ gzip: 72.53 kB
       "tolerance": "0.0% path delta",
       "measured_value": "0.0% path delta",
       "skipped_reason": null,
-      "citation": "Proven optimal against exhaustive Dijkstra spatial-temporal graph exploration"
+      "citation": "matches exhaustive search on 300 random instances under the stated discretisation"
     }
   ],
   "charts": {
@@ -860,7 +860,7 @@ stations:
   {
     "id": "clps-placeholder-shackleton",
     "name": "CLPS Polar Scout (UNVERIFIED PLACEHOLDER)",
-    "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+    "operator": "Example Operator Placeholder (To be verified by human)",
     "site_id": "shackleton-connecting-ridge",
     "planned_window_start": "2026-11-01T00:00:00Z",
     "planned_window_end": "2026-11-15T00:00:00Z",
@@ -877,7 +877,7 @@ stations:
   {
     "id": "clps-placeholder-malapert",
     "name": "CLPS Malapert Lander (UNVERIFIED PLACEHOLDER)",
-    "operator": "NASA CLPS Provider Placeholder (To be verified by human)",
+    "operator": "Example Operator Placeholder (To be verified by human)",
     "site_id": "malapert-mountain",
     "planned_window_start": "2026-11-05T00:00:00Z",
     "planned_window_end": "2026-11-20T00:00:00Z",

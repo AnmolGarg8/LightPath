@@ -22,6 +22,10 @@ import {
   Series,
   TestResultsSchema,
   TestResults,
+  SiteFullSchema,
+  SiteFull,
+  ProvenanceSchema,
+  Provenance,
 } from '../types/schemas';
 import { RelatedWorkPanel } from '../components/RelatedWorkPanel';
 import {
@@ -43,6 +47,8 @@ export const ExplainView: React.FC = () => {
   // Live data bindings
   const [seriesData, setSeriesData] = useState<Series | null>(null);
   const [testResults, setTestResults] = useState<TestResults | null>(null);
+  const [siteData, setSiteData] = useState<SiteFull | null>(null);
+  const [provenanceData, setProvenanceData] = useState<Provenance | null>(null);
 
   // Step 2 Interactive Ridge Sliders (Default: 100m at 10km = ~0.408° / ~0.41°)
   const [ridgeHeightM, setRidgeHeightM] = useState<number>(100.0);
@@ -62,13 +68,17 @@ export const ExplainView: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    // Load series data and test results for live numbers
+    // Load series data, test results, site and provenance for live numbers
     Promise.all([
       fetchJsonData(`./data/${demoSiteId}/series.json`, SeriesSchema).catch(() => null),
       fetchJsonData('./data/test_results.json', TestResultsSchema).catch(() => null),
-    ]).then(([series, tests]) => {
+      fetchJsonData(`./data/sites/${demoSiteId}.json`, SiteFullSchema).catch(() => null),
+      fetchJsonData(`./data/${demoSiteId}/provenance.json`, ProvenanceSchema).catch(() => null),
+    ]).then(([series, tests, site, prov]) => {
       if (series) setSeriesData(series);
       if (tests) setTestResults(tests);
+      if (site) setSiteData(site);
+      if (prov) setProvenanceData(prov);
     });
 
     // Keyboard listener for Presenter Mode ('P')
@@ -124,6 +134,13 @@ export const ExplainView: React.FC = () => {
       min: Math.min(...els),
       max: Math.max(...els),
     };
+  }, [seriesData]);
+
+  const dateRangeStr = useMemo(() => {
+    if (!seriesData || !seriesData.time_utc || seriesData.time_utc.length === 0) return '2026-11-01 to 2026-12-01';
+    const start = seriesData.time_utc[0].split('T')[0];
+    const end = seriesData.time_utc[seriesData.time_utc.length - 1].split('T')[0];
+    return `${start} to ${end}`;
   }, [seriesData]);
 
   // Render Step 4 moving shadow and two rover routes
@@ -351,22 +368,32 @@ export const ExplainView: React.FC = () => {
                 .
               </p>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                At the South Pole, the Sun never climbs into the sky. It skims the horizon year-round, oscillating between{' '}
-                <strong>-1.5° and +1.5°</strong> elevation over the lunar nodal period.
+                At the South Pole, the Sun never climbs into the sky. Over a year, the Sun's elevation at the pole varies within about
+                <strong> ±1.5°</strong> (a seasonal cycle of about one year;{' '}
+                <a
+                  href="https://ssd.jpl.nasa.gov/horizons/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'underline', color: 'var(--accent-primary)' }}
+                >
+                  [verify: NASA JPL Horizons]
+                </a>
+                ).
               </p>
 
               {/* Live Values from Data */}
               <div style={{ backgroundColor: 'var(--bg-secondary)', padding: '0.75rem 1rem', borderRadius: '6px', border: '1px solid var(--border-color)', fontSize: '0.85rem' }}>
                 <div>
-                  Measured Sun Elevation Range at Proving Ground:{' '}
+                  Measured Sun Elevation Range at {siteData?.name || demoSiteId}:{' '}
                   <strong style={{ color: 'var(--color-sun)' }}>
                     {actualSunRange.min.toFixed(2)}° to {actualSunRange.max.toFixed(2)}°
                   </strong>{' '}
-                  (from data series)
+                  ({dateRangeStr})
                 </div>
                 <div style={{ marginTop: '0.35rem', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  Source: Synthetic Proving Ground / Approximate Analytic Ephemeris{' '}
-                  <span style={{ color: '#b45309', fontWeight: 600 }}>[approximate analytic ephemeris, to be replaced by SPICE]</span>
+                  Ephemeris source: {provenanceData?.parameters?.ephemeris_source === 'spice_kernels'
+                    ? 'NAIF SPICE Kernels (DE421, MOON_ME frame)'
+                    : (provenanceData?.parameters?.ephemeris_source ? String(provenanceData.parameters.ephemeris_source) : 'SPICE kernels')}
                 </div>
               </div>
             </div>
@@ -395,7 +422,7 @@ export const ExplainView: React.FC = () => {
                 <text x="260" y="90" fill="#f5b41e" fontSize="9">Max Elevation: +1.5°</text>
               </svg>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
-                Low solar angle produces shadows hundreds of kilometres long across crater rims.
+                A rise of 1 km casts a shadow of about 1 / tan(1.5°) ≈ 38 km (1 / 0.0262 ≈ 38.2 km).
               </div>
             </div>
           </div>
@@ -659,7 +686,7 @@ export const ExplainView: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', alignItems: 'center' }}>
             <div>
               <p style={{ color: 'var(--text-primary)', marginBottom: '0.8rem' }}>
-                Every calculation in LightPath is tested against exact spherical geometry, with approximate analytic ephemeris to be replaced by SPICE, and external baselines marked pending verification.
+                Every calculation in LightPath is tested against exact spherical geometry, SPICE ephemerides compared with JPL Horizons, and external baselines marked pending verification.
               </p>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem', fontSize: '0.9rem' }}>
                 Our Python core and browser TypeScript engine share exact test vectors. If they disagree by even $10^{-9}$ degrees, the build fails.

@@ -29,6 +29,7 @@ export const StatsThresholdsSchema = z.object({
   min_sun_frac: z.number().min(0.0).max(1.0),
   min_earth_frac: z.number().min(0.0).max(1.0),
   ground_station_mask_deg: z.number(),
+  margin_deg: z.number().optional(),
 });
 
 export const StatsSchema = z.object({
@@ -75,6 +76,7 @@ export const SiteSummarySchema = z.object({
   verified: z.boolean(),
   is_synthetic: z.boolean(),
   is_demo_site: z.boolean().optional(),
+  is_mission_site: z.boolean().optional(),
   ephemeris_source: z.enum(['analytic_approximation', 'spice_kernels']).optional(),
   terrain_source: z.enum(['synthetic', 'lola_dem']).optional(),
 });
@@ -253,13 +255,16 @@ export const ProvenanceSchema = z.object({
       name: z.string(),
       version: z.string(),
       source_url: z.string(),
-    })
+      size_bytes: z.number().optional(),
+      sha256: z.string().optional(),
+    }).passthrough()
   ),
   kernels: z.array(
     z.object({
       name: z.string(),
       checksum: z.string(),
-    })
+      size_bytes: z.number().optional(),
+    }).passthrough()
   ),
   parameters: z.record(z.string(), z.unknown()),
   tolerances: z.record(z.string(), z.number()),

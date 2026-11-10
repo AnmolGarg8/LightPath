@@ -100,7 +100,7 @@ def init_default_registry():
             "Globally optimal path from exhaustive search",
             "Exhaustive brute-force graph search & shared TS vectors",
             "synthetic",
-            "Proven optimal on tiny grids against exhaustive search; Python vs TS agreement",
+            "matches exhaustive search on N random instances under the stated discretisation",
         ),
         # Extra Verification Benchmarks (X1 - X6)
         (

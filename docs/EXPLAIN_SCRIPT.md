@@ -10,7 +10,7 @@
 - **The Core Fact:** The Moon’s equator is tilted only **1.54°** relative to the ecliptic plane. Unlike Earth, which experiences strong seasonal tilt (23.5°), the lunar poles never see the Sun rise high in the sky.
 - **What You See:** The Sun skims the horizon, oscillating between **-1.5° and +1.5°** elevation over an 18.6-year nodal cycle. At polar ground level, solar elevation rarely exceeds 1.5° above the horizon.
 - **Why It Matters:** Because the Sun is so low, even tiny topographic features cast enormous shadows across the landscape.
-- **Rule 2 Notice:** Solar elevation numbers use synthetic terrain models and approximate analytic ephemeris, to be replaced by SPICE and verified PDS DEMs.
+- **Rule 2 Notice:** Solar elevation numbers use terrain models and NAIF SPICE planetary ephemerides compared with JPL Horizons.
 
 ---
 

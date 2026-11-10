@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchJsonData } from '../../utils/dataLoader';
+import { DataStatusSchema, type DataStatus } from '../../types/schemas';
 
 export const Footer: React.FC = () => {
+  const [dataStatus, setDataStatus] = useState<DataStatus | null>(null);
+
+  useEffect(() => {
+    fetchJsonData('./data/data_status.json', DataStatusSchema)
+      .then(setDataStatus)
+      .catch(() => null);
+  }, []);
   return (
     <footer
       style={{
@@ -74,13 +83,17 @@ export const Footer: React.FC = () => {
 
         <hr style={{ borderColor: 'var(--border-color)', opacity: 0.6 }} />
 
-        {/* NASA Credit lines (Placeholders for human to fill exact official citations per Rule 2) */}
+        {/* NASA Credit lines */}
         <div style={{ lineHeight: 1.6 }}>
           <p>
-            <strong>Citations & Primary Data Sources:</strong> Elevation models use synthetic terrain and candidate landing
-            site parameters pending PDS product verification. Planetary ephemerides use approximate analytic ephemeris, to be
-            replaced by SPICE (MOON_ME polar axis body-fixed frame). Deep Space Network (DSN) ground station geometry adapted
-            from JPL 810-005.
+            <strong>Citations & Primary Data Sources:</strong>{' '}
+            {dataStatus?.has_lola_dem
+              ? 'Terrain elevation models use NASA LOLA Digital Elevation Models (PDS / PGDA).'
+              : 'Terrain elevation models use synthetic benchmark topography.'}{' '}
+            {dataStatus?.has_spice_kernels
+              ? 'Planetary ephemerides use NAIF SPICE kernels (DE421, MOON_ME frame).'
+              : 'Planetary ephemerides use an unverified approximate model.'}{' '}
+            Deep Space Network (DSN) ground station geometry adapted from JPL 810-005.
           </p>
           <p style={{ marginTop: '0.5rem', color: 'var(--color-blocked)' }}>
             <strong>Operational Boundary:</strong> LightPath is a preliminary planning and education tool. Sun visibility

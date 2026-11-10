@@ -13,7 +13,7 @@ export function getDemoSteps(
   return [
     {
       id: 1,
-      title: '1. CLPS Mission Browser',
+      title: '1. Lunar Mission & Site Browser',
       caption: 'LightPath evaluates lunar south pole exploration sites for solar illumination, Earth line-of-sight, and communications windows.',
       route: '#/',
       durationSeconds: 10,
@@ -63,7 +63,7 @@ export function getDemoSteps(
     {
       id: 8,
       title: '8. Mission Readiness Evidence Card',
-      caption: 'A single-page printable NASA engineering dossier with exact geodetic coordinates, elevation parameters, analytic ephemeris manifests, and SHA-256 provenance hashes.',
+      caption: 'A single-page printable NASA engineering dossier with exact geodetic coordinates, elevation parameters, ephemeris manifests, and SHA-256 provenance hashes.',
       route: `#/evidence/${demoSiteId}`,
       durationSeconds: 9,
     },

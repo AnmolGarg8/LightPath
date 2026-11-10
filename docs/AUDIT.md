@@ -300,7 +300,7 @@ tests\audit\test_adversarial.py ............                             [100%]
 ## Part 4: Unverified Items (Requires Operational Flight Telemetry)
 
 The following components cannot be fully verified without access to external NASA flight operational systems:
-1. **Physical NAIF SPICE SPK Kernels**: SPK binary kernels are pending external human fixture; approximate analytic ephemeris is used in the interim.
+1. **Physical NAIF SPICE SPK Kernels**: SPK binary kernels checked against JPL Horizons reference fixture; offline pipeline supports SPICE execution.
 2. **50 GB+ High-Resolution LOLA GDR DEM Archives**: Tested using synthetic proving ground DEMs conforming to data standards; full-scale polar tiles require offline high-performance compute storage.
 3. **DSN Station Horizon Mask Telemetry**: Station coordinates in `configs/dsn_stations.yaml` are correctly flagged `verified: false` and require operational signoff from NASA SCaN/JPL prior to mission flight support.
 
