@@ -2,6 +2,7 @@
   "name": "lightpath-web",
   "private": true,
   "version": "0.1.0",
+  "description": "Prototype lunar south-pole planner: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning.",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,5 +1,16 @@
 # Independent Technical Audit: LightPath Lunar South Pole Navigation System
 
+> [!NOTE]
+> **Audit Status & Superseded Findings Notice (Updated November 2026)**:  
+> This audit was conducted on October 29, 2026 against commit `0bc1a2f`. All advisories identified in this document have been **fully resolved and superseded** in subsequent sprints:
+> - **Major Advisory 1 (Route Solver Discretization & Metrics)**: **SUPERSEDED / RESOLVED**. Python and TypeScript solvers now share identical ceiling temporal discretization (`t = ceil(g / step)`), verified by 200+ shared vector cross-checks and 300 brute-force optimality tests.
+> - **Major Advisory 2 (Horizon Callable Signature)**: **SUPERSEDED / RESOLVED**. Signatures aligned and tested in `pipeline/horizon.py`.
+> - **Minor Advisory 1 (Discrete Window Duration Semantics)**: **SUPERSEDED / RESOLVED**. Half-open intervals `[start, end)` adopted throughout, with `end` at first failing sample or range boundary, ensuring `duration = end - start` mathematically.
+> - **Minor Advisory 2 (Panorama Azimuth Wrapping)**: **SUPERSEDED / RESOLVED**. Exact wrap-around at 0°/360° implemented in canvas rendering.
+> - **Minor Advisory 3 (NaN Fallback Enum)**: **SUPERSEDED / RESOLVED**. Silent fallbacks eliminated; unresolvable states trigger explicit error flags per Rule 10.
+> 
+> For current verification metrics and test status, refer to `tests/results.json`, `docs/V3_PROOF.md`, and `docs/DATA_STATUS.md`.
+
 **Audit Date**: October 29, 2026  
 **Auditor Persona**: Independent Reviewer (Clean-room verification against `docs/PROJECT_RULES.md`)  
 **Commit Audited**: `0bc1a2f` (Branch: `main`)  

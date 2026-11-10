@@ -40,7 +40,7 @@ Under the **Commercial Lunar Payload Services (CLPS)** initiative, NASA contract
 
 ### The Physics Dilemma at the Lunar South Pole
 1. **Grazing Sun Angles**: The Moon's spin axis is tilted only $1.54^\circ$ relative to the ecliptic. At the South Pole, the Sun never rises high into the sky; it skims the ragged horizon between $-1.5^\circ$ and $+1.5^\circ$.
-2. **Towering Shadows Moving at Rover Speed**: Crater rims and elevated massifs cast shadows extending $15\text{ to }30\text{ km}$. As the Moon rotates, these shadows sweep across crater basins at ground speeds of $2\text{ to }10\text{ cm/s}$—**identical to the top speed of lunar exploration rovers** (such as VIPER).
+2. **Dynamic Polar Shadows**: Crater rims and elevated massifs cast elongated shadows extending tens of kilometres. As the Moon rotates, these shadows sweep across crater basins as the Sun tracks along the horizon.
 3. **The Survival Trap**: If a commercial lander or rover enters a shadow trap, ambient temperatures plunge below $-200^\circ\text{C}$ (cryogenic freeze). Solar panels cease generating power, batteries freeze within hours, and the mission ends prematurely.
 4. **Communication Hand-offs**: Direct-to-Earth (DTE) communication requires unblocked line of sight between the lunar surface and NASA Deep Space Network (DSN) tracking antennas (Goldstone, Madrid, Canberra). The Earth looms at $1.90^\circ$ angular diameter and librates in the sky, creating windows of contact that do not match solar illumination.
 5. **The Planning Gap**: Traditional space-mission tools require expensive desktop workstations, specialized SPICE kernel compilation, and hours of computation. Commercial teams, educators, and scientists need an **instant, accessible, deterministic, and physically exact platform** to answer: *“Can our rover get from landing point A to scientific target B before darkness traps it?”*
@@ -108,7 +108,7 @@ Key UI Elements: Miniature Skyline Hero, Try Demo CTA, Mission Cards, Search/Fil
 The entry portal to LightPath. Designed for immediate scientific engagement, it introduces the user to candidate lunar south-pole landing sites under evaluation for NASA's CLPS initiative.
 
 #### The Problem It Solves
-CLPS mission planners must rapidly evaluate candidate landing sites (e.g., Shackleton Connecting Ridge, Malapert Mountain, Nobile Crater Rim) with verifiable coordinates, target dates, and illumination statistics without installing heavy legacy software.
+CLPS mission planners must rapidly evaluate candidate landing sites with verifiable coordinates, target dates, and illumination statistics without installing heavy legacy software.
 
 #### Physics & Engineering Under the Hood
 - Background Hero displays a live miniature canvas rendering topocentric lunar skyline silhouette with real-time solar disc animation.
@@ -117,7 +117,7 @@ CLPS mission planners must rapidly evaluate candidate landing sites (e.g., Shack
 
 #### Demo Narration & Actions
 1. **Action**: Open `#/` in the browser. Point to the moving miniature skyline at the top.
-2. **Narration**: *"The home screen immediately communicates our core mission: every tool tells you when a lunar site has light; LightPath tells you whether you can still get there before it goes. Below, mission cards highlight primary CLPS exploration zones—Shackleton Ridge, Malapert Mountain, and Nobile Crater Rim—each with full provenance and geodetic coordinates."*
+2. **Narration**: *"The home screen immediately communicates our core mission: every tool tells you when a lunar site has light; LightPath tells you whether you can still get there before it goes. Below, mission cards highlight exploration targets and test locations, each with full provenance and geodetic coordinates."*
 3. **Action**: Click the blue **"Try the demo"** button to jump directly into a prepared route scenario.
 
 ---

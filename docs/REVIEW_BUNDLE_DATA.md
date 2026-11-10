@@ -167,7 +167,7 @@ Per Step 6, the repository was audited for legacy references to placeholder prod
 ## 9. Things I Could Not Verify
 
 In strict adherence to Rule 2 (never invent facts):
-1. **Candidate Mission Site Coordinates:** Official landing coordinates for Shackleton Connecting Ridge, Malapert Mountain, and Nobile Crater Rim vary across mission design studies (e.g. CLPS, VIPER, Artemis III candidate zones). Sourced coordinates require human team confirmation before cropping near-layer windows.
+1. **Candidate Mission Site Coordinates:** Official landing coordinates for candidate exploration target sites vary across mission design studies (e.g. CLPS, VIPER, Artemis III candidate zones). Sourced coordinates require human team confirmation before cropping near-layer windows.
 2. **5 m Micro-Topography (Product 78 & 81):** Sub-20 m products (`site_01_5mpp_adjust.tif`, etc.) cover specific polar ridges. We verified their remote availability and sizes in `docs/terrain_inspection.md`, but have disabled them by default pending human selection of exact landing target polygons.
 3. **PDS IMG Fixed-Width Format:** We verified and acquired the official Cloud-Optimized GeoTIFF equivalents (`Product 90`). Older PDS3 fixed-width binary raster files (`.IMG`) were not acquired because GeoTIFF is natively supported by GDAL/rasterio and offers internal compression and range requests.
 
@@ -175,7 +175,7 @@ In strict adherence to Rule 2 (never invent facts):
 
 ## 10. What a Human Must Still Do
 
-1. **Confirm Candidate Landing Coordinates:** Review `docs/SITES_SOURCED.md` and confirm the landing coordinates for Shackleton Connecting Ridge, Malapert Mountain, and Nobile Crater Rim.
+1. **Confirm Candidate Landing Coordinates:** Review `docs/SITES_SOURCED.md` and confirm the landing coordinates for candidate landing sites.
 2. **Crop Candidate Windows:** Once coordinates are confirmed in `configs/terrain_windows.yaml`, execute `make fetch-terrain` to crop near-layer 20 m windows and compute error statistics.
 3. **Optionally Enable 5 m Micro-Topography:** If sub-20 m resolution is required for rover hazard avoidance or local mast line-of-sight studies, enable Product 78/81 in `configs/terrain_windows.yaml`.
 4. **Merge Branch:** Review this data acquisition bundle on branch `data-acquisition` and merge into `main` to proceed with pipeline integration tasks.

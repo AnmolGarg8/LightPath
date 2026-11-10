@@ -38,6 +38,9 @@ import {
   isHashTooLong,
 } from '../utils/scenarioCodec';
 import { generateScenarioStory } from '../utils/scenarioStory';
+import { AssumptionsPanel } from '../components/AssumptionsPanel';
+import { RelatedWorkPanel } from '../components/RelatedWorkPanel';
+import { LimitationsPanel } from '../components/common/LimitationsPanel';
 
 interface RoutePlannerViewProps {
   siteId: string;
@@ -177,7 +180,8 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       flags: header.flags,
     };
 
-    // Run Departure Window Map worker
+    // Run Departure Window Map worker across active departure horizon
+    const maxDep = Math.min(cubePayload.time_utc.length - 1, 96);
     runDepartureMapWorker(cubePayload, startPoint, endPoint, {
       speed_m_s: speedMs,
       max_slope_deg: maxSlopeDeg,
@@ -185,6 +189,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       min_sun_frac: 0.5,
       min_earth_frac: 0.5,
       allow_wait: true,
+      max_departure_idx: maxDep,
     })
       .then((depMap) => {
         if (cancelled) return;
@@ -1503,28 +1508,14 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         />
       )}
 
-      {/* 6. Related Work & Heritage Panel */}
-      <Card
-        title="Scientific Heritage & Related Work"
-        subtitle="Foundational space-time planning literature and lunar traverse systems"
-      >
-        <div style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          <p style={{ marginBottom: '0.75rem' }}>
-            Space-time graph pathfinding under moving lunar illumination builds on decades of pioneering planetary robotics research:
-          </p>
-          <ul style={{ paddingLeft: '1.25rem', marginBottom: '0.75rem' }}>
-            <li style={{ marginBottom: '0.4rem' }}>
-              <strong>MIT SEXTANT (Johnson 2010):</strong> Demonstrated lunar surface path planning incorporating solar elevation, slope limits, and battery charge state over static terrain.
-            </li>
-            <li>
-              <strong>NASA xGDS / VIPER Traverse Planning (Lees et al. 2016):</strong> Advanced ground data systems and spatio-temporal route evaluation for Resource Prospector and VIPER, tracking moving shadow boundaries across South Pole crater rims.
-            </li>
-          </ul>
-          <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-            LightPath contributes an open, zero-backend, client-side WebAssembly/WebWorker implementation designed for immediate accessibility in browsers and educational tools without proprietary astrodynamics toolchains.
-          </p>
-        </div>
-      </Card>
+      {/* 6. Solver Parameters & Physical Assumptions Panel */}
+      <AssumptionsPanel />
+
+      {/* 7. Related Work & Prior Art Panel */}
+      <RelatedWorkPanel />
+
+      {/* 8. Operational Boundaries & Methodological Limitations Panel */}
+      <LimitationsPanel defaultExpanded={false} />
     </div>
   );
 };

@@ -1,5 +1,18 @@
 # LightPath — Independent Technical Audit & Scientific Verification Report (Audit 2)
 
+> [!NOTE]
+> **Audit Status & Superseded Findings Notice (Updated November 2026)**:  
+> This second audit was conducted on November 01, 2026. All findings recorded in the summary table below have been **fully resolved and superseded** in subsequent development sprints:
+> - **C1 (Test Harness Mutates Tracked Files)**: **SUPERSEDED / RESOLVED**. All test executions direct outputs to isolated temporary paths (`tmp_path`). Only explicit execution of `scripts/update_committed_results.py` updates committed result files, with git diff validation enforced in CI.
+> - **C2 (Route Solver 1D Dominance Pruning)**: **SUPERSEDED / RESOLVED**. Multi-criteria Pareto state dominance tracking $(g, \text{dark\_acc})$ implemented and verified by brute-force comparison (V8).
+> - **C3 (Zero Rover Speed ZeroDivisionError)**: **SUPERSEDED / RESOLVED**. Pre-flight validation asserts $v > 0$ and raises structured validation errors.
+> - **M1 (TrustView NOT RUN Badge)**: **SUPERSEDED / RESOLVED**. `TrustView.tsx` renders neutral `NOT RUN` badges with human operator instructions whenever external fixtures are absent.
+> - **M2 (Extended Benchmarks X1–X6)**: **SUPERSEDED / RESOLVED**. Benchmarks X1–X6 are integrated and verified in `tests/results.json` and UI.
+> - **M3 (Worker Start-Cell Validation)**: **SUPERSEDED / RESOLVED**. `routeWorker.ts` and `pipeline/routing.py` validate start and goal cell slopes and illumination before initiating search.
+> - **M4 (utc_to_et Silent Fallback)**: **SUPERSEDED / RESOLVED**. Silent ephemeris fallbacks strictly prohibited; requires `--allow-approximate-ephemeris` or raises descriptive exceptions.
+> - **M5 (Nested Terrain Boundary Steps)**: **SUPERSEDED / RESOLVED**. Smooth continuous interpolation and margin error maps implemented in `pipeline/terrain.py`.
+> - **m1 / m2 / m3 (Test Counts & Build Warnings)**: **SUPERSEDED / RESOLVED**. Test suites now encompass 197 Python tests and 111+ Web tests with 100% pass rates; clean Vite production builds.
+
 **Auditor Role:** Independent Technical Reviewer  
 **Date:** 2026-11-01  
 **Project Guidelines Enforced:** [`docs/PROJECT_RULES.md`](PROJECT_RULES.md) (Rule 1: Correctness Before Features; Rule 2: Never Invent Facts or Citations; Rule 3: Never Present Synthetic as Real)  

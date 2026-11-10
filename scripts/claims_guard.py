@@ -13,7 +13,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 # Ensure UTF-8 output on Windows
 if sys.stdout and hasattr(sys.stdout, "reconfigure"):
@@ -43,6 +43,19 @@ CONDITIONAL_RULES: List[Tuple[List[str], str]] = [
         ["cross-checked", "verified against"],
         "has_peer_reviewed_benchmark",
     ),
+]
+
+# Unconditionally forbidden phrases: stale claims that are never permitted anywhere
+UNCONDITIONAL_FORBIDDEN_PHRASES: List[str] = [
+    "speeds comparable to a rover",
+    "speeds comparable to an uncrewed",
+    "twenty kilometers long",
+    "20 kilometers long",
+    "NASA-standard",
+    "nasa standard",
+    "Shackleton Connecting Ridge, Malapert Mountain and Nobile Rim",
+    "Shackleton Connecting Ridge, Malapert Mountain, and Nobile Rim",
+    "Shackleton Connecting Ridge, Malapert Mountain, and Nobile Crater Rim",
 ]
 
 SCAN_TARGETS = [
@@ -76,8 +89,15 @@ def load_data_status() -> Dict[str, bool]:
     }
 
 
-def scan_file(file_path: Path, active_forbidden: Dict[str, str]) -> List[str]:
-    """Scan a single file for active forbidden phrases."""
+def scan_file(
+    file_path: Path,
+    active_forbidden: Dict[str, str],
+    unconditional_forbidden: Optional[List[str]] = None,
+) -> List[str]:
+    """Scan a single file for active conditional and unconditional forbidden phrases."""
+    if unconditional_forbidden is None:
+        unconditional_forbidden = UNCONDITIONAL_FORBIDDEN_PHRASES
+
     violations = []
     try:
         content = file_path.read_text(encoding="utf-8", errors="replace")
@@ -85,14 +105,25 @@ def scan_file(file_path: Path, active_forbidden: Dict[str, str]) -> List[str]:
         print(f"[WARN] Cannot read {file_path}: {e}", file=sys.stderr)
         return violations
 
+    try:
+        rel_path = file_path.relative_to(ROOT_DIR)
+    except ValueError:
+        rel_path = file_path
+
     for line_no, line in enumerate(content.splitlines(), start=1):
+        # 1. Check unconditional forbidden stale claims
+        for phrase in unconditional_forbidden:
+            pattern = re.compile(re.escape(phrase), re.IGNORECASE)
+            if pattern.search(line):
+                violations.append(
+                    f"{rel_path}:{line_no}: forbidden stale claim '{phrase}' (permanently forbidden per Project Rules)\n"
+                    f"    {line.strip()}"
+                )
+
+        # 2. Check conditional forbidden phrases
         for phrase, condition in active_forbidden.items():
             pattern = re.compile(re.escape(phrase), re.IGNORECASE)
             if pattern.search(line):
-                try:
-                    rel_path = file_path.relative_to(ROOT_DIR)
-                except ValueError:
-                    rel_path = file_path
                 violations.append(
                     f"{rel_path}:{line_no}: forbidden phrase '{phrase}' (requires {condition}=true)\n"
                     f"    {line.strip()}"
@@ -113,7 +144,8 @@ def main() -> int:
             for p in phrases:
                 active_forbidden[p] = condition
 
-    print(f"\n[2/2] Scanning README.md, docs/, and web/src/ for {len(active_forbidden)} active forbidden phrase(s)...")
+    total_phrases = len(active_forbidden) + len(UNCONDITIONAL_FORBIDDEN_PHRASES)
+    print(f"\n[2/2] Scanning README.md, docs/, and web/src/ for {total_phrases} active forbidden phrase(s)...")
 
     files_to_scan: List[Path] = []
     for target in SCAN_TARGETS:
@@ -132,7 +164,7 @@ def main() -> int:
 
     all_violations: List[str] = []
     for fp in files_to_scan:
-        violations = scan_file(fp, active_forbidden)
+        violations = scan_file(fp, active_forbidden, UNCONDITIONAL_FORBIDDEN_PHRASES)
         all_violations.extend(violations)
 
     if all_violations:

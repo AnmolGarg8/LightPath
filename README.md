@@ -1,4 +1,6 @@
-# LightPath — CLPS Lunar Mission Browser & Space-Time Traverse Planner
+# LightPath — Prototype Lunar South-Pole Planner
+
+> Prototype lunar south-pole planner: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning.
 
 **NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
 *Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*
@@ -31,7 +33,7 @@
 
 ## 2. Why It Matters
 
-At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casting shadows tens of kilometers long that sweep across crater rims at speeds comparable to an uncrewed robotic lunar rover (e.g., VIPER traverse speed $\sim 2-10\text{ cm/s}$; see [`docs/PHYSICS_NOTES.md`](docs/PHYSICS_NOTES.md)). Landing just 500 meters off-target, raising an antenna mast by 3 meters, or departing a base two hours later can mean the difference between continuous solar power and an extended, battery-depleting lunar night. LightPath gives mission planners, scientists, students, and the public instant, deterministic topocentric visibility into lunar south-pole lighting and direct communications without requiring specialized astrodynamics toolchains.
+At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casting dynamic shadows that sweep across crater terrain (see [`docs/PHYSICS_NOTES.md`](docs/PHYSICS_NOTES.md)). Landing just 500 meters off-target, raising an antenna mast by 3 meters, or departing a base two hours later can mean the difference between solar illumination and an extended, battery-depleting lunar night. LightPath gives mission planners, scientists, students, and the public instant, deterministic topocentric visibility into lunar south-pole lighting and direct communications without requiring specialized astrodynamics toolchains.
 
 ---
 
@@ -51,7 +53,7 @@ At the lunar south pole, the Sun hovers within $1.5^\circ$ of the horizon, casti
 - **Observer Mast Height Sensitivity**: Compare horizon depression and illumination recovery across mast elevations from $1.0\text{ m}$ to $10.0\text{ m}$.
 - **Multi-Lane Contact Timeline**: Simultaneous timeline of solar illumination, Earth line-of-sight, DSN complex handovers, and joint availability windows.
 - **Dynamic 4D Space-Time Traverse Planner**: Plan rover routes on a spatial grid across moving shadows with mechanical slope constraints (Horn 1981 method) in under 1 second.
-- **Multi-Site Comparative Analysis**: Side-by-side comparison of competing CLPS candidate landing sites (e.g. Shackleton Connecting Ridge, Malapert Mountain, Nobile Rim).
+- **Multi-Site Comparative Analysis**: Side-by-side trade study between the real-terrain test location and the synthetic benchmark proving ground.
 - **One-Page Printable Evidence Card**: Single-page PDF briefing layout with exact geodetic coordinates, kernel manifests, and SHA-256 provenance hashes.
 - **Scientific Trust & Verification Suite**: Live dashboard comparing calculations against closed-form benchmarks, shared Python/TypeScript vectors, and published baselines pending verification [CITATION NEEDED: human to confirm; see [`docs/CITATIONS.md`](docs/CITATIONS.md)].
 - **90-Second Guided Demo & Presenter Mode**: Self-guided judge tour (`?demo=1`), auto-looping kiosk mode (`?kiosk=1`), and projection-ready Presenter Mode (Key `P`).

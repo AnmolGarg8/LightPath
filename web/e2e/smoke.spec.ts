@@ -94,7 +94,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     await demoBtn.click();
 
     // Wait for Route Planner to load
-    await page.waitForSelector('.planner-workspace-grid, canvas', { timeout: 10000 });
+    await page.waitForSelector('.planner-workspace-grid', { timeout: 15000 });
     await verifyPageState('Route Planner (Demo)');
 
     // Capture first 10 seconds progression screenshots
@@ -242,7 +242,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
     // Visit Route Planner on 360px mobile
     console.log('Visiting Route Planner at 360px mobile viewport...');
     await page.goto('./#/route/synthetic-proving-ground');
-    await page.waitForSelector('.planner-workspace-grid, canvas', { timeout: 10000 });
+    await page.waitForSelector('.planner-workspace-grid', { timeout: 15000 });
     await page.waitForTimeout(1000);
 
     const routeScrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);

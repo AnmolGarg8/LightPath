@@ -23,6 +23,7 @@ import {
   TestResultsSchema,
   TestResults,
 } from '../types/schemas';
+import { RelatedWorkPanel } from '../components/RelatedWorkPanel';
 import {
   elevationAngleDeg,
   discFractionFlat,
@@ -690,6 +691,9 @@ export const ExplainView: React.FC = () => {
             </div>
           </div>
         </Card>
+
+        {/* Related Work & Prior Art */}
+        <RelatedWorkPanel />
       </div>
     </div>
   );

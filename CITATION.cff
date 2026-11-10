@@ -6,11 +6,7 @@ date-released: 2026-11-02
 license: MIT
 repository-code: "https://github.com/[team-to-fill]/lightpath"
 url: "https://[team-to-fill].github.io/lightpath/"
-abstract: >-
-  LightPath computes topocentric solar disc illumination, lunar terrain horizon occultation,
-  and Direct-to-Earth (DTE) communication line of sight for lunar south-pole exploration sites.
-  It includes a spatio-temporal route solver navigating moving polar shadows and provides
-  deterministic, reproducible open datasets in CSV and Apache Parquet formats.
+abstract: "Prototype lunar south-pole planner: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning."
 keywords:
   - "lunar south pole"
   - "solar illumination"

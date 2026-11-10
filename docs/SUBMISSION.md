@@ -8,7 +8,7 @@
 
 ## 1. Project Summary (248 words)
 
-At the lunar south pole, where NASA's Commercial Lunar Payload Services (CLPS) missions and Artemis astronauts will land, the Sun never rises higher than 1.5° above the horizon. Mountain peaks cast elongated, dynamic shadows that sweep across crater floors at speeds comparable to an uncrewed robotic rover (e.g., VIPER traverse speed ~2–10 cm/s; see docs/PHYSICS_NOTES.md). A landing target offset of 500 meters or a departure delay of two hours can plunge a solar-powered lander or rover into weeks of lethal darkness and sever direct radio communication with Earth.
+At the lunar south pole, where NASA's Commercial Lunar Payload Services (CLPS) missions and Artemis astronauts will land, the Sun never rises higher than 1.5° above the horizon. Mountain peaks cast elongated, dynamic shadows that sweep across crater floors (see docs/PHYSICS_NOTES.md). A landing target offset of 500 meters or a departure delay of two hours can plunge a solar-powered lander or rover into weeks of lethal darkness and sever direct radio communication with Earth.
 
 **LightPath** solves this challenge through an open, deterministic web browser and space-time navigation platform. By combining high-resolution NASA Lunar Reconnaissance Orbiter (LRO) LOLA digital elevation models with NAIF SPICE planetary ephemerides and Deep Space Network (DSN) ground station geometry, LightPath computes exact 360° topocentric terrain skylines, clips the true angular discs of the Sun (0.53°) and Earth (1.90°), and maps continuous direct-to-Earth communication availability.
 
@@ -35,7 +35,7 @@ LightPath democratizes lunar south pole mission planning through a zero-runtime-
 - **Observer Mast Optimization**: Interactive sliders show how raising payload masts from 1 to 10 meters depresses apparent horizons and recovers lost illumination.
 - **Multi-Lane Contact Timeline**: Tracks simultaneous solar illumination, Earth line-of-sight, and Deep Space Network (Goldstone, Madrid, Canberra) contact windows.
 - **4D Space-Time Route Solver**: Plans viable traverses across moving shadow fields with mechanical slope safety constraints (Horn 1981 method) in under 1 second.
-- **One-Page Printable Evidence Card**: Generates NASA-standard A4/Letter PDF briefing cards containing exact geodetic coordinates, kernel manifests, and SHA-256 provenance records.
+- **One-Page Printable Evidence Card**: Generates printable A4/Letter PDF briefing cards containing exact geodetic coordinates, kernel manifests, and SHA-256 provenance records.
 - **Independent Verification Suite**: A public audit page proving calculation accuracy against published NASA benchmarks and 12 adversarial stress tests.
 
 ---

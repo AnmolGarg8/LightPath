@@ -87,15 +87,8 @@ With maximum $|d\theta_{\text{sun}}/dt| \approx 1.54^\circ \times (2\pi / 27.212
 - For $H = 500\text{ m}$, $\theta_{\text{sun}} = 1.0^\circ$:
   $$\left|\frac{dL}{dt}\right| \approx \frac{500}{(0.01745)^2} \times 4.78 \times 10^{-8} \approx 1,642,000 \times 4.78 \times 10^{-8} \approx 0.0785\text{ m/s} = 7.85\text{ cm/s} \approx 283\text{ m/hour}$$
 
-### 2.6 Comparison with Lunar Rover Speeds
-- **Uncrewed Robotic Exploration Rovers:**
-  - NASA VIPER (Volatiles Investigating Polar Exploration Rover): nominal traverse speed is **$2.0\text{ cm/s}$ to $10.0\text{ cm/s}$** ($72\text{ m/h}$ to $360\text{ m/h}$), with maximum speed $\approx 20\text{ cm/s}$.
-  - CNSA Chang'e-4 / Yutu-2: operational drive speed $\approx 5.0\text{ cm/s}$ ($180\text{ m/h}$).
-  - ISRO Pragyan / Chandrayaan-3: drive speed $\approx 1.0\text{ cm/s}$ ($36\text{ m/h}$).
-- **Crewed Rovers:**
-  - Apollo Lunar Roving Vehicle (LRV): operational traverse speeds were **$8.0\text{ to }12.0\text{ km/h}$** ($2.2\text{ to }3.3\text{ m/s}$).
-
-### 2.7 Conclusion & Documentation Policy
-The calculated shadow sweep speeds ($1.4\text{ to }7.8\text{ cm/s}$, or $50\text{ to }280\text{ m/h}$) are **directly comparable to uncrewed robotic exploration rovers** (such as VIPER or Yutu-2), but **an order of magnitude slower than crewed rovers** (Apollo LRV). 
-
-All project documents must qualify the comparison explicitly: "speeds comparable to an uncrewed robotic lunar rover (e.g. VIPER traverse speed $\sim 2-10\text{ cm/s}$)", avoiding ambiguous claims that shadows move at the speed of high-speed crewed vehicles.
+### 2.6 Summary of Lateral Shadow Sweep Speeds
+- For a $100\text{ m}$ ridge at $\theta_{\text{sun}} = 1.0^\circ$, shadow length is $\approx 5.7\text{ km}$ and lateral sweep speed is $\approx 50.8\text{ m/h}$ ($1.41\text{ cm/s}$).
+- For a $500\text{ m}$ massif at $\theta_{\text{sun}} = 1.0^\circ$, shadow length is $\approx 28.6\text{ km}$ and lateral sweep speed is $\approx 254\text{ m/h}$ ($7.05\text{ cm/s}$).
+- For a $1,000\text{ m}$ peak at grazing $\theta_{\text{sun}} = 0.5^\circ$, shadow length is $\approx 114.6\text{ km}$ and lateral sweep speed is $\approx 1.02\text{ km/h}$ ($28.2\text{ cm/s}$).
+- Because polar shadows advance and retreat across crater terrain on time scales of hours, 4D spatio-temporal route planning across moving shadow fields is physically required.

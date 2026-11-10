@@ -179,10 +179,9 @@ export const DataView: React.FC = () => {
       >
         <Info size={20} style={{ color: '#3b82f6', marginTop: '2px', flexShrink: 0 }} />
         <div style={{ fontSize: '0.9rem', lineHeight: 1.5, color: 'var(--text-primary)' }}>
-          <strong>Topographic Distinction (Project Rule 3):</strong> Datasets prefixed with <code>synthetic-</code> represent
-          controlled geometric benchmarks (flat basin, 100m wall, crater rim) for mathematical algorithm verification. Datasets for{' '}
-          <strong>Shackleton Connecting Ridge</strong>, <strong>Malapert Mountain</strong>, and <strong>Nobile Crater Rim</strong>{' '}
-          use synthetic terrain models and approximate analytic ephemeris, to be replaced by SPICE and verified PDS DEMs.
+          <strong>Topographic Distinction (Project Rule 3):</strong> Datasets for <code>test-location</code> use real
+          high-resolution LOLA DEM elevation models and SPICE ephemerides. Datasets prefixed with <code>synthetic-</code> represent
+          controlled geometric benchmarks (flat basin, 100m wall, crater rim) for mathematical algorithm verification.
         </div>
       </div>
 

@@ -8,7 +8,7 @@
 ## Part 1: 3-Minute Presentation Script & Outline
 
 ### [0:00 - 0:30] The Hook: The Peril of Lunar South-Pole Shadows
-> *"Judges, imagine landing a multi-million-dollar NASA CLPS payload at the lunar south pole. The Sun hovers barely one degree above the horizon. Mountains cast shadows twenty kilometers long that sweep across crater floors at speeds comparable to an uncrewed robotic rover (e.g., VIPER traverse speed ~2–10 cm/s; see docs/PHYSICS_NOTES.md).*  
+> *"Judges, imagine planning a mission to the lunar south pole. The Sun hovers barely one degree above the horizon, casting dynamic shadows that sweep across crater floors (see docs/PHYSICS_NOTES.md).*  
 > *If you land just five hundred meters off-target, or depart two hours late, you are plunged into weeks of cryogenic, battery-killing darkness with zero communication back to Earth.*  
 > *Current trajectory and lighting tools require heavy desktop installations and hours of supercomputer time. Commercial providers, scientists, and students need instant, deterministic, topocentric answers.*  
 > *Welcome to **LightPath**."*
