@@ -10,7 +10,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:4173/LightPath/',
+    baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173/LightPath/',
     trace: 'on-first-retry',
     viewport: { width: 1280, height: 800 },
   },
@@ -20,10 +20,12 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  webServer: {
-    command: 'npx tsx scripts/serve_subfolder.ts',
-    url: 'http://127.0.0.1:4173/LightPath/',
-    reuseExistingServer: !process.env.CI,
-    timeout: 15000,
-  },
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'npx tsx scripts/serve_subfolder.ts',
+        url: 'http://127.0.0.1:4173/LightPath/',
+        reuseExistingServer: !process.env.CI,
+        timeout: 15000,
+      },
 });
