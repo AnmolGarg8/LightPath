@@ -1,7 +1,7 @@
 {
-  "generation_date": "2026-11-10",
-  "commit_hash": "3ab986b",
-  "commit_full": "3ab986b35e6d76eceef86656a23111ad90a4a1c3",
+  "generation_date": "2026-11-14",
+  "commit_hash": "0841302",
+  "commit_full": "0841302e7190b6e9b62248ff265683da1c14ccf2",
   "site_id": "test-location",
   "site_name": "Real terrain test location (not a mission site)",
   "site_lat_deg": -89.5,

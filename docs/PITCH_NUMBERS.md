@@ -1,7 +1,7 @@
 # Authoritative Pitch Numbers & Mission Analysis Baseline
 
-> **Generated on:** `2026-11-10`  
-> **Source Commit:** `3ab986b` (`3ab986b35e6d76eceef86656a23111ad90a4a1c3`)  
+> **Generated on:** `2026-11-14`
+> **Source Commit:** `0841302` (`0841302e7190b6e9b62248ff265683da1c14ccf2`)
 > **Governing Policy:** [`docs/PROJECT_RULES.md`](PROJECT_RULES.md) (Rule 2: Never invent facts; Rule 9: Every number traces to a record).
 
 This reference document compiles every verified quantitative value used in the 3-minute pitch ([`docs/PITCH.md`](PITCH.md)), the project submission dossier ([`docs/SUBMISSION.md`](SUBMISSION.md)), and the 90-second video demo. All values are read directly from committed data artifacts in `web/public/data/`.

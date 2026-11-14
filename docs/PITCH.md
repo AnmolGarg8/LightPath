@@ -1,8 +1,8 @@
 # LightPath — 3-Minute Presentation Pitch & Judge Defense Guide
 
-**NASA Space Apps Challenge 2026: Lunar Landing Site Navigator**  
-*Challenge: Lunar Landing Site Navigator (see docs/CHALLENGE_STATEMENT.md)*  
-*Analysis Baseline: Real terrain test location (not a mission site) (-89.5° N, 0.0° E) | Commit: 3ab986b*
+**NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
+*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*  
+*Analysis Baseline: Real terrain test location (not a mission site) (-89.5° N, 0.0° E) | Commit: 0841302*
 
 ---
 
