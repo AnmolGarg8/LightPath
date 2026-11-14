@@ -195,7 +195,6 @@ In compliance with NASA Space Apps Challenge regulations:
 - **Data & Citation Integrity**: No claim of human verification of external data, kernels, or published literature comparisons is made in this repository unless explicitly verified and confirmed by a human team member.
 
 ---
-
 ## 11. Licence
 
 This project is licensed under the **MIT Licence** — see the [LICENSE](LICENSE) file for details.
