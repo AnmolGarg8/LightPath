@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Claims Guard — Verification of Scientific Claims against Provenance Status.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 9: Every number traces to a record).

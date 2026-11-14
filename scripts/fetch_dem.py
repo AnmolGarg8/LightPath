@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Fetch lunar Digital Elevation Models (DEMs) defined in data/dem_manifest.json.
 
 Features:

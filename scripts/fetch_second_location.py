@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Fetch JPL Horizons ephemeris for Second Location (Lat -85.0, Lon 30.0) for 7 days.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 3: test-only marking).

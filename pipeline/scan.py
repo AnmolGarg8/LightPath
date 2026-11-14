@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Spatial scan and terrain-area evaluation using visibility cubes.
 
 Complies with docs/PROJECT_RULES.md:

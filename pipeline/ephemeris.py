@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Ephemeris calculations for Sun, Earth, and DSN ground station visibility in MOON_ME.
 
 Rules:

@@ -1,3 +1,4 @@
+// Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 
 // Lazy-load individual route views for code splitting and sub-300KB home bundle

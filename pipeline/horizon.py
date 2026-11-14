@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Terrain horizon elevation profile computation, raycasting, and multi-observer batch processing.
 
 Rules & Non-Negotiables:

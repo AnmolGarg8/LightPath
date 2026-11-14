@@ -1,8 +1,20 @@
-# LightPath — Human Verification Checklist & Operational Guide
+# Lunar Landing Site Navigator — Human Verification Checklist & Operational Guide
 
 > **Governed by `docs/PROJECT_RULES.md` (Rule 1 & Rule 2)**:  
 > AI coding assistants must **never** invent facts, mock external flight data, or set `verified: true`.  
-> This checklist catalogs the **exact items that a human operator must verify, populate, and certify** before any operational or flight deployment.
+> This checklist catalogs the **exact items that human team members must complete before final NASA Space Apps Challenge portal submission**.
+
+---
+
+## Active Pre-Submission Human Tasks
+
+| # | Task | Target File | Description | Status |
+| :-: | :--- | :--- | :--- | :-: |
+| **1** | **LICENSE Sign-off** | `LICENSE` | Team Unsolved Loop is set as holder. Team members may add individual contributor names in the bracketed field. | ⏳ Awaiting Human |
+| **2** | **AI Reviewer Sign-off** | `docs/AI_DISCLOSURE.md` | Fill in human reviewer names, roles/specialities, and verification dates in the bracketed fields (`[Human Reviewer X: Full Name]`, `[YYYY-MM-DD]`). | ⏳ Awaiting Human |
+| **3** | **Demo Video Voiceover** | `docs/demo.webm`<br>`docs/PITCH.md` | Record and overlay human voiceover over `docs/demo.webm` using the timed pitch script in `docs/PITCH.md`. | ⏳ Awaiting Human |
+| **4** | **NASA Portal Submission** | Portal form<br>`docs/SUBMISSION.md`<br>`docs/REFERENCES_FOR_FORM.md` | Paste project URL, repository link, video link, 300-word summary, and references from `docs/REFERENCES_FOR_FORM.md`. | ⏳ Awaiting Human |
+| **5** | **Historical Backtest (Optional)** | `docs/BACKTEST_CASE.md` | Supply official space agency telemetry log if desired to unlock the historical mission replay view. | ⏳ Optional |
 
 ---
 

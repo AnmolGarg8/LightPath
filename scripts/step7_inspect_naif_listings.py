@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Step 7.1: Fetch NAIF generic_kernels directory listings.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never guess filenames).

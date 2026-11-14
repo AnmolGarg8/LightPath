@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """LightPath Data Export Module.
 
 Exports per-site window tables (Sun, Earth, DTE, joint) as CSV and Parquet with:

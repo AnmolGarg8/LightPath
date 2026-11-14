@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Scenario Codec and Reproducibility Module.
 
 In accordance with docs/PROJECT_RULES.md:

@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Celestial disc visibility calculation for Sun and Earth discs over lunar horizons.
 
 Maintained for backward compatibility; delegates core math to pipeline.visibility.

@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """LOLA DEM terrain handling, windowed raster access, and multi-resolution sampling.
 
 Rules & Non-Negotiables:

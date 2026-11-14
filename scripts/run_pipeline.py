@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Run complete LightPath data pipeline for Lunar CLPS South Pole sites.
 
 Generates and validates:

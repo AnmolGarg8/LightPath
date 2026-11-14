@@ -1,3 +1,4 @@
+// Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 /**
  * Explain View (/explain) & 90-Second Educational Walkthrough
  * 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Build SPICE meta-kernel (kernels/meta.tm) using relative paths.
 
 Conforms to NAIF SPICE KEEPER specifications.

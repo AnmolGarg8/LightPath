@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Automated Mutation Testing Harness for LightPath.
 
 Verifies that the test suite is robust and sensitive by injecting 9 deliberate,

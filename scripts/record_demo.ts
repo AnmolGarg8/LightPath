@@ -1,3 +1,4 @@
+// Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 /**
  * Automated 90-Second Demo Video Recording and Screenshot Generator
  *

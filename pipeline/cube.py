@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Spatio-temporal visibility cube generator for lunar surface route planning.
 
 Rules:

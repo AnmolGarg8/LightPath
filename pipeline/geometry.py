@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Lunar spherical geometry, topocentric coordinate transformations, and SPICE interfaces.
 
 Rules & Conventions:

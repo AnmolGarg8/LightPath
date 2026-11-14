@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Check data integrity offline by validating SHA-256 checksums and file sizes.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts/checksums).

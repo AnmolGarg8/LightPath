@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Constants, reference frames, and status enumerations for LightPath.
 
 All units and reference frames follow project conventions:

@@ -4,11 +4,14 @@
 
 In accordance with the NASA Space Apps Challenge Participant Terms and open science best practices, this repository discloses the use of generative artificial intelligence and agentic coding tools during development.
 
-- **AI Tools Used**: Google DeepMind Antigravity agentic AI coding assistant powered by Gemini models (Google DeepMind).
+- **AI Tools Used**: Google Antigravity (Google DeepMind) and Claude (Anthropic).
 - **Domains of Assistance**:
-  1. **Code Implementation**: Scaffolding, refactoring, and implementing the offline data pipeline (`pipeline/`), configuration validation (`pipeline/config_schema.py`), and TypeScript/React web interface (`web/src/`).
-  2. **Test Engineering**: Authoring comprehensive automated test suites (`tests/` and `web/src/__tests__/`), benchmark validation suites (V1 through V6), schema conformance checks, and the automated claims guard.
-  3. **Documentation & Traceability**: Structuring technical documentation (`docs/`), dependency license audit tooling (`scripts/make_third_party_licenses.py`), and citation mappings (`docs/CREDITS.md`).
+  1. **Brainstorming & Research**: Surveying lunar polar illumination challenges, architectural planning, and analyzing NASA Space Apps challenge constraints.
+  2. **Coding & Debugging**: Scaffolding, refactoring, and implementing the offline data pipeline (`pipeline/`), configuration validation (`pipeline/config_schema.py`), and the TypeScript/React web interface (`web/src/`).
+  3. **Data Analysis**: Validating ephemeris vectors, processing LOLA DEM GeoTIFFs, computing horizon profiles, and verifying benchmark tolerances against JPL Horizons fixtures.
+  4. **Documentation & Drafting**: Authoring and structuring technical documentation (`docs/`), license audit tools (`scripts/make_third_party_licenses.py`), and citation registries (`docs/CREDITS.md`).
+  5. **Interface Layout & Styling**: Styling UI components, accessible color contrast themes, responsive layouts, and Canvas/SVG horizon skyline panoramas.
+- **Absence of Runtime AI**: No generative model, language model, or neural network executes inside the application or data pipeline; all core calculations are deterministic, reproducible, and verifiable.
 
 ---
 

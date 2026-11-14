@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 # ruff: noqa: E402
 #!/usr/bin/env python3
 """Site Impact Audit: SPICE vs. Old Approximate Ephemeris vs. Independent Ground Truth.

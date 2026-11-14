@@ -1,3 +1,4 @@
+// Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 import React from 'react';
 import { useRouter } from './router';
 import { AppLayout } from './components/layout/AppLayout';

@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 # ruff: noqa: E402
 """LightPath end-to-end data processing pipeline.
 

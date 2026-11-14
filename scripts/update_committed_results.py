@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Script to explicitly update committed verification results.
 
 Governed by docs/PROJECT_RULES.md (Rule 1: Correctness before features; Rule 2: Never invent facts).

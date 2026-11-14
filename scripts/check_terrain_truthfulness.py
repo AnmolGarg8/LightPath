@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Script to verify terrain truthfulness across all published datasets.
 
 Governed by docs/PROJECT_RULES.md:

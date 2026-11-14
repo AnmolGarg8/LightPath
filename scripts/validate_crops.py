@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Step 5: Generate hillshade previews and compute error statistics.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts/metrics).

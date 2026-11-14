@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Print exact JPL Horizons parameters and instructions for generating lunar validation fixtures.
 
 Rules:

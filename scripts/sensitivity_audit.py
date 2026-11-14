@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Run sensitivity fault injection tests on SPICE ephemeris against JPL Horizons.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 9: Full provenance).

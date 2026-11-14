@@ -189,9 +189,10 @@ Full audit details: [`docs/AUDIT.md`](docs/AUDIT.md) and [`docs/CITATIONS.md`](d
 ## 10. AI Assistance Disclosure
 
 In compliance with NASA Space Apps Challenge regulations:
-- **AI Coding Tools Used**: AI coding assistants ([to be completed by the humans: e.g. Google Antigravity / Gemini 2.0]) were used to generate code, automated unit and integration tests, and documentation drafts.
-- **Human Review**: The architecture, code, and documentation were reviewed by team members [to be completed by the humans: insert names of human reviewers].
-- **Formula Verification**: Mathematical derivations and formulas were checked against [to be completed by the humans: insert reference literature or standards checked by humans].
+- **AI Coding Tools Used**: Google Antigravity and Claude (Anthropic) were used as AI coding assistants.
+- **Scope of Use**: Brainstorming, research, coding and debugging, data analysis, documentation and drafting, interface layout and styling.
+- **No Runtime AI**: No AI model runs inside the app; all astronomical and terrain calculations are fully deterministic, mathematical, and executed offline or in-browser without ML.
+- **Human Review**: Full human review, validation records, and reviewer roles are described in [docs/AI_DISCLOSURE.md](docs/AI_DISCLOSURE.md).
 - **Data & Citation Integrity**: No claim of human verification of external data, kernels, or published literature comparisons is made in this repository unless explicitly verified and confirmed by a human team member.
 
 ---

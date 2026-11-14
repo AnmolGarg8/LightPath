@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Provenance and Data Source Verification Script.
 
 Governed by docs/PROJECT_RULES.md (Rule 1, Rule 2, Rule 3).

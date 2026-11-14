@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Generate authoritative pitch numbers and populate documentation templates.
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts; Rule 9: Every number traces to a record).

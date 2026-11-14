@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """NASA Deep Space Network (DSN) ground station visibility and Direct-To-Earth (DTE) link analysis.
 
 Rules:

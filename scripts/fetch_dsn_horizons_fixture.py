@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Fetch JPL Horizons ground-station fixture for Goldstone DSS 14 (Moon observation).
 
 Governed by docs/PROJECT_RULES.md (Rule 2: Never invent facts/numbers; Rule 8: Offline tests).

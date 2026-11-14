@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Time-series generation and window statistics for LightPath.
 
 Rules:

@@ -1,3 +1,4 @@
+# Portions of this code were generated with AI assistance (see docs/AI_DISCLOSURE.md)
 """Historical Mission Backtest and Comparison Engine.
 
 In accordance with docs/PROJECT_RULES.md:
