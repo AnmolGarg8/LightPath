@@ -144,22 +144,8 @@
       }
     ],
     "resolution": {
-      "available": true,
-      "reason": "Evaluated across 3 configured terrain resolution layers.",
-      "comparison": [
-        {
-          "layer_name": "fine",
-          "max_range_m": 5000.0
-        },
-        {
-          "layer_name": "medium",
-          "max_range_m": 30000.0
-        },
-        {
-          "layer_name": "coarse",
-          "max_range_m": 100000.0
-        }
-      ]
+      "available": false,
+      "reason": "Terrain resolution sensitivity is not computed for this site."
     }
   }
 }

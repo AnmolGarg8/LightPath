@@ -151,15 +151,21 @@
     ],
     "resolution": {
       "available": true,
-      "reason": "Evaluated across 2 configured terrain resolution layers.",
+      "reason": "Evaluated nested resolution (20m near + 80m far) vs far layer only (80m).",
       "comparison": [
         {
-          "layer_name": "near",
-          "max_range_m": 30000.0
+          "name": "Nested (20m near + 80m far)",
+          "pixel_size_m": 20.0,
+          "cell_spacing_m": 20.0,
+          "sun_uptime_fraction": 0.5139,
+          "rms_horizon_diff_deg": 0.0
         },
         {
-          "layer_name": "far",
-          "max_range_m": 100000.0
+          "name": "Far layer only (80m)",
+          "pixel_size_m": 80.0,
+          "cell_spacing_m": 80.0,
+          "sun_uptime_fraction": 0.5167,
+          "rms_horizon_diff_deg": 0.0419
         }
       ]
     }

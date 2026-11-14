@@ -129,54 +129,84 @@ export const SensitivityPanel: React.FC<SensitivityPanelProps> = ({
           Sensitivity by Terrain Resolution
         </h4>
 
-        {resolutionSensitivity && resolutionSensitivity.available && resolutionSensitivity.comparison && resolutionSensitivity.comparison.length > 1 ? (
-          <div style={{ overflowX: 'auto' }}>
-            <table
-              className="data-table"
-              aria-label="Resolution Sensitivity Table"
-              style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.825rem' }}
+        {(() => {
+          const comparison = Array.isArray(resolutionSensitivity?.comparison) ? resolutionSensitivity.comparison : [];
+          const validLayers = comparison.filter(
+            (layer: Record<string, unknown>) =>
+              layer &&
+              typeof layer.name === 'string' &&
+              typeof layer.pixel_size_m === 'number' &&
+              !isNaN(layer.pixel_size_m) &&
+              typeof layer.sun_uptime_fraction === 'number' &&
+              !isNaN(layer.sun_uptime_fraction) &&
+              typeof layer.rms_horizon_diff_deg === 'number' &&
+              !isNaN(layer.rms_horizon_diff_deg)
+          );
+          const hasCompleteData = Boolean(
+            resolutionSensitivity?.available &&
+            validLayers.length > 1 &&
+            validLayers.length === comparison.length
+          );
+
+          if (hasCompleteData) {
+            return (
+              <div style={{ overflowX: 'auto' }}>
+                <table
+                  className="data-table"
+                  aria-label="Resolution Sensitivity Table"
+                  style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.825rem' }}
+                >
+                  <thead>
+                    <tr style={{ background: 'var(--background-secondary, #0f172a)', textAlign: 'left' }}>
+                      <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Resolution Layer</th>
+                      <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Cell Spacing</th>
+                      <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Sunlight Uptime %</th>
+                      <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Horizon Delta (RMS)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {validLayers.map((layer: Record<string, unknown>, idx: number) => {
+                      const uptimePct = Number(layer.sun_uptime_fraction) <= 1
+                        ? (Number(layer.sun_uptime_fraction) * 100).toFixed(1) + '%'
+                        : Number(layer.sun_uptime_fraction).toFixed(1) + '%';
+                      const spacing = layer.cell_spacing_m ?? layer.pixel_size_m;
+                      const rms = Number(layer.rms_horizon_diff_deg).toFixed(3);
+                      return (
+                        <tr key={idx}>
+                          <td style={{ padding: '0.5rem 0.75rem' }}>{String(layer.name)}</td>
+                          <td style={{ padding: '0.5rem 0.75rem' }}>{`${spacing} m`}</td>
+                          <td style={{ padding: '0.5rem 0.75rem' }}>{uptimePct}</td>
+                          <td style={{ padding: '0.5rem 0.75rem' }}>{`${rms}°`}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            );
+          }
+
+          return (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.75rem',
+                background: 'var(--background-secondary, #0f172a)',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-color)',
+                fontSize: '0.825rem',
+                color: 'var(--text-muted)',
+              }}
             >
-              <thead>
-                <tr style={{ background: 'var(--background-secondary, #0f172a)', textAlign: 'left' }}>
-                  <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Resolution Layer</th>
-                  <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Cell Spacing</th>
-                  <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Sunlight Uptime %</th>
-                  <th style={{ padding: '0.5rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Horizon Delta (RMS)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {resolutionSensitivity.comparison.map((layer: Record<string, unknown>, idx: number) => (
-                  <tr key={idx}>
-                    <td style={{ padding: '0.5rem 0.75rem' }}>{String(layer.name || `Layer ${idx + 1}`)}</td>
-                    <td style={{ padding: '0.5rem 0.75rem' }}>{String(layer.pixel_size_m || 'N/A')}m</td>
-                    <td style={{ padding: '0.5rem 0.75rem' }}>{String(layer.sun_uptime_fraction || 'N/A')}</td>
-                    <td style={{ padding: '0.5rem 0.75rem' }}>{String(layer.rms_horizon_diff_deg || '0.000')}°</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          /* Required fallback explanation when multi-resolution is unavailable */
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '0.5rem',
-              padding: '0.75rem',
-              background: 'var(--background-secondary, #0f172a)',
-              borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--border-color)',
-              fontSize: '0.825rem',
-              color: 'var(--text-muted)',
-            }}
-          >
-            <Info size={16} style={{ color: 'var(--text-muted)', marginTop: '2px', flexShrink: 0 }} />
-            <div>
-              <strong>Resolution Sensitivity Unavailable:</strong> Sensitivity by terrain resolution is unavailable: only a single 20m LOLA DEM layer set is currently configured for this site.
+              <Info size={16} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+              <div>
+                {resolutionSensitivity?.reason || 'Terrain resolution sensitivity is not computed for this site.'}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
     </Card>
   );

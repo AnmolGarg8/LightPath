@@ -451,21 +451,90 @@ def compute_resolution_sensitivity(
     site: SiteConfig,
     terrain: Any,
     config: PipelineConfig,
+    timestamps: Optional[List[str]] = None,
+    stations: Optional[List[Dict[str, Any]]] = None,
+    h_res_nested: Optional[HorizonResult] = None,
+    nominal_idx: int = 0,
 ) -> Dict[str, Any]:
     """Compute sensitivity across multi-resolution terrain layers if configured."""
-    if isinstance(terrain, NestedTerrain) and len(terrain.layers) > 1:
-        # Multi-layer sensitivity comparison
-        return {
-            "available": True,
-            "reason": f"Evaluated across {len(terrain.layers)} configured terrain resolution layers.",
-            "comparison": [
-                {"layer_name": lyr.name, "max_range_m": lyr.max_range_m} for lyr in terrain.layers
-            ],
-        }
+    if (
+        isinstance(terrain, NestedTerrain)
+        and len(terrain.layers) > 1
+        and not site.is_synthetic
+        and timestamps is not None
+        and stations is not None
+        and h_res_nested is not None
+    ):
+        try:
+            near_lyr = site.terrain_layers[0] if len(site.terrain_layers) > 0 else None
+            far_lyr = site.terrain_layers[1] if len(site.terrain_layers) > 1 else None
+            near_pix = getattr(near_lyr, "pixel_size_m", 20.0) if near_lyr else 20.0
+            far_pix = getattr(far_lyr, "pixel_size_m", 80.0) if far_lyr else 80.0
+
+            # Far layer only horizon
+            h_far = horizon_profile(
+                site_lat_deg=site.lat_deg,
+                site_lon_deg=site.lon_deg,
+                ground_elev_m=site.ground_elev_m,
+                mast_height_m=[config.mast_heights_m[nominal_idx]],
+                terrain=terrain.layers[1].dem,
+                max_range_m=config.horizon_params.max_range_m,
+                step_m=config.horizon_params.step_m,
+                az_step_deg=config.horizon_params.az_step_deg,
+            )
+
+            diff = np.array(h_res_nested.el_deg[nominal_idx]) - np.array(h_far.el_deg[0])
+            rms_diff = float(np.sqrt(np.mean(diff ** 2)))
+
+            _, stats_far = process_site_ephemeris(
+                site=site,
+                timestamps=timestamps,
+                stations=stations,
+                horizon_res=h_far,
+                config=config,
+                mast_idx=0,
+            )
+            far_sun_uptime = float(stats_far["sun"]["uptime_fraction"])
+
+            _, stats_nested = process_site_ephemeris(
+                site=site,
+                timestamps=timestamps,
+                stations=stations,
+                horizon_res=h_res_nested,
+                config=config,
+                mast_idx=nominal_idx,
+            )
+            nested_sun_uptime = float(stats_nested["sun"]["uptime_fraction"])
+
+            return {
+                "available": True,
+                "reason": "Evaluated nested resolution (20 m near + 80 m far) vs far layer only (80 m).",
+                "comparison": [
+                    {
+                        "name": f"Nested ({int(near_pix)}m near + {int(far_pix)}m far)",
+                        "pixel_size_m": float(near_pix),
+                        "cell_spacing_m": float(near_pix),
+                        "sun_uptime_fraction": round(nested_sun_uptime, 4),
+                        "rms_horizon_diff_deg": 0.0,
+                    },
+                    {
+                        "name": f"Far layer only ({int(far_pix)}m)",
+                        "pixel_size_m": float(far_pix),
+                        "cell_spacing_m": float(far_pix),
+                        "sun_uptime_fraction": round(far_sun_uptime, 4),
+                        "rms_horizon_diff_deg": round(rms_diff, 4),
+                    },
+                ],
+            }
+        except Exception as e:
+            return {
+                "available": False,
+                "reason": f"Terrain resolution sensitivity could not be computed: {e}",
+            }
     else:
         return {
             "available": False,
-            "reason": "Single terrain layer configured. Multi-resolution sensitivity requires >= 2 configured layer sets.",
+            "reason": "Sensitivity by terrain resolution is not computed for this site.",
         }
 
 
@@ -858,7 +927,15 @@ def run_pipeline(
         # C. Sensitivities (Mast height & Terrain Resolution)
         print("  Computing mast height and resolution sensitivities...")
         mast_sensitivities = compute_mast_height_sensitivity(site, timestamps, stations, h_res, config)
-        res_sensitivity = compute_resolution_sensitivity(site, terrain, config)
+        res_sensitivity = compute_resolution_sensitivity(
+            site=site,
+            terrain=terrain,
+            config=config,
+            timestamps=timestamps,
+            stations=stations,
+            h_res_nested=h_res,
+            nominal_idx=nominal_idx,
+        )
 
         # D. Route Planning Visibility Cube
         print("  Computing spatio-temporal route planning cube (Prompt 3 batch)...")
