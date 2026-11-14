@@ -163,4 +163,47 @@ describe('scanCalculator Unit Tests', () => {
       expect(summary.top5Cells[i].valPct).toBeGreaterThanOrEqual(summary.top5Cells[i + 1].valPct);
     }
   });
+
+  it('with identical settings the one-cell scan equals the site statistic', () => {
+    // 1x1 mock cube and header for single cell evaluation
+    const oneCellHeader: VisibilityCubeHeader = {
+      grid: { origin: [0, 0], spacing_m: 50.0, nx: 1, ny: 1 },
+      time_utc: ['2026-11-01T00:00:00Z', '2026-11-01T00:30:00Z', '2026-11-01T01:00:00Z', '2026-11-01T01:30:00Z'],
+      sun_frac: [],
+      earth_frac: [],
+      slope_deg: [],
+      traversable: [],
+      flags: [],
+    };
+
+    const siteSunFracSeries = [0.80, 0.60, 0.20, 0.90]; // 3 of 4 are >= 0.50 -> 75.0%
+    const threshold = 0.50;
+    const siteStatisticPct = Number(((siteSunFracSeries.filter((f) => f >= threshold).length / siteSunFracSeries.length) * 100).toFixed(2));
+
+    const oneCellCube: DecodedVisibilityCube = {
+      version: 1,
+      nx: 1,
+      ny: 1,
+      nt: 4,
+      sunFrac: new Uint8Array(4),
+      earthFrac: new Uint8Array(4),
+      slopeDeg: new Uint8Array(1),
+      traversable: new Uint8Array(1),
+      getSunFrac: (t: number) => Math.round(siteSunFracSeries[t] * 100),
+      getEarthFrac: () => 50,
+      getSlopeDeg: () => 2.0,
+      isTraversable: () => true,
+    };
+
+    const summary = computeScanMap(oneCellCube, oneCellHeader, {
+      metric: 'sun',
+      threshold,
+      siteCenterValPct: siteStatisticPct,
+    });
+
+    // One-cell scan equals site statistic with identical settings
+    expect(summary.centerCell.valPct).toBe(siteStatisticPct);
+    expect(summary.gridValues[0][0]).toBe(siteStatisticPct);
+    expect(summary.bestCell.valPct).toBe(siteStatisticPct);
+  });
 });

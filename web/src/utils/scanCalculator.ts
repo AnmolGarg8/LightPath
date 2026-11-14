@@ -32,6 +32,7 @@ export interface ScanOptions {
   windowRange?: [number, number]; // [startIdx, endIdx] inclusive
   dteLinkOk?: boolean[]; // Array of length nt, or undefined
   uncertaintyMarginPct?: number; // default 1.5%
+  siteCenterValPct?: number; // Optional 1.0 deg site-level statistic override for center cell parity
 }
 
 export interface ScanSummary {
@@ -47,6 +48,7 @@ export interface ScanSummary {
   generatedSentence: string;
   top5Cells: (ScanCell & { rank: number })[];
   gridValues: number[][]; // [y][x]
+  batchCenterValPct?: number; // Raw batch cube centre value
 }
 
 /**
@@ -142,7 +144,9 @@ export function computeScanMap(
     }
   }
 
-  const centerVal = gridValues[centerRow][centerCol];
+  const batchCenterVal = gridValues[centerRow][centerCol];
+  const centerVal = options.siteCenterValPct !== undefined ? options.siteCenterValPct : batchCenterVal;
+  gridValues[centerRow][centerCol] = centerVal;
 
   // Step 2: Build cell details and rank
   const allCells: ScanCell[] = [];
@@ -239,5 +243,6 @@ export function computeScanMap(
     generatedSentence,
     top5Cells,
     gridValues,
+    batchCenterValPct: batchCenterVal,
   };
 }

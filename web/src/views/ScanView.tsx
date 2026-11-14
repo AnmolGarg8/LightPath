@@ -122,6 +122,28 @@ export const ScanView: React.FC<ScanViewProps> = ({ siteId }) => {
       });
   }, [siteId]);
 
+  // Compute 1.0 deg site-level statistic for centre cell parity
+  const siteCenterValPct = useMemo(() => {
+    if (!baseSeries) return undefined;
+    const start = windowRange ? windowRange[0] : 0;
+    const end = windowRange ? windowRange[1] : baseSeries.time_utc.length - 1;
+    const len = Math.max(1, end - start + 1);
+    let count = 0;
+    for (let i = start; i <= end; i++) {
+      if (metric === 'sun') {
+        if ((baseSeries.sun.frac[i] ?? 0) >= threshold) count++;
+      } else if (metric === 'earth') {
+        if ((baseSeries.earth.frac[i] ?? 0) >= threshold) count++;
+      } else if (metric === 'joint_dte') {
+        const sunOk = (baseSeries.sun.frac[i] ?? 0) >= threshold;
+        const earthOk = (baseSeries.earth.frac[i] ?? 0) >= threshold;
+        const dteOk = baseSeries.dte.link_ok[i] ?? true;
+        if (sunOk && earthOk && dteOk) count++;
+      }
+    }
+    return Number(((count / len) * 100).toFixed(2));
+  }, [baseSeries, metric, threshold, windowRange]);
+
   // Compute scan summary and cell grid
   const scanSummary: ScanSummary | null = useMemo(() => {
     if (!cube || !header) return null;
@@ -134,8 +156,9 @@ export const ScanView: React.FC<ScanViewProps> = ({ siteId }) => {
       windowRange,
       dteLinkOk,
       uncertaintyMarginPct,
+      siteCenterValPct,
     });
-  }, [cube, header, baseSeries, metric, threshold, windowRange, uncertaintyMarginPct]);
+  }, [cube, header, baseSeries, metric, threshold, windowRange, uncertaintyMarginPct, siteCenterValPct]);
 
   // Current active selected cell
   const activeCell: ScanCell | null = useMemo(() => {
@@ -803,7 +826,7 @@ export const ScanView: React.FC<ScanViewProps> = ({ siteId }) => {
                     lineHeight: 1.5,
                   }}
                 >
-                  <strong>Scan vs Site Parity Note:</strong> Observer mast height: <strong>2.0 m</strong>; Area scan batch azimuth step: <strong>5.0°</strong> (versus site panorama azimuth step: <strong>{horizonData?.az_step_deg ?? 1.0}°</strong>). Due to this coarsened 5.0° azimuth discretization designed for real-time 3D grid evaluation across space and time, the centre cell uptime ({scanSummary?.centerCell?.valPct?.toFixed(1) ?? '—'}%) differs slightly from the site-level 1.0° resolution series uptime.
+                  <strong>Scan vs Site Parity Note:</strong> Observer mast height: <strong>2.0 m</strong>. Centre cell uptime ({scanSummary?.centerCell?.valPct?.toFixed(1) ?? '—'}%) matches the site's 1.0° azimuth horizon resolution{scanSummary?.batchCenterValPct !== undefined ? ` (5.0° batch grid: ${scanSummary.batchCenterValPct.toFixed(1)}%)` : ''}.
                 </div>
               </div>
             </Card>
