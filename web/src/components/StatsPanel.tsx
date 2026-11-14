@@ -60,6 +60,9 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
           <div style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>
             All statistics recomputed dynamically for active threshold: <strong>≥ {thresholdPct}% disc fraction</strong>
           </div>
+          <div style={{ fontSize: '0.75rem', color: '#f59e0b', marginTop: '0.25rem', fontStyle: 'italic' }}>
+            With three stations spaced around the Earth the Moon is almost always above the mask at one of them; station list unverified.
+          </div>
         </div>
 
         {/* Threshold Presets & View Mode Toggle */}
@@ -281,6 +284,28 @@ export const StatsPanel: React.FC<StatsPanelProps> = ({
                 <td style={{ padding: '0.5rem 0.75rem' }}>{joint_sun_dte.longest_outage_h}h</td>
                 <td style={{ padding: '0.5rem 0.75rem' }}>≥ {thresholdPct}% disc fraction</td>
               </tr>
+              {statsReport.stations && statsReport.stations.length > 0 && (
+                <>
+                  <tr style={{ background: 'var(--background-secondary, #0f172a)' }}>
+                    <td colSpan={7} style={{ padding: '0.5rem 0.75rem', fontWeight: 700, color: 'var(--accent-primary)', fontSize: '0.8rem', borderTop: '2px solid var(--border-color)' }}>
+                      📡 DEEP SPACE NETWORK PER-STATION UPTIME (Mask ≥ 6.0° + Earth ≥ {thresholdPct}%)
+                    </td>
+                  </tr>
+                  {statsReport.stations.map((st) => (
+                    <tr key={st.name}>
+                      <td style={{ padding: '0.45rem 0.75rem', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
+                        ↳ {st.name}
+                      </td>
+                      <td style={{ padding: '0.45rem 0.75rem', fontWeight: 600 }}>{(st.uptime_fraction * 100).toFixed(1)}%</td>
+                      <td style={{ padding: '0.45rem 0.75rem' }}>{st.total_uptime_h}h</td>
+                      <td style={{ padding: '0.45rem 0.75rem', color: 'var(--text-muted)' }}>—</td>
+                      <td style={{ padding: '0.45rem 0.75rem', color: 'var(--text-muted)' }}>—</td>
+                      <td style={{ padding: '0.45rem 0.75rem', color: 'var(--text-muted)' }}>—</td>
+                      <td style={{ padding: '0.45rem 0.75rem', color: 'var(--text-muted)' }}>Station line-of-sight &gt; 6°</td>
+                    </tr>
+                  ))}
+                </>
+              )}
             </tbody>
           </table>
         </div>

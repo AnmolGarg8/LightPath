@@ -155,8 +155,8 @@ export function useSiteCatalog(): {
 
   const demoSite = catalog?.sites.find((s) => s.is_demo_site) || catalog?.sites[0];
   const demoSiteId = demoSite?.id || 'test-location';
-  const secondSite = catalog?.sites.find((s) => s.id !== demoSiteId) || catalog?.sites[1];
-  const secondSiteId = secondSite?.id || 'synthetic-proving-ground';
+  const secondSite = catalog?.sites.find((s) => s.id !== demoSiteId && s.terrain_source === 'lola_dem') || catalog?.sites.find((s) => s.id !== demoSiteId) || catalog?.sites[1];
+  const secondSiteId = secondSite?.id || 'test-location-2';
 
   return { catalog, demoSiteId, secondSiteId, loading };
 }

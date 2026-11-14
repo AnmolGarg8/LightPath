@@ -19,16 +19,16 @@ While existing polar illumination and traverse analysis toolchains are powerful,
 LightPath contributes a novel combination of architectural, mathematical, and algorithmic capabilities designed for open, immediate, and reproducible access:
 
 ### 1. In-Browser 4D Space-Time Traverse Planning
-- **Client-Side Solver**: Executes a dynamic 4D A* graph search in space and time $(x, y, t)$ entirely inside the user's browser via multi-threaded Web Workers.
+- **Client-Side Solver**: Executes a dynamic 4D A* graph search in space and time $(x, y, t)$ entirely inside the user's browser via background Web Workers.
 - **Real-Time Performance**: Evaluates traversability across moving polar shadow fields on $25 \times 25$ grids in under 1 second, with zero server compute or backend API latency.
 - **Departure Window Mapping**: Sweeps dozens to hundreds of candidate departure times across the synodic month in seconds, revealing transient sunlit corridors and advance warnings for shadow traps.
 
 ### 2. Exact Topocentric Disc Clipping with Per-Point Local Curvature
 - **Per-Point Local Up**: Recognizes that lunar surface curvature tilts the local vertical by $\approx 0.033^\circ/\text{km}$ ($\approx 0.10^\circ$ over 3 km; see [`docs/PHYSICS_NOTES.md`](PHYSICS_NOTES.md)). Local zenith vectors are computed per grid cell, rather than using a single tangent-plane approximation across the region.
-- **Physical Disc Integration**: Replaces point-source Sun approximations with 256-point uniform Fibonacci-spiral quadrature, evaluating partial disc occultation for the $0.53^\circ$ solar disc and $1.90^\circ$ Earth disc against irregular raycast horizons.
+- **Physical Disc Integration**: Replaces point-source Sun approximations with 256-point uniform Fibonacci-spiral quadrature, evaluating partial disc occultation for the $0.53^\circ$ solar disc and distance-varying Earth disc ($\approx 1.80^\circ$ to $2.03^\circ$) against irregular raycast horizons.
 
 ### 3. Interactive Observer Mast Sensitivity Optimization
-- Provides real-time scrubbing of payload mast height ($1.0\text{ m}$ to $10.0\text{ m}$), instantly computing horizon depression ($\theta_{\text{dip}} = -\arccos(R / (R + z_0))$) and quantifying the recovered hours of continuous sunlight versus mechanical mast mass.
+- Provides real-time scrubbing of payload mast height ($1.0\text{ m}$ to $10.0\text{ m}$), instantly computing horizon depression ($\theta_{\text{dip}} = -\arccos(R / (R + z_0))$) and quantifying the recovered hours of continuous sunlight across observer heights.
 
 ### 4. Multi-Lane Earth Line-of-Sight & DSN Geometry
 - Intersects topocentric lunar Earth line of sight with Earth-fixed NASA Deep Space Network (DSN) complexes (Goldstone, Madrid, Canberra), accounting for Earth's rotation, station elevation masks ($6.0^\circ$), and identifying operational **Joint Windows** where solar power and high-rate comms coincide.

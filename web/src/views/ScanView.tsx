@@ -791,6 +791,20 @@ export const ScanView: React.FC<ScanViewProps> = ({ siteId }) => {
                     <span style={{ marginLeft: '0.5rem', color: '#ffd700', fontWeight: 'bold' }}>★ Best cell</span>
                   </div>
                 </div>
+
+                {/* Scan versus Site Horizon Resolution Parity Note */}
+                <div
+                  style={{
+                    marginTop: '0.75rem',
+                    paddingTop: '0.6rem',
+                    borderTop: '1px solid var(--border-color)',
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  <strong>Scan vs Site Parity Note:</strong> Observer mast height: <strong>2.0 m</strong>; Area scan batch azimuth step: <strong>5.0°</strong> (versus site panorama azimuth step: <strong>{horizonData?.az_step_deg ?? 1.0}°</strong>). Due to this coarsened 5.0° azimuth discretization designed for real-time 3D grid evaluation across space and time, the centre cell uptime ({scanSummary?.centerCell?.valPct?.toFixed(1) ?? '—'}%) differs slightly from the site-level 1.0° resolution series uptime.
+                </div>
               </div>
             </Card>
 

@@ -110,9 +110,21 @@ export const ExplainView: React.FC = () => {
     return elevationAngleDeg(ridgeDistanceKm * 1000.0, ridgeHeightM, 0.0);
   }, [ridgeDistanceKm, ridgeHeightM]);
 
+  // Live Earth disc diameter from data (varies with Earth-Moon distance)
+  const earthDiameterRange = useMemo(() => {
+    if (!seriesData?.earth?.radius_deg || seriesData.earth.radius_deg.length === 0) {
+      return { min: 1.80, max: 2.03, current: 1.90 };
+    }
+    const diameters = seriesData.earth.radius_deg.map((r) => r * 2);
+    const min = Math.min(...diameters);
+    const max = Math.max(...diameters);
+    const current = diameters[0] || 1.90;
+    return { min, max, current };
+  }, [seriesData]);
+
   // Angular radii for true scale visualization
   const rSunDeg = 0.267; // 695700 km / 149597870 km
-  const rEarthDeg = 0.950; // 6371 km / 384400 km
+  const rEarthDeg = (earthDiameterRange.current / 2) || 0.950;
 
   // Step 2 live Sun disc fraction over calculated ridge
   const liveSunFractionOverRidge = useMemo(() => {
@@ -379,6 +391,11 @@ export const ExplainView: React.FC = () => {
                   [verify: NASA JPL Horizons]
                 </a>
                 ).
+                {siteData && (
+                  <span style={{ display: 'block', marginTop: '0.4rem', color: 'var(--text-primary)' }}>
+                    A site {Math.abs(-90.0 - siteData.lat_deg).toFixed(1)}° from the pole adds up to about {Math.abs(-90.0 - siteData.lat_deg).toFixed(1)}° to the Sun elevation.
+                  </span>
+                )}
               </p>
 
               {/* Live Values from Data */}
@@ -550,8 +567,8 @@ export const ExplainView: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', alignItems: 'center' }}>
             <div>
               <p style={{ color: 'var(--text-primary)', marginBottom: '0.8rem' }}>
-                The Sun has an angular diameter of <strong>0.53°</strong>. But Earth is nearly <strong>four times wider</strong> at{' '}
-                <strong>~1.90°</strong> in the lunar sky!
+                The Sun has an angular diameter of <strong>0.53°</strong>. But Earth is nearly <strong>four times wider</strong>,
+                varying with orbital distance between <strong>{earthDiameterRange.min.toFixed(2)}° and {earthDiameterRange.max.toFixed(2)}°</strong> (read directly from SPICE ephemeris data)!
               </p>
               <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
                 Because Earth looms so large, Earthrise and Earthset transitions take many hours. A rover can be in total darkness while maintaining continuous direct-to-Earth (DTE) line of sight.
@@ -566,8 +583,12 @@ export const ExplainView: React.FC = () => {
 
                 <div style={{ flex: 1, backgroundColor: 'var(--bg-secondary)', padding: '0.75rem', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Earth Disc Diameter</div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-earth)' }}>1.90°</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>~3.6× wider than Sun</div>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-earth)' }}>
+                    {earthDiameterRange.current.toFixed(2)}°
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    Range: {earthDiameterRange.min.toFixed(2)}°–{earthDiameterRange.max.toFixed(2)}° (varies with distance)
+                  </div>
                 </div>
               </div>
             </div>

@@ -186,7 +186,7 @@ The solver calculates line-of-sight and illumination angles from digital elevati
 Digital Elevation Models (such as LOLA gridded polar products) exhibit finite vertical precision ($\sigma_z \approx 1.0\,\text{m}$) and horizontal grid discretization ($\Delta x \approx 20\text{--}50\,\text{m}$). At the lunar South Pole, where the Sun grazes the terrain at elevations $\le 1.5^\circ$, a small elevation discrepancy can determine whether a ridgeline casts a long shadow.
 
 To protect traverses against unmodeled terrain variations, LightPath provides **Conservative Mode**:
-1. **Pessimistic Illumination ($f_{\text{pessimistic}}$)**: Evaluates the traverse graph with the horizon elevated by the declared angular uncertainty margin $\mu = \text{horizon\_margin\_deg}$ (default $0.10^\circ$).
+1. **Pessimistic Illumination ($f_{\text{pessimistic}}$)**: Evaluates the traverse graph with the horizon elevated by the declared angular uncertainty margin $\mu = \text{horizon\_margin\_deg}$ (nominal $0.03^\circ$, read from site statistics).
 2. **Marginal Cells Count as Dark**: Any cell where the solar disc fraction satisfies:
    $$\text{sun\_frac}[t, y, x] - \mu < \tau_{\text{sun}}$$
    is classified as marginal or obstructed and strictly treated as dark.

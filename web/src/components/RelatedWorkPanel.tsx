@@ -86,20 +86,20 @@ export const RelatedWorkPanel: React.FC = () => {
             <ul style={{ margin: 0, paddingLeft: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               <li>
                 <strong>Client-Side 4D Space-Time Solver:</strong> Zero-install, pure in-browser A* pathfinding over moving shadow fields
-                in under 1 second via multi-threaded Web Workers.
+                in under 1 second via background Web Workers.
               </li>
               <li>
                 <strong>Topocentric Curvature & Disc Clipping:</strong> Per-cell local vertical accounting for lunar surface curvature tilt
-                (0.033°/km) with 256-point uniform Fibonacci-spiral quadrature for true solar (0.53°) and Earth (1.90°) discs.
+                (0.033°/km) with 256-point uniform Fibonacci-spiral quadrature for true solar (0.53°) and distance-varying Earth (~1.80° to 2.03°) discs.
               </li>
               <li>
-                <strong>Interactive Mast Sensitivity:</strong> Real-time horizon depression scrubbing (1.0m to 10.0m) quantifying recovered sunlight hours vs. mechanical mast mass.
+                <strong>Interactive Mast Sensitivity:</strong> Real-time horizon depression scrubbing (1.0m to 10.0m) quantifying recovered sunlight hours across observer heights.
               </li>
               <li>
                 <strong>Multi-Lane DSN Contact:</strong> Simultaneous timeline intersecting lunar topocentric line-of-sight with Earth-fixed NASA DSN stations (Goldstone, Madrid, Canberra) above elevation masks.
               </li>
               <li>
-                <strong>Deterministic Open Data:</strong> Cryptographically verified CSV and Apache Parquet exports with full SHA-256 provenance and automated validation suite.
+                <strong>Deterministic Open Data:</strong> SHA-256 verified CSV and Apache Parquet exports with full provenance manifests and automated validation suite.
               </li>
             </ul>
           </div>

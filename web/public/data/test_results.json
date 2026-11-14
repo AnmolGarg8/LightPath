@@ -8,7 +8,7 @@
     "failed": 0
   },
   "failures": [],
-  "timestamp": "2026-11-10T10:09:26.455069+00:00",
+  "timestamp": "2026-11-10T10:41:38.448170+00:00",
   "checks": [
     {
       "code": "V1",
@@ -59,10 +59,10 @@
       "status": "passed",
       "data_type": "real",
       "tolerance": "0.01 deg",
-      "measured_value": "Sun (N=721): Az max 0.00000\u00b0, rms 0.00000\u00b0; El max 0.00001\u00b0, rms 0.00001\u00b0 | Earth (N=721): Az max 0.00001\u00b0, rms 0.00000\u00b0; El max 0.00004\u00b0, rms 0.00002\u00b0 [abcorr=LT+S, site height=0m]",
+      "measured_value": "Loc 1 (721h/30d): Sun Az max 0.000005\u00b0, rms 0.000003\u00b0; El max 0.000014\u00b0, rms 0.000008\u00b0 / Earth Az max 0.000005\u00b0, rms 0.000004\u00b0; El max 0.000038\u00b0, rms 0.000022\u00b0 | Loc 2 (169h/7d): Sun Az max 0.000004\u00b0, rms 0.000004\u00b0; El max 0.000010\u00b0, rms 0.000005\u00b0 / Earth Az max 0.000006\u00b0, rms 0.000005\u00b0; El max 0.000038\u00b0, rms 0.000031\u00b0",
       "expected_value": "JPL Horizons ephemeris query (DE441, topocentric MOON_ME, apparent)",
       "source_of_expected_value": "NASA JPL Horizons On-Line Ephemeris System",
-      "citation": "JPL Horizons batch query; MOON_ME frame, LT+S aberration, site height 0m (R=1737.4 km)",
+      "citation": "JPL Horizons batch queries for Location 1 (721h / 30-day: 2026-11-01 to 2026-12-01) and Location 2 (169h / 7-day: 2026-11-01 to 2026-11-08); MOON_ME frame, LT+S aberration, site height 0m (R=1737.4 km)",
       "skip_reason": null,
       "skipped_reason": null
     },

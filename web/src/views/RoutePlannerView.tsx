@@ -6,7 +6,14 @@ import { Slider } from '../components/ui/Slider';
 import { SegmentedControl } from '../components/ui/SegmentedControl';
 import { fetchBinaryCube, fetchJsonData } from '../utils/dataLoader';
 import { DecodedVisibilityCube } from '../utils/cubeDecoder';
-import { VisibilityCubeHeaderSchema, VisibilityCubeHeader, SiteSummarySchema, SiteSummary } from '../types/schemas';
+import {
+  VisibilityCubeHeaderSchema,
+  VisibilityCubeHeader,
+  SiteSummarySchema,
+  SiteSummary,
+  StatsSchema,
+  Stats,
+} from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { DepartureWindowMap } from '../components/DepartureWindowMap';
 import { MissionPlanner } from '../components/MissionPlanner';
@@ -53,6 +60,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
   const [header, setHeader] = useState<VisibilityCubeHeader | null>(null);
   const [cube, setCube] = useState<DecodedVisibilityCube | null>(null);
   const [siteMeta, setSiteMeta] = useState<SiteSummary | null>(null);
+  const [siteStats, setSiteStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -150,11 +158,14 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       fetchJsonData<SiteSummary>(`./data/sites/${siteId}.json`, SiteSummarySchema)
         .catch(() => fetchJsonData<SiteSummary>(`./data/${siteId}/site.json`, SiteSummarySchema))
         .catch(() => null),
+      fetchJsonData<Stats>(`./data/${siteId}/stats.json`, StatsSchema)
+        .catch(() => null),
     ])
-      .then(([hdr, cb, meta]) => {
+      .then(([hdr, cb, meta, stats]) => {
         setHeader(hdr);
         setCube(cb);
         if (meta) setSiteMeta(meta);
+        if (stats) setSiteStats(stats);
         setLoading(false);
       })
       .catch((err) => {
@@ -162,6 +173,8 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
         setLoading(false);
       });
   }, [siteId]);
+
+  const activeMarginDeg = siteStats?.thresholds?.margin_deg ?? 0.03;
 
   // 2. Compute Departure Window Map and Active Route whenever parameters or endpoints change
   useEffect(() => {
@@ -210,7 +223,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
             speed_m_s: speedMs,
             max_slope_deg: maxSlopeDeg,
             dark_budget_h: darkBudgetH,
-            horizon_margin_deg: 0.10,
+            horizon_margin_deg: activeMarginDeg,
           })
             .then((comp) => {
               if (!cancelled) {
@@ -287,7 +300,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       speed_m_s: speedMs,
       max_slope_deg: maxSlopeDeg,
       dark_budget_h: darkBudgetH,
-      horizon_margin_deg: 0.10,
+      horizon_margin_deg: activeMarginDeg,
     })
       .then((comp) => {
         setConservativeComparison(comp);
@@ -320,7 +333,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
       speed_m_s: speedMs,
       max_slope_deg: maxSlopeDeg,
       dark_budget_h: darkBudgetH,
-      horizon_margin_deg: 0.10,
+      horizon_margin_deg: activeMarginDeg,
     })
       .then((res) => {
         setDispersionResult(res);
@@ -1403,7 +1416,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
                   />
                 </div>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>
-                  Discretisation error bound: &lt; 3.0 h (ceiling lookahead)
+                  Discretisation error bound: &lt; {header && header.time_utc.length >= 2 ? (((new Date(header.time_utc[1]).getTime() - new Date(header.time_utc[0]).getTime()) / 3600000)).toFixed(1) : '0.5'} h (&lt; 1 time step)
                 </div>
                 <button
                   type="button"
@@ -1424,7 +1437,7 @@ export const RoutePlannerView: React.FC<RoutePlannerViewProps> = ({ siteId, init
                       speed_m_s: speedMs,
                       max_slope_deg: maxSlopeDeg,
                       dark_budget_h: darkBudgetH,
-                      horizon_margin_deg: 0.10,
+                      horizon_margin_deg: activeMarginDeg,
                     })
                       .then((comp) => {
                         setConservativeComparison(comp);

@@ -8,7 +8,7 @@
 
 ## 1. Summary of Real Terrain Acquisition (Task S0)
 
-In accordance with Task S0 of the data acquisition protocol, verified real LOLA elevation data from NASA GSFC Planetary Geodesy Data Archive (PGDA Product 90) have been downloaded, cropped, and cryptographically verified:
+In accordance with Task S0 of the data acquisition protocol, verified real LOLA elevation data from NASA GSFC Planetary Geodesy Data Archive (PGDA Product 90) have been downloaded, cropped, and checksum-verified:
 
 ### 1. Far Layer (Full 80°S to 90°S Coverage)
 - **File:** `data/raw/LDEM_80S_80MPP_ADJ.TIF`

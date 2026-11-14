@@ -1,0 +1,153 @@
+=== NASA LOLA 5mpp Sites Sourced Analysis ===
+Run date: 2026-11-14
+Source page: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/
+
+--------------------------------------------------
+Site: Site01 (Connecting ridge)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 40980810 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 3200 x 3200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=-19000.0, bottom=-20000.0, right=-3000.0, top=-4000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 16000.0 m wide x 16000.0 m high
+Center projected (m): x=-11000.0, y=-12000.0
+Center 3x3 pixel surface heights (m):
+[[1944.9677 1944.6326 1944.3738]
+ [1944.946  1944.7671 1944.2932]
+ [1944.8215 1944.5106 1943.8909]]
+Center pixel height: 1944.7671 m
+Corner bottom-left: (-19000.0, -20000.0) m -> lon=-136.468801°, lat=-89.090284°
+Corner bottom-right: (-3000.0, -20000.0) m -> lon=-171.469234°, lat=-89.333071°
+Corner top-right: (-3000.0, -4000.0) m -> lon=-143.130102°, lat=-89.835111°
+Corner top-left: (-19000.0, -4000.0) m -> lon=-101.888658°, lat=-89.359692°
+Center geographic: lon=-137.489553°, lat=-89.463163°
+Distance from center to 80°S circular edge: 287.72 km
+Distance from center to 80S square raster edge: 292.00 km
+Horizon margin check PASSED (>= 150 km): 287.72 km
+--------------------------------------------------
+Site: Site04 (Shackleton rim)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site04/Site04_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 40980806 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 3200 x 3200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=-9000.0, bottom=-15000.0, right=7000.0, top=1000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 16000.0 m wide x 16000.0 m high
+Center projected (m): x=-1000.0, y=-7000.0
+Center 3x3 pixel surface heights (m):
+[[771.47424 768.20795 764.70044]
+ [771.0432  767.97864 764.6425 ]
+ [770.6162  767.6084  764.47437]]
+Center pixel height: 767.9786 m
+Corner bottom-left: (-9000.0, -15000.0) m -> lon=-149.036243°, lat=-89.423127°
+Corner bottom-right: (7000.0, -15000.0) m -> lon=154.983107°, lat=-89.454123°
+Corner top-right: (7000.0, 1000.0) m -> lon=81.869898°, lat=-89.766811°
+Corner top-left: (-9000.0, 1000.0) m -> lon=-83.659808°, lat=-89.701373°
+Center geographic: lon=-171.869898°, lat=-89.766811°
+Distance from center to 80°S circular edge: 296.93 km
+Distance from center to 80S square raster edge: 297.00 km
+Horizon margin check PASSED (>= 150 km): 296.93 km
+--------------------------------------------------
+Site: Site07 (Peak near Shackleton)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site07/Site07_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 40980808 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 3200 x 3200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=22000.0, bottom=-28000.0, right=38000.0, top=-12000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 16000.0 m wide x 16000.0 m high
+Center projected (m): x=30000.0, y=-20000.0
+Center 3x3 pixel surface heights (m):
+[[1644.9283 1645.3958 1645.816 ]
+ [1645.1206 1645.5488 1645.9247]
+ [1645.3499 1645.7445 1646.0905]]
+Center pixel height: 1645.5488 m
+Corner bottom-left: (22000.0, -28000.0) m -> lon=141.842773°, lat=-88.825732°
+Corner bottom-right: (38000.0, -28000.0) m -> lon=126.384352°, lat=-88.443484°
+Corner top-right: (38000.0, -12000.0) m -> lon=107.525568°, lat=-88.685898°
+Corner top-left: (22000.0, -12000.0) m -> lon=118.610460°, lat=-89.173591°
+Center geographic: lon=123.690068°, lat=-88.811008°
+Distance from center to 80°S circular edge: 267.94 km
+Distance from center to 80S square raster edge: 274.00 km
+Horizon margin check PASSED (>= 150 km): 267.94 km
+--------------------------------------------------
+Site: Site11 (de Gerlache rim)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site11/Site11_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 40980806 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 3200 x 3200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=-45000.0, bottom=7000.0, right=-29000.0, top=23000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 16000.0 m wide x 16000.0 m high
+Center projected (m): x=-37000.0, y=15000.0
+Center 3x3 pixel surface heights (m):
+[[1793.794  1793.7015 1793.5778]
+ [1793.7633 1793.6644 1793.5474]
+ [1793.7554 1793.6461 1793.4991]]
+Center pixel height: 1793.6644 m
+Corner bottom-left: (-45000.0, 7000.0) m -> lon=-81.158185°, lat=-88.498234°
+Corner bottom-right: (-29000.0, 7000.0) m -> lon=-76.429566°, lat=-89.016199°
+Corner top-right: (-29000.0, 23000.0) m -> lon=-51.581945°, lat=-88.779419°
+Corner top-left: (-45000.0, 23000.0) m -> lon=-62.927920°, lat=-88.333510°
+Center geographic: lon=-67.932100°, lat=-88.683418°
+Distance from center to 80°S circular edge: 264.08 km
+Distance from center to 80S square raster edge: 267.00 km
+Horizon margin check PASSED (>= 150 km): 264.08 km
+--------------------------------------------------
+Site: Site20 (Leibnitz beta plateau)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site20/Site20_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 40980802 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 3200 x 3200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=65000.0, bottom=110000.0, right=81000.0, top=126000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 16000.0 m wide x 16000.0 m high
+Center projected (m): x=73000.0, y=118000.0
+Center 3x3 pixel surface heights (m):
+[[6398.582  6399.1865 6399.598 ]
+ [6398.1367 6398.833  6399.105 ]
+ [6397.5083 6398.081  6398.4634]]
+Center pixel height: 6398.8330 m
+Corner bottom-left: (65000.0, 110000.0) m -> lon=30.579227°, lat=-85.788335°
+Corner bottom-right: (81000.0, 110000.0) m -> lon=36.366580°, lat=-85.497366°
+Corner top-right: (81000.0, 126000.0) m -> lon=32.735226°, lat=-85.063304°
+Corner top-left: (65000.0, 126000.0) m -> lon=27.287988°, lat=-85.327053°
+Center geographic: lon=31.742761°, lat=-85.426577°
+Distance from center to 80°S circular edge: 165.24 km
+Distance from center to 80S square raster edge: 186.00 km
+Horizon margin check PASSED (>= 150 km): 165.24 km
+--------------------------------------------------
+Site: Site23 (Malapert massif)
+URL: https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site23/Site23_final_adj_5mpp_surf.tif
+HTTP HEAD status: 200, size: 70586804 bytes
+CRS: PROJCS["unnamed",GEOGCS["unnamed ellipse",DATUM["unknown",SPHEROID["unnamed",1737400,0]],PRIMEM["Greenwich",0],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]]],PROJECTION["Polar_Stereographic"],PARAMETER["latitude_of_origin",-90],PARAMETER["central_meridian",0],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["metre",1],AXIS["Easting",NORTH],AXIS["Northing",NORTH]]
+Dimensions: 4200 x 4200 pixels
+Pixel size: 5.0 m x 5.0 m
+Bounds (m): left=-11000.0, bottom=111000.0, right=10000.0, top=132000.0
+Data type: float32, Nodata: nan, Scale: 1.0, Offset: 0.0
+Tile size (m): 21000.0 m wide x 21000.0 m high
+Center projected (m): x=-500.0, y=121500.0
+Center 3x3 pixel surface heights (m):
+[[4783.9536 4783.664  4783.3965]
+ [4783.94   4783.6294 4783.3457]
+ [4783.885  4783.572  4783.2827]]
+Center pixel height: 4783.6294 m
+Corner bottom-left: (-11000.0, 111000.0) m -> lon=-5.659482°, lat=-86.322787°
+Corner bottom-right: (10000.0, 111000.0) m -> lon=5.147885°, lat=-86.325889°
+Corner top-right: (10000.0, 132000.0) m -> lon=4.332314°, lat=-85.636555°
+Corner top-left: (-11000.0, 132000.0) m -> lon=-4.763642°, lat=-85.633944°
+Center geographic: lon=-0.235784°, lat=-85.994785°
+Distance from center to 80°S circular edge: 182.50 km
+Distance from center to 80S square raster edge: 182.50 km
+Horizon margin check PASSED (>= 150 km): 182.50 km
+
+==================================================
+Things I could not determine:
+- None: All 6 remote GeoTIFF headers were successfully read via /vsicurl/ and HTTP HEAD.
+- Note: Pixel data outside the 3x3 center window was not downloaded, following protocol.

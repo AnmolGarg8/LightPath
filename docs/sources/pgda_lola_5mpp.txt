@@ -1,0 +1,162 @@
+South Pole Landing Site LOLA DEMs
+For each site, various products are provided:
+- LDEM: surface-interpolated elevation map (pixel values give surface height Z in meters)
+- XYZI: final point clouds after track adjustments and cleaning
+- LDEC: count map (# of LOLA spots in each pixel)
+- Slope map (in degrees)
+- Total Z uncertainty in meters (formally, the RMS error)
+- Slope uncertainty in degrees (formally, the RMS error)
+- 100 clones
+All these files (except the points clouds) are 5 m/pix GeoTiffs with south polar stereographic X/Y coords in meters, MOON_ME reference frame of ephemeris DE421.
+
+See this README file.
+
+The sites are:
+- Site01: Connecting ridge
+- Site04: Shackleton rim
+- Site07: Peak near Shackleton
+- Site11: de Gerlache rim
+- Site20: Leibnitz beta plateau
+- Site23: Malapert massif
+
+The site name numbering follows the paper:
+Mazarico, E., et al. (2011), Illumination conditions of the lunar polar regions using LOLA topography, Icarus, Volume 211, Issue 2, February 2011, Pages 1066-1081, doi:10.1016/j.icarus.2010.10.030
+Please refer to the paper, "Improved LOLA Elevation Maps for South Pole Landing Sites: Error Estimates and Their Impact on Illumination Conditions", by Barker et al. (2021, Planetary & Space Science, Volume 203, 1 September 2021, 105119, https://doi.org/10.1016/j.pss.2020.105119) for further details.
+
+
+
+
+Site 01
+Site01 LDEM: Site01_final_adj_5mpp_surf.tif
+Site01 XYZI: Site01_final_adj.xyzi
+Site01 LDEC: Site01_final_adj_5mpp_ldec.tif
+Site01 slope: Site01_final_adj_5mpp_slp.tif
+Site01 total Z uncertainty: Site01_final_adj_5mpp_toterr.tif
+Site01 slope uncertainty: Site01_final_adj_5mpp_slperr.tif
+Site01 Clones: 
+001 002 003 004 005 006 007 008 009 010 
+011 012 013 014 015 016 017 018 019 020 
+021 022 023 024 025 026 027 028 029 030 
+031 032 033 034 035 036 037 038 039 040 
+041 042 043 044 045 046 047 048 049 050 
+051 052 053 054 055 056 057 058 059 060 
+061 062 063 064 065 066 067 068 069 070 
+071 072 073 074 075 076 077 078 079 080 
+081 082 083 084 085 086 087 088 089 090 
+091 092 093 094 095 096 097 098 099 100 
+
+Site04
+Site04 LDEM: Site04_final_adj_5mpp_surf.tif
+Site04 XYZI: Site04_final_adj.xyzi
+Site04 LDEC: Site04_final_adj_5mpp_ldec.tif
+Site04 slope: Site04_final_adj_5mpp_slp.tif
+Site04 total Z uncertainty: Site04_final_adj_5mpp_toterr.tif
+Site04 slope uncertainty: Site04_final_adj_5mpp_slperr.tif
+Site04 Clones: 
+001 002 003 004 005 006 007 008 009 010 
+011 012 013 014 015 016 017 018 019 020 
+021 022 023 024 025 026 027 028 029 030 
+031 032 033 034 035 036 037 038 039 040 
+041 042 043 044 045 046 047 048 049 050 
+051 052 053 054 055 056 057 058 059 060 
+061 062 063 064 065 066 067 068 069 070 
+071 072 073 074 075 076 077 078 079 080 
+081 082 083 084 085 086 087 088 089 090 
+091 092 093 094 095 096 097 098 099 100 
+
+Site07
+Site07 LDEM: Site07_final_adj_5mpp_surf.tif
+Site07 XYZI: Site07_final_adj.xyzi
+Site07 LDEC: Site07_final_adj_5mpp_ldec.tif
+Site07 slope: Site07_final_adj_5mpp_slp.tif
+Site07 total Z uncertainty: Site07_final_adj_5mpp_toterr.tif
+Site07 slope uncertainty: Site07_final_adj_5mpp_slperr.tif
+Site07 Clones: 
+001 002 003 004 005 006 007 008 009 010 
+011 012 013 014 015 016 017 018 019 020 
+021 022 023 024 025 026 027 028 029 030 
+031 032 033 034 035 036 037 038 039 040 
+041 042 043 044 045 046 047 048 049 050 
+051 052 053 054 055 056 057 058 059 060 
+061 062 063 064 065 066 067 068 069 070 
+071 072 073 074 075 076 077 078 079 080 
+081 082 083 084 085 086 087 088 089 090 
+091 092 093 094 095 096 097 098 099 100 
+
+Site11
+Site11 LDEM: Site11_final_adj_5mpp_surf.tif
+Site11 XYZI: Site11_final_adj.xyzi
+Site11 LDEC: Site11_final_adj_5mpp_ldec.tif
+Site11 slope: Site11_final_adj_5mpp_slp.tif
+Site11 total Z uncertainty: Site11_final_adj_5mpp_toterr.tif
+Site11 slope uncertainty: Site11_final_adj_5mpp_slperr.tif
+Site11 Clones: 
+001 002 003 004 005 006 007 008 009 010 
+011 012 013 014 015 016 017 018 019 020 
+021 022 023 024 025 026 027 028 029 030 
+031 032 033 034 035 036 037 038 039 040 
+041 042 043 044 045 046 047 048 049 050 
+051 052 053 054 055 056 057 058 059 060 
+061 062 063 064 065 066 067 068 069 070 
+071 072 073 074 075 076 077 078 079 080 
+081 082 083 084 085 086 087 088 089 090 
+091 092 093 094 095 096 097 098 099 100 
+
+Site20
+Site20 LDEM: Site20_final_adj_5mpp_surf.tif
+Site20 XYZI: Site20_final_adj.xyzi
+Site20 LDEC: Site20_final_adj_5mpp_ldec.tif
+Site20 slope: Site20_final_adj_5mpp_slp.tif
+Site20 total Z uncertainty: Site20_final_adj_5mpp_toterr.tif
+Site20 slope uncertainty: Site20_final_adj_5mpp_slperr.tif
+Site20 Clones: 
+001 002 003 004 005 006 007 
+008 009 010 
+011 012 013 014 015 016 017 
+018 019 020 
+021 022 023 024 025 026 027 
+028 029 030 
+031 032 033 034 035 036 037 
+038 039 040 
+041 042 043 044 045 046 047 
+048 049 050 
+051 052 053 054 055 056 057 
+058 059 060 
+061 062 063 064 065 066 067 
+068 069 070 
+071 072 073 074 075 076 077 
+078 079 080 
+081 082 083 084 085 086 087 
+088 089 090 
+091 092 093 094 095 096 097 
+098 099 100 
+
+Site23
+Site23 LDEM: Site23_final_adj_5mpp_surf.tif
+Site23 XYZI: Site23_final_adj.xyzi
+Site23 LDEC: Site23_final_adj_5mpp_ldec.tif
+Site23 slope: Site23_final_adj_5mpp_slp.tif
+Site23 total Z uncertainty: Site23_final_adj_5mpp_toterr.tif
+Site23 slope uncertainty: Site23_final_adj_5mpp_slperr.tif
+Site23 Clones: 
+001 002 003 004 005 006 007 
+008 009 010 
+011 012 013 014 015 016 017 
+018 019 020 
+021 022 023 024 025 026 027 
+028 029 030 
+031 032 033 034 035 036 037 
+038 039 040 
+041 042 043 044 045 046 047 
+048 049 050 
+051 052 053 054 055 056 057 
+058 059 060 
+061 062 063 064 065 066 067 
+068 069 070 
+071 072 073 074 075 076 077 
+078 079 080 
+081 082 083 084 085 086 087 
+088 089 090 
+091 092 093 094 095 096 097 
+098 099 100 
+

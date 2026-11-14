@@ -83,5 +83,67 @@
     "cols": 4000,
     "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
     "data_doi": "10.60903/gsfcpgda-lola-spole"
+  },
+  {
+    "file": "data/raw/near_test_location_2.tif",
+    "description": "LOLA South Pole DEM (20 m/pixel, co-registered and adjusted), near layer cropped window (80 km x 80 km) for test location 2",
+    "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ.TIF",
+    "parent_file": "LDEM_80S_20MPP_ADJ.TIF",
+    "site_id": "test_location_2",
+    "crop_window": {
+      "col_off": 16993,
+      "row_off": 6631,
+      "width": 4000,
+      "height": 4000
+    },
+    "sha256": "d4cd15f487511bb71d663b97fe1cc4c2c7e6cfa489047a9005d67633860f4c56",
+    "size_bytes": 52667545,
+    "format": "GeoTIFF",
+    "projection": "South Polar Stereographic (IAU:30135, sphere R=1737400 m)",
+    "bounds": [
+      35860.0,
+      91380.0,
+      115860.0,
+      171380.0
+    ],
+    "pixel_size_m": [
+      20.0,
+      20.0
+    ],
+    "rows": 4000,
+    "cols": 4000,
+    "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
+    "data_doi": "10.60903/gsfcpgda-lola-spole"
+  },
+  {
+    "file": "data/raw/err_test_location_2.tif",
+    "description": "LOLA South Pole surface height error raster (20 m/pixel, 1-sigma uncertainty), near layer cropped window (80 km x 80 km) for test location 2",
+    "source_url": "https://pgda.gsfc.nasa.gov/data/LOLA_20mpp/LDEM_80S_20MPP_ADJ_ERR.TIF",
+    "parent_file": "LDEM_80S_20MPP_ADJ_ERR.TIF",
+    "site_id": "test_location_2",
+    "crop_window": {
+      "col_off": 16993,
+      "row_off": 6631,
+      "width": 4000,
+      "height": 4000
+    },
+    "sha256": "fbb660cfc588b51812c4aaab8ae0eb31ba4df0b12ce8f07548650bf9465b04d2",
+    "size_bytes": 55520653,
+    "format": "GeoTIFF",
+    "projection": "South Polar Stereographic (IAU:30135, sphere R=1737400 m)",
+    "bounds": [
+      35860.0,
+      91380.0,
+      115860.0,
+      171380.0
+    ],
+    "pixel_size_m": [
+      20.0,
+      20.0
+    ],
+    "rows": 4000,
+    "cols": 4000,
+    "citation": "Barker et al. (2023), Planetary Science Journal 4:183, doi:10.3847/PSJ/acf3e1",
+    "data_doi": "10.60903/gsfcpgda-lola-spole"
   }
 ]

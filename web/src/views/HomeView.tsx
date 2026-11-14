@@ -13,7 +13,10 @@ import {
   TestResults,
   StatsSchema,
   Stats,
+  SeriesSchema,
+  Series,
 } from '../types/schemas';
+import { calculateDynamicStats, sliceSeries } from '../utils/statsCalculator';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { LimitationsPanel } from '../components/common/LimitationsPanel';
 import {
@@ -32,6 +35,7 @@ export const HomeView: React.FC = () => {
   const [dataStatus, setDataStatus] = useState<DataStatus | null>(null);
   const [testResults, setTestResults] = useState<TestResults | null>(null);
   const [siteStatsMap, setSiteStatsMap] = useState<Record<string, Stats>>({});
+  const [siteSeriesMap, setSiteSeriesMap] = useState<Record<string, Series>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -58,6 +62,7 @@ export const HomeView: React.FC = () => {
         if (tResults) setTestResults(tResults);
 
         const statsMap: Record<string, Stats> = {};
+        const seriesMap: Record<string, Series> = {};
         await Promise.all(
           (idx.sites || []).map(async (site) => {
             try {
@@ -66,9 +71,16 @@ export const HomeView: React.FC = () => {
             } catch {
               // No stats for site yet
             }
+            try {
+              const sr = await fetchJsonData(`./data/${site.id}/series.json`, SeriesSchema);
+              seriesMap[site.id] = sr;
+            } catch {
+              // No series for site yet
+            }
           })
         );
         setSiteStatsMap(statsMap);
+        setSiteSeriesMap(seriesMap);
         setLoading(false);
       })
       .catch((err) => {
@@ -219,8 +231,8 @@ export const HomeView: React.FC = () => {
   // Single source of truth demo targets from index.json
   const demoSite = indexData?.sites.find((s) => s.is_demo_site) || indexData?.sites[0];
   const demoSiteId = demoSite?.id || 'test-location';
-  const secondSite = indexData?.sites.find((s) => s.id !== demoSiteId) || indexData?.sites[1];
-  const secondSiteId = secondSite?.id || 'synthetic-proving-ground';
+  const secondSite = indexData?.sites.find((s) => s.id !== demoSiteId && s.terrain_source === 'lola_dem') || indexData?.sites.find((s) => s.id !== demoSiteId) || indexData?.sites[1];
+  const secondSiteId = secondSite?.id || 'test-location-2';
 
   // Dynamic headline computed strictly from that site's stats.json if site is in index.json
   const getMissionHeadline = (m: Mission) => {
@@ -251,10 +263,27 @@ export const HomeView: React.FC = () => {
 
     const analysisStart = m.analysis_window?.start_utc || m.planned_window_start;
     const analysisEnd = m.analysis_window?.end_utc || m.planned_window_end;
-    const totalH = (new Date(analysisEnd).getTime() - new Date(analysisStart).getTime()) / 3600000;
-    const longestOutage = `${stats.earth.longest_outage_h.toFixed(1)} h`;
-    const contactH = stats.joint.total_uptime_h.toFixed(1);
-    const contactPct = Math.round(stats.joint.uptime_fraction * 100);
+    const totalH = Math.max(0, (new Date(analysisEnd).getTime() - new Date(analysisStart).getTime()) / 3600000);
+
+    const siteSeries = siteSeriesMap[m.site_id];
+    let longestOutageH = stats.earth.longest_outage_h;
+    let contactValH = stats.joint.total_uptime_h;
+    let contactPct = Math.round(stats.joint.uptime_fraction * 100);
+
+    if (siteSeries && analysisStart && analysisEnd) {
+      const sliced = sliceSeries(siteSeries, analysisStart, analysisEnd);
+      if (sliced.time_utc.length > 0) {
+        const dynStats = calculateDynamicStats(sliced, 0.5);
+        longestOutageH = dynStats.earth.longest_outage_h;
+        contactValH = dynStats.joint_sun_earth.total_uptime_h;
+        contactPct = Math.round(dynStats.joint_sun_earth.uptime_fraction * 100);
+      }
+    }
+
+    // Contact hours can never exceed window length
+    const boundedContactH = Math.min(contactValH, totalH);
+    const longestOutage = `${longestOutageH.toFixed(1)} h`;
+    const contactH = boundedContactH.toFixed(1);
     const contactStr = `${contactH} h of ${totalH.toFixed(1)} h (${contactPct}%)`;
 
     return {

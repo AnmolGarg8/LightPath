@@ -40,7 +40,9 @@ export const Footer: React.FC = () => {
             </p>
           </div>
 
-          <nav aria-label="Footer links" style={{ display: 'flex', gap: '1.25rem' }}>
+          <nav aria-label="Footer links" style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
+            <a href="#/credits">Credits &amp; Citations</a>
+            <a href="#/licenses">Licences</a>
             <a href="#/data">Reusable Data</a>
             <a href="#/explain">Operational Limitations</a>
             <a href="#/trust">Verification Benchmarks</a>
@@ -85,8 +87,11 @@ export const Footer: React.FC = () => {
 
         {/* NASA Credit lines */}
         <div style={{ lineHeight: 1.6 }}>
+          <p style={{ marginBottom: '0.4rem' }}>
+            <strong>Credits:</strong> Ephemeris DE421 (JPL), Topography LOLA LDEM (NASA GSFC / Barker et al. 2023, 2021), SPICE / SpiceyPy, DSN 810-005, Horn 1981.
+          </p>
           <p>
-            <strong>Citations & Primary Data Sources:</strong>{' '}
+            <strong>Citations &amp; Primary Data Sources:</strong>{' '}
             {dataStatus?.has_lola_dem
               ? 'Terrain elevation models use NASA LOLA Digital Elevation Models (PDS / PGDA).'
               : 'Terrain elevation models use synthetic benchmark topography.'}{' '}

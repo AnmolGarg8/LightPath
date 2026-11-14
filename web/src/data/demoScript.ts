@@ -8,7 +8,7 @@ export interface DemoStep {
 
 export function getDemoSteps(
   demoSiteId: string = 'test-location',
-  secondSiteId: string = 'synthetic-proving-ground'
+  secondSiteId: string = 'test-location-2'
 ): DemoStep[] {
   return [
     {

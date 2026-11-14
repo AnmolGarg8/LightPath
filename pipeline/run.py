@@ -290,7 +290,7 @@ def process_site_ephemeris(
     earth_az, earth_el, earth_rad, earth_frac, earth_status, earth_dist = [], [], [], [], [], []
 
     thresholds = config.thresholds
-    margin_deg = config.margins.horizon_margin_deg
+    margin_deg = getattr(site, "horizon_margin_deg", None) or config.margins.horizon_margin_deg
 
     # Extract horizon elevations for specified mast index
     if horizon_res.el_deg.ndim == 2:
@@ -407,6 +407,7 @@ def process_site_ephemeris(
         "min_sun_frac": thresholds.min_sun_frac,
         "min_earth_frac": thresholds.min_earth_frac,
         "ground_station_mask_deg": thresholds.ground_station_mask_deg,
+        "margin_deg": margin_deg,
     }
     stats_dict = summarize(series_dict, thresh_dict)
 
@@ -938,7 +939,7 @@ def run_pipeline(
                 "step_minutes": config.step_minutes,
                 "mast_heights_m": config.mast_heights_m,
                 "thresholds": config.thresholds.model_dump(),
-                "margins": config.margins.model_dump(),
+                "margins": {"horizon_margin_deg": getattr(site, "horizon_margin_deg", None) or config.margins.horizon_margin_deg},
                 "horizon_params": config.horizon_params.model_dump(),
                 "ephemeris_source": ephemeris_source,
                 "terrain_source": getattr(site, "terrain_source", "synthetic"),

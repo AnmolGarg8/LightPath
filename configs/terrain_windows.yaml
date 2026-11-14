@@ -38,3 +38,8 @@ sites:
   lat_deg: -89.5
   lon_deg: 0.0
   is_test_location: true
+- id: test_location_2
+  name: TEST_LOCATION_2_NOT_A_MISSION_SITE
+  lat_deg: -85.0
+  lon_deg: 30.0
+  is_test_location: true

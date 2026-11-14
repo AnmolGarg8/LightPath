@@ -35,6 +35,8 @@ class SiteConfig(BaseModel):
     verified: bool = False
     is_synthetic: bool = True
     is_demo_site: bool = False
+    is_mission_site: bool = False
+    horizon_margin_deg: Optional[float] = None
     ephemeris_source: str = "spice_kernels"
     terrain_source: str = "synthetic"
     mission_ids: List[str] = Field(default_factory=list)

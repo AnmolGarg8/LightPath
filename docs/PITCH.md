@@ -1,7 +1,8 @@
 # LightPath — 3-Minute Presentation Pitch & Judge Defense Guide
 
 **NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
-*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*
+*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*  
+*Analysis Baseline: Real terrain test location (not a mission site) (-89.5° N, 0.0° E) | Commit: 3ab986b*
 
 ---
 
@@ -18,24 +19,34 @@
 ### [0:30 - 1:15] The Core Platform: Instant 360° Real-Time Horizons
 > *"LightPath is an open-source, deterministic web platform running entirely in the browser without any runtime network calls.*  
 > *Using high-resolution NASA LOLA elevation models and exact spherical geodesy on the Moon Mean Earth datum ($R = 1,737,400\text{ m}$), LightPath calculates the true 360-degree terrain skyline for any lunar south pole site.*  
-> *Notice our live Horizon Panorama: the true angular discs of the Sun ($0.53^\circ$) and Earth ($1.90^\circ$) are clipped in real time by the jagged crater topography as you scrub through time.*  
-> *With our mast sensitivity tool, an engineer can immediately see that raising a solar mast from two to five meters recovers lost sunlight.*  
-> *Below, our multi-lane contact timeline intersects Earth visibility with the NASA Deep Space Network across Goldstone, Madrid, and Canberra."*
+> *At Real terrain test location (not a mission site) (-89.5° N, 0.0° E), solar uptime is 22.7% (163.5 hours) with 556.5 hours (23.2 days) of longest darkness across the 30.0-day analysis window.*  
+> *Notice our live Horizon Panorama: the true angular discs of the Sun ($0.53^\circ$) and Earth ($1.90^\circ$) are clipped in real time by the jagged crater topography (skyline peak 9.59° at azimuth 159.0°) as you scrub through time.*  
+> *With our mast sensitivity tool, an engineer can immediately see that raising a solar mast from 2.0 to 5.0 meters recovers lost sunlight.*  
+> *Below, our multi-lane contact timeline intersects Earth visibility (36.5% uptime) with the NASA Deep Space Network across Goldstone, Madrid, and Canberra, yielding 36.5% Direct-to-Earth contact."*
 
 ---
 
 ### [1:15 - 2:00] The Signature Feature: 4D Space-Time Traverse Planning
 > *"Our signature breakthrough is the **4D Space-Time Traverse Solver**.*  
 > *Lunar rovers cannot treat path planning as a static 2D map, because shadows move while you drive.*  
-> *LightPath generates a spatio-temporal visibility cube and runs an A\* graph search through space and time $(x, y, t)$. In less than one second, it determines whether a rover travelling at five centimetres per second can navigate between two crater points without getting overtaken by shadow.*  
-> *If a route is blocked by a steep cliff or darkness, LightPath explains the mathematical bottleneck and offers an instant one-click relaxation to find an alternative departure window."*
+> *LightPath generates a spatio-temporal visibility cube and runs an A\* graph search through space and time $(x, y, t)$.*  
+> *Between our demo coordinates, 10 departure steps are feasible, providing a 4.5-hour departure window before advancing shadows block the corridor.*  
+> *Once departing, the nominal transit time is 6.7 hours at 0.05 m/s with a 15.0° mechanical slope limit.*  
+> *If a route is blocked by darkness or steep terrain, LightPath explains the mathematical bottleneck—such as 'Corridor shadow: moving lunar shadow obstructs corridor; darkness along traverse exceeds allowable dark budget (0.0 h)'—and offers an instant one-click relaxation to find an alternative departure window."*
 
 ---
 
 ### [2:00 - 2:30] Scientific Integrity & Trust: Math Before Claims
 > *"At LightPath, we follow a strict rule: **Correctness Before Features**.*  
 > *We never invent data. Every station is clearly flagged. We never equate sunlight to battery power, and we never claim geometric line-of-sight is an RF link budget.*  
-> *Our calculations are tested across automated CI benchmarks (V1 through V8) with external published baselines pending human verification [CITATION NEEDED: human to confirm published baseline; see docs/CITATIONS.md].*  
+> *Our calculations are tested across automated CI benchmarks (V1 through V8):*  
+> *- V1 flat sphere dip: -0.086937 deg (max error: 0.000001 deg)*  
+> *- V2 ridge elevation: 0.409510 deg (max error: 0.002960 deg)*  
+> *- V3 ephemeris checked against JPL Horizons: Sun Az max 0.000005 deg, El max 0.000014 deg; Earth Az max 0.000005 deg, El max 0.000038 deg*  
+> *- V5 convergence: 5m error: 0.0000 deg; all 5 convergence bounds passed*  
+> *- V6 reproducibility: 100% byte identical across runs (0 bytes delta)*  
+> *- V8 route solver optimality: 0.0% path delta across 300 brute-force grids (300/300 optimal)*  
+> *- V4 literature comparison and V7 independent engine: honestly flagged as NOT RUN until external fixtures are supplied.*  
 > *Furthermore, our Python scientific engine and browser TypeScript engine share exact test vectors; if their calculations disagree by even $10^{-9}$ degrees, our continuous integration build fails."*
 
 ---
@@ -78,13 +89,13 @@ Rather than treating celestial bodies as dimensionless points, we model their tr
 
 ### Q5: How does your space-time traverse solver account for moving shadows?
 **Answer**:  
-Traditional path planners search a 2D spatial grid $(x, y)$, which fails on the Moon because light changes over time. Our solver evaluates a 4D state space $(x, y, t)$ using A\*. Traversing from cell $(x, y)$ to an adjacent cell takes transit time $\Delta t = d / v_{\text{rover}}$. The solver inspects the visibility cube specifically at arrival time $t + \Delta t$. If the target cell is in shadow ($< 50\%$ illumination) or exceeds the maximum slope threshold ($15^\circ$), the move is pruned. The solver also models stationary "wait in place" actions to let passing shadows clear.
+Traditional path planners search a 2D spatial grid $(x, y)$, which fails on the Moon because light changes over time. Our solver evaluates a 4D state space $(x, y, t)$ using A\*. Traversing from cell $(x, y)$ to an adjacent cell takes transit time $\Delta t = d / v_{\text{rover}}$. The solver inspects the visibility cube specifically at arrival time $t + \Delta t$. If the target cell is in shadow ($< 0.5$ illumination) or exceeds the maximum slope threshold ($15.0^\circ$), the move is pruned. The solver also models stationary "wait in place" actions to let passing shadows clear.
 
 ---
 
 ### Q6: What happens when a traverse route is mathematically infeasible?
 **Answer**:  
-Rather than failing silently or hanging, LightPath provides diagnostic explanations. It analyzes whether failure was caused by mechanical slopes exceeding limits (using Horn's 1981 weighted 8-neighbor gradient method) or by darkness overtaking the rover. The UI explains the exact bottleneck (e.g. *"Goal blocked by 22.4° slope at (8, 12)"*) and provides a one-click relaxation button that expands the search parameters to find the nearest feasible window.
+Rather than failing silently or hanging, LightPath provides diagnostic explanations. It analyzes whether failure was caused by mechanical slopes exceeding limits (using Horn's 1981 weighted 8-neighbor gradient method) or by darkness overtaking the rover. The UI explains the exact bottleneck (e.g. *"Corridor shadow: moving lunar shadow obstructs corridor; darkness along traverse exceeds allowable dark budget (0.0 h)"*) and provides a one-click relaxation button that expands the search parameters to find the nearest feasible window.
 
 ---
 

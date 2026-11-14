@@ -1,0 +1,9 @@
+site_id,target,window_id,start_utc,end_utc,duration_h,truncated_at_start,truncated_at_end,threshold_pct,mast_height_m,is_synthetic,ephemeris_source,terrain_source,provenance_hash
+test-location-2,sun,0,2026-11-01T00:00:00Z,2026-11-02T10:00:00Z,34.0,True,False,50.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,sun,1,2026-11-17T00:00:00Z,2026-12-01T00:00:00Z,336.0,False,True,50.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,earth,0,2026-11-01T00:00:00Z,2026-11-04T22:30:00Z,94.5,True,False,50.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,earth,1,2026-11-15T14:00:00Z,2026-12-01T00:00:00Z,370.0,False,True,50.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,dte,0,2026-11-01T00:00:00Z,2026-11-04T22:30:00Z,94.5,True,False,6.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,dte,1,2026-11-15T14:00:00Z,2026-12-01T00:00:00Z,370.0,False,True,6.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,joint,0,2026-11-01T00:00:00Z,2026-11-02T10:00:00Z,34.0,True,False,50.0,2.0,False,spice_kernels,lola_dem,8dcac682
+test-location-2,joint,1,2026-11-17T00:00:00Z,2026-12-01T00:00:00Z,336.0,False,True,50.0,2.0,False,spice_kernels,lola_dem,8dcac682

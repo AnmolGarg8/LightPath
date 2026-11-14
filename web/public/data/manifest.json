@@ -2,13 +2,13 @@
   "files": [
     {
       "path": "all_sites_windows.csv",
-      "size_bytes": 1105,
-      "sha256": "2654c8b97b9f3f775fa8bb4e0c39db2299882740a83d3fd19ec0a152c99a3e27"
+      "size_bytes": 2154,
+      "sha256": "aa7342b556e6a1c3006ee175eb5b2540be8c95a4d6806be816463f5f81a633a9"
     },
     {
       "path": "all_sites_windows.parquet",
-      "size_bytes": 4757,
-      "sha256": "983c0da762d485b2b7cb1fbe4ac16898e8369e9fa10ba21e9169a1e002592762"
+      "size_bytes": 5305,
+      "sha256": "5ccfebfbefb11353e75c4907799f99563120286da2d1bbc3c57774bd00bbb4fc"
     },
     {
       "path": "cubes/synthetic-crater-rim.bin",
@@ -41,6 +41,16 @@
       "sha256": "18c7366101ea4b505094c54464d28137cccb6a539391f9da6fe84cc016a56a82"
     },
     {
+      "path": "cubes/test-location-2.bin",
+      "size_bytes": 163867,
+      "sha256": "98a3e229fea6181416812de5b18aece56a6da723bea310e56e2bd709b5b965be"
+    },
+    {
+      "path": "cubes/test-location-2.json",
+      "size_bytes": 24795401,
+      "sha256": "e83c832839178e887f2cc8ac2bf309be0b2c7691a1c735323a306801e2ce8c94"
+    },
+    {
       "path": "cubes/test-location.bin",
       "size_bytes": 133870,
       "sha256": "1a2240e2f9e3423af81046b9d5f83fb3f18aa1e754f8df766bdd0f0ac1a5b0ac"
@@ -52,8 +62,8 @@
     },
     {
       "path": "data_catalog.json",
-      "size_bytes": 3136,
-      "sha256": "ce0ae1c412be0e5c06ae71d81f43c20fcd84f0047572d5ce9743bd64b0b86526"
+      "size_bytes": 3140,
+      "sha256": "ca4a514dc959f123865bc58ed4747be140417a083a96f499aa64898881bae904"
     },
     {
       "path": "data_status.json",
@@ -62,8 +72,8 @@
     },
     {
       "path": "index.json",
-      "size_bytes": 6845,
-      "sha256": "7862160b7f9b76a404a46b739f6b820124df82871647279f50f14329b1287976"
+      "size_bytes": 7734,
+      "sha256": "13e358126e9d560b07e677e1f2f2cb355a38647972b908ea2f576fc694bdcfdb"
     },
     {
       "path": "missions.json",
@@ -72,8 +82,8 @@
     },
     {
       "path": "sites.json",
-      "size_bytes": 1593,
-      "sha256": "7a3e4b86eeb361694130e33d4ecabb2bbc1a29e31b5a27f3580baa0b41fa1e70"
+      "size_bytes": 2440,
+      "sha256": "5b1c39f4f0069cb57254cbbc0239b9396980586a2ef8a7d067783ba60e2311c9"
     },
     {
       "path": "sites/synthetic-crater-rim.json",
@@ -87,13 +97,18 @@
     },
     {
       "path": "sites/synthetic-proving-ground.json",
-      "size_bytes": 4636,
-      "sha256": "c6ad65c1c020c412724fec4d442cd7ff51d974c1790bea42d2e89abc1ad7f547"
+      "size_bytes": 4663,
+      "sha256": "744a6ce9a9cd860e8bdda46a5b3969127f2032ceabddfc7d967d868d7a49dedf"
+    },
+    {
+      "path": "sites/test-location-2.json",
+      "size_bytes": 4911,
+      "sha256": "4e9f369eb6bfe9a583b9abe814ab99cd0a556d74af765242612c15ed9cd3de58"
     },
     {
       "path": "sites/test-location.json",
-      "size_bytes": 4875,
-      "sha256": "15206e83e1d7d30b126fcd20ca63c52621df3349c643ec2b7e7bfd93128bced3"
+      "size_bytes": 4902,
+      "sha256": "b6e1cfbfbc72306771bd180a46ad90be8a282c370d620ddea856ddcb7e34273c"
     },
     {
       "path": "synthetic-crater-rim/horizon.json",
@@ -193,7 +208,7 @@
     {
       "path": "synthetic-proving-ground/provenance.json",
       "size_bytes": 2268,
-      "sha256": "4d03941ef77707799299e1cd5c6481d25d877f991f6f2130e5e9b3661a3bb85e"
+      "sha256": "936276024078d84a978563aa7aa455c1e9c4cfa79156586ec3088e8e17e2c08b"
     },
     {
       "path": "synthetic-proving-ground/route_result.json",
@@ -207,13 +222,13 @@
     },
     {
       "path": "synthetic-proving-ground/site.json",
-      "size_bytes": 4636,
-      "sha256": "c6ad65c1c020c412724fec4d442cd7ff51d974c1790bea42d2e89abc1ad7f547"
+      "size_bytes": 4663,
+      "sha256": "744a6ce9a9cd860e8bdda46a5b3969127f2032ceabddfc7d967d868d7a49dedf"
     },
     {
       "path": "synthetic-proving-ground/stats.json",
-      "size_bytes": 2265,
-      "sha256": "de070431c7db58d5c163cafe7ddd546921d54b310b83f67973d3a2814c898c46"
+      "size_bytes": 2290,
+      "sha256": "040f9ef701bde743119ca988f0b2ea83ea3a20bdfa1d5891bb701996114e8a71"
     },
     {
       "path": "synthetic-proving-ground/visibility_cube.json",
@@ -222,13 +237,43 @@
     },
     {
       "path": "synthetic-proving-ground/windows.csv",
-      "size_bytes": 646,
-      "sha256": "c576aaa710327f332fc7e807d9953b36907390ec2ccc155e67b00adc3f68ea92"
+      "size_bytes": 1143,
+      "sha256": "4b0598d413bd4b43142446c128473221a9aa51ba8df9357ef94acaeddf275a10"
     },
     {
       "path": "synthetic-proving-ground/windows.parquet",
-      "size_bytes": 4701,
-      "sha256": "e04a0e6b304c66f9e973a0e88359b58f3d0939a66e12d759e1db7c4ada9c79ec"
+      "size_bytes": 5189,
+      "sha256": "a3141e3fbd806a0329f8507c59d7166ff951e1e0aae19760648091e2db5843c2"
+    },
+    {
+      "path": "test-location-2/horizon.json",
+      "size_bytes": 56059,
+      "sha256": "ac20f01edb8202331299ca423ba422fad74e0d1c7d0e8f3bd74fd2e807320ee1"
+    },
+    {
+      "path": "test-location-2/provenance.json",
+      "size_bytes": 2614,
+      "sha256": "8dcac682173cac8e6971af270eac4584b500da2b7794adb0bb23094c50b752c0"
+    },
+    {
+      "path": "test-location-2/series.json",
+      "size_bytes": 433000,
+      "sha256": "4c51e9331a0a9a6437faa012d6ef3faf7e95678c1ee5c8fc75a20e3a168ab737"
+    },
+    {
+      "path": "test-location-2/site.json",
+      "size_bytes": 4911,
+      "sha256": "4e9f369eb6bfe9a583b9abe814ab99cd0a556d74af765242612c15ed9cd3de58"
+    },
+    {
+      "path": "test-location-2/stats.json",
+      "size_bytes": 2503,
+      "sha256": "294920fddbc85b40053cf8689301a0cbd2ef9b9c3d5cdb7ee1911fee2763ef8d"
+    },
+    {
+      "path": "test-location-2/visibility_cube.json",
+      "size_bytes": 24795401,
+      "sha256": "e83c832839178e887f2cc8ac2bf309be0b2c7691a1c735323a306801e2ce8c94"
     },
     {
       "path": "test-location/horizon.json",
@@ -238,7 +283,7 @@
     {
       "path": "test-location/provenance.json",
       "size_bytes": 2608,
-      "sha256": "9be97a7b7b9d9583a6fcc0972ae97401757cec47297ea681609ae259bc854d6f"
+      "sha256": "310c2c062c0e3491fae608d6b170f7437ad3eb22d42e8652d69a8f9ffc997924"
     },
     {
       "path": "test-location/series.json",
@@ -247,13 +292,13 @@
     },
     {
       "path": "test-location/site.json",
-      "size_bytes": 4875,
-      "sha256": "15206e83e1d7d30b126fcd20ca63c52621df3349c643ec2b7e7bfd93128bced3"
+      "size_bytes": 4902,
+      "sha256": "b6e1cfbfbc72306771bd180a46ad90be8a282c370d620ddea856ddcb7e34273c"
     },
     {
       "path": "test-location/stats.json",
-      "size_bytes": 2478,
-      "sha256": "b1b4676530b91011d614ebdcd1fc560bc438263ed03796a5452e7abfcf5e39a2"
+      "size_bytes": 2503,
+      "sha256": "d767122713e25f4f80eac093881aefbaec512db499bf9538cc2c55a80f9b41d5"
     },
     {
       "path": "test-location/visibility_cube.json",
@@ -262,18 +307,18 @@
     },
     {
       "path": "test-location/windows.csv",
-      "size_bytes": 602,
-      "sha256": "ef5869c3b4b927e19eebdad326ae7be95782d0ea6881c20b19fbfcbbf46896af"
+      "size_bytes": 1190,
+      "sha256": "41b90a2f6d6286f235b4e529b699a4bab03ac7d075bc07d67025a0a4e52e63b9"
     },
     {
       "path": "test-location/windows.parquet",
-      "size_bytes": 4640,
-      "sha256": "c328854e2560249250aca2ecbf0362d396a975ee0d2e2627e6a26233a29bb1a1"
+      "size_bytes": 5159,
+      "sha256": "0714643756b136b1dace1ea27275bf73a0e3a102aaa8dbb0785d95c4dfc5dae0"
     },
     {
       "path": "test_results.json",
-      "size_bytes": 11433,
-      "sha256": "adc37a12c091bcd40fe1e34350958abb28375b1246eaa97069aab299525bfbc3"
+      "size_bytes": 11408,
+      "sha256": "1fcfa0ab3d4780ba0abc59929f3a0d94e0b7d47b9f3b74e0f7e84ec5f2756c57"
     }
   ],
   "run_configuration": {
@@ -315,7 +360,7 @@
     "start_utc": "2026-11-01T00:00:00Z",
     "end_utc": "2026-12-01T00:00:00Z"
   },
-  "timestamp": "2026-11-10T04:50:06.460541+00:00",
-  "code_commit": "163362281b3be64733bb0fb3f826ee8b05069164",
+  "timestamp": "2026-11-10T10:30:59.434842+00:00",
+  "code_commit": "3ab986b35e6d76eceef86656a23111ad90a4a1c3",
   "is_synthetic": true
 }

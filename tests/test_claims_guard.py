@@ -85,7 +85,7 @@ def test_margin_consistency_across_artifacts():
     expected_margin = 0.03
 
     # 1. stats.json
-    for site_id in ["test-location", "synthetic-proving-ground"]:
+    for site_id, expected_margin in [("test-location", 0.03), ("synthetic-proving-ground", 0.03), ("test-location-2", 0.05)]:
         stats_path = ROOT_DIR / "web" / "public" / "data" / site_id / "stats.json"
         assert stats_path.exists(), f"stats.json missing for {site_id}"
         with open(stats_path, "r", encoding="utf-8") as f:
@@ -95,7 +95,7 @@ def test_margin_consistency_across_artifacts():
         )
 
     # 2. provenance.json
-    for site_id in ["test-location", "synthetic-proving-ground"]:
+    for site_id, expected_margin in [("test-location", 0.03), ("synthetic-proving-ground", 0.03), ("test-location-2", 0.05)]:
         prov_path = ROOT_DIR / "web" / "public" / "data" / site_id / "provenance.json"
         assert prov_path.exists(), f"provenance.json missing for {site_id}"
         with open(prov_path, "r", encoding="utf-8") as f:

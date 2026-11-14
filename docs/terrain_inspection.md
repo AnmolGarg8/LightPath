@@ -158,17 +158,20 @@ Measured directly from `LDEM_80S_20MPP_ADJ_ERR.TIF` across the cropped near-laye
 | Site ID | Site Name | Window Extent | Median Z Error (m) | 95th Percentile Z Error (m) | Range Evaluated (m) | DEM Angular Error | Local-Up Tilt Allowance | Combined Margin (`margin_deg`) |
 | :--- | :--- | :--- | :-: | :-: | :-: | :-: | :-: | :-: |
 | `test_location` | TEST_LOCATION_NOT_A_MISSION_SITE | 80 km x 80 km | 0.191 | 0.468 | 1,000 | 0.027° | 0.003° | **0.03°** |
+| `test_location_2` | TEST_LOCATION_2_NOT_A_MISSION_SITE | 80 km x 80 km | 0.230 | 0.775 | 1,000 | 0.044° | 0.003° | **0.05°** |
 
-### Horizon Margin Derivation (0.03°)
+### Horizon Margin Derivations
 
-The operational horizon safety margin $\delta_{\text{margin}} = 0.03^\circ$ is derived systematically from three components:
-1. **Vertical DEM Error Percentile:** The 95th percentile vertical height uncertainty from the NASA LOLA adjusted error map (`LDEM_80S_20MPP_ADJ_ERR.TIF`) over the 80 km × 80 km polar crop is **0.468 m** (median 0.191 m).
-2. **Range Evaluated:** At a characteristic obstacle distance $R = 1,000\text{ m}$, the angular elevation uncertainty is:
-   $$\theta_{\text{DEM}} = \arctan\left(\frac{0.468\text{ m}}{1000\text{ m}}\right) \times \frac{180^\circ}{\pi} \approx 0.0268^\circ \approx 0.027^\circ$$
-3. **Local-Up Tilt Allowance:** Over a 100 m cell displacement on the lunar radius $R_{\text{Moon}} = 1,737.4\text{ km}$, topocentric surface normal curvature tilt contributes:
-   $$\theta_{\text{tilt}} = \frac{100\text{ m}}{1,737,400\text{ m}} \times \frac{180^\circ}{\pi} \approx 0.0033^\circ \approx 0.003^\circ$$
+The operational horizon safety margins are derived systematically from the NASA LOLA adjusted error map (`LDEM_80S_20MPP_ADJ_ERR.TIF`):
 
-**Total Operational Margin:**
-$$\delta_{\text{margin}} = \theta_{\text{DEM}} + \theta_{\text{tilt}} = 0.027^\circ + 0.003^\circ = \mathbf{0.03^\circ}$$
+#### 1. Location 1 (`test_location`: lat -89.5°, lon 0.0°) -> 0.03°
+1. **Vertical DEM Error Percentile:** The 95th percentile vertical height uncertainty over the near crop is **0.468 m** (median 0.191 m).
+2. **Range Evaluated:** At $R = 1,000\text{ m}$, angular elevation uncertainty is $\theta_{\text{DEM}} = \arctan(0.468 / 1000) \times (180/\pi) \approx 0.0268^\circ \approx 0.027^\circ$.
+3. **Local-Up Tilt Allowance:** Over 100 m cell displacement on $R_{\text{Moon}} = 1,737.4\text{ km}$, $\theta_{\text{tilt}} = (100 / 1737400) \times (180/\pi) \approx 0.0033^\circ \approx 0.003^\circ$.
+4. **Combined Operational Margin:** $\delta_{\text{margin}} = 0.027^\circ + 0.003^\circ = \mathbf{0.03^\circ}$.
 
-This unified margin of **0.03°** is applied across `configs/pipeline.yaml`, `provenance.json`, `stats.json`, the Evidence Card, and the Trust page.
+#### 2. Location 2 (`test_location_2`: lat -85.0°, lon 30.0°) -> 0.05°
+1. **Vertical DEM Error Percentile:** The 95th percentile vertical height uncertainty over the near crop is **0.775 m** (median 0.230 m, reflecting rougher highland topography at 85°S).
+2. **Range Evaluated:** At $R = 1,000\text{ m}$, angular elevation uncertainty is $\theta_{\text{DEM}} = \arctan(0.775 / 1000) \times (180/\pi) \approx 0.0444^\circ \approx 0.044^\circ$.
+3. **Local-Up Tilt Allowance:** $\theta_{\text{tilt}} = (100 / 1737400) \times (180/\pi) \approx 0.0033^\circ \approx 0.003^\circ$.
+4. **Combined Operational Margin:** $\delta_{\text{margin}} = 0.0444^\circ + 0.0033^\circ = 0.0477^\circ \approx \mathbf{0.05^\circ}$.

@@ -20,6 +20,8 @@ import {
   SiteFull,
   Horizon,
   Series,
+  IndexSchema,
+  IndexData,
 } from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { LimitationsPanel } from '../components/common/LimitationsPanel';
@@ -49,12 +51,19 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
   const [horizonB, setHorizonB] = useState<Horizon | null>(null);
   const [seriesA, setSeriesA] = useState<Series | null>(null);
   const [seriesB, setSeriesB] = useState<Series | null>(null);
+  const [catalog, setCatalog] = useState<IndexData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
   const [threshold, setThreshold] = useState<number>(0.50);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    fetchJsonData('./data/index.json', IndexSchema)
+      .then(setCatalog)
+      .catch(() => null);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -92,9 +101,20 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
     return calculateDynamicStats(seriesB, threshold);
   }, [seriesB, threshold]);
 
-  // One-line comparative summary generated from template
+  const isDifferentTerrain = siteA && siteB ? siteA.terrain_source !== siteB.terrain_source : false;
+  const sameAnalysisWindow = useMemo(() => {
+    if (!seriesA || !seriesB || !seriesA.time_utc.length || !seriesB.time_utc.length) return false;
+    return (
+      seriesA.time_utc[0] === seriesB.time_utc[0] &&
+      seriesA.time_utc[seriesA.time_utc.length - 1] === seriesB.time_utc[seriesB.time_utc.length - 1]
+    );
+  }, [seriesA, seriesB]);
+
+  const showComparativeSummary = !isDifferentTerrain && sameAnalysisWindow;
+
+  // One-line comparative summary generated from template (suppressed if different terrain or windows)
   const comparativeSummary = useMemo(() => {
-    if (!siteA || !siteB || !statsA || !statsB) return '';
+    if (!siteA || !siteB || !statsA || !statsB || !showComparativeSummary) return '';
     return generateSiteComparison(
       {
         name: siteA.name,
@@ -118,7 +138,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
       },
       threshold
     );
-  }, [siteA, siteB, statsA, statsB, threshold]);
+  }, [siteA, siteB, statsA, statsB, threshold, showComparativeSummary]);
 
   // Draw Overlaid Dual Horizon Skyline Canvas
   useEffect(() => {
@@ -223,10 +243,10 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
             Compare Sites Unavailable
           </div>
           <div style={{ color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 1.5rem auto', lineHeight: 1.5 }}>
-            Comparison requires at least two distinct analysed sites in index.json. Currently, only 1 site is available in the catalog. Multi-site comparative trade studies will activate once a second site is processed by the pipeline.
+            Comparison requires selecting two distinct analysed sites. Please select two different sites to compare.
           </div>
-          <a href="#/" className="btn btn-primary" style={{ display: 'inline-flex', padding: '0.5rem 1rem' }}>
-            ← Return to Mission Browser
+          <a href="#/compare/test-location/test-location-2" className="btn btn-primary" style={{ display: 'inline-flex', padding: '0.5rem 1rem' }}>
+            Compare Default Real Sites
           </a>
         </Card>
       </div>
@@ -330,21 +350,120 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
           </h1>
         </div>
 
-        {/* Generated One-Line Template Statement */}
-        <div
-          style={{
-            padding: '0.85rem 1rem',
-            background: 'rgba(56, 189, 248, 0.12)',
-            border: '1px solid var(--color-blue)',
-            borderRadius: 'var(--radius-sm)',
-            fontSize: '0.95rem',
-            lineHeight: 1.5,
-            color: 'var(--text-main)',
-            fontWeight: 500,
-          }}
-        >
-          {comparativeSummary}
-        </div>
+        {/* Site Selectors */}
+        {catalog && catalog.sites.length > 0 && (
+          <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', margin: '0.75rem 0', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label htmlFor="site-a-select" style={{ fontWeight: 600, fontSize: '0.85rem' }}>Site A:</label>
+              <select
+                id="site-a-select"
+                aria-label="Select Site A"
+                value={siteAId}
+                onChange={(e) => {
+                  window.location.hash = `#/compare/${e.target.value}/${siteBId}`;
+                }}
+                style={{
+                  padding: '0.4rem 0.6rem',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--background-secondary, #0f172a)',
+                  color: 'var(--text-main)',
+                  border: '1px solid var(--border-color)',
+                  fontSize: '0.85rem',
+                }}
+              >
+                {catalog.sites.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} {s.terrain_source === 'synthetic' ? '(Synthetic Benchmark)' : '(Real Terrain)'}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <label htmlFor="site-b-select" style={{ fontWeight: 600, fontSize: '0.85rem' }}>Site B:</label>
+              <select
+                id="site-b-select"
+                aria-label="Select Site B"
+                value={siteBId}
+                onChange={(e) => {
+                  window.location.hash = `#/compare/${siteAId}/${e.target.value}`;
+                }}
+                style={{
+                  padding: '0.4rem 0.6rem',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--background-secondary, #0f172a)',
+                  color: 'var(--text-main)',
+                  border: '1px solid var(--border-color)',
+                  fontSize: '0.85rem',
+                }}
+              >
+                {catalog.sites.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} {s.terrain_source === 'synthetic' ? '(Synthetic Benchmark)' : '(Real Terrain)'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+
+        {/* Terrain Incompatibility Banner */}
+        {isDifferentTerrain && (
+          <div
+            className="banner-alert"
+            role="alert"
+            style={{
+              padding: '0.85rem 1rem',
+              background: 'rgba(239, 68, 68, 0.12)',
+              border: '1px solid var(--color-red, #ef4444)',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.95rem',
+              lineHeight: 1.5,
+              color: '#f87171',
+              fontWeight: 600,
+              marginBottom: '1rem',
+            }}
+          >
+            Not comparable: one site is synthetic
+          </div>
+        )}
+
+        {/* Generated One-Line Template Statement (Only if same terrain and same window) */}
+        {!isDifferentTerrain && sameAnalysisWindow && comparativeSummary && (
+          <div
+            style={{
+              padding: '0.85rem 1rem',
+              background: 'rgba(56, 189, 248, 0.12)',
+              border: '1px solid var(--color-blue)',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.95rem',
+              lineHeight: 1.5,
+              color: 'var(--text-main)',
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            {comparativeSummary}
+          </div>
+        )}
+
+        {!isDifferentTerrain && !sameAnalysisWindow && (
+          <div
+            style={{
+              padding: '0.85rem 1rem',
+              background: 'rgba(245, 158, 11, 0.12)',
+              border: '1px solid var(--color-warning, #f59e0b)',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: '0.9rem',
+              lineHeight: 1.5,
+              color: 'var(--text-muted)',
+              fontWeight: 500,
+              marginBottom: '1rem',
+            }}
+          >
+            Analysis windows differ between sites; comparative winner summary suppressed.
+          </div>
+        )}
 
         {/* Threshold Adjustment Bar */}
         <div
@@ -420,7 +539,9 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
                   Site B: {siteB.name}
                 </th>
                 <th style={{ padding: '0.65rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Delta</th>
-                <th style={{ padding: '0.65rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Advantage</th>
+                {!isDifferentTerrain && (
+                  <th style={{ padding: '0.65rem 0.75rem', borderBottom: '1px solid var(--border-color)' }}>Advantage</th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -433,23 +554,25 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
                   <td style={{ padding: '0.65rem 0.75rem', fontWeight: 600 }}>{row.siteA}</td>
                   <td style={{ padding: '0.65rem 0.75rem', fontWeight: 600 }}>{row.siteB}</td>
                   <td style={{ padding: '0.65rem 0.75rem', fontFamily: 'monospace' }}>{row.delta}</td>
-                  <td style={{ padding: '0.65rem 0.75rem' }}>
-                    {row.advantage === 'A' && (
-                      <Badge variant="info" size="sm">
-                        {siteA.name.split(' ')[0]} +
-                      </Badge>
-                    )}
-                    {row.advantage === 'B' && (
-                      <Badge variant="warning" size="sm">
-                        {siteB.name.split(' ')[0]} +
-                      </Badge>
-                    )}
-                    {row.advantage === 'Equal' && (
-                      <Badge variant="neutral" size="sm">
-                        Comparable
-                      </Badge>
-                    )}
-                  </td>
+                  {!isDifferentTerrain && (
+                    <td style={{ padding: '0.65rem 0.75rem' }}>
+                      {row.advantage === 'A' && (
+                        <Badge variant="info" size="sm">
+                          {siteA.name.split(' ')[0]} +
+                        </Badge>
+                      )}
+                      {row.advantage === 'B' && (
+                        <Badge variant="warning" size="sm">
+                          {siteB.name.split(' ')[0]} +
+                        </Badge>
+                      )}
+                      {row.advantage === 'Equal' && (
+                        <Badge variant="neutral" size="sm">
+                          Comparable
+                        </Badge>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

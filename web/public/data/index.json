@@ -22,6 +22,27 @@
       "notes": "Real terrain test location (-89.5 deg N, 0.0 deg E) computed with LOLA near (20 m) and far (80 m) nested layers and SPICE DE421 kernels."
     },
     {
+      "id": "test-location-2",
+      "name": "Real terrain test location 2 (not a mission site)",
+      "mission_ids": [],
+      "lat_deg": -85.0,
+      "lon_deg": 30.0,
+      "ground_elev_m": 5193.81,
+      "source_links": [
+        "https://pgda.gsfc.nasa.gov/products/78",
+        "https://doi.org/10.3847/PSJ/acf3e1"
+      ],
+      "source_label": "NASA GSFC Planetary Geodesy Data Archive / LOLA 20mpp & 80mpp (Barker et al. 2023)",
+      "source_url": "https://pgda.gsfc.nasa.gov/products/78",
+      "retrieved_on": "2026-11-10",
+      "verified": false,
+      "is_synthetic": false,
+      "is_demo_site": false,
+      "ephemeris_source": "spice_kernels",
+      "terrain_source": "lola_dem",
+      "notes": "Real terrain test location 2 (-85.0 deg N, 30.0 deg E) computed with LOLA near (20 m) and far (80 m) nested layers and SPICE DE421 kernels."
+    },
+    {
       "id": "synthetic-proving-ground",
       "name": "Synthetic Proving Ground (SYNTHETIC EXAMPLE)",
       "mission_ids": [

@@ -540,7 +540,7 @@ export const DepartureWindowMap: React.FC<DepartureWindowMapProps> = ({
         </div>
 
         <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
-          💡 <strong>Pair Programming Interaction:</strong> Click on any departure point or step above to immediately load that specific traverse path into the 2D map. Hatched red spans denote infeasible departure intervals where shadows or terrain gradients obstruct the route.
+          💡 <strong>Departure Interaction:</strong> Click on any departure point or step above to immediately load that specific traverse path into the 2D map. Hatched red spans denote infeasible departure intervals where shadows or terrain gradients obstruct the route.
         </div>
       </div>
     </Card>

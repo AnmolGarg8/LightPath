@@ -23,3 +23,14 @@ This file documents ambiguities, unverified parameters, required datasets, and d
 - **Status**: Assumption Stated
 - **Question**: What maximum terrain slope angle should define `traversable` for standard CLPS-class rovers?
 - **Current Safest Assumption**: Default maximum slope threshold set to 15.0° (standard lunar rover limit, e.g. VIPER / Apollo LRV guidelines). Slopes exceeding 15.0° are flagged `traversable = false`. Configurable via routing parameters.
+
+### 5. Third-Party Dependency Licences (Non-OSI / Unknown Audit)
+- **Status**: Documented Third-Party Audit
+- **Question**: Are all third-party dependencies compliant with NASA Space Apps Challenge open source rules?
+- **Audit Findings**: The automated licence audit (`scripts/make_third_party_licenses.py`) flagged the following packages whose declared licence is non-OSI approved or requires clarification:
+
+| Ecosystem | Package | Version | Declared Licence | Compliance Rationale & Safest Assumption |
+| :--- | :--- | :--- | :--- | :--- |
+| Python / PyPI | `pillow` | 11.3.0 | MIT-CMU | License text provided in distribution metadata; requires manual human confirmation against OSI license list. |
+| Node / npm | `caniuse-lite` | 1.0.30001820 | CC-BY-4.0 | Creative Commons Attribution 4.0 International; standard open content/data license for browser support tables, compatible with open source distribution. |
+| Node / npm | `minimatch` | 10.2.6 | BlueOak-1.0.0 | Permissive model license (Blue Oak Model License 1.0.0); published by open source attorneys to be simpler than MIT. Permissive and commercial-friendly, but not yet formally submitted for OSI cataloging. |

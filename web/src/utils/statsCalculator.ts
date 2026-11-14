@@ -37,6 +37,12 @@ export interface CelestialEvent {
   index: number;
 }
 
+export interface PerStationStats {
+  name: string;
+  uptime_fraction: number;
+  total_uptime_h: number;
+}
+
 export interface DynamicStatsReport {
   threshold: number;
   sun: DynamicCategoryStats;
@@ -46,6 +52,7 @@ export interface DynamicStatsReport {
   joint_sun_dte: DynamicCategoryStats;
   events: CelestialEvent[];
   total_duration_h: number;
+  stations?: PerStationStats[];
 }
 
 /**
@@ -171,6 +178,57 @@ function computeCategoryWindows(
 }
 
 /**
+ * Slices a Series to a half-open analysis window [startUtc, endUtc).
+ */
+export function sliceSeries(series: Series, startUtc: string, endUtc: string): Series {
+  const startTime = new Date(startUtc).getTime();
+  const endTime = new Date(endUtc).getTime();
+
+  const indices: number[] = [];
+  for (let i = 0; i < series.time_utc.length; i++) {
+    const t = new Date(series.time_utc[i]).getTime();
+    if (t >= startTime && t < endTime) {
+      indices.push(i);
+    }
+  }
+
+  if (indices.length === 0) {
+    return {
+      time_utc: [],
+      sun: { az_deg: [], el_deg: [], radius_deg: [], frac: [], status: [] },
+      earth: { az_deg: [], el_deg: [], radius_deg: [], frac: [], status: [], dist_km: [] },
+      dte: { station_names: series.dte.station_names, station_visible: [], link_ok: [] },
+    };
+  }
+
+  const sliceArr = <T>(arr: T[]): T[] => indices.map((i) => arr[i]);
+
+  return {
+    time_utc: sliceArr(series.time_utc),
+    sun: {
+      az_deg: sliceArr(series.sun.az_deg),
+      el_deg: sliceArr(series.sun.el_deg),
+      radius_deg: sliceArr(series.sun.radius_deg),
+      frac: sliceArr(series.sun.frac),
+      status: sliceArr(series.sun.status),
+    },
+    earth: {
+      az_deg: sliceArr(series.earth.az_deg),
+      el_deg: sliceArr(series.earth.el_deg),
+      radius_deg: sliceArr(series.earth.radius_deg),
+      frac: sliceArr(series.earth.frac),
+      status: sliceArr(series.earth.status),
+      dist_km: sliceArr(series.earth.dist_km),
+    },
+    dte: {
+      station_names: series.dte.station_names,
+      station_visible: sliceArr(series.dte.station_visible),
+      link_ok: sliceArr(series.dte.link_ok),
+    },
+  };
+}
+
+/**
  * Recomputes all stats across Sun, Earth, DTE and Joint line-of-sight for a given threshold.
  */
 export function calculateDynamicStats(series: Series, threshold: number): DynamicStatsReport {
@@ -241,6 +299,28 @@ export function calculateDynamicStats(series: Series, threshold: number): Dynami
     }
   }
 
+  // Per-station DTE breakdown
+  const stations: PerStationStats[] = [];
+  if (series.dte?.station_names && series.dte?.station_visible) {
+    const stationNames = series.dte.station_names;
+    for (let sIdx = 0; sIdx < stationNames.length; sIdx++) {
+      let activeCount = 0;
+      for (let t = 0; t < n; t++) {
+        // Station is active if its DSN station is visible and Earth meets threshold
+        const stVis = series.dte.station_visible[t]?.[sIdx] ?? false;
+        const eVis = earthAvailable[t] ?? false;
+        if (stVis && eVis) {
+          activeCount++;
+        }
+      }
+      stations.push({
+        name: stationNames[sIdx],
+        uptime_fraction: n > 0 ? activeCount / n : 0,
+        total_uptime_h: Math.round(activeCount * stepH * 10) / 10,
+      });
+    }
+  }
+
   return {
     threshold,
     sun: sunStats,
@@ -250,5 +330,6 @@ export function calculateDynamicStats(series: Series, threshold: number): Dynami
     joint_sun_dte: jointSunDteStats,
     events,
     total_duration_h: totalDurationH,
+    stations,
   };
 }

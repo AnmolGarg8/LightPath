@@ -265,69 +265,120 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
 
     tolerance_deg = 0.01  # Tightened tolerance per Task S0c
 
-    # Load all Sun rows directly from CSV
-    sun_times, sun_hz_az, sun_hz_el = [], [], []
+    # --- Location 1: Real terrain test location (-89.5 deg N, 0.0 deg E, 30 days / 721 hours) ---
+    sun_times_1, sun_hz_az_1, sun_hz_el_1 = [], [], []
     with open(sun_csv, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            sun_times.append(row["utc"])
-            sun_hz_az.append(float(row["az_deg"]))
-            sun_hz_el.append(float(row["el_deg"]))
+            sun_times_1.append(row["utc"])
+            sun_hz_az_1.append(float(row["az_deg"]))
+            sun_hz_el_1.append(float(row["el_deg"]))
 
-    # Load all Earth rows directly from CSV
-    earth_times, earth_hz_az, earth_hz_el = [], [], []
+    earth_times_1, earth_hz_az_1, earth_hz_el_1 = [], [], []
     with open(earth_csv, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            earth_times.append(row["utc"])
-            earth_hz_az.append(float(row["az_deg"]))
-            earth_hz_el.append(float(row["el_deg"]))
+            earth_times_1.append(row["utc"])
+            earth_hz_az_1.append(float(row["az_deg"]))
+            earth_hz_el_1.append(float(row["el_deg"]))
 
-    # Site coordinates: Lat -89.5, Lon 0.0, Height 0 m on sphere R = 1737.4 km (matching Horizons request alt=0.0 km)
-    lat_deg, lon_deg = -89.5, 0.0
-
-    # Compute production ephemeris using sun_earth_series at 30-minute step with ABCORR_FOR_VALIDATION
-    series = sun_earth_series(
-        points=(lat_deg, lon_deg, R_MOON_M),
-        start_utc=sun_times[0],
-        end_utc=sun_times[-1],
+    series_1 = sun_earth_series(
+        points=(-89.5, 0.0, R_MOON_M),
+        start_utc=sun_times_1[0],
+        end_utc=sun_times_1[-1],
         step_minutes=30,
         abcorr=ABCORR_FOR_VALIDATION,
     )
+    time_to_idx_1 = {ts: idx for idx, ts in enumerate(series_1["time_utc"])}
+    sun_indices_1 = [time_to_idx_1[t] for t in sun_times_1]
+    earth_indices_1 = [time_to_idx_1[t] for t in earth_times_1]
 
-    # Map fixture hours to matching series timestamps at 30-minute steps
-    time_to_idx = {ts: idx for idx, ts in enumerate(series["time_utc"])}
-    sun_indices = [time_to_idx[t] for t in sun_times]
-    earth_indices = [time_to_idx[t] for t in earth_times]
+    lp_sun_az_1 = np.array(series_1["sun"]["az_deg"])[sun_indices_1]
+    lp_sun_el_1 = np.array(series_1["sun"]["el_deg"])[sun_indices_1]
+    d_az_sun_1 = (lp_sun_az_1 - np.array(sun_hz_az_1) + 180.0) % 360.0 - 180.0
+    d_el_sun_1 = lp_sun_el_1 - np.array(sun_hz_el_1)
+    max_az_sun_1, rms_az_sun_1 = float(np.max(np.abs(d_az_sun_1))), float(np.sqrt(np.mean(d_az_sun_1**2)))
+    max_el_sun_1, rms_el_sun_1 = float(np.max(np.abs(d_el_sun_1))), float(np.sqrt(np.mean(d_el_sun_1**2)))
 
-    # Sun evaluations across all matching hourly fixture rows
-    lp_sun_az = np.array(series["sun"]["az_deg"])[sun_indices]
-    lp_sun_el = np.array(series["sun"]["el_deg"])[sun_indices]
-    n_sun = len(sun_hz_az)
-    d_az_sun = (lp_sun_az - np.array(sun_hz_az) + 180.0) % 360.0 - 180.0
-    d_el_sun = lp_sun_el - np.array(sun_hz_el)
-    max_az_sun = float(np.max(np.abs(d_az_sun)))
-    rms_az_sun = float(np.sqrt(np.mean(d_az_sun**2)))
-    max_el_sun = float(np.max(np.abs(d_el_sun)))
-    rms_el_sun = float(np.sqrt(np.mean(d_el_sun**2)))
+    lp_earth_az_1 = np.array(series_1["earth"]["az_deg"])[earth_indices_1]
+    lp_earth_el_1 = np.array(series_1["earth"]["el_deg"])[earth_indices_1]
+    d_az_earth_1 = (lp_earth_az_1 - np.array(earth_hz_az_1) + 180.0) % 360.0 - 180.0
+    d_el_earth_1 = lp_earth_el_1 - np.array(earth_hz_el_1)
+    max_az_earth_1, rms_az_earth_1 = float(np.max(np.abs(d_az_earth_1))), float(np.sqrt(np.mean(d_az_earth_1**2)))
+    max_el_earth_1, rms_el_earth_1 = float(np.max(np.abs(d_el_earth_1))), float(np.sqrt(np.mean(d_el_earth_1**2)))
 
-    # Earth evaluations across all matching hourly fixture rows
-    lp_earth_az = np.array(series["earth"]["az_deg"])[earth_indices]
-    lp_earth_el = np.array(series["earth"]["el_deg"])[earth_indices]
-    n_earth = len(earth_hz_az)
-    d_az_earth = (lp_earth_az - np.array(earth_hz_az) + 180.0) % 360.0 - 180.0
-    d_el_earth = lp_earth_el - np.array(earth_hz_el)
-    max_az_earth = float(np.max(np.abs(d_az_earth)))
-    rms_az_earth = float(np.sqrt(np.mean(d_az_earth**2)))
-    max_el_earth = float(np.max(np.abs(d_el_earth)))
-    rms_el_earth = float(np.sqrt(np.mean(d_el_earth**2)))
+    # --- Location 2: Real terrain test location 2 (-85.0 deg N, 30.0 deg E, 7 days / 169 hours) ---
+    sun_csv_2 = FIXTURES_DIR / "horizons_test_location_2_sun.csv"
+    earth_csv_2 = FIXTURES_DIR / "horizons_test_location_2_earth.csv"
+    has_loc2 = sun_csv_2.exists() and earth_csv_2.exists()
 
-    max_overall_err = max(max_az_sun, max_el_sun, max_az_earth, max_el_earth)
+    max_az_sun_2, rms_az_sun_2 = 0.0, 0.0
+    max_el_sun_2, rms_el_sun_2 = 0.0, 0.0
+    max_az_earth_2, rms_az_earth_2 = 0.0, 0.0
+    max_el_earth_2, rms_el_earth_2 = 0.0, 0.0
+    n_sun_2, n_earth_2 = 0, 0
+
+    if has_loc2:
+        sun_times_2, sun_hz_az_2, sun_hz_el_2 = [], [], []
+        with open(sun_csv_2, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                sun_times_2.append(row["utc"])
+                sun_hz_az_2.append(float(row["az_deg"]))
+                sun_hz_el_2.append(float(row["el_deg"]))
+
+        earth_times_2, earth_hz_az_2, earth_hz_el_2 = [], [], []
+        with open(earth_csv_2, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                earth_times_2.append(row["utc"])
+                earth_hz_az_2.append(float(row["az_deg"]))
+                earth_hz_el_2.append(float(row["el_deg"]))
+
+        series_2 = sun_earth_series(
+            points=(-85.0, 30.0, R_MOON_M),
+            start_utc=sun_times_2[0],
+            end_utc=sun_times_2[-1],
+            step_minutes=30,
+            abcorr=ABCORR_FOR_VALIDATION,
+        )
+        time_to_idx_2 = {ts: idx for idx, ts in enumerate(series_2["time_utc"])}
+        sun_indices_2 = [time_to_idx_2[t] for t in sun_times_2]
+        earth_indices_2 = [time_to_idx_2[t] for t in earth_times_2]
+
+        lp_sun_az_2 = np.array(series_2["sun"]["az_deg"])[sun_indices_2]
+        lp_sun_el_2 = np.array(series_2["sun"]["el_deg"])[sun_indices_2]
+        d_az_sun_2 = (lp_sun_az_2 - np.array(sun_hz_az_2) + 180.0) % 360.0 - 180.0
+        d_el_sun_2 = lp_sun_el_2 - np.array(sun_hz_el_2)
+        max_az_sun_2, rms_az_sun_2 = float(np.max(np.abs(d_az_sun_2))), float(np.sqrt(np.mean(d_az_sun_2**2)))
+        max_el_sun_2, rms_el_sun_2 = float(np.max(np.abs(d_el_sun_2))), float(np.sqrt(np.mean(d_el_sun_2**2)))
+
+        lp_earth_az_2 = np.array(series_2["earth"]["az_deg"])[earth_indices_2]
+        lp_earth_el_2 = np.array(series_2["earth"]["el_deg"])[earth_indices_2]
+        d_az_earth_2 = (lp_earth_az_2 - np.array(earth_hz_az_2) + 180.0) % 360.0 - 180.0
+        d_el_earth_2 = lp_earth_el_2 - np.array(earth_hz_el_2)
+        max_az_earth_2, rms_az_earth_2 = float(np.max(np.abs(d_az_earth_2))), float(np.sqrt(np.mean(d_az_earth_2**2)))
+        max_el_earth_2, rms_el_earth_2 = float(np.max(np.abs(d_el_earth_2))), float(np.sqrt(np.mean(d_el_earth_2**2)))
+        n_sun_2, n_earth_2 = len(sun_hz_az_2), len(earth_hz_az_2)
+
+    max_overall_err = max(
+        max_az_sun_1, max_el_sun_1, max_az_earth_1, max_el_earth_1,
+        max_az_sun_2, max_el_sun_2, max_az_earth_2, max_el_earth_2,
+    )
 
     assert max_overall_err <= tolerance_deg, (
         f"V3 ephemeris difference {max_overall_err:.6f} deg exceeds tolerance {tolerance_deg} deg "
-        f"(Sun Az max: {max_az_sun:.5f}°, El max: {max_el_sun:.5f}°; "
-        f"Earth Az max: {max_az_earth:.5f}°, El max: {max_el_earth:.5f}°)"
+        f"(Loc 1: Sun Az max {max_az_sun_1:.5f}°, El max {max_el_sun_1:.5f}°; Earth Az max {max_az_earth_1:.5f}°, El max {max_el_earth_1:.5f}° | "
+        f"Loc 2: Sun Az max {max_az_sun_2:.5f}°, El max {max_el_sun_2:.5f}°; Earth Az max {max_az_earth_2:.5f}°, El max {max_el_earth_2:.5f}°)"
+    )
+
+    n_sun_1 = len(sun_hz_az_1)
+    n_earth_1 = len(earth_hz_az_1)
+    measured_summary = (
+        f"Loc 1 (721h/30d): Sun Az max {max_az_sun_1:.6f}°, rms {rms_az_sun_1:.6f}°; El max {max_el_sun_1:.6f}°, rms {rms_el_sun_1:.6f}° / "
+        f"Earth Az max {max_az_earth_1:.6f}°, rms {rms_az_earth_1:.6f}°; El max {max_el_earth_1:.6f}°, rms {rms_el_earth_1:.6f}° | "
+        f"Loc 2 (169h/7d): Sun Az max {max_az_sun_2:.6f}°, rms {rms_az_sun_2:.6f}°; El max {max_el_sun_2:.6f}°, rms {rms_el_sun_2:.6f}° / "
+        f"Earth Az max {max_az_earth_2:.6f}°, rms {rms_az_earth_2:.6f}°; El max {max_el_earth_2:.6f}°, rms {rms_el_earth_2:.6f}°"
     )
 
     record_verification(
@@ -335,15 +386,15 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         name="Ephemeris cross-check against JPL Horizons",
         status="passed",
         tolerance=f"{tolerance_deg} deg",
-        measured_value=(
-            f"Sun (N={n_sun}): Az max {max_az_sun:.5f}°, rms {rms_az_sun:.5f}°; El max {max_el_sun:.5f}°, rms {rms_el_sun:.5f}° | "
-            f"Earth (N={n_earth}): Az max {max_az_earth:.5f}°, rms {rms_az_earth:.5f}°; El max {max_el_earth:.5f}°, rms {rms_el_earth:.5f}° "
-            f"[abcorr={ABCORR_FOR_VALIDATION}, site height=0m]"
-        ),
+        measured_value=measured_summary,
         expected_value="JPL Horizons ephemeris query (DE441, topocentric MOON_ME, apparent)",
         source_of_expected_value="NASA JPL Horizons On-Line Ephemeris System",
         data_type="real",
-        citation=f"JPL Horizons batch query; MOON_ME frame, {ABCORR_FOR_VALIDATION} aberration, site height 0m (R=1737.4 km)",
+        citation=(
+            f"JPL Horizons batch queries for Location 1 (721h / 30-day: 2026-11-01 to 2026-12-01) "
+            f"and Location 2 (169h / 7-day: 2026-11-01 to 2026-11-08); "
+            f"MOON_ME frame, {ABCORR_FOR_VALIDATION} aberration, site height 0m (R=1737.4 km)"
+        ),
     )
 
 

@@ -14,6 +14,8 @@ const ScenarioCompareView = lazy(() =>
   import('./views/ScenarioCompareView').then((m) => ({ default: m.ScenarioCompareView }))
 );
 const DataView = lazy(() => import('./views/DataView').then((m) => ({ default: m.DataView })));
+const CreditsView = lazy(() => import('./views/CreditsView').then((m) => ({ default: m.CreditsView })));
+const LicensesView = lazy(() => import('./views/LicensesView').then((m) => ({ default: m.LicensesView })));
 import { decodeScenarioHash } from './utils/scenarioCodec';
 import { useSiteCatalog } from './utils/dataLoader';
 
@@ -116,6 +118,19 @@ export function useRouter(): { currentPath: string; view: React.ReactNode } {
   // 11. Open Data & Downloads /data
   else if (cleanPath === '/data' || cleanPath.startsWith('/data')) {
     view = <DataView />;
+  }
+  // 12. Credits & Citations /credits
+  else if (cleanPath === '/credits' || cleanPath.startsWith('/credits')) {
+    view = <CreditsView />;
+  }
+  // 13. Third-Party Licences /licenses or /licences
+  else if (
+    cleanPath === '/licenses' ||
+    cleanPath.startsWith('/licenses') ||
+    cleanPath === '/licences' ||
+    cleanPath.startsWith('/licences')
+  ) {
+    view = <LicensesView />;
   }
   // 12. Reproducible Scenario Link /scenario/:slug
   else if (cleanPath.startsWith('/scenario/')) {

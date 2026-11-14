@@ -1,9 +1,9 @@
 site_id,target,window_id,start_utc,end_utc,duration_h,truncated_at_start,truncated_at_end,threshold_pct,mast_height_m,is_synthetic,ephemeris_source,terrain_source,provenance_hash
-test-location,sun,0,2026-11-01T00:00:00Z,2026-11-01T09:30:00Z,9.5,True,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,sun,1,2026-11-24T14:00:00Z,2026-12-01T00:00:00Z,154.0,False,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,earth,0,2026-11-01T00:00:00Z,2026-11-01T16:00:00Z,16.0,True,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,earth,1,2026-11-18T11:00:00Z,2026-11-28T17:30:00Z,246.5,False,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,dte,0,2026-11-01T00:00:00Z,2026-11-01T16:00:00Z,16.0,True,False,6.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,dte,1,2026-11-18T11:00:00Z,2026-11-28T17:30:00Z,246.5,False,False,6.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,joint,0,2026-11-01T00:00:00Z,2026-11-01T09:30:00Z,9.5,True,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
-test-location,joint,1,2026-11-24T14:00:00Z,2026-11-28T17:30:00Z,99.5,False,False,50.0,2.0,False,spice_kernels,lola_dem,9be97a7b
+test-location,sun,0,2026-11-01T00:00:00Z,2026-11-01T09:30:00Z,9.5,True,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,sun,1,2026-11-24T14:00:00Z,2026-12-01T00:00:00Z,154.0,False,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,earth,0,2026-11-01T00:00:00Z,2026-11-01T16:00:00Z,16.0,True,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,earth,1,2026-11-18T11:00:00Z,2026-11-28T17:30:00Z,246.5,False,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,dte,0,2026-11-01T00:00:00Z,2026-11-01T16:00:00Z,16.0,True,False,6.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,dte,1,2026-11-18T11:00:00Z,2026-11-28T17:30:00Z,246.5,False,False,6.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,joint,0,2026-11-01T00:00:00Z,2026-11-01T09:30:00Z,9.5,True,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06
+test-location,joint,1,2026-11-24T14:00:00Z,2026-11-28T17:30:00Z,99.5,False,False,50.0,2.0,False,spice_kernels,lola_dem,310c2c06

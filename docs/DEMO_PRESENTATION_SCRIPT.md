@@ -165,7 +165,7 @@ As observer height $z_0$ increases, the observer's horizon dips according to $\t
 
 #### Demo Narration & Actions
 1. **Action**: Locate the **Observer Mast Height** slider and drag it from `2.0m` to `5.0m`.
-2. **Narration**: *"Watch the skyline as we raise the observer mast from two to five meters. The entire horizon drops. By depressing the skyline, a five-meter mast elevates the Sun above near-field obstacles, recovering ninety hours of continuous illumination. This lets payload engineers optimize mast mass versus battery sizing in seconds."*
+2. **Narration**: *"Watch the skyline as we raise the observer mast from two to five meters. The entire horizon drops. By depressing the skyline, a five-meter mast elevates the Sun above near-field obstacles, recovering ninety hours of continuous illumination. This lets payload engineers optimize mast height versus battery sizing in seconds."*
 
 ---
 

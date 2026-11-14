@@ -103,7 +103,7 @@ export const RobustnessPanel: React.FC<RobustnessPanelProps> = ({
           >
             <div>
               <strong style={{ color: 'var(--accent-primary)', fontSize: 'var(--text-sm)' }}>
-                CONSERVATIVE MODE (Horizon Raised by {caution?.horizon_margin_deg.toFixed(2) ?? '0.10'}°)
+                CONSERVATIVE MODE (Horizon Raised by {caution?.horizon_margin_deg.toFixed(2) ?? '0.03'}°)
               </strong>
               <p style={{ margin: '0.2rem 0 0', fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
                 Marginal cells with solar fraction near threshold count as dark to protect against LOLA DEM elevation noise.

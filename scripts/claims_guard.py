@@ -65,6 +65,9 @@ UNCONDITIONAL_FORBIDDEN_PHRASES: List[str] = [
     "NASA CLPS Provider",
     "CLPS Target Assessment",
     "lunar nodal period",
+    "multi-threaded",
+    "mast mass",
+    "cryptographically verified",
 ]
 
 SCAN_TARGETS = [

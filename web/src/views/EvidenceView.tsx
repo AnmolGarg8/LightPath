@@ -24,6 +24,8 @@ import {
   Series,
   MissionsListSchema,
   Mission,
+  StatsSchema,
+  Stats,
 } from '../types/schemas';
 import { ValidationErrorPage } from '../components/ui/ValidationErrorPage';
 import { calculateDynamicStats } from '../utils/statsCalculator';
@@ -52,6 +54,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
   const [provenance, setProvenance] = useState<Provenance | null>(null);
   const [runInfo, setRunInfo] = useState<RunInfo | null>(null);
   const [series, setSeries] = useState<Series | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -66,13 +69,15 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
       fetchJsonData(`./data/${siteId}/run_info.json`, RunInfoSchema),
       fetchJsonData(`./data/${siteId}/series.json`, SeriesSchema),
       fetchJsonData(`./data/missions.json`, MissionsListSchema),
+      fetchJsonData(`./data/${siteId}/stats.json`, StatsSchema).catch(() => null),
     ])
-      .then(([siteData, provData, runData, seriesData, missionsData]) => {
+      .then(([siteData, provData, runData, seriesData, missionsData, statsData]) => {
         setSite(siteData);
         setProvenance(provData);
         setRunInfo(runData);
         setSeries(seriesData);
         setMissions(missionsData);
+        if (statsData) setStats(statsData);
         setLoading(false);
       })
       .catch((err) => {
@@ -408,7 +413,7 @@ export const EvidenceView: React.FC<EvidenceViewProps> = ({ siteId }) => {
           <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px', fontSize: '10px' }}>
             <div>
               <p style={{ margin: '0 0 4px 0', color: '#334155' }}>
-                <strong>Margin Definition:</strong> A safety margin of <strong>±0.03°</strong> elevation is applied to the horizon skyline to classify status. Robust visible requires disc fraction ≥ 50% with horizon raised by margin; robust blocked occurs when lower than 50% with horizon lowered.
+                <strong>Margin Definition:</strong> A safety margin of <strong>±{(stats?.thresholds?.margin_deg ?? 0.03).toFixed(2)}°</strong> elevation is applied to the horizon skyline to classify status. Robust visible requires disc fraction ≥ 50% with horizon raised by margin; robust blocked occurs when lower than 50% with horizon lowered.
               </p>
               <p style={{ margin: 0, color: '#64748b', fontSize: '9px' }}>
                 Derived from NASA LDEM error map 95th percentile vertical error (0.468 m) evaluated at 1,000 m range (0.027°), plus local-up tilt allowance (0.003°), yielding 0.03°.
