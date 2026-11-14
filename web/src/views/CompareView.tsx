@@ -285,7 +285,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
       metric: 'Sunlight Visibility Uptime',
       siteA: `${aSun.toFixed(1)}%`,
       siteB: `${bSun.toFixed(1)}%`,
-      delta: `${Math.abs(aSun - bSun).toFixed(1)}%`,
+      delta: `+${Math.abs(aSun - bSun).toFixed(1)} percentage points of the window`,
       advantage: aSun > bSun ? 'A' : aSun < bSun ? 'B' : 'Equal',
       description: `Percentage of window with solar disc fraction ≥ ${thresholdPct}%.`,
     },
@@ -293,7 +293,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
       metric: 'Earth Line-of-Sight Uptime',
       siteA: `${aEarth.toFixed(1)}%`,
       siteB: `${bEarth.toFixed(1)}%`,
-      delta: `${Math.abs(aEarth - bEarth).toFixed(1)}%`,
+      delta: `+${Math.abs(aEarth - bEarth).toFixed(1)} percentage points of the window`,
       advantage: aEarth > bEarth ? 'A' : aEarth < bEarth ? 'B' : 'Equal',
       description: `Geometric line of sight to Earth disc fraction ≥ ${thresholdPct}%.`,
     },
@@ -301,7 +301,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
       metric: 'Direct-to-Earth Contact (DTE)',
       siteA: `${aDte.toFixed(1)}%`,
       siteB: `${bDte.toFixed(1)}%`,
-      delta: `${Math.abs(aDte - bDte).toFixed(1)}%`,
+      delta: `+${Math.abs(aDte - bDte).toFixed(1)} percentage points of the window`,
       advantage: aDte > bDte ? 'A' : aDte < bDte ? 'B' : 'Equal',
       description: 'Simultaneous line of sight to Earth and DSN stations above 6.0° mask.',
     },
@@ -309,7 +309,7 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
       metric: 'Joint Sun + DTE Line of Sight',
       siteA: `${aJoint.toFixed(1)}%`,
       siteB: `${bJoint.toFixed(1)}%`,
-      delta: `${Math.abs(aJoint - bJoint).toFixed(1)}%`,
+      delta: `+${Math.abs(aJoint - bJoint).toFixed(1)} percentage points of the window`,
       advantage: aJoint > bJoint ? 'A' : aJoint < bJoint ? 'B' : 'Equal',
       description: 'Golden mission window with both solar illumination and DSN contact.',
     },
@@ -339,16 +339,30 @@ export const CompareView: React.FC<CompareViewProps> = ({ siteAId, siteBId }) =>
     },
   ];
 
+  const neitherIsLandingSite = !siteA.is_mission_site && !siteB.is_mission_site;
+
   return (
     <div className="compare-container" style={{ padding: '1rem 0' }}>
       {/* Title & One-Line Comparison Banner */}
       <Card style={{ padding: '1.25rem', marginBottom: '1.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
           <ArrowRightLeft size={22} style={{ color: 'var(--color-blue)' }} />
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>
-            Side-by-Side Landing Site Trade Study
+            Test Location Comparison
           </h1>
         </div>
+        {neitherIsLandingSite && (
+          <div
+            style={{
+              fontSize: '0.875rem',
+              color: 'var(--text-muted)',
+              marginBottom: '0.75rem',
+              fontStyle: 'italic',
+            }}
+          >
+            These are terrain test locations, not landing sites.
+          </div>
+        )}
 
         {/* Site Selectors */}
         {catalog && catalog.sites.length > 0 && (

@@ -34,7 +34,7 @@ describe('Templated Comparison Generator', () => {
     };
 
     const text = generateSiteComparison(siteA, siteB, 0.50);
-    expect(text).toContain('Shackleton Peak provides 20.0% greater sunlight visibility');
+    expect(text).toContain('Shackleton Peak provides +20.0 percentage points of the window greater sunlight visibility');
     expect(text).toContain('12.0h shorter longest Earth line-of-sight outage');
     expect(text).toContain('(threshold ≥ 50% disc)');
 
@@ -68,7 +68,7 @@ describe('Templated Comparison Generator', () => {
     };
 
     const text = generateSiteComparison(siteA, siteB, 0.80);
-    expect(text).toContain('Connecting Ridge offers 10.0% more sunlight visibility, but incurs a 14.0h longer Earth line-of-sight outage');
+    expect(text).toContain('Connecting Ridge offers +10.0 percentage points of the window more sunlight visibility, but incurs a 14.0h longer Earth line-of-sight outage');
     expect(text).toContain('(threshold ≥ 80% disc)');
   });
 
@@ -96,6 +96,6 @@ describe('Templated Comparison Generator', () => {
     };
 
     const text = generateSiteComparison(siteA, siteB, 0.50);
-    expect(text).toContain('demonstrate comparable illumination visibility and Earth line-of-sight availability within 1.0%');
+    expect(text).toContain('demonstrate comparable illumination visibility and Earth line-of-sight availability within 1.0 percentage point of the window');
   });
 });

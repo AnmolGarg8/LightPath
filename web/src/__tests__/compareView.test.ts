@@ -59,4 +59,13 @@ describe('Compare View Rules and Incompatibility Banner', () => {
     expect(synth.terrain_source).toBe('synthetic');
     expect(synth.is_synthetic).toBe(true);
   });
+
+  it('CompareView has Test Location Comparison heading, caption when non-landing, and percentage points deltas', () => {
+    const compareViewPath = path.resolve(__dirname, '../views/CompareView.tsx');
+    const content = fs.readFileSync(compareViewPath, 'utf-8');
+
+    expect(content).toContain('Test Location Comparison');
+    expect(content).toContain('These are terrain test locations, not landing sites.');
+    expect(content).toContain('percentage points of the window');
+  });
 });
