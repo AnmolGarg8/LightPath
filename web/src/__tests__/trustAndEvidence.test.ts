@@ -212,7 +212,7 @@ describe('Evidence Card Data Exports', () => {
     const ics = generateEventsIcs('Synthetic Proving Ground', mockStats.events, mockStats);
     expect(ics).toContain('BEGIN:VCALENDAR');
     expect(ics).toContain('VERSION:2.0');
-    expect(ics).toContain('PRODID:-//NASA Space Apps 2026//LightPath Mission Browser//EN');
+    expect(ics).toContain('PRODID:-//NASA Space Apps 2026//LightPath Site Navigator//EN');
     expect(ics).toContain('SUMMARY:Lunar Sunrise Event at Synthetic Proving Ground');
     expect(ics).toContain('SUMMARY:Lunar Sunset Event at Synthetic Proving Ground');
     expect(ics).toContain('SUMMARY:Longest Continuous Darkness Spell');

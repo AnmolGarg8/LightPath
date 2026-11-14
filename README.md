@@ -1,9 +1,9 @@
-# LightPath — Prototype Lunar South-Pole Planner
+# LightPath — Prototype Lunar Landing Site Navigator
 
-> Prototype lunar south-pole planner: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning.
+> Prototype Lunar Landing Site Navigator: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning.
 
-**NASA Space Apps Challenge 2026: Commercial Lunar Payload Services (CLPS) Mission Browser**  
-*Challenge: Commercial Lunar Payload Services (CLPS) Mission Browser (see docs/CHALLENGE_STATEMENT.md)*
+**NASA Space Apps Challenge 2026: Lunar Landing Site Navigator**  
+*Challenge: Lunar Landing Site Navigator (see docs/CHALLENGE_STATEMENT.md)*
 
 [![LightPath CI](https://github.com/AnmolGarg8/LightPath/actions/workflows/ci.yml/badge.svg)](https://github.com/AnmolGarg8/LightPath/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -27,7 +27,7 @@
 
 ## 1. What It Is
 
-**LightPath** is a deterministic, open-source lunar south-pole mission browser and space-time navigation tool. Built for NASA Commercial Lunar Payload Services (CLPS) landing sites and future Artemis surface operations, LightPath evaluates when the Sun and Earth are above the real terrain horizon, models partial disc illumination and occultation, tracks Direct-to-Earth (DTE) Deep Space Network (DSN) ground station contact, and calculates dynamic traversability across moving shadows.
+**LightPath** is a deterministic, open-source lunar landing site navigator and space-time navigation tool. Built for lunar south-pole exploration and surface operations, LightPath evaluates when the Sun and Earth are above the real terrain horizon, models partial disc illumination and occultation, tracks Direct-to-Earth (DTE) Deep Space Network (DSN) ground station contact, and calculates dynamic traversability across moving shadows.
 
 ---
 

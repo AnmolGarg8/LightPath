@@ -33,7 +33,7 @@ export const Footer: React.FC = () => {
         >
           <div>
             <strong style={{ color: 'var(--text-primary)', fontSize: 'var(--text-sm)' }}>
-              LightPath — CLPS Lunar Mission Browser
+              LightPath — Lunar Landing Site Navigator
             </strong>
             <p style={{ marginTop: '0.25rem' }}>
               NASA Space Apps Challenge 2026 preliminary planning and education platform.

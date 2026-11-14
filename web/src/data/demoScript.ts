@@ -13,7 +13,7 @@ export function getDemoSteps(
   return [
     {
       id: 1,
-      title: '1. Lunar Mission & Site Browser',
+      title: '1. Lunar Landing Site Navigator',
       caption: 'LightPath evaluates lunar south pole exploration sites for solar illumination, Earth line-of-sight, and communications windows.',
       route: '#/',
       durationSeconds: 10,

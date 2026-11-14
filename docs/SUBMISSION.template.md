@@ -1,7 +1,7 @@
 # NASA Space Apps Challenge 2026 — Official Submission Document
 
 **Challenge Name**: Commercial Lunar Payload Services (CLPS) Mission Browser  
-**Project Title**: LightPath — CLPS Lunar Mission Browser & Space-Time Traverse Planner  
+**Project Title**: LightPath — Lunar Landing Site Navigator & Space-Time Traverse Planner  
 **Submission Challenge**: Commercial Lunar Payload Services (CLPS) Mission Browser [Official track pending paste in docs/CHALLENGE_STATEMENT.md]  
 *Reference Baseline: {{site_name}} ({{site_lat_deg}}° N, {{site_lon_deg}}° E) | Commit: {{commit_hash}}*
 

@@ -341,7 +341,7 @@ export const HomeView: React.FC = () => {
           }}
         >
           <Badge variant="info" size="sm" icon={<Radio size={12} />}>
-            NASA Space Apps Challenge 2026 · CLPS Mission Browser & Route Solver
+            NASA Space Apps Challenge 2026 · Lunar Landing Site Navigator
           </Badge>
 
           <h1

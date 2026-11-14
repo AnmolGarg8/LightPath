@@ -10,7 +10,7 @@ In your GitHub repository home page (`https://github.com/AnmolGarg8/LightPath`),
 
 ### Short Repository Description
 ```text
-CLPS Lunar Mission Browser & Space-Time Traverse Planner: deterministic topocentric illumination, DTE DSN visibility, and dynamic 4D rover traverse routing across moving south-pole shadows.
+Lunar Landing Site Navigator & Space-Time Traverse Planner: deterministic topocentric illumination, DTE DSN visibility, and dynamic 4D rover traverse routing across moving south-pole shadows.
 ```
 *(Character count: 187 chars — well within GitHub's 350-character limit)*.
 

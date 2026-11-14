@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
   const hasSourcedBacktest = false; // No sourced backtest case exists in production until docs/BACKTEST_CASE.md is supplied (Rule 2)
 
   const navLinks = [
-    { href: '#/', label: 'Mission Browser' },
+    { href: '#/', label: 'Site Navigator' },
     { href: `#/compare/${demoSiteId}/${secondSiteId}`, label: 'Compare Sites' },
     { href: `#/scan/${demoSiteId}`, label: 'Area Scan' },
     { href: `#/route/${demoSiteId}`, label: 'Route Planner' },
@@ -115,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({ currentRoute }) => {
                 marginTop: '-2px',
               }}
             >
-              CLPS Lunar Mission Browser
+              Lunar Landing Site Navigator
             </span>
           </div>
         </a>

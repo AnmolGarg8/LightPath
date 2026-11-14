@@ -2,7 +2,7 @@
 
 > **NASA Space Apps Challenge 2026 Compliance Document**  
 > **Challenge:** Commercial Lunar Payload Services (CLPS) Mission Browser  
-> **Project:** LightPath — CLPS Lunar Mission Browser & Space-Time Traverse Planner  
+> **Project:** LightPath — Lunar Landing Site Navigator & Space-Time Traverse Planner  
 > **Governing Rules:** [`docs/PROJECT_RULES.md`](PROJECT_RULES.md) (Rule 2: Never invent facts; Rule 11: Attribution; Rule 8: No runtime ML).
 
 ---

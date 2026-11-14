@@ -1,17 +1,17 @@
 cff-version: 1.2.0
 message: "If you use this software, data, or methodology in academic research or mission planning, please cite it as below."
-title: "LightPath: Lunar South-Pole Solar Illumination, Direct-to-Earth Line of Sight, and Space-Time Route Solver"
+title: "LightPath: Lunar Landing Site Navigator"
 version: 1.0.0
 date-released: 2026-11-02
 license: MIT
 repository-code: "https://github.com/[team-to-fill]/lightpath"
 url: "https://[team-to-fill].github.io/lightpath/"
-abstract: "Prototype lunar south-pole planner: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning."
+abstract: "Prototype Lunar Landing Site Navigator: SPICE Sun and Earth visibility checked against JPL Horizons, LOLA terrain at one test site, and in-browser route planning."
 keywords:
   - "lunar south pole"
   - "solar illumination"
   - "direct-to-earth line of sight"
-  - "CLPS lunar mission browser"
+  - "lunar landing site navigator"
   - "spatio-temporal route planning"
   - "astrodynamics"
 authors:

@@ -68,6 +68,8 @@ UNCONDITIONAL_FORBIDDEN_PHRASES: List[str] = [
     "multi-threaded",
     "mast mass",
     "cryptographically verified",
+    "CLPS Lunar Mission Browser",
+    "CLPS Mission Browser & Route Solver",
 ]
 
 SCAN_TARGETS = [

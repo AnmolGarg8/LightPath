@@ -1,6 +1,6 @@
 # LightPath Project Rules (Prompt 0)
 
-LightPath (working title), a NASA Space Apps Challenge 2026 project for the challenge CLPS Lunar Mission Browser. Read these rules before every task.
+LightPath (working title), a NASA Space Apps Challenge 2026 project for the challenge Lunar Landing Site Navigator. Read these rules before every task.
 
 ## PURPOSE
 LightPath shows, for lunar south-pole CLPS sites and a date range: when the Sun and Earth are above the terrain horizon (including the visible fraction of each disc), when a ground station on Earth can also see the Moon (direct-to-Earth contact), how uncertain that is, and how the answer changes with mast height, landing-point offset and, as the signature feature, motion: whether a rover or crew can travel from A to B while light and link are available. It is a preliminary planning and education tool. Sun visibility is not electrical power. Earth visibility is not a link budget. It is not for flight operations and does not certify landing or traverse safety.

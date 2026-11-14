@@ -147,7 +147,7 @@ test.describe('LightPath End-to-End Production Smoke Suite', () => {
 
     // 3. Click every Header navigation link
     const headerLinks = [
-      { name: 'Mission Browser', selector: 'header a:has-text("Mission Browser")' },
+      { name: 'Site Navigator', selector: 'header a:has-text("Site Navigator")' },
       { name: 'Compare Sites', selector: 'header a:has-text("Compare Sites")' },
       { name: 'Area Scan', selector: 'header a:has-text("Area Scan")' },
       { name: 'Route Planner', selector: 'header a:has-text("Route Planner")' },

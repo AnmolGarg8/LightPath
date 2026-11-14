@@ -81,7 +81,7 @@ export function generateEventsIcs(
 
   lines.push('BEGIN:VCALENDAR');
   lines.push('VERSION:2.0');
-  lines.push('PRODID:-//NASA Space Apps 2026//LightPath Mission Browser//EN');
+  lines.push('PRODID:-//NASA Space Apps 2026//LightPath Site Navigator//EN');
   lines.push('CALSCALE:GREGORIAN');
   lines.push('METHOD:PUBLISH');
   lines.push(`X-WR-CALNAME:LightPath - ${siteName} Lunar Events`);

@@ -104,7 +104,7 @@ export const ValidationErrorPage: React.FC<ValidationErrorPageProps> = ({ error,
           </button>
         )}
         <a href="#/" className="btn btn-secondary">
-          Return to Mission Browser
+          Return to Site Navigator
         </a>
       </div>
     </div>
