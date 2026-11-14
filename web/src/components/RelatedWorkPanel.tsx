@@ -3,6 +3,16 @@ import { Card } from './ui/Card';
 import { Badge } from './ui/Badge';
 import { BookOpen, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 
+export interface VerifiedReference {
+  title: string;
+  authors: string;
+  year: string;
+  link: string;
+}
+
+// References curated in docs/RELATED_WORK_SOURCES.md that a human has marked verified
+const VERIFIED_REFERENCES: VerifiedReference[] = [];
+
 export const RelatedWorkPanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,15 +69,29 @@ export const RelatedWorkPanel: React.FC = () => {
         >
           <div style={{ marginTop: '0.75rem', marginBottom: '1rem' }}>
             <p style={{ margin: '0 0 0.5rem 0' }}>
-              <strong>Prior Art Acknowledgement:</strong> Lunar south-pole visibility tools and traverse planners with sun and shadow
-              constraints already exist in aerospace engineering, NASA mission operations, and planetary science literature.
-              High-performance computing pipelines simulate polar illumination and obstacle avoidance for lunar surface operations.
+              Terrain-aware illumination tools and traverse planners with sun and shadow constraints already exist.
             </p>
-            <p style={{ margin: '0', fontStyle: 'italic', color: 'var(--text-muted)' }}>
-              In accordance with Project Rule 2 (Never invent facts or citations), verified names, publications, and repository links
-              for existing prior tools are curated by human investigators in{' '}
-              <code>docs/RELATED_WORK_SOURCES.md</code>.
-            </p>
+            {VERIFIED_REFERENCES.length > 0 ? (
+              <ul style={{ margin: '0.5rem 0 0 0', paddingLeft: '1.25rem' }}>
+                {VERIFIED_REFERENCES.map((ref, idx) => (
+                  <li key={idx} style={{ marginBottom: '0.35rem' }}>
+                    <a
+                      href={ref.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'var(--color-blue)', textDecoration: 'underline', fontWeight: 600 }}
+                    >
+                      {ref.title}
+                    </a>{' '}
+                    — {ref.authors} ({ref.year})
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                Detailed context and citations: <a href="https://github.com/AnmolGarg8/LightPath/blob/main/docs/RELATED_WORK.md" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-blue)', textDecoration: 'underline' }}>docs/RELATED_WORK.md</a>.
+              </p>
+            )}
           </div>
 
           <div
