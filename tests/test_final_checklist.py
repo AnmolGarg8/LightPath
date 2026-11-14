@@ -10,6 +10,7 @@ Governed by docs/PROJECT_RULES.md (Rule 1 & Rule 2):
 import os
 import re
 from pathlib import Path
+
 import pytest
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
@@ -88,7 +89,7 @@ def test_verified_checklist_files_have_no_placeholders():
             all_failures[rel_path] = findings
 
     assert not all_failures, (
-        f"Unresolved placeholders found in verified checklist files:\n"
+        "Unresolved placeholders found in verified checklist files:\n"
         + "\n".join(
             f"  {f} (Line {line}): {match} -> '{text}'"
             for f, items in all_failures.items()
@@ -153,7 +154,7 @@ def test_pre_submission_gate():
                 all_failures[rel_path] = findings
 
     assert not all_failures, (
-        f"Pre-submission gate failed. Placeholders remain in submission files:\n"
+        "Pre-submission gate failed. Placeholders remain in submission files:\n"
         + "\n".join(
             f"  {f} (Line {line}): {match}"
             for f, items in all_failures.items()

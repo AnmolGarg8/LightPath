@@ -316,7 +316,6 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
     max_el_sun_2, rms_el_sun_2 = 0.0, 0.0
     max_az_earth_2, rms_az_earth_2 = 0.0, 0.0
     max_el_earth_2, rms_el_earth_2 = 0.0, 0.0
-    n_sun_2, n_earth_2 = 0, 0
 
     if has_loc2:
         sun_times_2, sun_hz_az_2, sun_hz_el_2 = [], [], []
@@ -359,7 +358,6 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         d_el_earth_2 = lp_earth_el_2 - np.array(earth_hz_el_2)
         max_az_earth_2, rms_az_earth_2 = float(np.max(np.abs(d_az_earth_2))), float(np.sqrt(np.mean(d_az_earth_2**2)))
         max_el_earth_2, rms_el_earth_2 = float(np.max(np.abs(d_el_earth_2))), float(np.sqrt(np.mean(d_el_earth_2**2)))
-        n_sun_2, n_earth_2 = len(sun_hz_az_2), len(earth_hz_az_2)
 
     max_overall_err = max(
         max_az_sun_1, max_el_sun_1, max_az_earth_1, max_el_earth_1,
@@ -372,8 +370,6 @@ def test_v3_ephemeris_horizons_cross_check(record_verification, record_chart_dat
         f"Loc 2: Sun Az max {max_az_sun_2:.5f}°, El max {max_el_sun_2:.5f}°; Earth Az max {max_az_earth_2:.5f}°, El max {max_el_earth_2:.5f}°)"
     )
 
-    n_sun_1 = len(sun_hz_az_1)
-    n_earth_1 = len(earth_hz_az_1)
     measured_summary = (
         f"Loc 1 (721h/30d): Sun Az max {max_az_sun_1:.6f}°, rms {rms_az_sun_1:.6f}°; El max {max_el_sun_1:.6f}°, rms {rms_el_sun_1:.6f}° / "
         f"Earth Az max {max_az_earth_1:.6f}°, rms {rms_az_earth_1:.6f}°; El max {max_el_earth_1:.6f}°, rms {rms_el_earth_1:.6f}° | "

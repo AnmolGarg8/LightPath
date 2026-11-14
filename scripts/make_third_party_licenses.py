@@ -357,7 +357,7 @@ def update_questions_md(flagged: List[Dict[str, Any]]) -> None:
     new_section_lines = [
         section_header,
         "- **Status**: Documented Third-Party Audit",
-        f"- **Question**: Are all third-party dependencies compliant with NASA Space Apps Challenge open source rules?",
+        "- **Question**: Are all third-party dependencies compliant with NASA Space Apps Challenge open source rules?",
         "- **Audit Findings**: The automated licence audit (`scripts/make_third_party_licenses.py`) flagged the following packages whose declared licence is non-OSI approved or requires clarification:",
         "",
         "| Ecosystem | Package | Version | Declared Licence | Compliance Rationale & Safest Assumption |",

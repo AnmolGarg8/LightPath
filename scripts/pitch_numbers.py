@@ -23,7 +23,7 @@ import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict
 
 # Ensure UTF-8 output on Windows
 if sys.stdout and hasattr(sys.stdout, "reconfigure"):
@@ -325,8 +325,8 @@ def write_pitch_numbers_markdown(numbers: Dict[str, Any]) -> None:
 
     md = f"""# Authoritative Pitch Numbers & Mission Analysis Baseline
 
-> **Generated on:** `{numbers['generation_date']}`  
-> **Source Commit:** `{numbers['commit_hash']}` (`{numbers['commit_full']}`)  
+> **Generated on:** `{numbers['generation_date']}`
+> **Source Commit:** `{numbers['commit_hash']}` (`{numbers['commit_full']}`)
 > **Governing Policy:** [`docs/PROJECT_RULES.md`](PROJECT_RULES.md) (Rule 2: Never invent facts; Rule 9: Every number traces to a record).
 
 This reference document compiles every verified quantitative value used in the 3-minute pitch ([`docs/PITCH.md`](PITCH.md)), the project submission dossier ([`docs/SUBMISSION.md`](SUBMISSION.md)), and the 90-second video demo. All values are read directly from committed data artifacts in `web/public/data/`.
